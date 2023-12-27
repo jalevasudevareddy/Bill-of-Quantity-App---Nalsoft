@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="WorkDoneSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="WorkDoneQtySearchVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="WorkDoneQtySearchVO1Iterator"/>
+    <searchRegion Criteria="WorkDoneQtySearch"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="WorkDoneQtySearchVO1Iterator"
+                  id="WorkDoneQtySearchQuery"/>
+    <iterator Binds="TransWorkdoneHdrVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="TransWorkdoneHdrVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="WorkDoneQtySearchVO1Iterator" id="WorkDoneQtySearchVO1">
+      <nodeDefinition DefName="model.searchview.WorkDoneQtySearchVO"
+                      Name="WorkDoneQtySearchVO10">
+        <AttrNames>
+          <Item Value="ProjectName"/>
+          <Item Value="WdDocumentDate"/>
+          <Item Value="WdStatus"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="WdApprovedDate"/>
+          <Item Value="CreationDate"/>
+          <Item Value="WdApprovedBy"/>
+          <Item Value="Version"/>
+          <Item Value="TransCumulativeWDAmount"/>
+          <Item Value="TransPrevWDAmount"/>
+          <Item Value="TransStatus"/>
+          <Item Value="TransCurrentWDAmont"/>
+          <Item Value="TransActualWDAmount"/>
+          <Item Value="BuName1"/>
+          <Item Value="WdDocumentNum1"/>
+          <Item Value="ProjectNumber2"/>
+          <Item Value="ProjectNumber1"/>
+          <Item Value="WdDocumentNum"/>
+          <Item Value="PeriodOfMeasure1"/>
+          <Item Value="PeriodOfMeasure2"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="TransPrecision"/>
+          <Item Value="TransBOQVersion"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="Cognomen"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false" IterBinding="WorkDoneQtySearchVO1Iterator"
+                  Uses="LOV_TransBusinessUnit" id="TransBusinessUnit"/>
+    <listOfValues StaticList="false" IterBinding="WorkDoneQtySearchVO1Iterator"
+                  Uses="LOV_TransProject" id="TransProject"/>
+    <listOfValues StaticList="false" IterBinding="WorkDoneQtySearchVO1Iterator"
+                  Uses="LOV_PeriodOfMeasure" id="PeriodOfMeasure"/>
+    <attributeValues IterBinding="WorkDoneQtySearchVO1Iterator"
+                     id="TransProjectName">
+      <AttrNames>
+        <Item Value="TransProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelWDDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelWDDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createWDHeaderRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createWDHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="editWDDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editWDDocument" IsViewObjectMethod="false"/>
+    <methodAction id="validateWorkDoneHdr"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWorkDoneHdr" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWorkDoneHdr_BillingDetailsAMDataControl_dataProvider_validateWorkDoneHdr_result"/>
+    <attributeValues IterBinding="WorkDoneQtySearchVO1Iterator" id="WdHeaderId">
+      <AttrNames>
+        <Item Value="WdHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtySearchVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelWDDocument1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelWDDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createWDDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createWDDocument" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.createWDDocument_BillingDetailsAMDataControl_dataProvider_createWDDocument_result"/>
+    <listOfValues StaticList="false" IterBinding="TransWorkdoneHdrVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false" IterBinding="TransWorkdoneHdrVO1Iterator"
+                  Uses="LOV_TransProjectNum" id="TransProjectNum"/>
+    <listOfValues StaticList="false" IterBinding="TransWorkdoneHdrVO1Iterator"
+                  Uses="LOV_TransPeriod" id="TransPeriod"/>
+    <methodAction id="refreshWDHdrVOAttrs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshWDHdrVOAttrs" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.refreshWDHdrVOAttrs_BillingDetailsAMDataControl_dataProvider_refreshWDHdrVOAttrs_result">
+      <NamedData NDName="attributesMap" NDValue="#{pageFlowScope.attributesMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtySearchVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="TransWorkdoneHdrVO1Iterator"
+                  Uses="LOV_TransContractNumber" id="TransContractNumber"/>
+    <button IterBinding="WorkDoneQtySearchVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ActivityGroupVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqActivityGroupeEO.CREATED_BY, 
+       XxboqActivityGroupeEO.CREATION_DATE, 
+       XxboqActivityGroupeEO.DESCRIPTION, 
+       XxboqActivityGroupeEO.GROUP_CODE, 
+       XxboqActivityGroupeEO.GROUP_ID, 
+       XxboqActivityGroupeEO.LAST_UPDATED_BY, 
+       XxboqActivityGroupeEO.LAST_UPDATED_DATE"
+  FromList="XXBOQ_ACTIVITY_GROUP_T XxboqActivityGroupeEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.ActivityGroupVORowImpl"
+  ComponentClass="model.view.ActivityGroupVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <EntityUsage
+    Name="XxboqActivityGroupeEO"
+    Entity="model.entity.XxboqActivityGroupEO"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="GroupCode"
+    PrecisionRule="true"
+    EntityAttrName="GroupCode"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="GROUP_CODE"/>
+  <ViewAttribute
+    Name="GroupId"
+    PrecisionRule="true"
+    EntityAttrName="GroupId"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="GROUP_ID"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqActivityGroupeEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="TransDeleteCondition"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <ViewLinkAccessor
+    Name="ActivityDetailsVO"
+    ViewLink="model.viewlink.ActivityGroupToDetailsVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+</ViewObject>

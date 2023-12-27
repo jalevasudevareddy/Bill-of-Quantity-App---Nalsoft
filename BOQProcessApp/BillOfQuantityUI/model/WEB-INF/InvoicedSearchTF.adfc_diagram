@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <TaskFlowCall
+      id="TaskFlowCall3">
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>InvoicedQtyTF&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="activityId">InvoicedQtyTF</property>
+      <property
+         name="x">477.01172</property>
+      <property
+         name="y">201.99414</property>
+      <property
+         name="documentReference">/WEB-INF/InvoicedQtyTF.xml</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="taskFlowId">InvoicedQtyTF</property>
+   </TaskFlowCall>
+   <View
+      id="View4">
+      <property
+         name="activityId">InvoicedSearch</property>
+      <property
+         name="pageFragment">true</property>
+      <property
+         name="x">254.3584</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>InvoicedSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="y">204.29297</property>
+      <property
+         name="page">/pagefragments/InvoicedSearch.jsff</property>
+      <property
+         name="exceptionHandler">false</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="TaskFlowCall3"
+      to="View4">
+      <property
+         name="fromOutcome">taskFlowReturn1</property>
+      <property
+         name="sdm:polyPoints">L46,435.95453,198.14355,295.3584,200.44238,R46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase6"
+      from="View4"
+      to="TaskFlowCall3">
+      <property
+         name="fromOutcome">Edit</property>
+      <property
+         name="sdm:polyPoints">R54,295.41562,207.44238,436.01172,205.14355,L54</property>
+   </ControlFlowCase>
+</SDM>

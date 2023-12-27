@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaterialAtSiteLinesVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqMaterialAtSiteLinesEO.ACTIVITY_ID, 
+       XxboqMaterialAtSiteLinesEO.CREATED_BY, 
+       XxboqMaterialAtSiteLinesEO.CREATION_DATE, 
+       XxboqMaterialAtSiteLinesEO.DOC_HEADER_ID, 
+       XxboqMaterialAtSiteLinesEO.LAST_UPDATED_BY, 
+       XxboqMaterialAtSiteLinesEO.LAST_UPDATED_DATE, 
+       XxboqMaterialAtSiteLinesEO.RESOURCE_ITEM_ID, 
+       XxboqMaterialAtSiteHdrEO.BUSINESS_UNIT_ID, 
+       XxboqMaterialAtSiteHdrEO.DOC_HEADER_ID AS DOC_HEADER_ID1, 
+       XxboqMaterialAtSiteHdrEO.PROJECT_ID, 
+       XxboqActivityDetailsEO.ACTIVITY_CODE, 
+       XxboqActivityDetailsEO.ACTIVITY_ID AS ACTIVITY_ID1, 
+       XxboqResourceItemsEO.ITEM_CODE, 
+       XxboqResourceItemsEO.ITEM_ID, 
+       XxboqResourceItemsEO.ITEM_DESCRIPTION, 
+       XxboqResourceItemsEO.RESOURCE_GROUP_ID, 
+       XxboqResourceItemsEO.RESOURCE_SUB_GROUP_ID, 
+       XxboqResourceItemsEO.ITEM_RATE, 
+       (select resource_sub_group from XXBOQ_RESOURCE_SUB_GROUP_T where resource_sub_group_id=XxboqResourceItemsEO.RESOURCE_SUB_GROUP_ID) AS SUB_GROUP_ATTR, 
+       (select resource_group from xxboq_resource_master_group_t where resource_group_id= XxboqResourceItemsEO.RESOURCE_GROUP_ID) AS GROUP_ATTR, 
+       (select resource_type from xxboq_resource_master_group_t where resource_group_id=XxboqResourceItemsEO.RESOURCE_GROUP_ID) AS TYPE_ATTR, 
+       XxboqMaterialAtSiteLinesEO.QUANTITY, 
+       XxboqMaterialAtSiteLinesEO.ROWID"
+  FromList="XXBOQ_MATERIAL_AT_SITE_LINES_T XxboqMaterialAtSiteLinesEO, XXBOQ_MATERIAL_AT_SITE_HDR_T XxboqMaterialAtSiteHdrEO, XXBOQ_ACTIVITY_DETAILS_T XxboqActivityDetailsEO, XXBOQ_RESOURCE_ITEMS_T XxboqResourceItemsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.MaterialAtSiteLinesVORowImpl"
+  ComponentClass="model.view.MaterialAtSiteLinesVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqMaterialAtSiteLinesEO.DOC_HEADER_ID = XxboqMaterialAtSiteHdrEO.DOC_HEADER_ID(+)
+and XxboqMaterialAtSiteLinesEO.ACTIVITY_ID=XxboqActivityDetailsEO.ACTIVITY_ID
+and  XxboqMaterialAtSiteLinesEO.RESOURCE_ITEM_ID=XxboqResourceItemsEO.ITEM_ID">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="ActivityForMaterialAtSiteVO1"
+    ViewObjectName="model.searchview.ActivityForMaterialAtSiteVO">
+    <ViewCriteriaUsage
+      Name="ActivityForMaterialAtSiteVOCriteria"
+      FullName="model.searchview.ActivityForMaterialAtSiteVO.ActivityForMaterialAtSiteVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BusinessUnitId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_prj_id">
+        <TransientExpression><![CDATA[ProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ResourceForMaterialAtSiteVO1"
+    ViewObjectName="model.searchview.ResourceForMaterialAtSiteVO">
+    <ViewCriteriaUsage
+      Name="ResourceForMaterialAtSiteVOCriteria"
+      FullName="model.searchview.ResourceForMaterialAtSiteVO.ResourceForMaterialAtSiteVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BusinessUnitId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransActivityCode"
+    ListVOName="ActivityForMaterialAtSiteVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransActivityCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransActivityCode"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ActivityId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ActivityCode"/>
+      <Item Value="ActivityId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ActivityCode"/>
+      <Item Value="Description"/>
+      <Item Value="GroupCode"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ActivityForMaterialAtSiteVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ActivityForMaterialAtSiteVOCriteria"
+      FullName="model.searchview.ActivityForMaterialAtSiteVO.ActivityForMaterialAtSiteVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransResourceItem"
+    ListVOName="ResourceForMaterialAtSiteVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransResourceItem_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransResourceItem"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ResourceItemId"/>
+      <Item Value="TransResourceType"/>
+      <Item Value="TransResourceGroup"/>
+      <Item Value="TransResourceSubGroup"/>
+      <Item Value="TransResourceDesc"/>
+      <Item Value="TransResourceRate"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ItemCode"/>
+      <Item Value="ItemId"/>
+      <Item Value="ResourceType"/>
+      <Item Value="ResourceGroup"/>
+      <Item Value="ResourceSubGroup"/>
+      <Item Value="ItemDescription"/>
+      <Item Value="ItemRate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ItemCode"/>
+      <Item Value="ItemDescription"/>
+      <Item Value="ResourceGroup"/>
+      <Item Value="ResourceSubGroup"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ResourceForMaterialAtSiteVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ResourceForMaterialAtSiteVOCriteria"
+      FullName="model.searchview.ResourceForMaterialAtSiteVO.ResourceForMaterialAtSiteVOCriteria"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqMaterialAtSiteLinesEO"
+    Entity="model.entity.XxboqMaterialAtSiteLinesEO"/>
+  <EntityUsage
+    Name="XxboqMaterialAtSiteHdrEO"
+    Entity="model.entity.XxboqMaterialAtSiteHdrEO"
+    Association="model.association.XxboqMaterialAtSiteHdrToLinesAssc"
+    AssociationEnd="model.association.XxboqMaterialAtSiteHdrToLinesAssc.XxboqMaterialAtSiteHdrEO"
+    SourceUsage="model.view.MaterialAtSiteLinesVO.XxboqMaterialAtSiteLinesEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="model.entity.XxboqMaterialAtSiteLinesEO.DocHeaderId"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="model.entity.XxboqMaterialAtSiteHdrEO.DocHeaderId"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="XxboqActivityDetailsEO"
+    Entity="model.entity.XxboqActivityDetailsEO"
+    SourceUsage="model.view.MaterialAtSiteLinesVO.XxboqMaterialAtSiteHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="XxboqResourceItemsEO"
+    Entity="model.entity.XxboqResourceItemsEO"
+    SourceUsage="model.view.MaterialAtSiteLinesVO.XxboqActivityDetailsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="ActivityId"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="ACTIVITY_ID"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="CREATED_BY"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="CreationDate"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="CREATION_DATE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="DocHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="DocHeaderId"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="DOC_HEADER_ID"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="LAST_UPDATED_BY"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="LAST_UPDATED_DATE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ResourceItemId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceItemId"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="RESOURCE_ITEM_ID"
+    />
+  <ViewAttribute
+    Name="BusinessUnitId"
+    PrecisionRule="true"
+    EntityAttrName="BusinessUnitId"
+    EntityUsage="XxboqMaterialAtSiteHdrEO"
+    AliasName="BUSINESS_UNIT_ID"/>
+  <ViewAttribute
+    Name="DocHeaderId1"
+    PrecisionRule="true"
+    EntityAttrName="DocHeaderId"
+    EntityUsage="XxboqMaterialAtSiteHdrEO"
+    AliasName="DOC_HEADER_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqMaterialAtSiteHdrEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="TransActivityCode"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransActivityCode">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ACTIVITY_CODE"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransResourceItem"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransResourceItem">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RESOURCE_ITEM"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActivityCode"
+    PrecisionRule="true"
+    EntityAttrName="ActivityCode"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_CODE"/>
+  <ViewAttribute
+    Name="ActivityId1"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ItemCode"
+    PrecisionRule="true"
+    EntityAttrName="ItemCode"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_CODE"/>
+  <ViewAttribute
+    Name="ItemId"
+    PrecisionRule="true"
+    EntityAttrName="ItemId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_ID"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ItemDescription"
+    PrecisionRule="true"
+    EntityAttrName="ItemDescription"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_DESCRIPTION"/>
+  <ViewAttribute
+    Name="ResourceGroupId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="RESOURCE_GROUP_ID"/>
+  <ViewAttribute
+    Name="ResourceSubGroupId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceSubGroupId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="RESOURCE_SUB_GROUP_ID"/>
+  <ViewAttribute
+    Name="ItemRate"
+    PrecisionRule="true"
+    EntityAttrName="ItemRate"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_RATE"/>
+  <ViewAttribute
+    Name="TransSubGroup"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="SUB_GROUP_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select resource_sub_group from XXBOQ_RESOURCE_SUB_GROUP_T where resource_sub_group_id=XxboqResourceItemsEO.RESOURCE_SUB_GROUP_ID)"/>
+  <ViewAttribute
+    Name="TransGroup"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="GROUP_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select resource_group from xxboq_resource_master_group_t where resource_group_id= XxboqResourceItemsEO.RESOURCE_GROUP_ID)"/>
+  <ViewAttribute
+    Name="TransType"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="TYPE_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select resource_type from xxboq_resource_master_group_t where resource_group_id=XxboqResourceItemsEO.RESOURCE_GROUP_ID)"/>
+  <ViewAttribute
+    Name="TransResourceType"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RESOURCE_TYPE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransResourceGroup"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransResourceSubGroup"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SUB_GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransResourceDesc"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ITEM_DESCRIPTION"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransResourceRate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Quantity"
+    PrecisionRule="true"
+    EntityAttrName="Quantity"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="QUANTITY"/>
+  <ViewAttribute
+    Name="TransTotalValue"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="TOTAL_VALUE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="RowID"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="RowID"
+    EntityUsage="XxboqMaterialAtSiteLinesEO"
+    AliasName="ROWID"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="RowID"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

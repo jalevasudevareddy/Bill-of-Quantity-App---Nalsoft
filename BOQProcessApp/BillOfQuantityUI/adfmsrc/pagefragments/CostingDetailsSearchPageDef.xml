@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="CostingDetailsSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BOQCostingDetailsHeaderSearchVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="BOQCostingDetailsHeaderSearchVO1Iterator"/>
+    <searchRegion Criteria="BOQCostingDetailsHeaderSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="BOQCostingDetailsHeaderSearchVO1Iterator"
+                  id="BOQCostingDetailsHeaderSearchVOCriteriaQuery"/>
+    <iterator Binds="TransCostingDetailsHeaderVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="TransCostingDetailsHeaderVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="BOQCostingDetailsHeaderSearchVO1Iterator"
+          id="BOQCostingDetailsHeaderSearchVO1">
+      <nodeDefinition DefName="model.view.BOQCostingDetailsHeaderSearchVO"
+                      Name="BOQCostingDetailsHeaderSearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="ProjectName"/>
+          <Item Value="Version"/>
+          <Item Value="Status"/>
+          <Item Value="ApprovedBy"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="CreatedBy"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="initTransCostingDetailsaHeaderVO"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initTransCostingDetailsaHeaderVO"
+                  IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCostingDetailsHeaderVO1Iterator"
+                  Uses="LOV_TransBUName" id="TransBUName"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCostingDetailsHeaderVO1Iterator"
+                  Uses="LOV_TransProjectNumber" id="TransProjectNumber"/>
+    <methodAction id="refreshTransCostingDetailsVOWith"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshTransCostingDetailsVOWith"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="attributeMap" NDValue="#{pageFlowScope.attributeMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="checkWhetherCostingDetailsCreatedForSelectedPrj"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="checkWhetherCostingDetailsCreatedForSelectedPrj"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.checkWhetherCostingDetailsCreatedForSelectedPrj_CostingDetailsAMDataControl_dataProvider_checkWhetherCostingDetailsCreatedForSelectedPrj_result"/>
+    <methodAction id="isJobItemAnalysisCreatedForProject"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isJobItemAnalysisCreatedForProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.isJobItemAnalysisCreatedForProject_CostingDetailsAMDataControl_dataProvider_isJobItemAnalysisCreatedForProject_result"/>
+    <methodAction id="createCostingDetailsForSelectedProject"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createCostingDetailsForSelectedProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.createCostingDetailsForSelectedProject_CostingDetailsAMDataControl_dataProvider_createCostingDetailsForSelectedProject_result"/>
+    <methodAction id="isBOQHeaderCreatedForProject"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isBOQHeaderCreatedForProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.isBOQHeaderCreatedForProject_CostingDetailsAMDataControl_dataProvider_isBOQHeaderCreatedForProject_result"/>
+    <methodAction id="makeAsCurrentCostingDetailsHdrForId"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentCostingDetailsHdrForId"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.makeAsCurrentCostingDetailsHdrForId_CostingDetailsAMDataControl_dataProvider_makeAsCurrentCostingDetailsHdrForId_result">
+      <NamedData NDName="costingDetailHdrId"
+                 NDValue="#{pageFlowScope.costingDetailHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderSearchVO1Iterator"
+                     id="CostingDetailsHeaderId">
+      <AttrNames>
+        <Item Value="CostingDetailsHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

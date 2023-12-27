@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ProjectJobItemAnalysisTF">
+    <default-activity id="__1">ProjectJobItemAnalysisSearch</default-activity>
+    <transaction id="__2">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name id="__6">ProjectJobItemAnalyBean</managed-bean-name>
+      <managed-bean-class id="__5">bean.ProjectJobItemAnalyBean</managed-bean-class>
+      <managed-bean-scope id="__4">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="ProjectJobItemAnalysisSearch">
+      <page>/pagefragments/ProjectJobItemAnalysisSearch.jsff</page>
+    </view>
+    <view id="JobItemAnalysis">
+      <page>/pagefragments/JobItemAnalysis.jsff</page>
+    </view>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">ProjectJobItemAnalysisSearch</from-activity-id>
+      <control-flow-case id="__13">
+        <from-outcome id="__15">JobItemAnalysis</from-outcome>
+        <to-activity-id id="__14">JobItemAnalysis</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id id="__8">JobItemAnalysis</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome id="__16">done</from-outcome>
+        <to-activity-id id="__9">ProjectJobItemAnalysisSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

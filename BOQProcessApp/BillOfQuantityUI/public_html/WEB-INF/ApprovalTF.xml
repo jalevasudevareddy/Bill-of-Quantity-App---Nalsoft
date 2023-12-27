@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ApprovalTF">
+    <default-activity id="__19">decodeUrl</default-activity>
+    <input-parameter-definition id="__2">
+      <name id="__1">docTypeId</name>
+      <value>#{pageFlowScope.docTypeId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__4">
+      <name id="__3">docId</name>
+      <value>#{pageFlowScope.docId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__5">
+      <name id="__6">currEmpId</name>
+      <value>#{pageFlowScope.currEmpId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__7">
+      <name id="__8">currEmpLevel</name>
+      <value>#{pageFlowScope.currEmpLevel}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__9">
+      <name id="__10">docNum</name>
+      <value>#{pageFlowScope.docNum}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__12">
+      <name id="__11">apprvCat</name>
+      <value>#{pageFlowScope.apprvCat}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__13">apprvName</name>
+      <value>#{pageFlowScope.apprvName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__15">
+      <name id="__16">fromApplicationFlag</name>
+      <value>#{pageFlowScope.fromApplicationFlag}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__20">
+      <name id="__21">accessType</name>
+      <value>#{pageFlowScope.accessType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__17">
+      <name id="__22">actionCode</name>
+      <value>#{pageFlowScope.actionCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__31">
+      <name id="__32">jwt</name>
+      <value>#{pageFlowScope.jwt}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__24">
+      <name id="__23">personId</name>
+      <value>#{sessionScope.personId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__26">
+      <name id="__25">userName</name>
+      <value>#{sessionScope.userName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__27">
+      <name id="__28">workListId</name>
+      <value>#{pageFlowScope.workListId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__29">
+      <name>target</name>
+      <value>#{pageFlowScope.target}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <view id="ApprovalDoc">
+      <page>/ApprovalDoc.jspx</page>
+    </view>
+    <method-call id="decodeUrl">
+      <method>#{bindings.decodeUrl.execute}</method>
+      <outcome>
+        <fixed-outcome>decodeUrl</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__30">
+      <from-activity-id>decodeUrl</from-activity-id>
+      <control-flow-case id="__33">
+        <from-outcome>decodeUrl</from-outcome>
+        <to-activity-id>ApprovalDoc</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <visibility id="__18">
+      <url-invoke-allowed/>
+    </visibility>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="BoqValidationLinesPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BoqValidationHeaderVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqValidationHeaderVO1Iterator"/>
+    <iterator Binds="BoqValidationLinesVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqValidationLinesVO1Iterator"/>
+    <searchRegion Binds="BoqValidationLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoqValidationLinesVO11Query"/>
+    <iterator Binds="BoqvalidationCostCodeVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqvalidationCostCodeVO1Iterator"/>
+    <searchRegion Binds="BoqvalidationCostCodeVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoqvalidationCostCodeVO1Query"/>
+    <iterator Binds="BoqValidationResourceVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqValidationResourceVO1Iterator"/>
+    <searchRegion Binds="BoqValidationResourceVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoqValidationResourceVO1Query"/>
+    <iterator Binds="AttachmentsVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="AttachmentsVO1Iterator"/>
+    <searchRegion Binds="AttachmentsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="AttachmentsVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ApprovedBy">
+      <AttrNames>
+        <Item Value="ApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ImportDate">
+      <AttrNames>
+        <Item Value="ImportDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="RevisionDate">
+      <AttrNames>
+        <Item Value="RevisionDate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="uploadBoqs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="uploadBoqs" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.uploadBoqs_BoqUploadValidationAMDataControl_dataProvider_uploadBoqs_result">
+      <NamedData NDName="uploadedFile" NDValue="#{pageFlowScope.uploadedFile}"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <tree IterBinding="BoqValidationLinesVO1Iterator"
+          id="BoqValidationLinesVO11">
+      <nodeDefinition DefName="model.view.BoqValidationLinesVO"
+                      Name="BoqValidationLinesVO110">
+        <AttrNames>
+          <Item Value="BoqLevel"/>
+          <Item Value="PageItem"/>
+          <Item Value="Item"/>
+          <Item Value="BillDescription"/>
+          <Item Value="BillQuantity"/>
+          <Item Value="FinalQuantity"/>
+          <Item Value="Uom"/>
+          <Item Value="CandyNetRate"/>
+          <Item Value="SellingRate"/>
+          <Item Value="CandyNetFinalAmount"/>
+          <Item Value="SellingAmount"/>
+          <Item Value="Trade"/>
+          <Item Value="PriceCode"/>
+          <Item Value="ErrorDetails"/>
+          <Item Value="TransNetRate"/>
+          <Item Value="TransNetFinalAmount"/>
+          <Item Value="TransErrorPercentage"/>
+          <Item Value="TransAbsoluteError"/>
+          <Item Value="NetFinalAmount"/>
+          <Item Value="ErrorPercentage"/>
+          <Item Value="BillQuantityNum"/>
+          <Item Value="CandyNetFinalAmountNum"/>
+          <Item Value="CandyNetRateNum"/>
+          <Item Value="FinalQuantityNum"/>
+          <Item Value="SellingAmountNum"/>
+          <Item Value="SellingRateNum"/>
+          <Item Value="TransNetFinalAmountTotal"/>
+          <Item Value="TransCandyNetFinalAmntTotal"/>
+          <Item Value="TransAbsoluteErrorTotal"/>
+          <Item Value="LineType"/>
+          <Item Value="Approved" Binds="Approved"/>
+          <Item Value="Estimated" Binds="Estimated"/>
+          <Item Value="Submitted" Binds="Submitted"/>
+          <Item Value="TransLineType"/>
+          <Item Value="TransCostBudgetTotal"/>
+          <Item Value="TransSumofCostBudgetTotal"/>
+          <Item Value="TransDeleteFlag"/>
+          <Item Value="BoqLineRemarks"/>
+          <Item Value="TransVariationCategory"/>
+          <Item Value="VariationNumInternal"/>
+          <Item Value="VariationNumClient"/>
+          <Item Value="AnticipatedValue"/>
+          <Item Value="TransAnticipatedValueLineTotal"/>
+          <Item Value="BillNumber"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="TransContractLineNumber"/>
+          <Item Value="TransProjectNumber"/>
+          <Item Value="TransTaskNumber"/>
+          <Item Value="TransTaskName"/>
+          <Item Value="TransSellingAmountLedger"/>
+          <Item Value="TransFinalAmount"/>
+          <Item Value="TransFinalAmountLedger"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="BoqvalidationCostCodeVO1Iterator"
+          id="BoqvalidationCostCodeVO1">
+      <nodeDefinition DefName="model.view.BoqvalidationCostCodeVO"
+                      Name="BoqvalidationCostCodeVO10">
+        <AttrNames>
+          <Item Value="CostCode"/>
+          <Item Value="CostCodeDescription"/>
+          <Item Value="ErrorDetails"/>
+          <Item Value="TransCostCodeQuantity"/>
+          <Item Value="TransCostCodeTotalAmount"/>
+          <Item Value="CostCodeAmount"/>
+          <Item Value="CostCodeQuantity"/>
+          <Item Value="CostCodeRate"/>
+          <Item Value="TransCostCodeAmount1"/>
+          <Item Value="ValidationCostCodeId"/>
+          <Item Value="Uom"/>
+          <Item Value="CostCodeRemarks"/>
+          <Item Value="AnticipatedValue"/>
+          <Item Value="TransResourceClass"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="updateValidationDocumentAs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateValidationDocumentAs"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.updateValidationDocumentAs_BoqUploadValidationAMDataControl_dataProvider_updateValidationDocumentAs_result">
+      <NamedData NDName="updateWith" NDValue="#{pageFlowScope.updateWith}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransAbsoluteErrorPercentage">
+      <AttrNames>
+        <Item Value="TransAbsoluteErrorPercentage"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="clearUploadedData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="clearUploadedData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.clearUploadedData_BoqUploadValidationAMDataControl_dataProvider_clearUploadedData_result"/>
+    <methodAction id="refreshBoqValidateHdrVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshBoqValidateHdrVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshUploadInterfaceVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshUploadInterfaceVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="splitUploadedData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="splitUploadedData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.splitUploadedData_BoqUploadValidationAMDataControl_dataProvider_splitUploadedData_result"/>
+    <methodAction id="validateUploadedBoqs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateUploadedBoqs" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.validateUploadedBoqs_BoqUploadValidationAMDataControl_dataProvider_validateUploadedBoqs_result"/>
+    <methodAction id="loadUploadedBoqs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="loadUploadedBoqs" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.loadUploadedBoqs_BoqUploadValidationAMDataControl_dataProvider_loadUploadedBoqs_result"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ValidationHeaderId">
+      <AttrNames>
+        <Item Value="ValidationHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="makeAsCurrentBoqValHdrRow"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentBoqValHdrRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.makeAsCurrentBoqValHdrRow_BoqUploadValidationAMDataControl_dataProvider_makeAsCurrentBoqValHdrRow_result">
+      <NamedData NDName="boqValHdrId" NDValue="#{pageFlowScope.boqValHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="geterrorsCountForValidationDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="geterrorsCountForValidationDoc"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.geterrorsCountForValidationDoc_BoqUploadValidationAMDataControl_dataProvider_geterrorsCountForValidationDoc_result">
+      <NamedData NDName="validationHdrId"
+                 NDValue="#{pageFlowScope.validationHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="IsDocumentValid">
+      <AttrNames>
+        <Item Value="IsDocumentValid"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updateBoqUploadedDocWith"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateBoqUploadedDocWith"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.updateBoqUploadedDocWith_BoqUploadValidationAMDataControl_dataProvider_updateBoqUploadedDocWith_result">
+      <NamedData NDName="updateWith" NDValue="#{pageFlowScope.updateWith}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="refreshUploadErrorsVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshUploadErrorsVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="updateUploadedData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateUploadedData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.updateUploadedData_BoqUploadValidationAMDataControl_dataProvider_updateUploadedData_result"/>
+    <methodAction id="getUploadedErrors"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUploadedErrors" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.getUploadedErrors_BoqUploadValidationAMDataControl_dataProvider_getUploadedErrors_result"/>
+    <methodAction id="appendUploadedData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="appendUploadedData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.appendUploadedData_BoqUploadValidationAMDataControl_dataProvider_appendUploadedData_result"/>
+    <methodAction id="getUploadBoqTemplate"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUploadBoqTemplate" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.getUploadBoqTemplate_BoqUploadValidationAMDataControl_dataProvider_getUploadBoqTemplate_result"/>
+    <methodAction id="clearValidatedData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="clearValidatedData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.clearValidatedData_BoqUploadValidationAMDataControl_dataProvider_clearValidatedData_result"/>
+    <methodAction id="getErrorsCountForCurrentDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getErrorsCountForCurrentDoc"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.getErrorsCountForCurrentDoc_BoqUploadValidationAMDataControl_dataProvider_getErrorsCountForCurrentDoc_result"/>
+    <attributeValues IterBinding="BoqValidationResourceVO1Iterator"
+                     id="TransResourceTotalAmount">
+      <AttrNames>
+        <Item Value="TransResourceTotalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqvalidationCostCodeVO1Iterator"
+                     id="TransCostCodeTotalAmount">
+      <AttrNames>
+        <Item Value="TransCostCodeTotalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransCandyNetFinalAmntTotal">
+      <AttrNames>
+        <Item Value="TransCandyNetFinalAmntTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransBudgetType">
+      <AttrNames>
+        <Item Value="TransBudgetType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="FileName">
+      <AttrNames>
+        <Item Value="FileName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isErrorExistsInUploaboqs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isErrorExistsInUploaboqs"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isErrorExistsInUploaboqs_BoqUploadValidationAMDataControl_dataProvider_isErrorExistsInUploaboqs_result">
+      <NamedData NDName="headerId" NDValue="#{pageFlowScope.headerId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <methodAction id="deleteUploadedBOQDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteUploadedBOQDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.deleteUploadedBOQDoc_BoqUploadValidationAMDataControl_dataProvider_deleteUploadedBOQDoc_result"/>
+    <methodAction id="cancelUploadedBoqs"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelUploadedBoqs" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.cancelUploadedBoqs_BoqUploadValidationAMDataControl_dataProvider_cancelUploadedBoqs_result"/>
+    <methodAction id="withdrawFromApproval"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="withdrawFromApproval" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.withdrawFromApproval_BoqUploadValidationAMDataControl_dataProvider_withdrawFromApproval_result">
+      <NamedData NDName="remarks" NDValue="#{pageFlowScope.remarks}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="submitBOQUploadDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="submitBOQUploadDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.submitBOQUploadDoc_BoqUploadValidationAMDataControl_dataProvider_submitBOQUploadDoc_result"/>
+    <methodAction id="callpkgForAMEBOQUploadDocSubmit"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMEBOQUploadDocSubmit"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.callpkgForAMEBOQUploadDocSubmit_BoqUploadValidationAMDataControl_dataProvider_callpkgForAMEBOQUploadDocSubmit_result"/>
+    <methodAction id="updateDocStatusAndCurrFlag"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateDocStatusAndCurrFlag"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.updateDocStatusAndCurrFlag_CommonUtilsAMDataControl_dataProvider_updateDocStatusAndCurrFlag_result">
+      <NamedData NDName="docType" NDValue="#{pageFlowScope.docType}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docHdrId" NDValue="#{pageFlowScope.docHdrId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <methodAction id="callpkgForAMEProcess"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="callpkgForAMEProcess"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.callpkgForAMEProcess_ApprovalAMDataControl_dataProvider_callpkgForAMEProcess_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="isEmployeeAFinalApprover"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isEmployeeAFinalApprover"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isEmployeeAFinalApprover_ApprovalAMDataControl_dataProvider_isEmployeeAFinalApprover_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="currEmpId" NDValue="#{pageFlowScope.currEmpId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="isDocEnabledforCurrentUser"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isDocEnabledforCurrentUser"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isDocEnabledforCurrentUser_ApprovalAMDataControl_dataProvider_isDocEnabledforCurrentUser_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <tree IterBinding="AttachmentsVO1Iterator" id="AttachmentsVO1">
+      <nodeDefinition DefName="model.view.AttachmentsVO" Name="AttachmentsVO10">
+        <AttrNames>
+          <Item Value="FileName"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="AttachmentCode"/>
+          <Item Value="AttachmentFile"/>
+          <Item Value="AttachmentId"/>
+          <Item Value="FileType"/>
+          <Item Value="ReferenceId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AttachmentsVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="AttachmentsVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="saveAttachedFile"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveAttachedFile" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.saveAttachedFile_BoqUploadValidationAMDataControl_dataProvider_saveAttachedFile_result">
+      <NamedData NDName="attachedFile" NDValue="#{pageFlowScope.attachedFile}"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TotalCandySellingAmount">
+      <AttrNames>
+        <Item Value="TotalCandySellingAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="BoqValidationHeaderVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransNetFinalAmountTotal">
+      <AttrNames>
+        <Item Value="TransNetFinalAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransSellingAmountTotal">
+      <AttrNames>
+        <Item Value="TransSellingAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransAbsoluteErrorTotal">
+      <AttrNames>
+        <Item Value="TransAbsoluteErrorTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ReasonForVariation">
+      <AttrNames>
+        <Item Value="ReasonForVariation"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="BoqValidationLinesVO1Iterator" id="Approved"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Approved"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <button IterBinding="BoqValidationLinesVO1Iterator" id="Submitted"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Submitted"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <button IterBinding="BoqValidationLinesVO1Iterator" id="Estimated"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Estimated"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="BoqValidationHeaderVO1Iterator" id="BaseLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BaseLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransAttachments">
+      <AttrNames>
+        <Item Value="TransAttachments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransSumofCostBudgetTotal">
+      <AttrNames>
+        <Item Value="TransSumofCostBudgetTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqvalidationCostCodeVO1Iterator"
+                     id="ValidationCostCodeId">
+      <AttrNames>
+        <Item Value="ValidationCostCodeId"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="BoqvalidationCostCodeVO1Iterator" id="Delete1"
+            InstanceName="BoqUploadValidationAMDataControl.BoqvalidationCostCodeVO1"
+            DataControl="BoqUploadValidationAMDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <action IterBinding="BoqvalidationCostCodeVO1Iterator" id="CreateInsert1"
+            InstanceName="BoqUploadValidationAMDataControl.BoqvalidationCostCodeVO1"
+            DataControl="BoqUploadValidationAMDataControl"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator" id="PriceCode">
+      <AttrNames>
+        <Item Value="PriceCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ProjectCurrencyCode">
+      <AttrNames>
+        <Item Value="ProjectCurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransUnapprovedAmount">
+      <AttrNames>
+        <Item Value="TransUnapprovedAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="validateVariationLines"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateVariationLines" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.validateVariationLines_BoqUploadValidationAMDataControl_dataProvider_validateVariationLines_result"/>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="ValidationLineId">
+      <AttrNames>
+        <Item Value="ValidationLineId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="deleteBOQLine"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteBOQLine" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.deleteBOQLine_BoqUploadValidationAMDataControl_dataProvider_deleteBOQLine_result"/>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransDeleteFlag">
+      <AttrNames>
+        <Item Value="TransDeleteFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransTotalRevenueAmount">
+      <AttrNames>
+        <Item Value="TransTotalRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isRejectionsExists"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isRejectionsExists" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isRejectionsExists_BoqUploadValidationAMDataControl_dataProvider_isRejectionsExists_result"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="BaseLineValidationHdrId">
+      <AttrNames>
+        <Item Value="BaseLineValidationHdrId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransMainContractAmountTotal">
+      <AttrNames>
+        <Item Value="TransMainContractAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransVariationApprovedContractAmountTotal">
+      <AttrNames>
+        <Item Value="TransVariationApprovedContractAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isPriceCodesWithoutCostCodesExists"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isPriceCodesWithoutCostCodesExists"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isPriceCodesWithoutCostCodesExists_BoqUploadValidationAMDataControl_dataProvider_isPriceCodesWithoutCostCodesExists_result"/>
+    <methodAction id="getUploadedBoqData"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUploadedBoqData" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.getUploadedBoqData_BoqUploadValidationAMDataControl_dataProvider_getUploadedBoqData_result"/>
+    <methodAction id="validateCostCode"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCostCode" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.validateCostCode_BoqUploadValidationAMDataControl_dataProvider_validateCostCode_result"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransAnticipatedContractValueTotal">
+      <AttrNames>
+        <Item Value="TransAnticipatedContractValueTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator" id="LineType">
+      <AttrNames>
+        <Item Value="LineType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransAnticipatedValueTotal">
+      <AttrNames>
+        <Item Value="TransAnticipatedValueTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="MajorVersion">
+      <AttrNames>
+        <Item Value="MajorVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="BoqValidationHeaderVO1Iterator" StaticList="false"
+          Uses="LOV_ContractType" id="ContractType" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransContractTypeEnabledFlag">
+      <AttrNames>
+        <Item Value="TransContractTypeEnabledFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransVariationSubmittedContractAmountTotal">
+      <AttrNames>
+        <Item Value="TransVariationSubmittedContractAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransClaimsApprovedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsApprovedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransClaimsSubmittedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsSubmittedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransClaimsEstimatedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsEstimatedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransVariationEstimatedContractAmount">
+      <AttrNames>
+        <Item Value="TransVariationEstimatedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="CurrencyCode1">
+      <AttrNames>
+        <Item Value="CurrencyCode1"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="LedgerCurrencyConvRate">
+      <AttrNames>
+        <Item Value="LedgerCurrencyConvRate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="LedgerCurrencyConvDate">
+      <AttrNames>
+        <Item Value="LedgerCurrencyConvDate"/>
+      </AttrNames>
+    </attributeValues>
+    <list IterBinding="BoqValidationHeaderVO1Iterator" StaticList="false"
+          Uses="LOV_LedgerCurrencyConvRateType"
+          id="LedgerCurrencyConvRateType" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="BillToAcctNumber">
+      <AttrNames>
+        <Item Value="BillToAcctNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="BillToSite">
+      <AttrNames>
+        <Item Value="BillToSite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator" id="Address">
+      <AttrNames>
+        <Item Value="Address"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="TransLedgerPrecision">
+      <AttrNames>
+        <Item Value="TransLedgerPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updateLedgerCurrencyConvRate"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateLedgerCurrencyConvRate"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.updateLedgerCurrencyConvRate_BoqUploadValidationAMDataControl_dataProvider_updateLedgerCurrencyConvRate_result"/>
+    <attributeValues IterBinding="BoqValidationHeaderVO1Iterator"
+                     id="CreationDate">
+      <AttrNames>
+        <Item Value="CreationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransTotalRevenueAmountInLedgerCurrency">
+      <AttrNames>
+        <Item Value="TransTotalRevenueAmountInLedgerCurrency"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransTotalFinalAmount">
+      <AttrNames>
+        <Item Value="TransTotalFinalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransTotalFinalAmountInLedgerCurrency">
+      <AttrNames>
+        <Item Value="TransTotalFinalAmountInLedgerCurrency"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransSiteGrossProfitAmount">
+      <AttrNames>
+        <Item Value="TransSiteGrossProfitAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransSiteGrossProfitPercent">
+      <AttrNames>
+        <Item Value="TransSiteGrossProfitPercent"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransGrossProfitAmount">
+      <AttrNames>
+        <Item Value="TransGrossProfitAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationLinesVO1Iterator"
+                     id="TransGrossProfitPercent">
+      <AttrNames>
+        <Item Value="TransGrossProfitPercent"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

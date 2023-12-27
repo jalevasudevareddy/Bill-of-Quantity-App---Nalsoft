@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+ <af:panelGroupLayout id="pgl1" binding="#{viewScope.NotificationsDynamicBean.notificationPageBindgs}">
+  <af:region value="#{bindings.notificationsDynamicRegionId.regionModel}" id="r1" binding="#{viewScope.NotificationsDynamicBean.notificationDynRegBindgs}"/>
+ </af:panelGroupLayout>
+</jsp:root>

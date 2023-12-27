@@ -1,0 +1,44 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">239.20117</property>
+      <property
+         name="x">88.01758</property>
+   </OverallProperties>
+   <WildcardControlFlowRule
+      id="WildcardControlFlowRule2">
+      <property
+         name="activityId">*</property>
+      <property
+         name="y">84.0</property>
+      <property
+         name="x">88.01758</property>
+   </WildcardControlFlowRule>
+   <View
+      id="View3">
+      <property
+         name="activityId">BillOfQuantityIndex</property>
+      <property
+         name="page">/BillOfQuantityIndex.jspx</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>BillOfQuantityIndex&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">83.5</property>
+      <property
+         name="x">259.7256</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="WildcardControlFlowRule2"
+      to="View3">
+      <property
+         name="fromOutcome">*</property>
+      <property
+         name="sdm:polyPoints">R50,124.01758,84.149414,218.72559,83.149414,L50</property>
+   </ControlFlowCase>
+</SDM>

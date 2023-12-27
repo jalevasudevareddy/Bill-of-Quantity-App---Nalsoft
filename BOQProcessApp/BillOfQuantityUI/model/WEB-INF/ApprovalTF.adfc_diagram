@@ -1,0 +1,47 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">ApprovalDoc</property>
+      <property
+         name="x">635.3584</property>
+      <property
+         name="start">false</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ApprovalDoc&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="y">407.79883</property>
+      <property
+         name="page">/ApprovalDoc.jspx</property>
+      <property
+         name="exceptionHandler">false</property>
+   </View>
+   <MethodCall
+      id="MethodCall4">
+      <property
+         name="activityId">decodeUrl</property>
+      <property
+         name="x">187.5</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>decodeUrl&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="y">420.40137</property>
+      <property
+         name="exceptionHandler">false</property>
+   </MethodCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="MethodCall4"
+      to="View2">
+      <property
+         name="fromOutcome">decodeUrl</property>
+      <property
+         name="sdm:polyPoints">R50,228.5,420.40137,594.3584,407.44824,L50</property>
+   </ControlFlowCase>
+</SDM>

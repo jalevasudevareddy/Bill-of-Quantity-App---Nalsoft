@@ -1,0 +1,315 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Progress Search" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true"
+                value="#{bindings.ProgressDetailsSearchQuery.queryDescriptor}"
+                model="#{bindings.ProgressDetailsSearchQuery.queryModel}"
+                queryListener="#{bindings.ProgressDetailsSearchQuery.processQuery}"
+                queryOperationListener="#{bindings.ProgressDetailsSearchQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1"/>
+      <f:facet name="toolbar">
+   
+      </f:facet>
+    </af:panelHeader>
+    <af:panelSplitter id="ps1" orientation="vertical" dimensionsFrom="children"
+                      splitterPosition="300">
+      <f:facet name="first">
+        <af:panelGroupLayout layout="scroll"
+                             xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+                             id="pgl3">
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t1">
+                <af:commandButton text="Create" id="cb2"
+                                  actionListener="#{backingBeanScope.ProgressDetailsBean.createHeaderRow}"/>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.ProgressDetailsHdrVO1.collectionModel}"
+                      var="row"
+                      rows="#{bindings.ProgressDetailsHdrVO1.rangeSize}"
+                      emptyText="#{bindings.ProgressDetailsHdrVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.ProgressDetailsHdrVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      filterModel="#{bindings.ProgressDetailsSearchQuery.queryDescriptor}"
+                      queryListener="#{bindings.ProgressDetailsSearchQuery.processQuery}"
+                      varStatus="vs" styleClass="AFStretchWidth" columnStretching="multiple"
+                      binding="#{backingBeanScope.ProgressDetailsBean.searchTable}"
+                      selectedRowKeys="#{bindings.ProgressDetailsHdrVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.ProgressDetailsHdrVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="resId1">
+                 <af:column rowHeader="true" width="5" id="r1" headerText=" ">
+                    <af:outputText value=" " id="ol1"/>
+                 </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.BuName.name}"
+                         filterable="true" sortable="true" width="20%" 
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.BuName.label}"
+                         id="resId1c1">
+                <af:outputText value="#{row.BuName}" id="ot2"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.ProjectNumber.name}"
+                         filterable="true" sortable="true" width="10%" 
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.ProjectNumber.label}"
+                         id="resId1c2">
+                <af:outputText value="#{row.ProjectNumber}" id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.ProjectName.name}"
+                         filterable="true" sortable="true" width="20%" 
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.ProjectName.label}"
+                         id="resId1c3">
+                <af:outputText value="#{row.ProjectName}" id="ot6"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.ApprovedBy.name}"
+                         filterable="true" sortable="true" width="10%" 
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.ApprovedBy.label}"
+                         id="resId1c4">
+                <af:outputText value="#{row.ApprovedBy}" id="ot5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.ApprovedDate.name}"
+                         filterable="true" sortable="true" width="10%" 
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.ApprovedDate.label}"
+                         id="resId1c5">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.ApprovedDate}"
+                                id="id1"/>
+                </f:facet>
+                <af:outputText value="#{row.ApprovedDate}" id="ot3">
+                  <af:convertDateTime pattern="#{bindings.ProgressDetailsHdrVO1.hints.ApprovedDate.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.AsOnDate.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.AsOnDate.label}"
+                         id="resId1c6">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.AsOnDate}" id="id2"/>
+                </f:facet>
+                <af:outputText value="#{row.AsOnDate}" id="ot7">
+                  <af:convertDateTime pattern="#{bindings.ProgressDetailsHdrVO1.hints.AsOnDate.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.Status.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.Status.label}"
+                         id="resId1c7">
+                <af:outputText value="#{row.Status}" id="ot8"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.ProgressDetailsHdrVO1.hints.CreationDate.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.ProgressDetailsHdrVO1.hints.CreationDate.label}"
+                         id="resId1c8">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.CreationDate}"
+                                id="id3"/>
+                </f:facet>
+                <af:outputText value="#{row.CreationDate}" id="ot4">
+                  <af:convertDateTime pattern="#{bindings.ProgressDetailsHdrVO1.hints.CreationDate.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+          <af:popup id="p1" contentDelivery="lazyUncached"
+                    popupCanceledListener="#{backingBeanScope.ProgressDetailsBean.cancelPopup}"
+                    binding="#{backingBeanScope.ProgressDetailsBean.createPopup}">
+            <af:dialog id="d1" title="Create New Document" resize="off"
+                       type="none" stretchChildren="none">
+              <af:panelFormLayout id="pfl1">
+                <af:inputComboboxListOfValues id="transBuNameId"
+                                              autoSubmit="true"
+                                              popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                              value="#{bindings.TransBuName.inputValue}"
+                                              label="#{bindings.TransBuName.hints.label}"
+                                              valueChangeListener="#{backingBeanScope.ProgressDetailsBean.buChange}"
+                                              model="#{bindings.TransBuName.listOfValuesModel}"
+                                              required="true"
+                                              columns="#{bindings.TransBuName.hints.displayWidth}"
+                                              shortDesc="#{bindings.TransBuName.hints.tooltip}">
+                  <f:validator binding="#{bindings.TransBuName.validator}"/>
+                </af:inputComboboxListOfValues>
+                <af:inputComboboxListOfValues id="transProjectNumber1Id"
+                                              autoSubmit="true"
+                                              popupTitle="Search and Select: #{bindings.TransProjectNumber1.hints.label}"
+                                              value="#{bindings.TransProjectNumber1.inputValue}"
+                                              label="#{bindings.TransProjectNumber1.hints.label}"
+                                              binding="#{backingBeanScope.ProgressDetailsBean.prjNumber}"
+                                              model="#{bindings.TransProjectNumber1.listOfValuesModel}"
+                                              required="true"
+                                              columns="#{bindings.TransProjectNumber1.hints.displayWidth}"
+                                              shortDesc="#{bindings.TransProjectNumber1.hints.tooltip}">
+                  <f:validator binding="#{bindings.TransProjectNumber1.validator}"/>
+                </af:inputComboboxListOfValues>
+                <af:panelLabelAndMessage label="#{bindings.TransProjectName.hints.label}"
+                                         id="plam1">
+                  <af:outputText value="#{bindings.TransProjectName.inputValue}"
+                                 partialTriggers="transProjectNumber1Id"
+                                 id="ot9"/>
+                </af:panelLabelAndMessage>
+                <af:inputDate value="#{bindings.AsOnDate.inputValue}" autoSubmit="true" 
+                              label="#{bindings.AsOnDate.hints.label}"
+                              binding="#{backingBeanScope.ProgressDetailsBean.asOnDateBind}"
+                              valueChangeListener="#{backingBeanScope.ProgressDetailsBean.dateChange}"
+                              required="true"
+                              shortDesc="#{bindings.AsOnDate.hints.tooltip}"
+                              id="id4">
+                  <f:validator binding="#{bindings.AsOnDate.validator}"/>
+                  <af:convertDateTime pattern="#{bindings.AsOnDate.format}"/>
+                </af:inputDate>
+              </af:panelFormLayout>
+              <f:facet name="buttonBar">
+                <af:group id="g1">
+                  <af:commandButton actionListener="#{backingBeanScope.ProgressDetailsBean.createDocument}"
+                                    text="Create" id="crCb"
+                                    partialSubmit="true"/>
+                  <af:spacer width="5" id="s4"/>
+                  <af:commandButton text="Cancel" id="canCb" rendered="false"
+                                    actionListener="#{backingBeanScope.ProgressDetailsBean.cancelDoc}"
+                                    immediate="true" partialSubmit="true"/>
+                </af:group>
+              </f:facet>
+            </af:dialog>
+          </af:popup>
+        </af:panelGroupLayout>
+      </f:facet>
+      <f:facet name="second">
+        <af:panelGroupLayout id="pgl4" layout="scroll">
+        <af:spacer height="20" />
+          <af:panelHeader text="Progress Percentage" id="ph2" styleClass="AFStretchWidth"
+                          partialTriggers="pc1:resId1">
+            <f:facet name="context"/>
+            <f:facet name="menuBar"/>
+            <f:facet name="toolbar">
+            <af:toolbar id="t3">
+           <af:commandButton text="Save" id="cb3"
+                          actionListener="#{backingBeanScope.ProgressDetailsBean.saveProgress}"/>
+           <af:commandButton text="Save and Close" id="cb4" rendered="false" 
+                          actionListener="#{backingBeanScope.ProgressDetailsBean.saveProgress}"/>
+          <af:commandButton text="Cancel" id="cb5"  actionListener="#{backingBeanScope.ProgressDetailsBean.cancelProgress}"
+                          immediate="true"/>
+          <af:commandButton text="Submit" id="cb7" rendered="false"/>
+          </af:toolbar>
+          </f:facet>
+            <f:facet name="legend">
+              <af:panelGroupLayout id="pgl2">
+                <af:panelFormLayout id="pfl2" maxColumns="2" rows="2"
+                                    fieldWidth="70%" labelWidth="30%">
+                  <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                           id="plam8">
+                    <af:outputText value="#{bindings.BuName.inputValue}"
+                                   id="ot14"/>
+                  </af:panelLabelAndMessage>
+                   <af:spacer height="5" />
+                  <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                                           id="plam3">
+                    <af:outputText value="#{bindings.ProjectNumber.inputValue}"
+                                   id="ot12"/>
+                  </af:panelLabelAndMessage>
+                   <af:spacer height="5" />
+                  <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}"
+                                           id="plam5">
+                    <af:outputText value="#{bindings.ProjectName.inputValue}"
+                                   id="ot15"/>
+                  </af:panelLabelAndMessage>
+                  
+                  <af:panelLabelAndMessage label="#{bindings.AsOnDate.hints.label}"
+                                           id="plam2">
+                    <af:outputText value="#{bindings.AsOnDate.inputValue}"
+                                   id="ot10">
+                      <af:convertDateTime pattern="#{bindings.AsOnDate.format}"/>
+                    </af:outputText>
+                  </af:panelLabelAndMessage>
+                   <af:spacer height="5" />
+                  <af:panelLabelAndMessage label="#{bindings.Status.hints.label}"
+                                           id="plam4">
+                    <af:outputText value="#{bindings.Status.inputValue}"
+                                   id="ot13"/>
+                  </af:panelLabelAndMessage>
+                   <af:spacer height="5" />
+                  <af:panelLabelAndMessage label="#{bindings.ApprovedDate.hints.label}"
+                                           id="plam7">
+                    <af:outputText value="#{bindings.ApprovedDate.inputValue}"
+                                   id="ot16">
+                      <af:convertDateTime pattern="#{bindings.ApprovedDate.format}"/>
+                    </af:outputText>
+                  </af:panelLabelAndMessage>
+                </af:panelFormLayout>
+                 <af:spacer height="20" />
+                <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+                  <f:facet name="menus"/>
+                  <f:facet name="toolbar">
+                    <af:toolbar id="t4">
+                      <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                        text="Add"
+                                        rendered="#{bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}"
+                                        id="cb1"/>
+                      <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                        text="Delete" immediate="true" 
+                                        rendered="#{bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}"
+                                        id="cb6"/>
+                    </af:toolbar>
+                  </f:facet>
+                  <f:facet name="statusbar"/>
+                  <af:table value="#{bindings.ProgressDetailsLinesVO1.collectionModel}"
+                            var="row"
+                            rows="#{bindings.ProgressDetailsLinesVO1.rangeSize}"
+                            emptyText="#{bindings.ProgressDetailsLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            fetchSize="#{bindings.ProgressDetailsLinesVO1.rangeSize}"
+                            rowBandingInterval="0" styleClass="AFStretchWidth"
+                            filterModel="#{bindings.ProgressDetailsLinesVO1Query.queryDescriptor}"
+                            queryListener="#{bindings.ProgressDetailsLinesVO1Query.processQuery}"
+                            varStatus="vs"
+                            selectedRowKeys="#{bindings.ProgressDetailsLinesVO1.collectionModel.selectedRow}"
+                            selectionListener="#{bindings.ProgressDetailsLinesVO1.collectionModel.makeCurrent}"
+                            rowSelection="single" id="t2"
+                            partialTriggers="::cb1 ::cb6">
+                    <af:column rowHeader="true" width="5" id="r11"
+                               headerText=" ">
+                      <af:outputText value=" " id="ol11"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProgressDetailsLinesVO1.hints.TransActivityCode.name}"
+                               filterable="true" sortable="true"  showRequired="true" width="200"
+                               headerText="#{bindings.ProgressDetailsLinesVO1.hints.TransActivityCode.label}"
+                               id="c2">
+                      <af:inputComboboxListOfValues id="transActivityCodeId"
+                                                    autoSubmit="true"
+                                                    popupTitle="Search and Select: #{bindings.ProgressDetailsLinesVO1.hints.TransActivityCode.label}"
+                                                    value="#{row.bindings.TransActivityCode.inputValue}"
+                                                    model="#{row.bindings.TransActivityCode.listOfValuesModel}"
+                                                    rendered="#{row.row.entities[0].entityState==0}"
+                                                    required="true"
+                                                    columns="#{bindings.ProgressDetailsLinesVO1.hints.TransActivityCode.displayWidth}"
+                                                    shortDesc="#{bindings.ProgressDetailsLinesVO1.hints.TransActivityCode.tooltip}">
+                        <f:validator binding="#{row.bindings.TransActivityCode.validator}"/>
+                      </af:inputComboboxListOfValues>
+                      <af:outputText value="#{row.ActivityCode}" id="ot11"
+                                     rendered="#{row.row.entities[0].entityState!=0}"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.name}"
+                               filterable="true" sortable="true" showRequired="true"  width="200" align="right"
+                               headerText="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.label}"
+                               id="c1">
+                      <af:inputText value="#{row.bindings.ProgressPercent.inputValue}" autoSubmit="true" 
+                                    label="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.label}"
+                                    required="true"
+                                    readOnly="#{bindings.Status.inputValue!='Draft' and bindings.Status.inputValue!='Rejected'}"
+                                    columns="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.displayWidth}"
+                                    maximumLength="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.precision}"
+                                    shortDesc="#{bindings.ProgressDetailsLinesVO1.hints.ProgressPercent.tooltip}"
+                                    id="it1">
+                        <f:validator binding="#{row.bindings.ProgressPercent.validator}"/>
+                      </af:inputText>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </af:panelGroupLayout>
+            </f:facet>
+            <f:facet name="info"/>
+          </af:panelHeader>
+        </af:panelGroupLayout>
+      </f:facet>
+    </af:panelSplitter>
+  </af:panelGroupLayout>
+</jsp:root>

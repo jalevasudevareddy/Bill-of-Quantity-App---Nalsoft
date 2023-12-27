@@ -1,0 +1,212 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" layout="scroll" >
+    <af:panelHeader text="Material At Site Details" id="ph1"
+                    binding="#{backingBeanScope.MaterialAtSiteDetailsBean.panelHdrBind}">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar">
+      <af:toolbar id="t3">
+        <af:commandButton text="Save" id="cb3" rendered="#{bindings.Status.inputValue!='Completed'}"
+                          actionListener="#{backingBeanScope.MaterialAtSiteDetailsBean.saveMaterial}"/>
+        <af:commandButton text="Save and Close" id="cb4" action="Done" rendered="#{bindings.Status.inputValue!='Completed'}"
+                          actionListener="#{backingBeanScope.MaterialAtSiteDetailsBean.saveMaterial}"/>
+        <af:commandButton text="Cancel" id="cb5" action="Done" actionListener="#{backingBeanScope.MaterialAtSiteDetailsBean.cancelMaterial}"
+                          immediate="true"/>
+        <af:commandButton text="Submit" id="cb6" rendered="#{bindings.Status.inputValue!='Completed'}"
+                          actionListener="#{backingBeanScope.MaterialAtSiteDetailsBean.submitDoc}"/>
+        <af:commandButton text="Revise" id="cb7" rendered="#{bindings.Status.inputValue=='Completed' and (bindings.Revision.inputValue==bindings.TransMaxRevision.inputValue) and !(bindings.TransNextPeriod.inputValue=='Y')}"
+                          actionListener="#{backingBeanScope.MaterialAtSiteDetailsBean.reviseDoc}"/>
+        </af:toolbar>
+     </f:facet>
+      <f:facet name="legend">
+        <af:panelGroupLayout id="pgl1">
+        <af:spacer height="20" />
+          <af:panelFormLayout id="pfl1" rows="2" maxColumns="2" labelWidth="30%"
+                              fieldWidth="70%">
+            <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                     id="plam8">
+              <af:outputText value="#{bindings.BuName.inputValue}" id="ot8"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                                     id="plam9">
+              <af:outputText value="#{bindings.ProjectNumber.inputValue}"
+                             id="ot9"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}"
+                                     id="plam10">
+              <af:outputText value="#{bindings.ProjectName.inputValue}"
+                             id="ot10"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.PeriodOfMeasure.hints.label}"
+                                     id="plam5">
+              <af:outputText value="#{bindings.PeriodOfMeasure.inputValue}"
+                             id="ot2"/>
+            </af:panelLabelAndMessage>
+             <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.Status.hints.label}"
+                                     id="plam3">
+              <af:outputText value="#{bindings.Status.inputValue}" id="ot4"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.Revision.hints.label}"
+                                     id="plam6">
+              <af:outputText value="#{bindings.Revision.inputValue}" id="ot7"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" />
+            <af:panelLabelAndMessage label="#{bindings.ApprovedBy.hints.label}"
+                                     id="plam7" rendered="false">
+              <af:outputText value="#{bindings.ApprovedBy.inputValue}"
+                             id="ot1"/>
+            </af:panelLabelAndMessage>
+            <af:spacer height="5" rendered="false"/>
+            <af:panelLabelAndMessage label="#{bindings.ApprovedDate.hints.label}"
+                                     id="plam1" rendered="false">
+              <af:outputText value="#{bindings.ApprovedDate.inputValue}"
+                             id="ot3">
+                <af:convertDateTime pattern="#{bindings.ApprovedDate.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+          </af:panelFormLayout>
+          <af:spacer height="20" />
+          <af:panelCollection id="pc1"  styleClass="AFStretchWidth" >
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+                <af:toolbar id="t2">
+                <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                  text="Add" rendered="#{bindings.Status.inputValue!='Completed'}"
+                                  id="cb1"/>
+                <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                  text="Delete" immediate="true" rendered="#{bindings.Status.inputValue!='Completed'}"
+                                  id="cb2"/>
+                </af:toolbar>
+              </f:facet>
+              
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.MaterialAtSiteLinesVO1.collectionModel}"
+                      var="row"
+                      rows="#{bindings.MaterialAtSiteLinesVO1.rangeSize}"
+                      emptyText="#{bindings.MaterialAtSiteLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.MaterialAtSiteLinesVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      filterModel="#{bindings.MaterialAtSiteLinesVO1Query.queryDescriptor}"
+                      queryListener="#{bindings.MaterialAtSiteLinesVO1Query.processQuery}"
+                      varStatus="vs" styleClass="AFStretchWidth" 
+                      selectedRowKeys="#{bindings.MaterialAtSiteLinesVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.MaterialAtSiteLinesVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t1" columnStretching="multiple"
+                      partialTriggers="::cb1 ::cb2 :::cb3">
+              <af:column rowHeader="true" width="5" id="r1" headerText=" ">
+                    <af:outputText value=" " id="ol1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransActivityCode.name}"
+                         filterable="true" sortable="true" width="10%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransActivityCode.label}"
+                         id="c6">
+                <af:inputComboboxListOfValues id="transActivityCodeId" autoSubmit="true" 
+                                              popupTitle="Search and Select: #{bindings.MaterialAtSiteLinesVO1.hints.TransActivityCode.label}"
+                                              value="#{row.bindings.TransActivityCode.inputValue}"
+                                              model="#{row.bindings.TransActivityCode.listOfValuesModel}"
+                                              rendered="#{row.row.entities[0].entityState==0}"
+                                              required="true"
+                                              valueChangeListener="#{backingBeanScope.MaterialAtSiteDetailsBean.activityChange}"
+                                              columns="#{bindings.MaterialAtSiteLinesVO1.hints.TransActivityCode.displayWidth}"
+                                              shortDesc="#{bindings.MaterialAtSiteLinesVO1.hints.TransActivityCode.tooltip}">
+                  <f:validator binding="#{row.bindings.TransActivityCode.validator}"/>
+                </af:inputComboboxListOfValues>
+                <af:outputText value="#{row.ActivityCode}" id="ot14"  rendered="#{row.row.entities[0].entityState!=0}"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceType.name}"
+                         filterable="true" sortable="true"  width="10%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceType.label}"
+                         id="c5">
+                <af:outputText value="#{row.TransResourceType}" id="ot12" partialTriggers="transResourceItemId"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceGroup.name}"
+                         filterable="true" sortable="true"  width="10%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceGroup.label}"
+                         id="c7">
+                <af:outputText value="#{row.TransResourceGroup}" id="ot13" partialTriggers="transResourceItemId" />
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceSubGroup.name}"
+                         filterable="true" sortable="true"  width="10%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceSubGroup.label}"
+                         id="c1">
+                <af:outputText value="#{row.TransResourceSubGroup}" id="ot6" partialTriggers="transResourceItemId"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceItem.name}"
+                         filterable="true" sortable="true"  width="10%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceItem.label}"
+                         id="c8">
+                <af:inputComboboxListOfValues id="transResourceItemId" autoSubmit="true" 
+                                              popupTitle="Search and Select: #{bindings.MaterialAtSiteLinesVO1.hints.TransResourceItem.label}"
+                                              value="#{row.bindings.TransResourceItem.inputValue}"
+                                              model="#{row.bindings.TransResourceItem.listOfValuesModel}"
+                                              rendered="#{row.row.entities[0].entityState==0}"
+                                              required="true"
+                                              binding="#{backingBeanScope.MaterialAtSiteDetailsBean.resourceBind}"
+                                              columns="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceItem.displayWidth}"
+                                              shortDesc="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceItem.tooltip}">
+                  <f:validator binding="#{row.bindings.TransResourceItem.validator}"/>
+                </af:inputComboboxListOfValues>
+                <af:outputText value="#{row.ItemCode}" id="ot15"  />
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceDesc.name}"
+                         filterable="true" sortable="true"  width="20%"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceDesc.label}"
+                         id="c3">
+                <af:outputText value="#{row.TransResourceDesc}" id="ot5" partialTriggers="transResourceItemId"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceRate.name}"
+                         filterable="true" sortable="true"  width="10%" align="right"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransResourceRate.label}"
+                         id="c4">
+                <af:outputText value="#{row.TransResourceRate}" id="ot11" partialTriggers="transResourceItemId"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.name}"
+                         filterable="true" sortable="true"  width="10%" align="right"
+                         headerText="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.label}"
+                         id="c2">
+                <af:inputText value="#{row.bindings.Quantity.inputValue}" autoSubmit="true" 
+                              label="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.label}"
+                              required="true"  
+                              readOnly="#{bindings.Status.inputValue=='Completed'}"
+                              columns="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.displayWidth}"
+                              maximumLength="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.precision}"
+                              shortDesc="#{bindings.MaterialAtSiteLinesVO1.hints.Quantity.tooltip}"
+                              id="it1">
+                  <f:validator binding="#{row.bindings.Quantity.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.MaterialAtSiteLinesVO1.hints.TransTotalValue.label}"
+                         id="c9"  width="10%" align="right">
+                <af:outputText value="#{row.TransTotalValue}" id="ot16" partialTriggers="it1" />
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+          <af:popup id="p1"
+                    binding="#{backingBeanScope.MaterialAtSiteDetailsBean.submitPopup}">
+            <af:dialog id="d1" title="Confirm Submit" type="okCancel"
+                       dialogListener="#{backingBeanScope.MaterialAtSiteDetailsBean.submitDialog}">
+              <af:outputText value="Do you want to continue to submit the Document" id="ot17"/>
+            </af:dialog>
+          </af:popup>
+          <af:popup id="p2"
+                    binding="#{backingBeanScope.MaterialAtSiteDetailsBean.revisePopup}">
+            <af:dialog id="d2" title="Confirm Revision" type="okCancel"
+                       dialogListener="#{backingBeanScope.MaterialAtSiteDetailsBean.reviseDialog}">
+              <af:outputText value="Do you want to continue to revise the Document"
+                             id="ot18"/>
+            </af:dialog>
+          </af:popup>
+        </af:panelGroupLayout>
+      </f:facet>
+      <f:facet name="info"/>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="WorkDoneSearchTF">
+    <default-activity id="__2">WorkDoneSearch</default-activity>
+    <transaction id="__6">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__4">
+      <managed-bean-name id="__3">WorkDoneDetailsBean</managed-bean-name>
+      <managed-bean-class id="__1">bean.WorkDoneDetailsBean</managed-bean-class>
+      <managed-bean-scope id="__5">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="WorkDoneSearch">
+      <page>/pagefragments/WorkDoneSearch.jsff</page>
+    </view>
+    <task-flow-call id="WorkDoneQtyTF">
+      <task-flow-reference>
+        <document>/WEB-INF/WorkDoneQtyTF.xml</document>
+        <id>WorkDoneQtyTF</id>
+      </task-flow-reference>
+      <input-parameter id="__7">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <control-flow-rule id="__8">
+      <from-activity-id id="__9">WorkDoneSearch</from-activity-id>
+      <control-flow-case id="__11">
+        <from-outcome id="__12">view</from-outcome>
+        <to-activity-id id="__10">WorkDoneQtyTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__13">
+      <from-activity-id id="__14">WorkDoneQtyTF</from-activity-id>
+      <control-flow-case id="__15">
+        <from-outcome id="__16">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__17">WorkDoneSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

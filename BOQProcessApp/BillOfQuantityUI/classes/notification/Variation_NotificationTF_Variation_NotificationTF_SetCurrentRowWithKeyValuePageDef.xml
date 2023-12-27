@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73"
+                id="Variation_NotificationTF_Variation_NotificationTF_SetCurrentRowWithKeyValuePageDef"
+                Package="notification" SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator Binds="VariationOrderVO1" RangeSize="25"
+              DataControl="VariationOrderAMDataControl"
+              id="VariationOrderVO1Iterator"/>
+  </executables>
+  <bindings>
+    <action IterBinding="VariationOrderVO1Iterator"
+            id="setCurrentRowWithKeyValue" RequiresUpdateModel="false"
+            Action="setCurrentRowWithKeyValue">
+      <NamedData NDName="rowKey" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.String"/>
+    </action>
+  </bindings>
+</pageDefinition>

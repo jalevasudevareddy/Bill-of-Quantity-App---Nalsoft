@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="CertifiedQtyDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CertifiedQtyDetailsVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="CertifiedQtyDetailsVO1Iterator"/>
+    <iterator Binds="CertifiedQtyLinesVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="CertifiedQtyLinesVO1Iterator"/>
+    <searchRegion Binds="CertifiedQtyLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CertifiedQtyLinesVO1Query"/>
+    <iterator Binds="CertifiedLinesPopulateVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="CertifiedLinesPopulateVO1Iterator"/>
+    <searchRegion Binds="CertifiedLinesPopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CertifiedLinesPopulateVO1Query"/>
+    <iterator Binds="AttachmentsVO3" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="AttachmentsVO3Iterator"/>
+    <searchRegion Binds="AttachmentsVO3Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="AttachmentsVO3Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="PeriodOfMeasure">
+      <AttrNames>
+        <Item Value="PeriodOfMeasure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedDocumentNum">
+      <AttrNames>
+        <Item Value="CertifiedDocumentNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedDocumentDate">
+      <AttrNames>
+        <Item Value="CertifiedDocumentDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator" id="CertifiedStatus">
+      <AttrNames>
+        <Item Value="CertifiedStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedApprovedDate">
+      <AttrNames>
+        <Item Value="CertifiedApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CertifiedQtyLinesVO1Iterator" id="CertifiedQtyLinesVO1">
+      <nodeDefinition DefName="model.view.CertifiedQtyLinesVO"
+                      Name="CertifiedQtyLinesVO10">
+        <AttrNames>
+          <Item Value="Uom"/>
+          <Item Value="CertifiedCummulativeQty"/>
+          <Item Value="TransAmount"/>
+          <Item Value="TransCertifiedPeriod"/>
+          <Item Value="TransRemainingQty"/>
+          <Item Value="TransGrandTotal"/>
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="InvoiceCummulativeQty"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqHeaderId"/>
+          <Item Value="BoqHeaderId1"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="BoqLineId"/>
+          <Item Value="BoqLineId1"/>
+          <Item Value="CertifiedHeaderId"/>
+          <Item Value="CertifiedLineId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="Description"/>
+          <Item Value="FinalQty"/>
+          <Item Value="Item"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="PageItem"/>
+          <Item Value="PreviousCummulativeQty"/>
+          <Item Value="RowID"/>
+          <Item Value="SellingRate"/>
+          <Item Value="ActualCertifiedQty"/>
+          <Item Value="CurrentBoqRate"/>
+          <Item Value="ErrorMsg"/>
+          <Item Value="PreviousBoqRate"/>
+          <Item Value="Remarks"/>
+          <Item Value="TransActualCertifiedAmt"/>
+          <Item Value="TransCumulativeCertAmnt"/>
+          <Item Value="TransCurrentCertAmount"/>
+          <Item Value="CertCummQtyPer"/>
+          <Item Value="ActCertQtyPer"/>
+          <Item Value="TransPreviousAmount"/>
+          <Item Value="TransPreviousAmountTotal"/>
+          <Item Value="TransCertifiedQtyPercnt"/>
+          <Item Value="TransLineType"/>
+          <Item Value="PriceCode"/>
+          <Item Value="TransCurrentQty"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="SellingAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransGrandTotal">
+      <AttrNames>
+        <Item Value="TransGrandTotal"/>
+      </AttrNames>
+    </attributeValues>
+     <tree IterBinding="CertifiedLinesPopulateVO1Iterator"
+          id="CertifiedLinesPopulateVO1">
+      <nodeDefinition DefName="model.searchview.CertifiedLinesPopulateVO"
+                      Name="CertifiedLinesPopulateVO10">
+        <AttrNames>
+          <Item Value="Uom"/>
+          <Item Value="TransFlag"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqLevel"/>
+
+          <Item Value="CertifiedQty"/>
+          <Item Value="Description"/>
+          <Item Value="FinalQty"/>
+          <Item Value="HeaderId"/>
+          <Item Value="InvoiceCummulativeQty"/>
+          <Item Value="Item"/>
+          <Item Value="LineId"/>
+          <Item Value="PageItem"/>
+
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="LineType"/>
+          <Item Value="PriceCode"/>
+          <Item Value="CurrentRate"/>
+          <Item Value="SellingAmount"/>
+          <Item Value="BillPageItem"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="CertifiedLinesPopulateVO1Iterator" id="TransFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="executePopulateCertifiedLinesVO"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executePopulateCertifiedLinesVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="executeCertifiedLinesQuery"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeCertifiedLinesQuery" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedApprovedBy">
+      <AttrNames>
+        <Item Value="CertifiedApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedHeaderId">
+      <AttrNames>
+        <Item Value="CertifiedHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="ReviseCertifiedDoc"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ReviseCertifiedDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.ReviseCertifiedDoc_BillingDetailsAMDataControl_dataProvider_ReviseCertifiedDoc_result"/>
+    <methodAction id="callpkgForAMEProcessSubmit2"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMEProcessSubmit2"
+                  IsViewObjectMethod="false"/>
+    <action IterBinding="CertifiedQtyLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="validateCertifiedLineQuantities"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertifiedLineQuantities" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateLineQuantities_BillingDetailsAMDataControl_dataProvider_validateCertifiedLineQuantities_result"/>
+    <methodAction id="validateCertifiedLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertifiedLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertifiedLines_BillingDetailsAMDataControl_dataProvider_validateCertifiedLines_result"/>
+  
+    <methodAction id="downloadCertifiedDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="downloadCertifiedDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.downloadCertifiedDetails_BillingDetailsAMDataControl_dataProvider_downloadCertifiedDetails_result"/>
+    <methodAction id="uploadCertifiedXLFile"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="uploadCertifiedXLFile" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.uploadCertifiedXLFile_BillingDetailsAMDataControl_dataProvider_uploadCertifiedXLFile_result">
+      <NamedData NDName="uploadedFile"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <methodAction id="validateCertifiedUploadDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertifiedUploadDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertifiedUploadDetails_BillingDetailsAMDataControl_dataProvider_validateCertifiedUploadDetails_result"/>
+    <methodAction id="cancelCertifiedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelCertifiedDocument"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="cancelCertifiedRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelCertifiedRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.cancelCertifiedRow_BillingDetailsAMDataControl_dataProvider_cancelCertifiedRow_result"/>
+    <methodAction id="deleteCertifiedRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteCertifiedRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.deleteCertifiedRow_BillingDetailsAMDataControl_dataProvider_deleteCertifiedRow_result"/>
+    <methodAction id="markAllCertLinesAs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="markAllCertLinesAs" IsViewObjectMethod="false">
+      <NamedData NDName="markAs" NDValue="#{pageFlowScope.markAs}"
+                 NDType="java.lang.Boolean"/>
+    </methodAction>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransIsLatestDoc">
+      <AttrNames>
+        <Item Value="TransIsLatestDoc"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelCertDocRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelCertDocRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.cancelCertDocRow_BillingDetailsAMDataControl_dataProvider_cancelCertDocRow_result"/>
+    <methodAction id="deleteCertDocRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteCertDocRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.deleteCertDocRow_BillingDetailsAMDataControl_dataProvider_deleteCertDocRow_result"/>
+    <methodAction id="populateCertifiedLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateCertifiedLines"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="ExtendedFlag">
+      <AttrNames>
+        <Item Value="ExtendedFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransIsLatestDoc1">
+      <AttrNames>
+        <Item Value="TransIsLatestDoc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransCumltTotal">
+      <AttrNames>
+        <Item Value="TransCumltTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransCurrentTotal">
+      <AttrNames>
+        <Item Value="TransCurrentTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransActualTotal">
+      <AttrNames>
+        <Item Value="TransActualTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransInvoiceDocNumWithVersion">
+      <AttrNames>
+        <Item Value="TransInvoiceDocNumWithVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="validateCertifiedLines1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertifiedLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertifiedLines1_BillingDetailsAMDataControl_dataProvider_validateCertifiedLines_result"/>
+    <methodAction id="validateCertLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLines_BillingDetailsAMDataControl_dataProvider_validateCertLines_result"/>
+    <methodAction id="ReviseCertifiedDoc1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ReviseCertifiedDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.ReviseCertifiedDoc1_BillingDetailsAMDataControl_dataProvider_ReviseCertifiedDoc_result"/>
+    <methodAction id="archivePrevCertDoc"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="archivePrevCertDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.archivePrevCertDoc_BillingDetailsAMDataControl_dataProvider_archivePrevCertDoc_result"/>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CurrentFlag">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="withdrawCertDocFromApproval"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="withdrawCertDocFromApproval"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.withdrawCertDocFromApproval_BillingDetailsAMDataControl_dataProvider_withdrawCertDocFromApproval_result">
+      <NamedData NDName="remarks" NDValue="#{pageFlowScope.remarks}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="callpkgForAMECertBOQDocSubmit"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMECertBOQDocSubmit"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.callpkgForAMECertBOQDocSubmit_BillingDetailsAMDataControl_dataProvider_callpkgForAMECertBOQDocSubmit_result"/>
+    <methodAction id="updateDocStatusAndCurrFlag"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateDocStatusAndCurrFlag"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.updateDocStatusAndCurrFlag_CommonUtilsAMDataControl_dataProvider_updateDocStatusAndCurrFlag_result">
+      <NamedData NDName="docType" NDValue="#{pageFlowScope.docType}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docHdrId" NDValue="#{pageFlowScope.docHdrId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+       <methodAction id="callpkgForAMEProcess"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="callpkgForAMEProcess"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.callpkgForAMEProcess_ApprovalAMDataControl_dataProvider_callpkgForAMEProcess_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="isEmployeeAFinalApprover"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isEmployeeAFinalApprover"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isEmployeeAFinalApprover_ApprovalAMDataControl_dataProvider_isEmployeeAFinalApprover_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="currEmpId" NDValue="#{pageFlowScope.currEmpId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="isDocEnabledforCurrentUser"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isDocEnabledforCurrentUser"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isDocEnabledforCurrentUser_ApprovalAMDataControl_dataProvider_isDocEnabledforCurrentUser_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CertifiedHeaderId1">
+      <AttrNames>
+        <Item Value="CertifiedHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="IsPCExists">
+      <AttrNames>
+        <Item Value="IsPCExists"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="CertifiedQtyDetailsVO1Iterator" id="CurrentFlag1"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransContractValue">
+      <AttrNames>
+        <Item Value="TransContractValue"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calculateCertLineValues"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculateCertLineValues"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.calculateCertLineValues_BillingDetailsAMDataControl_dataProvider_calculateCertLineValues_result"/>
+    <methodAction id="validateCertLineActPercentage"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLineActPercentage"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLineActPercentage_BillingDetailsAMDataControl_dataProvider_validateCertLineActPercentage_result"/>
+    <methodAction id="validateCertLineQuantities"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLineQuantities"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLineQuantities_BillingDetailsAMDataControl_dataProvider_validateCertLineQuantities_result"/>
+    <methodAction id="validateCertLinePercentage"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLinePercentage"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLinePercentage_BillingDetailsAMDataControl_dataProvider_validateCertLinePercentage_result"/>
+    <methodAction id="validateCertLineQuantities1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLineQuantities"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLineQuantities1_BillingDetailsAMDataControl_dataProvider_validateCertLineQuantities_result"/>
+    <methodAction id="validateCertLineActQty"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertLineActQty" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertLineActQty_BillingDetailsAMDataControl_dataProvider_validateCertLineActQty_result"/>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransPreviousAmountTotal">
+      <AttrNames>
+        <Item Value="TransPreviousAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator" id="BillQty">
+      <AttrNames>
+        <Item Value="BillQty"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="PreviousCummulativeQty">
+      <AttrNames>
+        <Item Value="PreviousCummulativeQty"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransMainContractAmount">
+      <AttrNames>
+        <Item Value="TransMainContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransVariationRevenueAmount">
+      <AttrNames>
+        <Item Value="TransVariationRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransClaimsRevenueAmount">
+      <AttrNames>
+        <Item Value="TransClaimsRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="MaterialAtSite">
+      <AttrNames>
+        <Item Value="MaterialAtSite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="AdvanceReceived">
+      <AttrNames>
+        <Item Value="AdvanceReceived"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="AdvanceRecovered">
+      <AttrNames>
+        <Item Value="AdvanceRecovered"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="Retention">
+      <AttrNames>
+        <Item Value="Retention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="OtherPayments">
+      <AttrNames>
+        <Item Value="OtherPayments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator" id="FileName">
+      <AttrNames>
+        <Item Value="FileName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransAttachments">
+      <AttrNames>
+        <Item Value="TransAttachments"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="AttachmentsVO3Iterator" id="AttachmentsVO3">
+      <nodeDefinition DefName="model.view.AttachmentsVO" Name="AttachmentsVO30">
+        <AttrNames>
+          <Item Value="AttachmentId"/>
+          <Item Value="AttachmentFile"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="FileName"/>
+          <Item Value="FileType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AttachmentsVO3Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="AttachmentsVO3Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="saveAttachedFileCertification"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveAttachedFileCertification"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.saveAttachedFileCertification_BillingDetailsAMDataControl_dataProvider_saveAttachedFileCertification_result">
+      <NamedData NDName="attachedFile" NDValue="#{pageFlowScope.attachedFile}"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <methodAction id="CertifiedLinesDeleteAll"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="CertifiedLinesDeleteAll"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.CertifiedLinesDeleteAll_BillingDetailsAMDataControl_dataProvider_CertifiedLinesDeleteAll_result"/>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="InvoiceCummulativeQty">
+      <AttrNames>
+        <Item Value="InvoiceCummulativeQty"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="ValuationDate">
+      <AttrNames>
+        <Item Value="ValuationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="RetentionRelease">
+      <AttrNames>
+        <Item Value="RetentionRelease"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransMainSum">
+      <AttrNames>
+        <Item Value="TransMainSum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransVarSum">
+      <AttrNames>
+        <Item Value="TransVarSum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyLinesVO1Iterator"
+                     id="TransClaimsSum">
+      <AttrNames>
+        <Item Value="TransClaimsSum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CertifiedQtyDetailsVO1Iterator"
+                     id="TransNetSum">
+      <AttrNames>
+        <Item Value="TransNetSum"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calcualteCertifiedValues"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calcualteCertifiedValues"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.calcualteCertifiedValues_BillingDetailsAMDataControl_dataProvider_calcualteCertifiedValues_result"/>
+  </bindings>
+</pageDefinition>

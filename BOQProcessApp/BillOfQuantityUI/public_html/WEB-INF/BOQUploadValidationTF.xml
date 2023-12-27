@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="BOQUploadValidationTF">
+    <default-activity id="__2">routerApplication</default-activity>
+    <transaction id="__16">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__60">
+      <name id="__59">fromApplicationFlag</name>
+      <value>#{sessionScope.fromApplication}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__62">
+      <name id="__61">docTypeId</name>
+      <value>#{pageFlowScope.docTypeId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__63">
+      <name id="__64">docId</name>
+      <value>#{pageFlowScope.docId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__65">
+      <name id="__66">currEmpLevel</name>
+      <value>#{pageFlowScope.currEmpLevel}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__67">
+      <name id="__68">currEmpId</name>
+      <value>#{pageFlowScope.currEmpId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__70">
+      <name id="__69">apprvName</name>
+      <value>#{pageFlowScope.apprvName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__72">
+      <name id="__71">apprvCat</name>
+      <value>#{pageFlowScope.apprvCat}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__74">
+      <name id="__73">actionCode</name>
+      <value>#{pageFlowScope.actionCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__76">
+      <name id="__75">accessType</name>
+      <value>#{pageFlowScope.accessType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__77">
+      <name id="__78">docNum</name>
+      <value>#{pageFlowScope.docNum}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__46">
+      <name id="__45">workListId</name>
+      <value>#{pageFlowScope.workListId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__1">
+      <managed-bean-name id="__5">BoqUploadValidationBean</managed-bean-name>
+      <managed-bean-class id="__3">bean.BoqUploadValidationBean</managed-bean-class>
+      <managed-bean-scope id="__4">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__19">
+      <managed-bean-name id="__18">BoqUploadLinesBean</managed-bean-name>
+      <managed-bean-class id="__20">bean.BoquploadLinesBean</managed-bean-class>
+      <managed-bean-scope id="__17">backingBean</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean id="__36">
+      <managed-bean-name id="__34">NotificationBean</managed-bean-name>
+      <managed-bean-class id="__35">bean.notification.NotificationBean</managed-bean-class>
+      <managed-bean-scope id="__37">backingBean</managed-bean-scope>
+    </managed-bean>
+
+    <view id="BoqUploadHeaderSearch">
+      <page>/pagefragments/BoqUploadHeaderSearch.jsff</page>
+    </view>
+    <view id="BoqValidationLines">
+      <page>/pagefragments/BoqValidationLines.jsff</page>
+    </view>
+    <view id="UploadRemarks">
+      <page>/pagefragments/UploadRemarks.jsff</page>
+    </view>
+
+    <router id="routerApplication">
+    <case>
+        <expression>#{pageFlowScope.accessType=='Doc'}</expression>
+        <outcome id="__8">setCurrentRow</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='Method'}</expression>
+        <outcome id="__54">setMethod</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='SearchPage'}</expression>
+        <outcome id="__48">setSerachPage</outcome>
+      </case>
+      <default-outcome>setSerachPage</default-outcome>
+    </router>
+    <method-call id="SetCurrentRowWithKeyValue">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__38">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="SetCurrentRowWithKeyValue1">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__39">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="BoqValidationReject">
+      <page>/pagefragments/BoqValidationReject.jsff</page>
+    </view>
+    <task-flow-call id="ActionHistoryTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/ActionHistoryTF.xml</document>
+        <id>ActionHistoryTF</id>
+      </task-flow-reference>
+      <input-parameter id="__91">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__92">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <view id="rejectedBOQLines">
+      <page>/pagefragments/rejectedBOQLines.jsff</page>
+    </view>
+    <control-flow-rule id="__6">
+      <from-activity-id id="__7">BoqUploadHeaderSearch</from-activity-id>
+      <control-flow-case id="__99">
+        <from-outcome id="__10">BoqUploadLines</from-outcome>
+        <to-activity-id id="__9">BoqValidationLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">BoqValidationLines</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome id="__15">done</from-outcome>
+        <to-activity-id id="__13">BoqUploadHeaderSearch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__22">
+        <from-outcome id="__23">UploadRemarks</from-outcome>
+        <to-activity-id id="__21">UploadRemarks</to-activity-id>
+      </control-flow-case>
+
+      <control-flow-case id="__83">
+        <from-outcome id="__85">ActionHistory</from-outcome>
+        <to-activity-id id="__84">ActionHistoryTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__47">
+        <from-outcome id="__50">rejections</from-outcome>
+        <to-activity-id id="__49">rejectedBOQLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__24">
+      <from-activity-id id="__25">UploadRemarks</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome id="__28">done</from-outcome>
+        <to-activity-id id="__26">BoqValidationLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+
+    <control-flow-rule id="__29">
+      <from-activity-id id="__30">routerApplication</from-activity-id>
+      <control-flow-case id="__32">
+        <from-outcome id="__33">setSerachPage</from-outcome>
+        <to-activity-id id="__31">BoqUploadHeaderSearch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__52">
+        <from-outcome id="__51">setCurrentRow</from-outcome>
+        <to-activity-id id="__53">SetCurrentRowWithKeyValue</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__56">
+        <from-outcome id="__55">setMethod</from-outcome>
+        <to-activity-id id="__57">SetCurrentRowWithKeyValue1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__40">
+      <from-activity-id id="__41">SetCurrentRowWithKeyValue1</from-activity-id>
+      <control-flow-case id="__43">
+        <from-outcome id="__42">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__44">BoqValidationReject</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__58">
+      <from-activity-id id="__79">SetCurrentRowWithKeyValue</from-activity-id>
+      <control-flow-case id="__82">
+        <from-outcome id="__80">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__81">BoqValidationLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__86">
+      <from-activity-id id="__87">ActionHistoryTF</from-activity-id>
+      <control-flow-case id="__90">
+        <from-outcome id="__88">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__89">BoqValidationLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__93">
+      <from-activity-id id="__94">rejectedBOQLines</from-activity-id>
+      <control-flow-case id="__95">
+        <from-outcome id="__97">Back</from-outcome>
+        <to-activity-id id="__96">BoqValidationLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="TransPCHdrVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.transview.TransPCHdrVORowImpl"
+  ComponentClass="model.transview.TransPCHdrVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LookupVO1"
+    ViewObjectName="model.view.LookupVO">
+    <ViewCriteriaUsage
+      Name="PCDocTypeCriteria"
+      FullName="model.view.LookupVO.PCDocTypeCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_lookup_type">
+        <TransientExpression><![CDATA["PC_DOC_TYPE"]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="MaxProjectPCStartDateScrVO1"
+    ViewObjectName="model.searchview.MaxProjectPCStartDateScrVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PrjProjectsVO1"
+    ViewObjectName="model.masterview.PrjProjectsVO">
+    <ParameterMap>
+      <PIMap Variable="p_org_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectCertifiedDetailsScrVO1"
+    ViewObjectName="model.searchview.ProjectCertifiedDetailsScrVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_contract_id">
+        <TransientExpression><![CDATA[TransContractId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="AgreementMonthsVO1"
+    ViewObjectName="model.progview.AgreementMonthsVO">
+    <ViewCriteriaUsage
+      Name="AgreementMonthsVOCriteria"
+      FullName="model.progview.AgreementMonthsVO.AgreementMonthsVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_agr_startDate">
+        <TransientExpression><![CDATA[TransMaxStartDate]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_agr_endDate">
+        <TransientExpression><![CDATA[TransEndDate]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectSearchVO1"
+    ViewObjectName="model.searchview.ProjectSearchVO">
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ContractHeadersVO1"
+    ViewObjectName="model.searchview.ContractHeadersVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransBuName"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransBuName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransBuName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransBuId"/>
+      <Item Value="TransTaxFlag"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuName"/>
+      <Item Value="BuId"/>
+      <Item Value="TaxFlag"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="UserBUSearchVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="UserBUSearchVOCriteria"
+      FullName="model.masterview.UserBUSearchVO.UserBUSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransProjectNum"
+    ListVOName="ProjectSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransProjectNum_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransProjectNum"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransProjectId"/>
+      <Item Value="TransStartDate"/>
+      <Item Value="TransEndDate"/>
+      <Item Value="TransCustomerId"/>
+      <Item Value="TransAdvancePerct"/>
+      <Item Value="TransAdvanceRecryPerct"/>
+      <Item Value="TransRetentionPerct"/>
+      <Item Value="TransPaymenTerms"/>
+      <Item Value="TransBoqHeaderId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="StartDate"/>
+      <Item Value="EndDate"/>
+      <Item Value="CustomerId"/>
+      <Item Value="AdvancePrct"/>
+      <Item Value="AdvanceRecoveryPrct"/>
+      <Item Value="RetentionPrct"/>
+      <Item Value="PaymentTermName"/>
+      <Item Value="BoqHeaderId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectSearchVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransCertNum"
+    ListVOName="ProjectCertifiedDetailsScrVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransCertNum_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransCertNum"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransCertId"/>
+      <Item Value="TransMasterCertHdrId"/>
+      <Item Value="TransPeriod"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="CertifiedDocumentNum"/>
+      <Item Value="CertifiedHeaderId"/>
+      <Item Value="MasterCertHeaderId"/>
+      <Item Value="PeriodOfMeasure"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="CertifiedDocumentNum"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectCertifiedDetailsScrVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectCertifiedDetailsScrVOCriteria"
+      FullName="model.searchview.ProjectCertifiedDetailsScrVO.ProjectCertifiedDetailsScrVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransPeriod"
+    ListVOName="AgreementMonthsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransPeriod_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransPeriod"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="AgreementMonthsVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="AgreementMonthsVOCriteria"
+      FullName="model.progview.AgreementMonthsVO.AgreementMonthsVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransDocType"
+    ListVOName="LookupVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransDocType_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransDocType"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransDocCode"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Meaning"/>
+      <Item Value="LookupCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PCDocTypeCriteria"
+      Hint="showAndExecute"/>
+    <ViewCriteriaUsage
+      Name="PCDocTypeCriteria"
+      FullName="model.view.LookupVO.PCDocTypeCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransContractNumber"
+    ListVOName="ContractHeadersVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransContractNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransContractNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransContractId"/>
+      <Item Value="TransEndDate"/>
+      <Item Value="TransStartDate"/>
+      <Item Value="TransCustomerId"/>
+      <Item Value="TransBoqHeaderId"/>
+      <Item Value="TransAdvancePerct"/>
+      <Item Value="TransRetentionPerct"/>
+      <Item Value="TransAdvanceRecryPerct"/>
+      <Item Value="TransPaymenTerms"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="ContractId"/>
+      <Item Value="EndDate"/>
+      <Item Value="StartDate"/>
+      <Item Value="CustomerId"/>
+      <Item Value="BoqHeaderId"/>
+      <Item Value="AttributeNumber1"/>
+      <Item Value="AttributeNumber3"/>
+      <Item Value="AttributeNumber2"/>
+      <Item Value="TransPaymentTerms"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ContractHeadersVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ViewAttribute
+    Name="TransBuId"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="TransBuName"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"
+    LOVName="LOV_TransBuName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectNum"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"
+    LOVName="LOV_TransProjectNum">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NUMBER"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="TransDocType"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"
+    LOVName="LOV_TransDocType">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DOCUMENT_TYPE"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCertNum"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"
+    LOVName="LOV_TransCertNum">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CERTIFICATE_NUMBER"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCertId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="TransPeriod"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"
+    LOVName="LOV_TransPeriod">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PERIOD"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransMaxStartDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransStartDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransEndDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransMasterCertHdrId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransDocCode"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransCustomerId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransAdvancePerct"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransAdvanceRecryPerct"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransRetentionPerct"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransPaymenTerms"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransBoqHeaderId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransContractNumber"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransContractNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_NUMBER"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransContractId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransTaxFlag"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="TransBuId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

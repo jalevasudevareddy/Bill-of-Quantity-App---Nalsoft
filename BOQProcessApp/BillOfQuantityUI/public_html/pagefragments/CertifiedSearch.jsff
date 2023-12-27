@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Manage Certification Details" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true" maxColumns="2"
+                rows="2"
+                value="#{bindings.CertifiedQtySearchQuery.queryDescriptor}"
+                model="#{bindings.CertifiedQtySearchQuery.queryModel}"
+                queryListener="#{bindings.CertifiedQtySearchQuery.processQuery}"
+                queryOperationListener="#{bindings.CertifiedQtySearchQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1" fieldWidth="70%" saveQueryMode="hidden"/>
+    </af:panelHeader>
+    <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="toolbar">
+        <af:toolbar id="t1">
+              <af:commandImageLink id="cb2" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.CertifiedDetailsBean.createHeaderRow}"
+                                   shortDesc="Create"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"/>
+              <af:commandImageLink id="cb1" icon="/images/edit.png"
+                                   partialTriggers="resId1 ::qryId1"
+                                   disabledIcon="/images/edit_disable.png"
+                                   disabled="#{bindings.CertifiedHeaderId.inputValue==null}"
+                                   actionListener="#{backingBeanScope.CertifiedDetailsBean.editDocument}"
+                                   hoverIcon="/images/edit_active.png"
+                                   shortDesc="Edit"/>
+        <af:commandButton text="Export to Excel" partialTriggers="resId1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Work Done Certification Details.xls"
+                                                         exportedId="resId1"/>
+            </af:commandButton>
+        </af:toolbar>
+      </f:facet>
+      <af:table value="#{bindings.CertifiedQtySearchVO1.collectionModel}"
+                var="row" rows="#{bindings.CertifiedQtySearchVO1.rangeSize}"
+                emptyText="#{bindings.CertifiedQtySearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.CertifiedQtySearchVO1.rangeSize}"
+                rowBandingInterval="0"
+                filterModel="#{bindings.CertifiedQtySearchQuery.queryDescriptor}"
+                queryListener="#{bindings.CertifiedQtySearchQuery.processQuery}"
+                varStatus="vs"
+                binding="#{backingBeanScope.CertifiedDetailsBean.certifiedSearchTable}"
+                selectedRowKeys="#{bindings.CertifiedQtySearchVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.CertifiedQtySearchVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="resId1">
+        <af:column rowHeader="true" width="5" id="r1" headerText=" ">
+          <af:outputText value=" " id="ol1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.ProjectName.name}"
+                   filterable="true" sortable="true" width="200" frozen="true" rendered="false"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.ProjectName.label}"
+                   id="resId1c3">
+          <af:outputText value="#{row.ProjectName}" id="ot5"/>
+        </af:column>
+         <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.Cognomen.name}"
+                   filterable="true" sortable="true" width="200" frozen="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.Cognomen.label}"
+                   id="c12">
+          <af:outputText value="#{row.Cognomen}" id="ot18"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.ProjectNumber.name}"
+                   filterable="true" sortable="true" width="100" frozen="true"  rendered="false"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.ProjectNumber.label}"
+                   id="resId1c2">
+          <af:outputText value="#{row.ProjectNumber}" id="ot7"/>
+        </af:column>
+         <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.ContractNumber.name}"
+                   filterable="true" sortable="true" width="100" frozen="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.ContractNumber.label}"
+                   id="c13">
+          <af:outputText value="#{row.ContractNumber}" id="ot19"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CertifiedDocumentNum.name}"
+                   filterable="true" sortable="true" width="150"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CertifiedDocumentNum.label}"
+                   id="resId1c4">
+          <af:commandLink actionListener="#{backingBeanScope.CertifiedDetailsBean.editDocument}"
+                          id="cl1">
+            <af:outputText value="#{row.CertifiedDocumentNum}" id="ot9"/>
+          </af:commandLink>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.Version.name}"
+                   filterable="true" sortable="true" width="50"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.Version.label}"
+                   id="c2">
+          <af:outputText value="#{row.Version}" id="ot12"/>
+        </af:column>
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.ValuationDate.label}"
+                   id="c14">
+          <af:outputText value="#{row.ValuationDate}" id="ot20">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransBOQVersion.label}"
+                   id="c10" sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransBOQVersion.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransBOQVersion}" id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CertifiedStatus.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CertifiedStatus.label}"
+                   id="resId1c6">
+          <af:outputText value="#{row.TransStatus}" id="ot4"/>
+        </af:column>
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransCustomerName.label}"
+                   id="c11" sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransCustomerName.name}"
+                   filterable="true" sortable="true" width="200">
+          <af:outputText value="#{row.TransCustomerName}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.BuName1.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.BuName1.label}"
+                   id="c9">
+          <af:outputText value="#{row.BuName1}" id="ot11"/>
+        </af:column>
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransInvoiceNumber.label}"
+                   id="c6"  sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransInvoiceNumber.name}"
+                   filterable="true" sortable="true" width="100" rendered="false">
+          <af:outputText value="#{row.TransInvoiceNumber}" id="ot16"/>
+        </af:column>
+     
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransInvoiceVersion.label}"
+                   id="c7" sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransInvoiceVersion.name}"
+                   filterable="true" sortable="true" width="50" rendered="false">
+          <af:outputText value="#{row.TransInvoiceVersion}" id="ot17"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.PeriodOfMeasure1.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.PeriodOfMeasure1.label}"
+                   id="resId1c7">
+          <af:outputText value="#{row.PeriodOfMeasure1}" id="ot1"/>
+        </af:column>
+         <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransPreviousTotal.label}"
+                   id="c1" align="right">
+          <af:outputText value="#{row.TransPreviousTotal}" id="ot2">
+          <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "  minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CertifiedQtySearchVO1.hints.TransPreviousTotal.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransCurrentCumltTotal.label}" align="right"
+                   id="c3"  sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransCurrentCumltTotal.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransCurrentCumltTotal}" id="ot13">
+           <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "  minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CertifiedQtySearchVO1.hints.TransCurrentCumltTotal.format}"/>
+          </af:outputText>
+        </af:column>
+         <af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransCumltTotal.label}" align="right"
+                   id="c4"  sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransCumltTotal.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransCumltTotal}" id="ot14">
+           <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "  minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CertifiedQtySearchVO1.hints.TransCumltTotal.format}"/>
+          </af:outputText>
+        </af:column>
+       
+       
+        <!--<af:column headerText="#{bindings.CertifiedQtySearchVO1.hints.TransActualAmnt.label}" align="right"
+                   id="c5"  sortProperty="#{bindings.CertifiedQtySearchVO1.hints.TransActualAmnt.name}"  rendered="false"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransActualAmnt}" id="ot15">
+           --><!--<af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "  minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CertifiedQtySearchVO1.hints.TransActualAmnt.format}"/>--><!--
+          </af:outputText>
+        </af:column>-->
+        <af:column headerText="Current Flag"
+                   id="c8">
+          <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                    label="Current Flag" readOnly="true"
+                                    shortDesc="#{bindings.CertifiedQtySearchVO1.hints.CurrentFlag.tooltip}"
+                                    id="sbc1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CertifiedApprovedBy.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CertifiedApprovedBy.label}"
+                   id="c5">
+          <af:outputText value="#{row.CertifiedApprovedBy}" id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CertifiedDocumentDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CertifiedDocumentDate.label}"
+                   id="resId1c5">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CertifiedDocumentDate}" id="id3"/>
+          </f:facet>
+          <af:outputText value="#{row.CertifiedDocumentDate}" id="ot10">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CertifiedApprovedDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CertifiedApprovedDate.label}"
+                   id="resId1c9">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CertifiedApprovedDate}" id="id1"/>
+          </f:facet>
+          <af:outputText value="#{row.CertifiedApprovedDate}" id="ot15">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <!--<af:column sortProperty="#{bindings.CertifiedQtySearchVO1.hints.CreationDate.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.CertifiedQtySearchVO1.hints.CreationDate.label}"
+                   id="resId1c10">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CreationDate}" id="id2"/>
+          </f:facet>
+          <af:outputText value="#{row.CreationDate}" id="ot6">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>-->
+      </af:table>
+    </af:panelCollection>
+   </af:showDetailHeader>
+    <af:popup id="p1" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.CertifiedDetailsBean.cancelPopup}"
+              binding="#{backingBeanScope.CertifiedDetailsBean.createPopup}">
+      <af:dialog id="d1" title="Create New Document" resize="off" type="none"
+                 stretchChildren="none">
+       
+        <af:panelFormLayout id="pfp1" styleClass="AFStretchWidth">
+          <af:inputComboboxListOfValues id="transBusinessUnitId"
+                                        autoSubmit="true"
+                                        binding="#{backingBeanScope.CertifiedDetailsBean.buNameBindgs}"
+                                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.buNameVL}"
+                                        popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                        value="#{bindings.TransBuName.inputValue}"
+                                        label="#{bindings.TransBuName.hints.label}"
+                                        model="#{bindings.TransBuName.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransBuName.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransBuName.hints.tooltip}">
+            <f:validator binding="#{bindings.TransBuName.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transProjectId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.TransProjectNum.hints.label}"
+                                        value="#{bindings.TransProjectNum.inputValue}"
+                                        label="#{bindings.TransProjectNum.hints.label}"
+                                        model="#{bindings.TransProjectNum.listOfValuesModel}"
+                                        required="true" rendered="false"
+                                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.prjNumVL}"
+                                        binding="#{backingBeanScope.CertifiedDetailsBean.prjNameBindgs}"
+                                        partialTriggers="transBusinessUnitId"
+                                        disabled="#{bindings.TransBuName.inputValue==null}"
+                                        columns="#{bindings.TransProjectNum.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransProjectNum.hints.tooltip}">
+            <f:validator binding="#{bindings.TransProjectNum.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transContractNumberId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.TransContractNumber.hints.label}"
+                                        value="#{bindings.TransContractNumber.inputValue}"
+                                        label="#{bindings.TransContractNumber.hints.label}"
+                                        model="#{bindings.TransContractNumber.listOfValuesModel}"
+                                        required="true" 
+                                           partialTriggers="transBusinessUnitId"
+                                             disabled="#{bindings.TransBuName.inputValue==null}"
+                                        columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransContractNumber.hints.tooltip}"
+                                        binding="#{backingBeanScope.CertifiedDetailsBean.contractNumberBInd}"
+                                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.contractNumberVL}">
+            <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+          </af:inputComboboxListOfValues>
+          <!--<af:panelLabelAndMessage label="#{bindings.TransProjectName.hints.label}"
+                                   id="plam1">
+            <af:outputText value="#{bindings.TransProjectName.inputValue}"
+                           partialTriggers="transProjectId" id="ot11"/>
+          </af:panelLabelAndMessage>-->
+          <af:inputComboboxListOfValues id="periodOfMeasureId"
+                                        popupTitle="Search and Select: #{bindings.TransPeriod.hints.label}"
+                                        value="#{bindings.TransPeriod.inputValue}"
+                                        label="#{bindings.TransPeriod.hints.label}"
+                                         partialTriggers="transProjectId"
+                                         binding="#{backingBeanScope.CertifiedDetailsBean.periodBindgs}"
+                                        model="#{bindings.TransPeriod.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransPeriod.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransPeriod.hints.tooltip}">
+            <f:validator binding="#{bindings.TransPeriod.validator}"/>
+          </af:inputComboboxListOfValues>
+          <!--<af:inputComboboxListOfValues id="periodOfMeasureId"
+                                        popupTitle="Search and Select: #{bindings.TransPeriod.hints.label}"
+                                        value="#{bindings.TransPeriod.inputValue}"
+                                        label="#{bindings.TransPeriod.hints.label}"
+                                        model="#{bindings.TransPeriod.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransPeriod.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransPeriod.hints.tooltip}"
+                                        autoSubmit="true"
+                                        binding="#{backingBeanScope.CertifiedDetailsBean.periodBindgs}"
+                                        partialTriggers="transProjectId"
+                                        disabled="#{bindings.TransProjectNum.inputValue==null}">
+            <f:validator binding="#{bindings.TransPeriod.validator}"/>
+          </af:inputComboboxListOfValues>-->
+        </af:panelFormLayout>
+        <f:facet name="buttonBar">
+          <af:group id="g1">
+            <af:commandButton actionListener="#{backingBeanScope.CertifiedDetailsBean.createDocument}"
+                              text="Create" id="crCb" partialSubmit="true"/>
+            <af:spacer width="5" id="s4"/>
+            <af:commandButton text="Cancel" id="canCb"
+                              actionListener="#{backingBeanScope.CertifiedDetailsBean.CancelCertified}"
+                              immediate="true" partialSubmit="true"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

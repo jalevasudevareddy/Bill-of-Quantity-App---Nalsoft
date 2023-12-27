@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="XxboqInvoiceDetailsToLinesAssc"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="XxboqInvoiceDetailsEO"
+    Cardinality="1"
+    Source="true"
+    Owner="model.entity.XxboqInvoiceDetailsEO"
+    DeleteContainee="true"
+    LockLevel="NONE">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqInvoiceDetailsEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqInvoiceDetailsEO.InvoiceHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="XxboqInvoiceLinesEO"
+    Cardinality="-1"
+    Owner="model.entity.XxboqInvoiceLinesEO"
+    HasOwner="true">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqInvoiceLinesEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqInvoiceLinesEO.InvoiceHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

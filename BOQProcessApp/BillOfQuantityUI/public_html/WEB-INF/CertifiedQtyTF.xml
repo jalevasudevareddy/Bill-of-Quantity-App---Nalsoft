@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="CertifiedQtyTF">
+    <default-activity id="__3">routerApplication</default-activity>
+    <transaction id="__12">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__60">
+      <name id="__59">fromApplicationFlag</name>
+      <value>#{sessionScope.fromApplication}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__62">
+      <name id="__61">docTypeId</name>
+      <value>#{pageFlowScope.docTypeId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__63">
+      <name id="__64">docId</name>
+      <value>#{pageFlowScope.docId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__65">
+      <name id="__66">currEmpLevel</name>
+      <value>#{pageFlowScope.currEmpLevel}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__67">
+      <name id="__68">currEmpId</name>
+      <value>#{pageFlowScope.currEmpId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__70">
+      <name id="__69">apprvName</name>
+      <value>#{pageFlowScope.apprvName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__72">
+      <name id="__71">apprvCat</name>
+      <value>#{pageFlowScope.apprvCat}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__74">
+      <name id="__73">actionCode</name>
+      <value>#{pageFlowScope.actionCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__76">
+      <name id="__75">accessType</name>
+      <value>#{pageFlowScope.accessType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__77">
+      <name id="__78">docNum</name>
+      <value>#{pageFlowScope.docNum}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__27">
+      <name id="__28">workListId</name>
+      <value>#{pageFlowScope.workListId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__1">
+      <managed-bean-name id="__10">CertifiedDetailsBean</managed-bean-name>
+      <managed-bean-class id="__11">bean.CertifiedDetailsBean</managed-bean-class>
+      <managed-bean-scope id="__2">backingBean</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean id="__50">
+      <managed-bean-name id="__49">NotificationBean</managed-bean-name>
+      <managed-bean-class id="__46">bean.notification.NotificationBean</managed-bean-class>
+      <managed-bean-scope id="__47">backingBean</managed-bean-scope>
+    </managed-bean>
+
+    <view id="CertifiedQtyDetails">
+      <page>/pagefragments/CertifiedQtyDetails.jsff</page>
+    </view>
+    <task-flow-return id="taskFlowReturn1">
+      <outcome id="__4">
+        <name>taskFlowReturn1</name>
+        <commit/>
+      </outcome>
+    </task-flow-return>
+    <task-flow-call id="ActionHistoryTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/ActionHistoryTF.xml</document>
+        <id>ActionHistoryTF</id>
+      </task-flow-reference>
+
+      <input-parameter id="__21">
+
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+
+      <input-parameter id="__22">
+
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <method-call id="SetCurrentRowWithKeyValue">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__23">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="SetCurrentRowWithKeyValue1">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__24">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <router id="routerApplication">
+    <case>
+        <expression>#{pageFlowScope.accessType=='Doc'}</expression>
+        <outcome id="__8">setCurrentRow</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='Method'}</expression>
+        <outcome id="__54">setMethod</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='SearchPage'}</expression>
+        <outcome id="__48">setSerachPage</outcome>
+      </case>
+      <default-outcome>setSerachPage</default-outcome>
+    </router>
+    <view id="CertifiedQtyReject">
+      <page>/pagefragments/CertifiedQtyReject.jsff</page>
+    </view>
+    <method-call id="makeAsCurrentCertDoc">
+      <method>#{bindings.makeAsCurrentCertDoc.execute}</method>
+      <outcome id="__15">
+        <fixed-outcome>makeAsCurrentCertDoc</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__5">
+      <from-activity-id id="__6">CertifiedQtyDetails</from-activity-id>
+      <control-flow-case id="__99">
+        <from-outcome id="__9">done</from-outcome>
+        <to-activity-id id="__7">taskFlowReturn1</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__14">
+        <from-outcome id="__20">ActionHistory</from-outcome>
+        <to-activity-id id="__13">ActionHistoryTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__16">
+      <from-activity-id id="__17">ActionHistoryTF</from-activity-id>
+      <control-flow-case id="__19">
+        <from-outcome id="__18">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__208">CertifiedQtyDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__25">
+      <from-activity-id id="__26">routerApplication</from-activity-id>
+      <control-flow-case id="__30">
+        <from-outcome id="__32">setCurrentRow</from-outcome>
+        <to-activity-id id="__31">SetCurrentRowWithKeyValue</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__40">
+        <from-outcome id="__38">setMethod</from-outcome>
+        <to-activity-id id="__39">SetCurrentRowWithKeyValue1</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__53">
+        <from-outcome id="__52">setSerachPage</from-outcome>
+        <to-activity-id id="__51">makeAsCurrentCertDoc</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+
+    <control-flow-rule id="__33">
+      <from-activity-id id="__34">SetCurrentRowWithKeyValue</from-activity-id>
+      <control-flow-case id="__35">
+        <from-outcome id="__37">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__36">CertifiedQtyDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__41">
+      <from-activity-id id="__42">SetCurrentRowWithKeyValue1</from-activity-id>
+      <control-flow-case id="__45">
+        <from-outcome id="__43">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__44">CertifiedQtyReject</to-activity-id>
+
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__55">
+      <from-activity-id id="__56">makeAsCurrentCertDoc</from-activity-id>
+      <control-flow-case id="__79">
+        <from-outcome id="__58">makeAsCurrentCertDoc</from-outcome>
+        <to-activity-id id="__57">CertifiedQtyDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,706 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="OtherDeductionsVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="true"
+  SelectList="XxboqPcDeductionsEO.AMOUNT, 
+       XxboqPcDeductionsEO.CC_DESC, 
+       XxboqPcDeductionsEO.CC_ID, 
+       XxboqPcDeductionsEO.COST_CODE, 
+       XxboqPcDeductionsEO.CREATED_BY, 
+       XxboqPcDeductionsEO.CREATION_DATE, 
+       XxboqPcDeductionsEO.DEDUCTION_ID, 
+       XxboqPcDeductionsEO.DEDUCTION_TYPE, 
+       XxboqPcDeductionsEO.DESCRIPTION, 
+       XxboqPcDeductionsEO.LAST_UPDATED_BY, 
+       XxboqPcDeductionsEO.LAST_UPDATED_DATE, 
+       XxboqPcDeductionsEO.TASK_ID, 
+       XxboqPcDeductionsEO.TASK_NAME, 
+       XxboqPcDeductionsEO.TASK_NUMBER, 
+       XxboqPcDeductionsEO.PC_HEADER_ID, 
+       XxboqPcHdrEO.BU_ID, 
+       XxboqPcHdrEO.PC_HEADER_ID AS PC_HEADER_ID1, 
+       XxboqPcHdrEO.PROJECT_ID, 
+       XxboqPcDeductionsEO.REMARKS, 
+       XxboqPcDeductionsEO.EXP_ORG_ID, 
+       (select ORGANIZATION_NAME from PJF_ORGANIZATIONS_EXPEND_V where  organization_id = xxboqpcdeductionseo.exp_org_id and xxboqpchdreo.pc_date between start_date and end_date and bu_id=xxboqpchdreo.bu_id) AS VIEW_ATTR, 
+       XxboqPcHdrEO.PC_DATE, 
+       (select bu_id from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID ) AS VIEW_ATTR, 
+       (select pc_date from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID ) AS VIEW_ATTR, 
+       XxboqPcDeductionsEO.PROJECT_ID AS PROJECT_ID1, 
+       (select project_number from xxpj_projects_t where project_id=XxboqPcDeductionsEO.PROJECT_ID and rownum=1) AS VIEW_ATTR, 
+       (select GL_ACNT from xxfi_gl_accounts_t where cc_id= XxboqPcDeductionsEO.cc_id) AS VIEW_ATTR, 
+       (select contract_id from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID ) AS VIEW_ATTR, 
+       XxboqPcDeductionsEO.TAX_CODE, 
+       XxboqPcDeductionsEO.PERCENTAGE_RATE, 
+       XxboqPcDeductionsEO.TAX_AMOUNT, 
+       XxboqPcDeductionsEO.RESOURCE_NAME, 
+       XxboqPcDeductionsEO.RBS_ELEMENT_NAME_ID"
+  FromList="XXBOQ_PC_DEDUCTIONS_T XxboqPcDeductionsEO, XXBOQ_PC_HDR_T XxboqPcHdrEO"
+  Where="XxboqPcDeductionsEO.PC_HEADER_ID = XxboqPcHdrEO.PC_HEADER_ID"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.OtherDeductionsVORowImpl"
+  ComponentClass="model.view.OtherDeductionsVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="ResourceItemsVO1"
+    ViewObjectName="model.view.ResourceItemsVO">
+    <ViewCriteriaUsage
+      Name="ExpTypeVOCriteria"
+      FullName="model.view.ResourceItemsVO.ExpTypeVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="OtherDeductionsVO1"
+    ViewObjectName="model.view.OtherDeductionsVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PrjProjectTasksVO1"
+    ViewObjectName="model.masterview.PrjProjectTasksVO">
+    <ViewCriteriaUsage
+      Name="PrjProjectTasksVOCriteria"
+      FullName="model.masterview.PrjProjectTasksVO.PrjProjectTasksVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_prj_id">
+        <TransientExpression><![CDATA[ProjectId1]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PrjExpenditureTypesVO1"
+    ViewObjectName="model.masterview.PrjExpenditureTypesVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="LookupVO1"
+    ViewObjectName="model.view.LookupVO">
+    <ViewCriteriaUsage
+      Name="LookupVOCriteria"
+      FullName="model.view.LookupVO.LookupVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_lookup_type">
+        <TransientExpression><![CDATA["DEDUCTIONS_TYPE"]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PCProjectScrVO1"
+    ViewObjectName="model.searchview.PCProjectScrVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="ExpenditureOrgVO1"
+    ViewObjectName="model.searchview.ExpenditureOrgVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_date">
+        <TransientExpression><![CDATA[TransPCDate]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="DeductionProjectsLOVVO1"
+    ViewObjectName="model.searchview.DeductionProjectsLOVVO">
+    <ParameterMap>
+      <PIMap Variable="p_contract_id">
+        <TransientExpression><![CDATA[TransContractId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="TaxCodeLOVVO1"
+    ViewObjectName="model.searchview.TaxCodeLOVVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[TransBuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ResourceNameVO1"
+    ViewObjectName="model.searchview.ResourceNameVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_CostCode"
+    ListVOName="PrjExpenditureTypesVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_CostCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="CostCode"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="CcDesc"/>
+      <Item Value="CcId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ExpenditureTypeName"/>
+      <Item Value="Description"/>
+      <Item Value="ExpenditureTypeId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ExpenditureTypeName"/>
+      <Item Value="Description"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PrjExpenditureTypesVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TaskNumber"
+    ListVOName="PrjProjectTasksVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TaskNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TaskNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TaskName"/>
+      <Item Value="TaskId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TaskNumber"/>
+      <Item Value="TaskName"/>
+      <Item Value="TaskId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TaskNumber"/>
+      <Item Value="TaskName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PrjProjectTasksVOCriteria"
+      Hint="showAndExecute"/>
+    <ViewCriteriaUsage
+      Name="PrjProjectTasksVOCriteria"
+      FullName="model.masterview.PrjProjectTasksVO.PrjProjectTasksVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_DeductionType"
+    ListVOName="LookupVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="DeductionType"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="LookupCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransOrgName"
+    ListVOName="ExpenditureOrgVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransOrgName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransOrgName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ExpOrgId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="OrganizationName"/>
+      <Item Value="OrganizationId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="OrganizationName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ExpenditureOrgVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransDedProjectName"
+    ListVOName="DeductionProjectsLOVVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransDedProjectName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransDedProjectName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ProjectId1"/>
+      <Item Value="CcId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="CcId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="DeductionProjectsLOVVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TaxCode"
+    ListVOName="TaxCodeLOVVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TaxCode_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TaxCode"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="PercentageRate"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TaxRateCode"/>
+      <Item Value="PercentageRate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TaxRateCode"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="TaxCodeLOVVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ResourceName"
+    ListVOName="ResourceNameVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ResourceName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ResourceName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="RbsElementNameId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Name"/>
+      <Item Value="RbsElementNameId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Name"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ResourceNameVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqPcDeductionsEO"
+    Entity="model.entity.XxboqPcDeductionsEO"/>
+  <EntityUsage
+    Name="XxboqPcHdrEO"
+    Entity="model.entity.XxboqPcHdrEO"
+    SourceUsage="model.view.OtherDeductionsVO.XxboqPcDeductionsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="Amount"
+    PrecisionRule="true"
+    EntityAttrName="Amount"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="AMOUNT"/>
+  <ViewAttribute
+    Name="CcDesc"
+    PrecisionRule="true"
+    EntityAttrName="CcDesc"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="CC_DESC"/>
+  <ViewAttribute
+    Name="CcId"
+    PrecisionRule="true"
+    EntityAttrName="CcId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="CC_ID"/>
+  <ViewAttribute
+    Name="CostCode"
+    LOVName="LOV_CostCode"
+    PrecisionRule="true"
+    EntityAttrName="CostCode"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="COST_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="EXPENDITURE_TYPE"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="DeductionId"
+    PrecisionRule="true"
+    EntityAttrName="DeductionId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="DEDUCTION_ID"/>
+  <ViewAttribute
+    Name="DeductionType"
+    LOVName="LOV_DeductionType"
+    PrecisionRule="true"
+    EntityAttrName="DeductionType"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="DEDUCTION_TYPE">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="TaskId"
+    PrecisionRule="true"
+    EntityAttrName="TaskId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="TASK_ID"/>
+  <ViewAttribute
+    Name="TaskName"
+    PrecisionRule="true"
+    EntityAttrName="TaskName"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="TASK_NAME"/>
+  <ViewAttribute
+    Name="TaskNumber"
+    LOVName="LOV_TaskNumber"
+    PrecisionRule="true"
+    EntityAttrName="TaskNumber"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="TASK_NUMBER">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="10"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PcHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="PcHeaderId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="PC_HEADER_ID"/>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="BU_ID"/>
+  <ViewAttribute
+    Name="PcHeaderId1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="PcHeaderId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_HEADER_ID1"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="TransTotal"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="NUMERIC">
+    <TransientExpression><![CDATA[object.getRowSet().sum('Amount!= null?Amount:0')]]></TransientExpression>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SUB_TOTAL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Remarks"
+    PrecisionRule="true"
+    EntityAttrName="Remarks"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="REMARKS"/>
+  <ViewAttribute
+    Name="TransProjectId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="ExpOrgId"
+    PrecisionRule="true"
+    EntityAttrName="ExpOrgId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="EXP_ORG_ID"/>
+  <ViewAttribute
+    Name="TransOrgName"
+    LOVName="LOV_TransOrgName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select ORGANIZATION_NAME from PJF_ORGANIZATIONS_EXPEND_V where  organization_id = xxboqpcdeductionseo.exp_org_id and xxboqpchdreo.pc_date between start_date and end_date and bu_id=xxboqpchdreo.bu_id)"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="EXPENDITURE_ORGANIZATION"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PcDate"
+    PrecisionRule="true"
+    EntityAttrName="PcDate"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_DATE"/>
+  <ViewAttribute
+    Name="TransBuId"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select bu_id from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID )"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="TransPCDate"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select pc_date from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID )"
+    SQLType="DATE"/>
+  <ViewAttribute
+    Name="ProjectId1"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="PROJECT_ID1"/>
+  <ViewAttribute
+    Name="TransDedProjectName"
+    LOVName="LOV_TransDedProjectName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select project_number from xxpj_projects_t where project_id=XxboqPcDeductionsEO.PROJECT_ID and rownum=1)"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransAccount"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select GL_ACNT from xxfi_gl_accounts_t where cc_id= XxboqPcDeductionsEO.cc_id)"
+    SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ACCOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransContractId"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    Expression="(select contract_id from XXBOQ_PC_HDR_T where PC_HEADER_ID= XxboqPcDeductionsEO.PC_HEADER_ID )"
+    SQLType="NUMERIC"/>
+  <ViewAttribute
+    Name="TaxCode"
+    LOVName="LOV_TaxCode"
+    PrecisionRule="true"
+    EntityAttrName="TaxCode"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="TAX_CODE">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PercentageRate"
+    IsQueriable="false"
+    PrecisionRule="true"
+    EntityAttrName="PercentageRate"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="PERCENTAGE_RATE"/>
+  <ViewAttribute
+    Name="TaxAmount"
+    PrecisionRule="true"
+    EntityAttrName="TaxAmount"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="TAX_AMOUNT"/>
+  <ViewAttribute
+    Name="TransTaxAmount"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <RecalcCondition><![CDATA[true]]></RecalcCondition>
+    <TransientExpression><![CDATA[(Amount != null ? Amount : 0)*(PercentageRate != null ?  PercentageRate : 0)*0.01]]></TransientExpression>
+    <Dependencies>
+      <Item
+        Value="Amount"/>
+    </Dependencies>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="model.entity.XxboqPcDeductionsEO.TaxAmount_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransTaxTotal"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <RecalcCondition><![CDATA[true]]></RecalcCondition>
+    <TransientExpression><![CDATA[object.getRowSet().sum('TransTaxAmount != null ? TransTaxAmount:0')]]></TransientExpression>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ResourceName"
+    PrecisionRule="true"
+    EntityAttrName="ResourceName"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="RESOURCE_NAME"
+    LOVName="LOV_ResourceName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RESOURCE"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="RbsElementNameId"
+    PrecisionRule="true"
+    EntityAttrName="RbsElementNameId"
+    EntityUsage="XxboqPcDeductionsEO"
+    AliasName="RBS_ELEMENT_NAME_ID"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="DeductionId"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="PaymentCertHdrVO"
+    ViewLink="model.viewlink.PCHdrToDeductionsVL"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

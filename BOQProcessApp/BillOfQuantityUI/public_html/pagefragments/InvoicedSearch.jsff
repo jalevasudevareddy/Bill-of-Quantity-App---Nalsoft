@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Manage Payment Application" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true" maxColumns="2"
+                rows="2"
+                value="#{bindings.InvoicedQtySearchQuery.queryDescriptor}"
+                model="#{bindings.InvoicedQtySearchQuery.queryModel}"
+                queryListener="#{bindings.InvoicedQtySearchQuery.processQuery}"
+                queryOperationListener="#{bindings.InvoicedQtySearchQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1" fieldWidth="70%" saveQueryMode="hidden"/>
+    </af:panelHeader>
+     <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="toolbar">
+        <af:toolbar id="t1">
+            <af:commandImageLink id="cb2" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.InvoicedDetailsBean.createHeaderRow}"
+                                   shortDesc="Create"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_INVOICE_PL_ROLE=='Y'}"/>
+              <af:commandImageLink id="cb1" icon="/images/edit.png"
+                                   partialTriggers="resId1 ::qryId1"
+                                   disabledIcon="/images/edit_disable.png"
+                                   disabled="#{bindings.InvoicedHeaderId.inputValue==null}"
+                                   actionListener="#{backingBeanScope.InvoicedDetailsBean.editDocument}"
+                                   hoverIcon="/images/edit_active.png"
+                                   shortDesc="Edit"/>
+        <af:commandButton text="Export to Excel" partialTriggers="resId1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Work Done Invoice Details.xls"
+                                                         exportedId="resId1"/>
+            </af:commandButton>
+        </af:toolbar>
+      </f:facet>
+      <af:table value="#{bindings.InvoicedQtySearchVO1.collectionModel}"
+                var="row" rows="#{bindings.InvoicedQtySearchVO1.rangeSize}"
+                emptyText="#{bindings.InvoicedQtySearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.InvoicedQtySearchVO1.rangeSize}"
+                rowBandingInterval="0" columnStretching="multiple"
+                filterModel="#{bindings.InvoicedQtySearchQuery.queryDescriptor}"
+                queryListener="#{bindings.InvoicedQtySearchQuery.processQuery}"
+                varStatus="vs" 
+                binding="#{backingBeanScope.InvoicedDetailsBean.invoicedSearchTable}"
+                selectedRowKeys="#{bindings.InvoicedQtySearchVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.InvoicedQtySearchVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="resId1">
+        <af:column rowHeader="true" width="5" id="r1" headerText=" " frozen="true" >
+          <af:outputText value=" " id="ol1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.ProjectName.name}"
+                   filterable="true" sortable="true" width="150" frozen="true" rendered="false"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.ProjectName.label}"
+                   id="resId1c3">
+          <af:outputText value="#{row.ProjectName}" id="ot5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.ProjectNumber2.name}"
+                   filterable="true" sortable="true" width="100" frozen="true" rendered="false"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.ProjectNumber2.label}"
+                   id="c7">
+          <af:outputText value="#{row.ProjectNumber2}" id="ot15"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.ContractNumber.name}"
+                   filterable="true" sortable="true" width="150" frozen="true" 
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.ContractNumber.label}"
+                   id="c12">
+          <af:outputText value="#{row.ContractNumber}" id="ot17"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.Cognomen.name}"
+                   filterable="true" sortable="true" width="150" frozen="true"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.Cognomen.label}"
+                   id="c13">
+          <af:outputText value="#{row.Cognomen}" id="ot18"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.InvoiceDocumentNum2.name}"
+                   filterable="true" sortable="true" width="150"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.InvoiceDocumentNum2.label}"
+                   id="c8">
+          <af:commandLink actionListener="#{backingBeanScope.InvoicedDetailsBean.editDocument}"
+                          id="cl1">
+            <af:outputText value="#{row.InvoiceDocumentNum2}" id="ot9"/>
+          </af:commandLink>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.Version.name}"
+                   filterable="true" sortable="true" width="100"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.Version.label}"
+                   id="c2">
+          <af:outputText value="#{row.Version}" id="ot12"/>
+        </af:column>
+        <af:column headerText="#{bindings.InvoicedQtySearchVO1.hints.TransBOQVersion.label}"
+                   id="c11" sortProperty="#{bindings.InvoicedQtySearchVO1.hints.TransBOQVersion.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransBOQVersion}" id="ot7"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.InvoiceStatus.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.InvoiceStatus.label}"
+                   id="resId1c6">
+          <af:outputText value="#{row.TransStatus}" id="ot4"/>
+        </af:column>
+        <af:column headerText="#{bindings.InvoicedQtySearchVO1.hints.TransCustomerName.label}"
+                   id="c10" sortProperty="#{bindings.InvoicedQtySearchVO1.hints.TransCustomerName.name}"
+                   filterable="true" sortable="true" width="150">
+          <af:outputText value="#{row.TransCustomerName}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.BuName1.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.BuName1.label}"
+                   id="c6">
+          <af:outputText value="#{row.BuName1}" id="ot11"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.PeriodOfMeasure1.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.PeriodOfMeasure1.label}"
+                   id="resId1c7">
+          <af:outputText value="#{row.PeriodOfMeasure1}" id="ot1"/>
+        </af:column>         
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.TransPreviosAmt.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.TransPreviosAmt.label}"
+                   id="c3">
+          <af:outputText value="#{row.TransPreviosAmt}" id="ot13">
+          
+           <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" " minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.InvoicedQtySearchVO1.hints.TransPreviosAmt.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.InvoicedQtySearchVO1.hints.TransCurrentAmnt.label}"
+                   id="c1" align="right">
+          <af:outputText value="#{row.TransCurrentAmnt}" id="ot2">
+          
+          <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" " minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.InvoicedQtySearchVO1.hints.TransCurrentAmnt.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.TransCummAmt.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.TransCummAmt.label}"
+                   id="c4">
+          <af:outputText value="#{row.TransCummAmt}" id="ot14">          
+            <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" " minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.InvoicedQtySearchVO1.hints.TransCummAmt.format}"/>
+          </af:outputText>
+        </af:column>
+          <af:column headerText="#{bindings.InvoicedQtySearchVO1.hints.NetInvoiceAmount.label}"
+                     id="c14" sortProperty="#{bindings.InvoicedQtySearchVO1.hints.TransCummAmt.name}"
+                     filterable="true" sortable="true" align="right">
+            <af:outputText value="#{row.NetInvoiceAmount}" id="ot19">          
+            <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" " minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.InvoicedQtySearchVO1.hints.NetInvoiceAmount.format}"/>
+          </af:outputText>
+          </af:column>
+          <af:column headerText="Current Flag" id="c5">
+          <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                    label="Current Flag" readOnly="true"
+                                    shortDesc="#{bindings.InvoicedQtySearchVO1.hints.CurrentFlag.tooltip}"
+                                    id="sbc1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.InvoiceApprovedBy.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.InvoiceApprovedBy.label}"
+                   id="c9">
+          <af:outputText value="#{row.InvoiceApprovedBy}" id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.InvoiceDocumentDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.InvoiceDocumentDate.label}"
+                   id="resId1c5">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.InvoiceDocumentDate}"
+                          id="id3"/>
+          </f:facet>
+          <af:outputText value="#{row.InvoiceDocumentDate}" id="ot10">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.InvoiceApprovedDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.InvoiceApprovedDate.label}"
+                   id="resId1c9">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.InvoiceApprovedDate}" id="id1"/>
+          </f:facet>
+          <af:outputText value="#{row.InvoiceApprovedDate}" id="ot3">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.InvoicedQtySearchVO1.hints.CreationDate.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.InvoicedQtySearchVO1.hints.CreationDate.label}"
+                   id="resId1c10">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CreationDate}" id="id2"/>
+          </f:facet>
+          <af:outputText value="#{row.CreationDate}" id="ot16">
+           <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:showDetailHeader>
+    <af:popup id="p1" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.InvoicedDetailsBean.cancelPopup}"
+              binding="#{backingBeanScope.InvoicedDetailsBean.createPopup}">
+      <af:dialog id="d1" title="Create New Document" resize="off" type="none"
+                 stretchChildren="none">
+        <af:panelFormLayout id="pfp1" styleClass="AFStretchWidth">
+          <af:inputComboboxListOfValues id="transBuNameId"
+                                        popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                        value="#{bindings.TransBuName.inputValue}"
+                                        label="#{bindings.TransBuName.hints.label}"
+                                        autoSubmit="true"
+                                        model="#{bindings.TransBuName.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransBuName.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransBuName.hints.tooltip}">
+            <f:validator binding="#{bindings.TransBuName.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transProjectNumId" partialTriggers="transBuNameId"
+                                        popupTitle="Search and Select: #{bindings.TransProjectNum.hints.label}"
+                                        value="#{bindings.TransProjectNum.inputValue}"
+                                        rendered="false"
+                                        label="#{bindings.TransProjectNum.hints.label}"
+                                        autoSubmit="true"
+                                        disabled="#{bindings.TransBuName.inputValue==null}"
+                                        model="#{bindings.TransProjectNum.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransProjectNum.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransProjectNum.hints.tooltip}">
+            <f:validator binding="#{bindings.TransProjectNum.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transContractNumId" partialTriggers="transBuNameId"
+                                        popupTitle="Search and Select: #{bindings.TransContractNum.hints.label}"
+                                        value="#{bindings.TransContractNum.inputValue}"
+                                        label="#{bindings.TransContractNum.hints.label}"
+                                        model="#{bindings.TransContractNum.listOfValuesModel}"
+                                        autoSubmit="true"
+                                        disabled="#{bindings.TransBuName.inputValue==null}"
+                                         required="true"
+                                        columns="#{bindings.TransContractNum.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransContractNum.hints.tooltip}">
+            <f:validator binding="#{bindings.TransContractNum.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transPeriodId" partialTriggers="transBuNameId transContractNumId"
+                                        popupTitle="Search and Select: #{bindings.TransPeriod.hints.label}"
+                                        value="#{bindings.TransPeriod.inputValue}"
+                                        autoSubmit="true"
+                                        label="#{bindings.TransPeriod.hints.label}"
+                                        model="#{bindings.TransPeriod.listOfValuesModel}"
+                                        disabled="#{bindings.TransContractNum.inputValue==null}"
+                                        required="true"
+                                        columns="#{bindings.TransPeriod.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransPeriod.hints.tooltip}">
+            <f:validator binding="#{bindings.TransPeriod.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:panelFormLayout>
+        <f:facet name="buttonBar">
+          <af:group id="g1">
+            <af:commandButton actionListener="#{backingBeanScope.InvoicedDetailsBean.createDocument}"
+                              text="Create" id="crCb" partialSubmit="true"
+                              partialTriggers="transBuNameId transContractNumId"
+                              disabled="#{bindings.TransContractNum.inputValue==null}"/>
+            <af:spacer width="5" id="s4"/>
+            <af:commandButton text="Cancel" id="canCb"
+                              actionListener="#{backingBeanScope.InvoicedDetailsBean.CancelInvoiced}"
+                              immediate="true" partialSubmit="true"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,714 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1"
+                       binding="#{backingBeanScope.JobTemplateBean.resourcePanelGrpBindgs}"
+                       layout="scroll">
+    <af:panelHeader text="Job Item Analysis Template" id="ph1">
+      <f:facet name="context"/>
+      <f:facet name="menuBar"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t3">
+          <af:commandButton text="Save" id="cb1"
+                            actionListener="#{backingBeanScope.JobTemplateBean.saveTemplateAL}"/>
+          <af:commandButton text="Save And Close" id="cb3"
+                            actionListener="#{backingBeanScope.JobTemplateBean.saveAndCloseTemplateAL}"/>
+          <af:commandButton text="Cancel" id="cb4" action="done"/>
+          <af:commandButton text="Resources" disabled="true"
+                            actionListener="#{backingBeanScope.JobTemplateBean.testResource}"
+                            id="cb9"/>
+        </af:toolbar>
+      </f:facet>
+      <af:panelBox text="Tempalte Details" id="pb1">
+        <f:facet name="toolbar"/>
+        <af:panelFormLayout id="pfl1" maxColumns="3" rows="2" labelWidth="30%"
+                            fieldWidth="70%">
+          <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                   id="plam7">
+            <af:outputText value="#{bindings.BuName.inputValue}" id="ot24"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TemplateName.hints.label}"
+                                   id="plam3">
+            <af:outputText value="#{bindings.TemplateName.inputValue}"
+                           id="ot23"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TemplateNumber.hints.label}"
+                                   id="plam5">
+            <af:outputText value="#{bindings.TemplateNumber.inputValue}"
+                           id="ot18"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CreatedBy.hints.label}"
+                                   id="plam1">
+            <af:outputText value="#{bindings.CreatedBy.inputValue}" id="ot20"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CreationDate.hints.label}"
+                                   id="plam4">
+            <af:outputText value="#{bindings.CreationDate.inputValue}"
+                           id="ot21">
+              <af:convertDateTime pattern="#{bindings.CreationDate.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.LastUpdatedBy.hints.label}"
+                                   id="plam2">
+            <af:outputText value="#{bindings.LastUpdatedBy.inputValue}"
+                           id="ot19"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.LastUpdatedDate.hints.label}"
+                                   id="plam6">
+            <af:outputText value="#{bindings.LastUpdatedDate.inputValue}"
+                           id="ot22">
+              <af:convertDateTime pattern="#{bindings.LastUpdatedDate.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+        </af:panelFormLayout>
+      </af:panelBox>
+      <af:panelSplitter id="ps1" dimensionsFrom="children"
+                        splitterPosition="800">
+        <f:facet name="first">
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="menus"/>
+            <f:facet name="toolbar">
+              <af:toolbar id="t2">
+                <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                  text="Add Activity"
+                                  disabled="#{!bindings.CreateInsert.enabled}"
+                                  id="cb2"/>
+                <af:commandButton text="Delete Activity" immediate="true"
+                                  disabled="#{!bindings.Delete1.enabled}"
+                                  id="cb7">
+                  <af:showPopupBehavior popupId="::p1"/>
+                </af:commandButton>
+                <af:commandButton text="Copy To"
+                                  actionListener="#{backingBeanScope.JobTemplateBean.copyJobsAL}"
+                                  disabled="#{!bindings.Delete1.enabled}"
+                                  id="cb12"></af:commandButton>
+              </af:toolbar>
+            </f:facet>
+            <f:facet name="statusbar"/>
+            <af:table value="#{bindings.JobTemplateActivityVO1.collectionModel}"
+                      var="row" styleClass="AFStretchWidth" 
+                      binding="#{backingBeanScope.JobTemplateBean.jobActivityTblBindgs}"
+                      rows="#{bindings.JobTemplateActivityVO1.rangeSize}"
+                      emptyText="#{bindings.JobTemplateActivityVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.JobTemplateActivityVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      filterModel="#{bindings.JobTemplateActivityVO1Query.queryDescriptor}"
+                      queryListener="#{bindings.JobTemplateActivityVO1Query.processQuery}"
+                      filterVisible="false" varStatus="vs"
+                      selectionListener="#{bindings.JobTemplateActivityVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t1"
+                      partialTriggers="::cb2 ::cb7"
+                      selectedRowKeys="#{bindings.JobTemplateActivityVO1.collectionModel.selectedRow}">
+              <af:column headerText="#{bindings.JobTemplateActivityVO1.hints.TransActivityCode.label}"
+                         id="c4" showRequired="true"
+                         sortProperty="#{bindings.JobTemplateActivityVO1.hints.TransActivityCode.name}"
+                         filterable="true" sortable="true" width="100%">
+                <af:inputComboboxListOfValues id="transActivityCodeId"
+                                              autoSubmit="true"
+                                              rendered="#{row.row.entities[0].entityState==0}"
+                                              popupTitle="Search and Select: #{bindings.JobTemplateActivityVO1.hints.TransActivityCode.label}"
+                                              value="#{row.bindings.TransActivityCode.inputValue}"
+                                              model="#{row.bindings.TransActivityCode.listOfValuesModel}"
+                                              required="true"
+                                              columns="#{bindings.JobTemplateActivityVO1.hints.TransActivityCode.displayWidth}"
+                                              shortDesc="#{bindings.JobTemplateActivityVO1.hints.TransActivityCode.tooltip}">
+                  <f:validator binding="#{row.bindings.TransActivityCode.validator}"/>
+                </af:inputComboboxListOfValues>
+                <af:outputText value="#{row.ActivityCode}" id="ot2"
+                               rendered="#{row.row.entities[0].entityState!=0}"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.JobTemplateActivityVO1.hints.Description.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.JobTemplateActivityVO1.hints.Description.label}"
+                         id="c1" width="260%">
+                <af:outputText value="#{row.TransActivityDescription}" id="ot16"
+                               partialTriggers="transActivityCodeId"
+                               rendered="#{row.row.entities[0].entityState==0}"/>
+                <af:outputText value="#{row.Description}" id="ot1"
+                               rendered="#{row.row.entities[0].entityState!=0}"/>
+              </af:column>
+              <af:column headerText="#{bindings.JobTemplateActivityVO1.hints.JobCode.label}"
+                         id="c5" showRequired="true"
+                         sortProperty="#{bindings.JobTemplateActivityVO1.hints.JobCode.name}"
+                         filterable="true" sortable="true" width="100%">
+                <af:inputText value="#{row.bindings.JobCode.inputValue}"
+                              label="#{bindings.JobTemplateActivityVO1.hints.JobCode.label}"
+                              required="true" autoSubmit="true"
+                              readOnly="#{row.row.entities[0].entityState!=0}"
+                              columns="#{bindings.JobTemplateActivityVO1.hints.JobCode.displayWidth}"
+                              maximumLength="#{bindings.JobTemplateActivityVO1.hints.JobCode.precision}"
+                              shortDesc="#{bindings.JobTemplateActivityVO1.hints.JobCode.tooltip}"
+                              id="it1">
+                  <f:validator binding="#{row.bindings.JobCode.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.JobTemplateActivityVO1.hints.Quantity.label}"
+                         id="c8" align="right" showRequired="true"
+                         sortProperty="#{bindings.JobTemplateActivityVO1.hints.Quantity.name}"
+                         filterable="true" sortable="true">
+                <af:inputText value="#{row.bindings.Quantity.inputValue}"
+                              styleClass="AFFieldNumberMarker"
+                              label="#{bindings.JobTemplateActivityVO1.hints.Quantity.label}"
+                              required="true" autoSubmit="true"
+                              binding="#{backingBeanScope.JobTemplateBean.jobActivityQuantityBindgs}"
+                              readOnly="#{row.row.entities[0].entityState!=0}"
+                              valueChangeListener="#{backingBeanScope.JobTemplateBean.jobActivityQuantityVL}"
+                              columns="#{bindings.JobTemplateActivityVO1.hints.Quantity.displayWidth}"
+                              maximumLength="#{bindings.JobTemplateActivityVO1.hints.Quantity.precision}"
+                              shortDesc="#{bindings.JobTemplateActivityVO1.hints.Quantity.tooltip}"
+                              id="it2">
+                  <f:validator binding="#{row.bindings.Quantity.validator}"/>
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.JobTemplateActivityVO1.hints.Quantity.format}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.JobTemplateActivityVO1.hints.Uom.label}"
+                         id="c6" showRequired="true"
+                         sortProperty="#{bindings.JobTemplateActivityVO1.hints.Uom.name}"
+                         filterable="true" sortable="true">
+                <af:inputComboboxListOfValues id="uomId"
+                                              popupTitle="Search and Select: #{bindings.JobTemplateActivityVO1.hints.Uom.label}"
+                                              value="#{row.bindings.Uom.inputValue}"
+                                              model="#{row.bindings.Uom.listOfValuesModel}"
+                                              required="true" autoSubmit="true"
+                                              readOnly="#{row.row.entities[0].entityState!=0}"
+                                              columns="#{bindings.JobTemplateActivityVO1.hints.Uom.displayWidth}"
+                                              shortDesc="#{bindings.JobTemplateActivityVO1.hints.Uom.tooltip}">
+                  <f:validator binding="#{row.bindings.Uom.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column headerText="#{bindings.JobTemplateActivityVO1.hints.TransUnitRate.label}"
+                         id="c7" align="right"
+                         sortProperty="#{bindings.JobTemplateActivityVO1.hints.TransUnitRate.name}"
+                         filterable="true" sortable="true">
+                <af:outputText value="#{row.TransUnitRate}" id="ot4">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.JobTemplateActivityVO1.hints.TransUnitRate.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="second">
+          <af:showDetailHeader text="Job Activity Details " disclosed="true"
+                               id="sdh1" styleClass="AFStretchWidth">
+            <f:facet name="context"/>
+            <f:facet name="menuBar"/>
+            <f:facet name="toolbar"/>
+            <f:facet name="legend"/>
+            <f:facet name="info"/>
+            <af:panelFormLayout id="pfl2" partialTriggers="pc1:t1"
+                                maxColumns="2" rows="5" fieldWidth="50%"
+                                labelWidth="50%">
+              <af:panelLabelAndMessage label="#{bindings.ActivityCode.hints.label}"
+                                       id="plam13">
+                <af:outputText value="#{bindings.ActivityCode.inputValue}"
+                               id="ot14"/>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s1"/>
+              <af:panelLabelAndMessage label="#{bindings.JobCode.hints.label}"
+                                       id="plam14">
+                <af:outputText value="#{bindings.JobCode.inputValue}"
+                               id="ot25"/>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s2"/>
+              <af:panelLabelAndMessage label="#{bindings.Description.hints.label}"
+                                       id="plam17">
+                <af:outputText value="#{bindings.Description.inputValue}"
+                               id="ot28"/>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s3"/>
+              <af:panelLabelAndMessage label="#{bindings.Quantity.hints.label}"
+                                       id="plam15">
+                <af:outputText value="#{bindings.Quantity.inputValue}"
+                               id="ot26">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.Quantity.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s4"/>
+              <af:panelLabelAndMessage label="#{bindings.Uom.hints.label}"
+                                       id="plam16">
+                <af:outputText value="#{bindings.Uom.inputValue}" id="ot27"/>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s5"/>
+              <af:panelLabelAndMessage label="#{bindings.TransManPower.hints.label}"
+                                       id="plam12">
+                <af:outputText value="#{bindings.TransManPower.inputValue}"
+                               id="ot10">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransManPower.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s6"/>
+              <af:panelLabelAndMessage label="#{bindings.TransMaterial.hints.label}"
+                                       id="plam9">
+                <af:outputText value="#{bindings.TransMaterial.inputValue}"
+                               id="ot12">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransMaterial.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:panelLabelAndMessage label="#{bindings.TransSubcontractor.hints.label}"
+                                       id="plam8">
+                <af:outputText value="#{bindings.TransSubcontractor.inputValue}"
+                               id="ot13">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransSubcontractor.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s7"/>
+              <af:panelLabelAndMessage label="#{bindings.TransEquipment.hints.label}"
+                                       id="plam10">
+                <af:outputText value="#{bindings.TransEquipment.inputValue}"
+                               id="ot11">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransEquipment.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s8"/>
+              <af:panelLabelAndMessage label="#{bindings.TransGenaralExpences.hints.label}"
+                                       id="plam11">
+                <af:outputText value="#{bindings.TransGenaralExpences.inputValue}"
+                               id="ot3">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransGenaralExpences.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+              <af:spacer width="2%" id="s9"/>
+              <af:panelLabelAndMessage label="#{bindings.TransUnitRate.hints.label}"
+                                       id="plam18"
+                                       inlineStyle="font-weight:bolder;"
+                                       labelStyle="font-weight:bolder;">
+                <af:outputText value="#{bindings.TransUnitRate.inputValue}"
+                               id="ot29">
+                  <af:convertNumber groupingUsed="false" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.TransUnitRate.format}"/>
+                </af:outputText>
+              </af:panelLabelAndMessage>
+            </af:panelFormLayout>
+          </af:showDetailHeader>
+        </f:facet>
+      </af:panelSplitter>
+      <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+          <af:toolbar id="t5">
+            <af:commandButton text="Add Resource" id="cb5"
+                              actionListener="#{backingBeanScope.JobTemplateBean.addJobTempRescAL}"/>
+            <af:commandButton text="Delete Resources" immediate="true"
+                              actionListener="#{backingBeanScope.JobTemplateBean.deleteRescAL}"
+                              disabled="#{!bindings.Delete.enabled}" id="cb6">
+              <!--<af:showPopupBehavior popupId="::p9"/>-->
+            </af:commandButton>
+            <af:commandButton text="Group Resources" id="cb8"
+                              actionListener="#{backingBeanScope.JobTemplateBean.populateResourceAL}"></af:commandButton>
+          </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.JobTemplateResourceVO1.collectionModel}"
+                  styleClass="AFStretchWidth" var="row" immediate="true"
+                  binding="#{backingBeanScope.JobTemplateBean.resourceTblBindgs}"
+                  rows="#{bindings.JobTemplateResourceVO1.rangeSize}"
+                  emptyText="#{bindings.JobTemplateResourceVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.JobTemplateResourceVO1.rangeSize}"
+                  rowBandingInterval="0"
+                  filterModel="#{bindings.JobTemplateResourceVO1Query.queryDescriptor}"
+                  queryListener="#{bindings.JobTemplateResourceVO1Query.processQuery}"
+                  filterVisible="false" varStatus="vs"
+                  selectionListener="#{bindings.JobTemplateResourceVO1.collectionModel.makeCurrent}"
+                  rowSelection="multiple" id="t4"
+                  partialTriggers="::cb5 ::cb6 :::pc1:t1 ">
+          <af:column headerText="Line Id" width="50%">
+            <af:outputText value="#{row.index+1}"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.ItemCode.label}"
+                     id="c12" width="100%" showRequired="true"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.ItemCode.name}"
+                     filterable="true" sortable="true">
+            <af:inputComboboxListOfValues id="transItemNumberId"
+                                          popupTitle="Search and Select: #{bindings.JobTemplateResourceVO1.hints.TransItemNumber.label}"
+                                          value="#{row.bindings.TransItemNumber.inputValue}"
+                                          model="#{row.bindings.TransItemNumber.listOfValuesModel}"
+                                          required="true"
+                                          columns="#{bindings.JobTemplateResourceVO1.hints.TransItemNumber.displayWidth}"
+                                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.TransItemNumber.tooltip}"
+                                          rendered="#{row.row.entities[0].entityState==0}"
+                                          autoSubmit="true">
+              <f:validator binding="#{row.bindings.TransItemNumber.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:outputText value="#{row.bindings.ItemCode}"
+                           rendered="#{row.row.entities[0].entityState!=0}"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.ItemDescription.label}"
+                     id="c17" width="130%"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.ItemDescription.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransItemDescription}" id="ot15"
+                           partialTriggers="transItemNumberId"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.ResourceGroup.label}"
+                     id="c13"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.ResourceGroup.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransGroup}" id="ot5"
+                           partialTriggers="transItemNumberId"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.ResourceSubGroup.label}"
+                     id="c14"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.ResourceSubGroup.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransSubGroup}" id="ot6"
+                           partialTriggers="transItemNumberId"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.ResourceType.label}"
+                     id="c15"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.ResourceType.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransType}" id="ot7"
+                           partialTriggers="transItemNumberId"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.Uom.label}"
+                     id="c16"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.Uom.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransUOM}" id="ot8"
+                           partialTriggers="transItemNumberId"/>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.UnitRate.label}"
+                     id="c35" align="right" showRequired="true"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.UnitRate.name}"
+                     filterable="true" sortable="true">
+            <af:inputText value="#{row.bindings.UnitRate.inputValue}"   partialTriggers="transItemNumberId"
+                          styleClass="AFFieldNumberMarker" autoSubmit="true"
+                          label="#{bindings.JobTemplateResourceVO1.hints.UnitRate.label}"
+                         
+                          columns="#{bindings.JobTemplateResourceVO1.hints.UnitRate.displayWidth}"
+                          maximumLength="#{bindings.JobTemplateResourceVO1.hints.UnitRate.precision}"
+                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.UnitRate.tooltip}"
+                          id="it7">
+              <f:validator binding="#{row.bindings.UnitRate.validator}"/>
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.UnitRate.format}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.JobTemplateResourceVO1.hints.Quantity.name}"
+                     filterable="true" sortable="true" align="right"
+                     showRequired="true"
+                     headerText="#{bindings.JobTemplateResourceVO1.hints.Quantity.label}"
+                     id="c10">
+            <af:inputText value="#{row.bindings.Quantity.inputValue}"
+                          label="#{bindings.JobTemplateResourceVO1.hints.Quantity.label}"
+                          required="true" autoSubmit="true"
+                          styleClass="AFFieldNumberMarker"
+                          columns="#{bindings.JobTemplateResourceVO1.hints.Quantity.displayWidth}"
+                          maximumLength="#{bindings.JobTemplateResourceVO1.hints.Quantity.precision}"
+                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.Quantity.tooltip}"
+                          id="it3">
+              <f:validator binding="#{row.bindings.Quantity.validator}"/>
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.Quantity.format}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.name}"
+                     filterable="true" sortable="true" align="right"
+                     headerText="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.label}"
+                     id="c9">
+            <af:inputText value="#{row.bindings.SparesPercentage.inputValue}"
+                          partialTriggers="transItemNumberId"
+                          disabled="#{ row.bindings.TransTypeCode!='E' }"
+                          styleClass="AFFieldNumberMarker"
+                          label="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.label}"
+                          required="true" autoSubmit="true"
+                          columns="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.displayWidth}"
+                          maximumLength="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.precision}"
+                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.tooltip}"
+                          id="it5">
+              <f:validator binding="#{row.bindings.SparesPercentage.validator}"/>
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.SparesPercentage.format}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.label}"
+                     id="c11" align="right">
+            <af:inputText value="#{row.bindings.MaintenancePercentage.inputValue}"
+                          disabled="#{ row.bindings.TransTypeCode!='E' }"
+                          partialTriggers="transItemNumberId"
+                          styleClass="AFFieldNumberMarker"
+                          label="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.label}"
+                          required="true" autoSubmit="true"
+                          columns="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.displayWidth}"
+                          maximumLength="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.precision}"
+                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.tooltip}"
+                          id="it6">
+              <f:validator binding="#{row.bindings.MaintenancePercentage.validator}"/>
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.MaintenancePercentage.format}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.label}"
+                     id="c3" align="right">
+            <af:inputText value="#{row.bindings.WastagePercentage.inputValue}"
+                          label="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.label}"
+                          required="true" autoSubmit="true"
+                          partialTriggers="transItemNumberId"
+                          disabled="#{ row.bindings.TransTypeCode!='M'}"
+                          styleClass="AFFieldNumberMarker"
+                          columns="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.displayWidth}"
+                          maximumLength="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.precision}"
+                          shortDesc="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.tooltip}"
+                          id="it4">
+              <f:validator binding="#{row.bindings.WastagePercentage.validator}"/>
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.WastagePercentage.format}"/>
+            </af:inputText>
+          </af:column>
+          <af:column headerText="#{bindings.JobTemplateResourceVO1.hints.TransAmount.label}"
+                     id="c18" align="right"
+                     sortProperty="#{bindings.JobTemplateResourceVO1.hints.TransAmount.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransAmount}" id="ot41">
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.JobTemplateResourceVO1.hints.TransAmount.format}"/>
+            </af:outputText>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:popup id="p9">
+        <af:dialog id="d9" title="Delete Resources" type="okCancel"
+                   dialogListener="#{backingBeanScope.JobTemplateBean.deleteRescPopupDL}">
+          <af:outputText id="ot89"
+                         value="Are you sure. Do you want to delete the Resources?"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p1">
+        <af:dialog id="d1" title="Delete Job Activity" type="okCancel"
+                   dialogListener="#{backingBeanScope.JobTemplateBean.deleteJobActivityPopupDL}">
+          <af:outputText id="ot9"
+                         value="Are you sure. Do you want to delete the Job Activity?"/>
+        </af:dialog>
+      </af:popup>
+    </af:panelHeader>
+    <af:popup id="p3" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.JobTemplateBean.populateRescCL}"
+             
+              binding="#{backingBeanScope.JobTemplateBean.populateRescPopupBindgs}">
+      <af:dialog id="d3" title="Populate Resources" resize="on" type="none" 
+                 stretchChildren="none" inlineStyle="font-size:large;">
+        <af:panelCollection id="pc3" styleClass="AFstretchWidth" >
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.JobTempGroupRescPopulateVO1.collectionModel}"
+                    var="row" styleClass="AFstretchWidth" 
+                    rows="#{bindings.JobTempGroupRescPopulateVO1.rangeSize}"
+                    emptyText="#{bindings.JobTempGroupRescPopulateVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.JobTempGroupRescPopulateVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.JobTempGroupRescPopulateVO1Query.queryDescriptor}"
+                    queryListener="#{bindings.JobTempGroupRescPopulateVO1Query.processQuery}"
+                    filterVisible="false" varStatus="vs"
+                    selectedRowKeys="#{bindings.JobTempGroupRescPopulateVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.JobTempGroupRescPopulateVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="t6">
+            <af:column headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.TransSelectFlag.label}"
+                       id="c30">
+              <af:selectBooleanCheckbox value="#{row.bindings.TransSelectFlag.inputValue}" autoSubmit="true"
+              valueChangeListener="#{backingBeanScope.JobTemplateBean.selectTempRescVL}"
+                                        label="#{row.bindings.TransSelectFlag.label}"
+                                        shortDesc="#{bindings.JobTempGroupRescPopulateVO1.hints.TransSelectFlag.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceTypeCode.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceTypeCode.label}"
+                       id="c25">
+              <af:outputText value="#{row.ResourceTypeCode}" id="ot31"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemCode.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemCode.label}"
+                       id="c19">
+              <af:outputText value="#{row.ItemCode}" id="ot33"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemDescription.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemDescription.label}"
+                       id="c21">
+              <af:outputText value="#{row.ItemDescription}" id="ot32"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemRate.name}"
+                       filterable="true" sortable="true" align="right"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemRate.label}"
+                       id="c22">
+              <af:outputText value="#{row.ItemRate}" id="ot30">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.JobTempGroupRescPopulateVO1.hints.ItemRate.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.Uom.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.Uom.label}"
+                       id="c29">
+              <af:outputText value="#{row.Uom}" id="ot37"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ExpenditureType.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ExpenditureType.label}"
+                       id="c26">
+              <af:outputText value="#{row.ExpenditureType}" id="ot38"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceType.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceType.label}"
+                       id="c23">
+              <af:outputText value="#{row.ResourceType}" id="ot40"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceSubGroup.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceSubGroup.label}"
+                       id="c20">
+              <af:outputText value="#{row.ResourceSubGroup}" id="ot35"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceGroup.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.ResourceGroup.label}"
+                       id="c24">
+              <af:outputText value="#{row.ResourceGroup}" id="ot39"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.StartDate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.StartDate.label}"
+                       id="c27">
+              <f:facet name="filter">
+                <af:inputDate value="#{vs.filterCriteria.StartDate}" id="id2"/>
+              </f:facet>
+              <af:outputText value="#{row.StartDate}" id="ot34">
+                <af:convertDateTime pattern="#{bindings.JobTempGroupRescPopulateVO1.hints.StartDate.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.JobTempGroupRescPopulateVO1.hints.EndDate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.JobTempGroupRescPopulateVO1.hints.EndDate.label}"
+                       id="c28">
+              <f:facet name="filter">
+                <af:inputDate value="#{vs.filterCriteria.EndDate}" id="id1"/>
+              </f:facet>
+              <af:outputText value="#{row.EndDate}" id="ot36">
+                <af:convertDateTime pattern="#{bindings.JobTempGroupRescPopulateVO1.hints.EndDate.format}"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+        <f:facet name="buttonBar">
+          <af:group id="g4">
+            <af:commandButton text="Populate"
+                              actionListener="#{backingBeanScope.JobTemplateBean.populateRescAL}"
+                              id="cb11"/>
+            <af:commandButton text="Cancel" id="cb10"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="p2" contentDelivery="lazyUncached"  popupCanceledListener="#{backingBeanScope.JobTemplateBean.copyJobsToProjectsCL}"
+              binding="#{backingBeanScope.JobTemplateBean.copyJobsPopupBindgs}">
+      <af:dialog id="d2" title="Copy Jobs to Project" resize="on" type="none"
+                 stretchChildren="none" inlineStyle="font-size:large;">
+        <af:panelCollection id="pc4">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t8">
+              <af:panelFormLayout id="pfl3" rows="1">
+                <af:inputComboboxListOfValues id="transProjectNumId"
+                                              required="true"
+                                              showRequired="true"
+                                              autoSubmit="true"
+                                              popupTitle="Search and Select: #{bindings.TransProjectNum.hints.label}"
+                                              value="#{bindings.TransProjectNum.inputValue}"
+                                              label="#{bindings.TransProjectNum.hints.label}"
+                                              model="#{bindings.TransProjectNum.listOfValuesModel}"
+                                              columns="#{bindings.TransProjectNum.hints.displayWidth}"
+                                              shortDesc="#{bindings.TransProjectNum.hints.tooltip}">
+                  <f:validator binding="#{bindings.TransProjectNum.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:panelFormLayout>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.TemplateJobsVO1.collectionModel}"
+                    var="row" rows="#{bindings.TemplateJobsVO1.rangeSize}"
+                    emptyText="#{bindings.TemplateJobsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.TemplateJobsVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.TemplateJobsVO1Query.queryDescriptor}"
+                    queryListener="#{bindings.TemplateJobsVO1Query.processQuery}"
+                    filterVisible="false" varStatus="vs"
+                    selectedRowKeys="#{bindings.TemplateJobsVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.TemplateJobsVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="t7">
+            <af:column headerText="#{bindings.TemplateJobsVO1.hints.TransJobSelectFlag.label}"
+                       id="c33">
+              <af:selectBooleanCheckbox value="#{row.bindings.TransJobSelectFlag.inputValue}" autoSubmit="true"
+              valueChangeListener="#{backingBeanScope.JobTemplateBean.tempJobSelectedVL}"
+                                        label="#{row.bindings.TransJobSelectFlag.label}"
+                                        shortDesc="#{bindings.TemplateJobsVO1.hints.TransJobSelectFlag.tooltip}"
+                                        id="sbc2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.TemplateJobsVO1.hints.JobCode.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.TemplateJobsVO1.hints.JobCode.label}"
+                       id="c32">
+              <af:outputText value="#{row.JobCode}" id="ot43"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.TemplateJobsVO1.hints.Quantity.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.TemplateJobsVO1.hints.Quantity.label}"
+                       id="c2">
+              <af:outputText value="#{row.Quantity}" id="ot17"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.TemplateJobsVO1.hints.Uom.name}"
+                       filterable="true" sortable="true" align="right"
+                       headerText="#{bindings.TemplateJobsVO1.hints.Uom.label}"
+                       id="c31">
+              <af:outputText value="#{row.Uom}" id="ot42">
+              <af:convertNumber groupingUsed="false" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.TemplateJobsVO1.hints.Quantity.format}"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+        <f:facet name="buttonBar">
+          <af:group id="g1">
+            <af:commandButton text="Copy"
+                              actionListener="#{backingBeanScope.JobTemplateBean.copyJobsToProjectAL}"
+                              id="cb13"/>
+            <af:commandButton text="Cancel" id="cb14" immediate="true"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+   
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,1365 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PaymentCertSearchVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="true"
+  SelectList="XxinvBusinessUnitsEO.BU_NAME, 
+       ContractHeadersEO.CONTRACT_NUMBER, 
+       ContractHeadersEO.COGNOMEN, 
+       XxpjProjectsEO.PROJECT_NAME, 
+       XxpjProjectsEO.PROJECT_NUMBER, 
+       (select customer_name from okc_k_headers_vl  where contract_id=XxboqPcHdrEO.contract_id) AS VIEW_ATTR, 
+       XxboqPcHdrEO.DOCUMENT_TYPE, 
+       XxboqPcHdrEO.PC_DOCUMENT_NUM, 
+       XxboqPcHdrEO.REVISION, 
+       XxboqPcHdrEO.PERIOD, 
+       XxboqPcHdrEO.PC_DATE, 
+       XxboqPcHdrEO.PC_STATUS, 
+       XxboqPcHdrEO.BU_ID, 
+       XxboqPcHdrEO.CONTRACT_VALUE, 
+       XxboqPcHdrEO.PREV_PC_DOCUMENT_NUM, 
+       XxboqPcHdrEO.CREATED_BY, 
+       XxboqPcHdrEO.CREATION_DATE, 
+       XxboqPcHdrEO.CUSTOMER_ID, 
+       XxboqPcHdrEO.GL_FLAG, 
+       XxboqPcHdrEO.LAST_UPDATED_BY, 
+       XxboqPcHdrEO.LAST_UPDATED_DATE, 
+       XxboqPcHdrEO.PAY_TERMS, 
+       XxboqPcHdrEO.PC_HEADER_ID, 
+       XxboqPcHdrEO.PC_NUM, 
+       XxboqPcHdrEO.PREV_DOCUMENT_TYPE, 
+       XxboqPcHdrEO.PREV_PERIOD, 
+       XxboqPcHdrEO.PROJECT_ID, 
+       XxboqPcHdrEO.REMARKS, 
+       XxboqPcHdrEO.REVERSEL_FLAG, 
+       XxinvBusinessUnitsEO.BU_ID AS BU_ID1, 
+       XxpjProjectsEO.END_DATE, 
+       XxpjProjectsEO.DESCRIPTION, 
+       XxpjProjectsEO.PROJECT_ID AS PROJECT_ID1, 
+       XxpjProjectsEO.START_DATE, 
+       XxboqPcHdrEO.PC_APPROVED_BY, 
+       XxboqPcHdrEO.PC_APPROVED_DATE, 
+       XxinvBusinessUnitsEO.BU_NAME AS BU_NAME1, 
+       XxboqPcHdrEO.PC_NUM AS PC_NUM1, 
+       ( select MEANING from XXBOQ_LOOKUPS_T where LOOKUP_TYPE ='PC_DOC_TYPE' and lookup_code=XxboqPcHdrEO.DOCUMENT_TYPE) AS VIEW_ATTR, 
+       (select nvl(sum(nvl(lines.SELLING_AMOUNT,0)),0) from XXBOQ_BILL_OF_QTY_HDR_T hdr , XXBOQ_BILL_OF_QTY_LINES_T lines  WHERE hdr.BOQ_HEADER_ID = lines.BOQ_HEADER_ID and         hdr.PROJECT_ID=XxboqPcHdrEO.project_ID AND hdr.BUSINESS_UNIT_ID=XxboqPcHdrEO.bu_id  and hdr.current_flag='Y'  and        lines.item is not null        ) AS VIEW_ATTR, 
+       (select PROJECT_TYPE from XXPJ_PROJECT_TYPES_T where PROJECT_TYPE_ID= XxpjProjectsEO.PROJECT_TYPE_ID and rownum=1) AS VIEW_ATTR, 
+       (select PARTY_Number from XXPJ_PROJECT_CUSTOMERS_T  where PROJECT_ID=XxboqPcHdrEO.PROJECT_ID) AS VIEW_ATTR, 
+       XxinvBusinessUnitsEO.BU_NAME AS BU_NAME2, 
+       XxpjProjectsEO.PROJECT_NUMBER AS PROJECT_NUMBER1, 
+       (SELECT nvl( XxfiCurrenciesEO.PRECISION,2)    FROM XXFI_CURRENCIES_T XxfiCurrenciesEO WHERE XxfiCurrenciesEO.CURRENCY_CODE =ContractHeadersEO.CURRENCY_CODE and rownum=1) AS VIEW_ATTR, 
+       XxboqPcHdrEO.AR_FLAG, 
+       (select cummulative from xxboq_pc_lines_t where particulars='TOT' and pc_header_id = XxboqPcHdrEO.PC_HEADER_ID) AS VIEW_ATTR, 
+       (select previous from xxboq_pc_lines_t where particulars='TOT' and pc_header_id = XxboqPcHdrEO.PC_HEADER_ID) AS VIEW_ATTR, 
+       XxpjProjectsEO.PROJECT_CURRENCY_CODE, 
+       XxboqPcHdrEO.CONTRACT_ID, 
+       ContractHeadersEO.CONTRACT_ID AS CONTRACT_ID1"
+  FromList="XXBOQ_PC_HDR_T XxboqPcHdrEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO, XXPJ_PROJECTS_T XxpjProjectsEO, OKC_K_HEADERS_VL ContractHeadersEO"
+  OrderBy="XxboqPcHdrEO.PC_HEADER_ID desc"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.searchview.PaymentCertSearchVORowImpl"
+  ComponentClass="model.searchview.PaymentCertSearchVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqPcHdrEO.BU_ID=XxinvBusinessUnitsEO.BU_ID 
+and XxboqPcHdrEO.PROJECT_ID=XxpjProjectsEO.PROJECT_ID(+)
+and XxboqPcHdrEO.CONTRACT_ID=ContractHeadersEO.CONTRACT_ID
+and XXPJ_ACCESS_FUN(XxboqPcHdrEO.PROJECT_ID,:p_user_id)='Y'">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_user_id"
+    Kind="where"
+    Type="java.math.BigDecimal">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+  </Variable>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ViewCriteriaUsage
+      Name="UserBUSearchVOCriteria"
+      FullName="model.masterview.UserBUSearchVO.UserBUSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PrjProjectsVO1"
+    ViewObjectName="model.masterview.PrjProjectsVO">
+    <ParameterMap>
+      <PIMap Variable="p_org_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectSearchVO1"
+    ViewObjectName="model.searchview.ProjectSearchVO">
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectCustomerLOVVO1"
+    ViewObjectName="model.searchview.ProjectCustomerLOVVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="LookupVO1"
+    ViewObjectName="model.view.LookupVO">
+    <ViewCriteriaUsage
+      Name="PCCriteria"
+      FullName="model.view.LookupVO.PCCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_lookup_type">
+        <TransientExpression><![CDATA["BOQ_STATUS_TYPE"]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PaymentCertificateVersionLOVVO1"
+    ViewObjectName="model.searchview.PaymentCertificateVersionLOVVO">
+    <ParameterMap>
+      <PIMap Variable="p_pc_document_num">
+        <TransientExpression><![CDATA[PcDocumentNum]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PaymentCertHdrVO1"
+    ViewObjectName="model.view.PaymentCertHdrVO">
+    <ViewCriteriaUsage
+      Name="PaymentCertificateSearchLOV"
+      FullName="model.view.PaymentCertHdrVO.PaymentCertificateSearchLOV"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_project_id">
+        <TransientExpression><![CDATA[ProjectId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="AgreementMonthsVO1"
+    ViewObjectName="model.progview.AgreementMonthsVO">
+    <ParameterMap>
+      <PIMap Variable="p_agr_endDate">
+        <TransientExpression><![CDATA[TransPrjEndDate]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_agr_startDate">
+        <TransientExpression><![CDATA[TransPrjStartDate]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LookupVO2"
+    ViewObjectName="model.view.LookupVO">
+    <ViewCriteriaUsage
+      Name="LookupVOCriteria"
+      FullName="model.view.LookupVO.LookupVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_lookup_type">
+        <TransientExpression><![CDATA["PC_DOC_TYPE"]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ContractHeadersVO1"
+    ViewObjectName="model.searchview.ContractHeadersVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ContractHeadersVO2"
+    ViewObjectName="model.searchview.ContractHeadersVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_BuName"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_BuName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuName"/>
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="UserBUSearchVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectNumber"
+    ListVOName="PrjProjectsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ProjectNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ProjectId"/>
+      <Item Value="ProjectId1"/>
+      <Item Value="ProjectName"/>
+      <Item Value="TransPrjStartDate"/>
+      <Item Value="TransPrjEndDate"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="ProjectId"/>
+      <Item Value="ProjectName"/>
+      <Item Value="StartDate"/>
+      <Item Value="EndDate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PrjProjectsVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_BuId"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="-1"
+    NullValueFlag="none"
+    NullValueId="LOV_BuId_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectName"
+    ListVOName="ProjectSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ProjectName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="TransPrjEndDate"/>
+      <Item Value="TransPrjStartDate"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectName"/>
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="EndDate"/>
+      <Item Value="StartDate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectName"/>
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransPartyName"
+    ListVOName="ProjectCustomerLOVVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransPartyName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransPartyName"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PartyName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PartyName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectCustomerLOVVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectCustomerLOVVOCriteria"
+      FullName="model.searchview.ProjectCustomerLOVVO.ProjectCustomerLOVVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_PcStatus"
+    ListVOName="LookupVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PcStatus"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="LookupCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Revision"
+    ListVOName="PaymentCertificateVersionLOVVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Revision"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Revision"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Revision"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_PcDocumentNum"
+    ListVOName="PaymentCertHdrVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_PcDocumentNum_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PcDocumentNum"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PcDocumentNum"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PcDocumentNum"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PaymentCertificateSearchLOV"/>
+    <ViewCriteriaUsage
+      Name="PaymentCertificateSearchLOV"
+      FullName="model.view.PaymentCertHdrVO.PaymentCertificateSearchLOV"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Period"
+    ListVOName="AgreementMonthsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Period_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Period"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="AgreementMonthsVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="AgreementMonthsVOCriteria"
+      FullName="model.progview.AgreementMonthsVO.AgreementMonthsVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_DocumentType"
+    ListVOName="LookupVO2"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="DocumentType"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="LookupCode"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Cognomen"
+    ListVOName="ContractHeadersVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Cognomen_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Cognomen"/>
+      <Item Value="ContractNumber"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Cognomen"/>
+      <Item Value="ContractNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ContractHeadersVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ContractNumber"
+    ListVOName="ContractHeadersVO2"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ContractNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ContractNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ContractId"/>
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="ContractId"/>
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ContractHeadersVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqPcHdrEO"
+    Entity="model.entity.XxboqPcHdrEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.searchview.PaymentCertSearchVO.XxboqPcHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="XxpjProjectsEO"
+    Entity="model.masterentity.XxpjProjectsEO"
+    SourceUsage="model.searchview.PaymentCertSearchVO.XxinvBusinessUnitsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="ContractHeadersEO"
+    Entity="model.masterentity.ContractHeadersEO"
+    SourceUsage="model.searchview.PaymentCertSearchVO.XxboqPcHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="BuName"
+    IsUpdateable="false"
+    LOVName="LOV_BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ContractNumber"
+    PrecisionRule="true"
+    EntityAttrName="ContractNumber"
+    EntityUsage="ContractHeadersEO"
+    AliasName="CONTRACT_NUMBER"
+    LOVName="LOV_ContractNumber"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Cognomen"
+    PrecisionRule="true"
+    EntityAttrName="Cognomen"
+    EntityUsage="ContractHeadersEO"
+    AliasName="COGNOMEN"
+    LOVName="LOV_Cognomen"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_NAME"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectName"
+    PrecisionRule="true"
+    EntityAttrName="ProjectName"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NAME"
+    LOVName="LOV_ProjectName"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectNumber"
+    IsUpdateable="false"
+    LOVName="LOV_ProjectNumber"
+    PrecisionRule="true"
+    EntityAttrName="ProjectNumber"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NUMBER">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransPartyName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select customer_name from okc_k_headers_vl  where contract_id=XxboqPcHdrEO.contract_id)"
+    LOVName="LOV_TransPartyName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CUSTOMER_NAME"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DocumentType"
+    PrecisionRule="true"
+    EntityAttrName="DocumentType"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="DOCUMENT_TYPE"
+    LOVName="LOV_DocumentType">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DOCUMENT_TYPE"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PcDocumentNum"
+    PrecisionRule="true"
+    EntityAttrName="PcDocumentNum"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_DOCUMENT_NUM"
+    LOVName="LOV_PcDocumentNum">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PC_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Revision"
+    PrecisionRule="true"
+    EntityAttrName="Revision"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="REVISION"
+    LOVName="LOV_Revision">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Period"
+    PrecisionRule="true"
+    EntityAttrName="Period"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PERIOD"
+    LOVName="LOV_Period">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PcDate"
+    PrecisionRule="true"
+    EntityAttrName="PcDate"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <FMT_FORMATTER
+          ResId="model.searchview.PaymentCertSearchVO.PcDate_FMT_FORMATTER"/>
+        <FMT_FORMAT
+          ResId="model.searchview.PaymentCertSearchVO.PcDate_FMT_FORMAT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PcStatus"
+    PrecisionRule="true"
+    EntityAttrName="PcStatus"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_STATUS"
+    LOVName="LOV_PcStatus">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuId"
+    LOVName="LOV_BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="BU_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ContractValue"
+    PrecisionRule="true"
+    EntityAttrName="ContractValue"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="CONTRACT_VALUE"/>
+  <ViewAttribute
+    Name="PrevPcDocumentNum"
+    PrecisionRule="true"
+    EntityAttrName="PrevPcDocumentNum"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PREV_PC_DOCUMENT_NUM"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="CustomerId"
+    PrecisionRule="true"
+    EntityAttrName="CustomerId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="CUSTOMER_ID"/>
+  <ViewAttribute
+    Name="GlFlag"
+    PrecisionRule="true"
+    EntityAttrName="GlFlag"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="GL_FLAG"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="PayTerms"
+    PrecisionRule="true"
+    EntityAttrName="PayTerms"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PAY_TERMS"/>
+  <ViewAttribute
+    Name="PcHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="PcHeaderId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_HEADER_ID"/>
+  <ViewAttribute
+    Name="PcNum"
+    PrecisionRule="true"
+    EntityAttrName="PcNum"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_NUM">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="REF_DOC_NUMBER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PrevDocumentType"
+    PrecisionRule="true"
+    EntityAttrName="PrevDocumentType"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PREV_DOCUMENT_TYPE"/>
+  <ViewAttribute
+    Name="PrevPeriod"
+    PrecisionRule="true"
+    EntityAttrName="PrevPeriod"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PREV_PERIOD"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="Remarks"
+    PrecisionRule="true"
+    EntityAttrName="Remarks"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="REMARKS"/>
+  <ViewAttribute
+    Name="ReverselFlag"
+    PrecisionRule="true"
+    EntityAttrName="ReverselFlag"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="REVERSEL_FLAG"/>
+  <ViewAttribute
+    Name="BuId1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID1"/>
+  <ViewAttribute
+    Name="EndDate"
+    PrecisionRule="true"
+    EntityAttrName="EndDate"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="END_DATE"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="ProjectId1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_ID1"/>
+  <ViewAttribute
+    Name="StartDate"
+    PrecisionRule="true"
+    EntityAttrName="StartDate"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="START_DATE"/>
+  <ViewAttribute
+    Name="PcApprovedBy"
+    PrecisionRule="true"
+    EntityAttrName="PcApprovedBy"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_APPROVED_BY"/>
+  <ViewAttribute
+    Name="PcApprovedDate"
+    PrecisionRule="true"
+    EntityAttrName="PcApprovedDate"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_APPROVED_DATE"/>
+  <ViewAttribute
+    Name="BuName1"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME1"/>
+  <ViewAttribute
+    Name="PcNum1"
+    PrecisionRule="true"
+    EntityAttrName="PcNum"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="PC_NUM1"/>
+  <ViewAttribute
+    Name="TransDocumentType"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="( select MEANING from XXBOQ_LOOKUPS_T where LOOKUP_TYPE ='PC_DOC_TYPE' and lookup_code=XxboqPcHdrEO.DOCUMENT_TYPE)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DOCUMET_TYPE"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransStatus"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="STATUS"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransTotalContractVal"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"
+    Expression="(select nvl(sum(nvl(lines.SELLING_AMOUNT,0)),0) from XXBOQ_BILL_OF_QTY_HDR_T hdr , XXBOQ_BILL_OF_QTY_LINES_T lines  WHERE hdr.BOQ_HEADER_ID = lines.BOQ_HEADER_ID and         hdr.PROJECT_ID=XxboqPcHdrEO.project_ID AND hdr.BUSINESS_UNIT_ID=XxboqPcHdrEO.bu_id  and hdr.current_flag='Y'  and        lines.item is not null        )">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_VALUE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectType"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select PROJECT_TYPE from XXPJ_PROJECT_TYPES_T where PROJECT_TYPE_ID= XxpjProjectsEO.PROJECT_TYPE_ID and rownum=1)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_TYPE"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransPartyNum"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select PARTY_Number from XXPJ_PROJECT_CUSTOMERS_T  where PROJECT_ID=XxboqPcHdrEO.PROJECT_ID)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PARTY_NUMBER"/>
+        <DISPLAYWIDTH
+          Value="50"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransPCDocAmnt"
+    IsUpdateable="false"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PC_DOCUMENT_VALUE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuName2"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME2"/>
+  <ViewAttribute
+    Name="ProjectNumber1"
+    PrecisionRule="true"
+    EntityAttrName="ProjectNumber"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NUMBER1"/>
+  <ViewAttribute
+    Name="TransPrecision"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"
+    Expression="(SELECT nvl( XxfiCurrenciesEO.PRECISION,2)    FROM XXFI_CURRENCIES_T XxfiCurrenciesEO WHERE XxfiCurrenciesEO.CURRENCY_CODE =ContractHeadersEO.CURRENCY_CODE and rownum=1)"/>
+  <ViewAttribute
+    Name="TransPrjStartDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransPrjEndDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    AliasName="VIEW_ATTR"
+    SQLType="DATE"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="ArFlag"
+    PrecisionRule="true"
+    EntityAttrName="ArFlag"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="AR_FLAG">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="INTERFACE_FLAG"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCummInvoicedAmt"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"
+    Expression="(select cummulative from xxboq_pc_lines_t where particulars='TOT' and pc_header_id = XxboqPcHdrEO.PC_HEADER_ID)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CUMULATIVE_INVOICE_AMOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransPrevInvoicedAmt"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"
+    Expression="(select previous from xxboq_pc_lines_t where particulars='TOT' and pc_header_id = XxboqPcHdrEO.PC_HEADER_ID)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PREVIOUS_INVOICE_AMOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCurrentInvoicedAmt"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <RecalcCondition><![CDATA[true]]></RecalcCondition>
+    <TransientExpression><![CDATA[(TransCummInvoicedAmt==null?0:TransCummInvoicedAmt)-(TransPrevInvoicedAmt==null?0:TransPrevInvoicedAmt)]]></TransientExpression>
+    <Dependencies>
+      <Item
+        Value="TransCummInvoicedAmt"/>
+      <Item
+        Value="TransPrevInvoicedAmt"/>
+    </Dependencies>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CURRENT_INVOICE_AMOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectCurrencyCode"
+    PrecisionRule="true"
+    EntityAttrName="ProjectCurrencyCode"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_CURRENCY_CODE"/>
+  <ViewAttribute
+    Name="ContractId"
+    PrecisionRule="true"
+    EntityAttrName="ContractId"
+    EntityUsage="XxboqPcHdrEO"
+    AliasName="CONTRACT_ID"/>
+  <ViewAttribute
+    Name="ContractId1"
+    PrecisionRule="true"
+    EntityAttrName="ContractId"
+    EntityUsage="ContractHeadersEO"
+    AliasName="CONTRACT_ID1"
+    IsUpdateable="false"/>
+  <ViewCriteria
+    Name="PaymentCertSearchVOCriteria"
+    ViewObjectName="model.searchview.PaymentCertSearchVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow268"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="BuName"
+        ViewAttribute="BuName"
+        Operator="="
+        Conjunction="AND"
+        Required="Required"
+        GenerateIsNullClauseForBindVars="false"/>
+      <ViewCriteriaItem
+        Name="ContractNumber"
+        ViewAttribute="ContractNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="Cognomen"
+        ViewAttribute="Cognomen"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ProjectName"
+        ViewAttribute="ProjectName"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="ProjectNumber"
+        ViewAttribute="ProjectNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransPartyName"
+        ViewAttribute="TransPartyName"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="DocumentType"
+        ViewAttribute="DocumentType"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="PcDocumentNum"
+        ViewAttribute="PcDocumentNum"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="Revision"
+        ViewAttribute="Revision"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="Period"
+        ViewAttribute="Period"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="PcDate"
+        ViewAttribute="PcDate"
+        Operator="BETWEEN"
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="PcStatus"
+        ViewAttribute="PcStatus"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="BuId"
+        ViewAttribute="BuId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"
+        GenerateIsNullClauseForBindVars="false">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="ProjectId"
+        ViewAttribute="ProjectId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="ProjectId1"
+        ViewAttribute="ProjectId1"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransPrjStartDate"
+        ViewAttribute="TransPrjStartDate"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransPrjEndDate"
+        ViewAttribute="TransPrjEndDate"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="ContractId"
+        ViewAttribute="ContractId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="PcHeaderId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

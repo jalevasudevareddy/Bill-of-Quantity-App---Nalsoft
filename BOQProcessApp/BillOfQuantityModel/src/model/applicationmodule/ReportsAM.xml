@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ReportsAM"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  ComponentClass="model.applicationmodule.ReportsAMImpl"
+  ClearCacheOnRollback="true"
+  ComponentInterface="model.applicationmodule.common.ReportsAM"
+  ClientProxyName="model.applicationmodule.client.ReportsAMClient">
+  <DesignTime>
+    <Attr Name="_deployType" Value="0"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewUsage
+    Name="WorkDoneDetailsViewVO1"
+    ViewObjectName="model.reportview.WorkDoneDetailsViewVO"/>
+  <ViewUsage
+    Name="WorkDoneLinesViewVO1"
+    ViewObjectName="model.reportview.WorkDoneLinesViewVO"/>
+  <ViewUsage
+    Name="BoqPcHdrViewVO1"
+    ViewObjectName="model.reportview.BoqPcHdrViewVO"/>
+  <ViewUsage
+    Name="BoqPcLinesViewVO1"
+    ViewObjectName="model.reportview.BoqPcLinesViewVO"/>
+  <ViewUsage
+    Name="WorkDoneDetailsReportVO1"
+    ViewObjectName="model.reportview.WorkDoneDetailsReportVO"/>
+  <ViewLinkUsage
+    Name="WorkDoneDetailsViewToLinesViewVL1"
+    ViewLinkObjectName="model.viewlink.WorkDoneDetailsViewToLinesViewVL"
+    SrcViewUsageName="model.applicationmodule.ReportsAM.WorkDoneDetailsViewVO1"
+    DstViewUsageName="model.applicationmodule.ReportsAM.WorkDoneLinesViewVO1"
+    Reversed="false"/>
+  <ViewLinkUsage
+    Name="BoqPcHdrviewToLinesViewVL1"
+    ViewLinkObjectName="model.viewlink.BoqPcHdrviewToLinesViewVL"
+    SrcViewUsageName="model.applicationmodule.ReportsAM.BoqPcHdrViewVO1"
+    DstViewUsageName="model.applicationmodule.ReportsAM.BoqPcLinesViewVO1"
+    Reversed="false"/>
+  <ClientInterface>
+    <Method
+      Name="runWorkDoneDetailsReport">
+      <Return
+        Type="byte[]"/>
+      <Parameter
+        Name="wdHdrId"
+        Type="java.lang.Number"/>
+    </Method>
+    <Method
+      Name="runBoqPcReport">
+      <Return
+        Type="byte[]"/>
+      <Parameter
+        Name="prjId"
+        Type="java.lang.Number"/>
+    </Method>
+  </ClientInterface>
+</AppModule>

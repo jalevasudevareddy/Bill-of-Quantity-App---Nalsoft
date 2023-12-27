@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="WorkListPageDef"
+                Package="pagefragments.notifications">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="WorkListVO1" RangeSize="25"
+              DataControl="ApprovalAMDataControl" id="WorkListVO1Iterator"/>
+    <searchRegion Binds="WorkListVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="WorkListVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="WorkListVO1Iterator" id="WorkListVO1">
+      <nodeDefinition DefName="model.approvalview.WorkListVO"
+                      Name="WorkListVO10">
+        <AttrNames>
+          <Item Value="Rowid1"/>
+          <Item Value="ReqDocumentId"/>
+          <Item Value="ApprovalProcessId"/>
+          <Item Value="RuleId"/>
+          <Item Value="ApprovalGroupId"/>
+          <Item Value="ApprovalGroupLevel"/>
+          <Item Value="ApproverLevel"/>
+          <Item Value="FromEmployeeId"/>
+          <Item Value="ToEmployeeId"/>
+          <Item Value="Status"/>
+          <Item Value="RequestDate"/>
+          <Item Value="Subject"/>
+          <Item Value="DocumentTypeId"/>
+          <Item Value="DocumentType"/>
+          <Item Value="ReferenceCode"/>
+          <Item Value="ToEmployee"/>
+          <Item Value="FromEmployee"/>
+          <Item Value="ToUserName"/>
+          <Item Value="ApprovalCategory"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="WorkListVO1Iterator" id="Execute"
+            InstanceName="ApprovalAMDataControl.WorkListVO1"
+            DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+            Action="iteratorExecute"/>
+    <methodAction id="setWorkListForEmployee"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setWorkListForEmployee"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="viewClosedNotifications"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="viewClosedNotifications"
+                  IsViewObjectMethod="false"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,210 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<!---->
+<BC4JConfig version="11.1" xmlns="http://xmlns.oracle.com/bc4j/configuration">
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.CommonUtilsAM">
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CommonUtilsAMLocal" ApplicationName="model.applicationmodule.CommonUtilsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Security AppModuleJndiName="model.applicationmodule.CommonUtilsAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CommonUtilsAMShared" ApplicationName="model.applicationmodule.CommonUtilsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Security AppModuleJndiName="model.applicationmodule.CommonUtilsAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.BOQSetupAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BOQSetupsAMLocal" ApplicationName="model.applicationmodule.BOQSetupAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BOQSetupAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BOQSetupsAMShared" ApplicationName="model.applicationmodule.BOQSetupAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BOQSetupAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.BillofQuantityAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BillofQuantityAMLocal" ApplicationName="model.applicationmodule.BillofQuantityAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BillofQuantityAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BillofQuantityAMShared" ApplicationName="model.applicationmodule.BillofQuantityAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BillofQuantityAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.BOQUploadsAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BOQUploadsAMLocal" ApplicationName="model.applicationmodule.BOQUploadsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BOQUploadsAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BOQUploadsAMShared" ApplicationName="model.applicationmodule.BOQUploadsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BOQUploadsAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.JobTemplateAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="JobTemplateAMLocal" ApplicationName="model.applicationmodule.JobTemplateAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.JobTemplateAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="JobTemplateAMShared" ApplicationName="model.applicationmodule.JobTemplateAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.JobTemplateAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.BillingDetailsAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BillingDetailsAMLocal" ApplicationName="model.applicationmodule.BillingDetailsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BillingDetailsAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BillingDetailsAMShared" ApplicationName="model.applicationmodule.BillingDetailsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BillingDetailsAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.PlanningScheduleAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="PlanningScheduleAMLocal" ApplicationName="model.applicationmodule.PlanningScheduleAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.PlanningScheduleAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="PlanningScheduleAMShared" ApplicationName="model.applicationmodule.PlanningScheduleAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.PlanningScheduleAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.ProjectJobItemAnalysisAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ProjectJobItemAnalysisAMLocal" ApplicationName="model.applicationmodule.ProjectJobItemAnalysisAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.ProjectJobItemAnalysisAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ProjectJobItemAnalysisAMShared" ApplicationName="model.applicationmodule.ProjectJobItemAnalysisAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.ProjectJobItemAnalysisAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.ApprovalAM">
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ApprovalAMLocal" ApplicationName="model.applicationmodule.ApprovalAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Security AppModuleJndiName="model.applicationmodule.ApprovalAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ApprovalAMShared" ApplicationName="model.applicationmodule.ApprovalAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Security AppModuleJndiName="model.applicationmodule.ApprovalAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.CostingDetailsAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CostingDetailsAMLocal" ApplicationName="model.applicationmodule.CostingDetailsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.CostingDetailsAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CostingDetailsAMShared" ApplicationName="model.applicationmodule.CostingDetailsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.CostingDetailsAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.PaymentCertificateAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="PaymentCertificateAMLocal" ApplicationName="model.applicationmodule.PaymentCertificateAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.PaymentCertificateAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="PaymentCertificateAMShared" ApplicationName="model.applicationmodule.PaymentCertificateAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.PaymentCertificateAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.BoqUploadValidationAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BoqUploadValidationAMLocal" ApplicationName="model.applicationmodule.BoqUploadValidationAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BoqUploadValidationAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="BoqUploadValidationAMShared" ApplicationName="model.applicationmodule.BoqUploadValidationAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.BoqUploadValidationAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.CandyBillofQuantityAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CandyBillofQuantityAMLocal" ApplicationName="model.applicationmodule.CandyBillofQuantityAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.CandyBillofQuantityAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="CandyBillofQuantityAMShared" ApplicationName="model.applicationmodule.CandyBillofQuantityAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.CandyBillofQuantityAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.RevenueRecognitionAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="RevenueRecognitionAMLocal" ApplicationName="model.applicationmodule.RevenueRecognitionAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.RevenueRecognitionAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="RevenueRecognitionAMShared" ApplicationName="model.applicationmodule.RevenueRecognitionAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.RevenueRecognitionAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+   <AppModuleConfigBag ApplicationName="model.applicationmodule.ReportsAM">
+      <AppModuleConfig    DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ReportsAMLocal" ApplicationName="model.applicationmodule.ReportsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory"
+                       JDBCName="DBCon">
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.ReportsAM"/>
+         
+      </AppModuleConfig>
+      <AppModuleConfig DeployPlatform="LOCAL" jbo.project="model.BillOfQuantityModel" name="ReportsAMShared" ApplicationName="model.applicationmodule.ReportsAM" java.naming.factory.initial="oracle.jbo.common.JboInitialContextFactory">
+         <AM-Pooling jbo.ampool.dynamicjdbccredentials="false" jbo.ampool.isuseexclusive="false" jbo.ampool.maxpoolsize="1" jbo.ampool.resetnontransactionalstate="false"/>
+         <Database jbo.TypeMapEntries="Java"/>
+         <Security AppModuleJndiName="model.applicationmodule.ReportsAM"/>
+         <Custom JDBCDataSource="jdbc/xxcust"/>
+      </AppModuleConfig>
+   </AppModuleConfigBag>
+</BC4JConfig>

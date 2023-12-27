@@ -1,0 +1,284 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Manage Work Done" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true" maxColumns="2"
+                rows="4"
+                value="#{bindings.WorkDoneQtySearchQuery.queryDescriptor}"
+                model="#{bindings.WorkDoneQtySearchQuery.queryModel}"
+                queryListener="#{bindings.WorkDoneQtySearchQuery.processQuery}"
+                queryOperationListener="#{bindings.WorkDoneQtySearchQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1" fieldWidth="70%" saveQueryMode="hidden"
+                labelWidth="30%"/>
+    </af:panelHeader>
+     <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t1">
+              <af:commandImageLink id="cb2" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.WorkDoneDetailsBean.createHeaderRow}"
+                                   shortDesc="Create"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_EVAL_PL_ROLE=='Y'}"/>
+              <af:commandImageLink id="cb1" icon="/images/edit.png"
+                                   partialTriggers="resId1 ::qryId1"
+                                   disabledIcon="/images/edit_disable.png"
+                                   disabled="#{bindings.WdHeaderId.inputValue==null}"
+                                   actionListener="#{backingBeanScope.WorkDoneDetailsBean.editDocument}"
+                                   hoverIcon="/images/edit_active.png"
+                                   shortDesc="Edit"/>
+        <af:commandButton text="Export to Excel" partialTriggers="resId1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Work Done Details.xls"
+                                                         exportedId="resId1"/>
+            </af:commandButton>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.WorkDoneQtySearchVO1.collectionModel}"
+                var="row" rows="#{bindings.WorkDoneQtySearchVO1.rangeSize}"
+                emptyText="#{bindings.WorkDoneQtySearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.WorkDoneQtySearchVO1.rangeSize}"
+                rowBandingInterval="0" columnStretching="multiple"
+                filterModel="#{bindings.WorkDoneQtySearchQuery.queryDescriptor}"
+                queryListener="#{bindings.WorkDoneQtySearchQuery.processQuery}"
+                varStatus="vs"
+                binding="#{backingBeanScope.WorkDoneDetailsBean.workDoneSearchTable}"
+                selectedRowKeys="#{bindings.WorkDoneQtySearchVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.WorkDoneQtySearchVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="resId1">
+      
+        <af:column rowHeader="true" width="5" id="r1" headerText=" " frozen="true">
+          <af:outputText value=" " id="ol1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.Cognomen.name}"
+                   filterable="true" sortable="true" width="200" frozen="true"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.Cognomen.label}"
+                   id="resId1c3">
+          <af:outputText value="#{row.Cognomen}" id="ot5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.ContractNumber.name}"
+                   filterable="true" sortable="true" width="100" frozen="true"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.ContractNumber.label}"
+                   id="c8">
+          <af:outputText value="#{row.ContractNumber}" id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.WdDocumentNum.name}"
+                   filterable="true" sortable="true" width="150"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.WdDocumentNum.label}"
+                   id="resId1c4">
+          <af:commandLink actionListener="#{backingBeanScope.WorkDoneDetailsBean.editDocument}"
+                          id="cl1">
+            <af:outputText value="#{row.WdDocumentNum}" id="ot9"/>
+          </af:commandLink>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.Version.name}"
+                   filterable="true" sortable="true" width="50"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.Version.label}"
+                   id="c2">
+          <af:outputText value="#{row.Version}" id="ot12"/>
+        </af:column>
+        <af:column headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransBOQVersion.label}"
+                   id="c9" filterable="true" sortable="true" width="50"
+                   sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransBOQVersion.name}">
+          <af:outputText value="#{row.TransBOQVersion}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransStatus.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransStatus.label}"
+                   id="resId1c6">
+          <af:outputText value="#{row.TransStatus}" id="ot4"/>
+        </af:column>
+        <af:column headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransCustomerName.label}"
+                   id="c11" filterable="true" sortable="true" width="200"
+                   sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransCustomerName.name}">
+          <af:outputText value="#{row.TransCustomerName}" id="ot17"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.BuName1.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.BuName1.label}"
+                   id="c7">
+          <af:outputText value="#{row.BuName1}" id="ot11"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransPrevWDAmount.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransPrevWDAmount.label}"
+                   id="c23">
+          <af:outputText value="#{row.TransPrevWDAmount}" id="ot13">
+            <af:convertNumber groupingUsed="true" type="currency"
+                              currencySymbol=" "
+                              maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              pattern="#{bindings.WorkDoneQtySearchVO1.hints.TransPrevWDAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransCurrentWDAmont.label}"
+                   id="c5"
+                   sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransCurrentWDAmont.name}"
+                   filterable="true" sortable="true" align="right">
+          <af:outputText value="#{row.TransCurrentWDAmont}" id="ot15">
+            <af:convertNumber groupingUsed="true" type="currency"
+                              currencySymbol=" "
+                              maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              pattern="#{bindings.WorkDoneQtySearchVO1.hints.TransCurrentWDAmont.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransCumulativeWDAmount.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransCumulativeWDAmount.label}"
+                   id="c4">
+          <af:outputText value="#{row.TransCumulativeWDAmount}" id="ot14">
+            <af:convertNumber groupingUsed="true" type="currency"
+                              currencySymbol=" "
+                              maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                              pattern="#{bindings.WorkDoneQtySearchVO1.hints.TransCumulativeWDAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.WorkDoneQtySearchVO1.hints.CurrentFlag.label}"
+                   id="c3">
+          <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                    label="#{row.bindings.CurrentFlag.label}" readOnly="true"
+                                    shortDesc="#{bindings.WorkDoneQtySearchVO1.hints.CurrentFlag.tooltip}"
+                                    id="sbc1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.WdApprovedBy.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.WdApprovedBy.label}"
+                   id="c1">
+          <af:outputText value="#{row.WdApprovedBy}" id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.WdApprovedDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.WdApprovedDate.label}"
+                   id="resId1c9">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.WdApprovedDate}" id="id1"/>
+          </f:facet>
+          <af:outputText value="#{row.WdApprovedDate}" id="ot2">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.WdDocumentDate.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.WdDocumentDate.label}"
+                   id="resId1c5">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.WdDocumentDate}" id="id3"/>
+          </f:facet>
+          <af:outputText value="#{row.WdDocumentDate}" id="ot10">
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.PeriodOfMeasure2.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.PeriodOfMeasure2.label}"
+                   id="c10">
+          <af:outputText value="#{row.PeriodOfMeasure2}" id="ot7"/>
+        </af:column>
+        <af:column headerText="#{bindings.WorkDoneQtySearchVO1.hints.TransActualWDAmount.label}"  rendered="false"
+                   id="c6" sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.TransActualWDAmount.name}"
+                   filterable="true" sortable="true" align="right" >
+          <af:outputText value="#{row.TransActualWDAmount}" id="ot16">
+           <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.WorkDoneQtySearchVO1.hints.TransCumulativeWDAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.WorkDoneQtySearchVO1.hints.CreationDate.name}"
+                   filterable="true" sortable="true" rendered="false"
+                   headerText="#{bindings.WorkDoneQtySearchVO1.hints.CreationDate.label}"
+                   id="resId1c10">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CreationDate}" id="id2"/>
+          </f:facet>
+          <af:outputText value="#{row.CreationDate}" id="ot6">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:showDetailHeader>
+    <af:popup id="p1" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.WorkDoneDetailsBean.cancelPopup}"
+              binding="#{backingBeanScope.WorkDoneDetailsBean.createPopup}">
+      <af:dialog id="d1" title="Create New Document" resize="off" type="none"
+                 stretchChildren="none">
+       
+        <af:panelFormLayout id="pfp1" styleClass="AFStretchWidth">
+          <af:inputComboboxListOfValues id="transBusinessUnitId"
+                                        autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                        value="#{bindings.TransBuName.inputValue}"
+                                        label="#{bindings.TransBuName.hints.label}"
+                                        model="#{bindings.TransBuName.listOfValuesModel}"
+                                        required="true"
+                                        binding="#{backingBeanScope.WorkDoneDetailsBean.buNameBindgs}"
+                                        valueChangeListener="#{backingBeanScope.WorkDoneDetailsBean.buNameVL}"
+                                        columns="#{bindings.TransBuName.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransBuName.hints.tooltip}">
+            <f:validator binding="#{bindings.TransBuName.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transProjectId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.TransProjectNum.hints.label}"
+                                        value="#{bindings.TransProjectNum.inputValue}"
+                                        label="#{bindings.TransProjectNum.hints.label}"
+                                        model="#{bindings.TransProjectNum.listOfValuesModel}"
+                                        required="true" rendered="false"
+                                        binding="#{backingBeanScope.WorkDoneDetailsBean.prjNumBindgs}"
+                                        valueChangeListener="#{backingBeanScope.WorkDoneDetailsBean.prjNumVL}"
+                                        partialTriggers="transBusinessUnitId"
+                                        disabled="#{bindings.TransBuName.inputValue==null}"
+                                        columns="#{bindings.TransProjectNum.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransProjectNum.hints.tooltip}">
+            <f:validator binding="#{bindings.TransProjectNum.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="transContractNumberId"
+                                        popupTitle="Search and Select: #{bindings.TransContractNumber.hints.label}"
+                                        value="#{bindings.TransContractNumber.inputValue}"
+                                        label="#{bindings.TransContractNumber.hints.label}"
+                                        model="#{bindings.TransContractNumber.listOfValuesModel}"
+                                         required="true"  autoSubmit="true"
+                                         partialTriggers="transBusinessUnitId"
+                                        disabled="#{bindings.TransBuName.inputValue==null}"
+                                        columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransContractNumber.hints.tooltip}"
+                                        binding="#{backingBeanScope.WorkDoneDetailsBean.contractNumBind}">
+            <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputComboboxListOfValues id="periodOfMeasureId" autoSubmit="true"
+                                        binding="#{backingBeanScope.WorkDoneDetailsBean.periodBindgs}"
+                                        popupTitle="Search and Select: #{bindings.TransPeriod.hints.label}"
+                                        value="#{bindings.TransPeriod.inputValue}"
+                                        label="#{bindings.TransPeriod.hints.label}"
+                                        model="#{bindings.TransPeriod.listOfValuesModel}"
+                                        required="true" 
+                                        partialTriggers="transContractNumberId"
+                                        disabled="#{bindings.TransBuName.inputValue==null or bindings.TransContractNumber.inputValue==null}"
+                                        columns="#{bindings.TransPeriod.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransPeriod.hints.tooltip}">
+            <f:validator binding="#{bindings.TransPeriod.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:panelFormLayout>
+        <f:facet name="buttonBar">
+          <af:group id="g1">
+            <af:commandButton actionListener="#{backingBeanScope.WorkDoneDetailsBean.createDocument}"
+                              text="Create" id="crCb" partialSubmit="true"
+                              partialTriggers="transContractNumberId"
+                              disabled="#{bindings.TransBuName.inputValue==null or bindings.TransContractNumber.inputValue==null}"/>
+            <af:spacer width="5" id="s4"/>
+            <af:commandButton text="Cancel" id="canCb"
+                              actionListener="#{backingBeanScope.WorkDoneDetailsBean.CancelWD}"
+                              immediate="true" partialSubmit="true"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

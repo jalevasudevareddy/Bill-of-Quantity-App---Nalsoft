@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ProgressDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProgressDetailsHdrVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="ProgressDetailsHdrVO1Iterator"/>
+    <searchRegion Criteria="ProgressDetailsSearch"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProgressDetailsHdrVO1Iterator"
+                  id="ProgressDetailsSearchQuery"/>
+    <iterator Binds="ProgressDetailsLinesVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="ProgressDetailsLinesVO1Iterator"/>
+    <searchRegion Binds="ProgressDetailsLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ProgressDetailsLinesVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProgressDetailsHdrVO1Iterator"
+          id="ProgressDetailsHdrVO1">
+      <nodeDefinition DefName="model.view.ProgressDetailsHdrVO"
+                      Name="ProgressDetailsHdrVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ApprovedBy"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="AsOnDate"/>
+          <Item Value="Status"/>
+          <Item Value="CreationDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="cancelProgDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelProgDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createProgHeaderRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createProgHeaderRow" IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false" IterBinding="ProgressDetailsHdrVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator"
+                     id="TransProjectName">
+      <AttrNames>
+        <Item Value="TransProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator" id="AsOnDate">
+      <AttrNames>
+        <Item Value="AsOnDate"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="ProgressDetailsHdrVO1Iterator"
+                  Uses="LOV_TransProjectNumber" id="TransProjectNumber1"/>
+    <methodAction id="refreshProgressDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshProgressDetails"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="ProgressDetailsLinesVO1Iterator"
+          id="ProgressDetailsLinesVO1">
+      <nodeDefinition DefName="model.view.ProgressDetailsLinesVO"
+                      Name="ProgressDetailsLinesVO10">
+        <AttrNames>
+          <Item Value="ProgressPercent"/>
+          <Item Value="TransActivityCode"/>
+          <Item Value="ActivityCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProgressDetailsHdrVO1Iterator"
+                     id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ProgressDetailsLinesVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ProgressDetailsLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="validateProgressDetailsHdr"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateProgressDetailsHdr"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateProgressDetailsHdr_BillingDetailsAMDataControl_dataProvider_validateProgressDetailsHdr_result"/>
+  </bindings>
+</pageDefinition>

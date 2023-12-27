@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="MaterialAtSitePageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="MaterialAtSiteHdrVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="MaterialAtSiteHdrVO1Iterator"/>
+    <iterator Binds="MaterialAtSiteLinesVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="MaterialAtSiteLinesVO1Iterator"/>
+    <searchRegion Binds="MaterialAtSiteLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="MaterialAtSiteLinesVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator" id="ApprovedBy">
+      <AttrNames>
+        <Item Value="ApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="PeriodOfMeasure">
+      <AttrNames>
+        <Item Value="PeriodOfMeasure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator" id="Revision">
+      <AttrNames>
+        <Item Value="Revision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="MaterialAtSiteLinesVO1Iterator"
+          id="MaterialAtSiteLinesVO1">
+      <nodeDefinition DefName="model.view.MaterialAtSiteLinesVO"
+                      Name="MaterialAtSiteLinesVO10">
+        <AttrNames>
+          <Item Value="TransActivityCode"/>
+          <Item Value="TransResourceType"/>
+          <Item Value="TransResourceGroup"/>
+          <Item Value="TransResourceSubGroup"/>
+          <Item Value="TransResourceItem"/>
+          <Item Value="TransResourceDesc"/>
+          <Item Value="TransResourceRate"/>
+          <Item Value="Quantity"/>
+          <Item Value="ActivityCode"/>
+          <Item Value="ItemCode"/>
+          <Item Value="TransTotalValue"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="MaterialAtSiteLinesVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="MaterialAtSiteLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="refreshMaterialAtSiteLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshMaterialAtSiteLines"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="submitMaterialAtSite"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="submitMaterialAtSite" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.submitMaterialAtSite_BillingDetailsAMDataControl_dataProvider_submitMaterialAtSite_result"/>
+    <methodAction id="reviseMaterialSiteDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="reviseMaterialSiteDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.reviseMaterialSiteDetails_BillingDetailsAMDataControl_dataProvider_reviseMaterialSiteDetails_result"/>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="TransMaxRevision">
+      <AttrNames>
+        <Item Value="TransMaxRevision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="MaterialAtSiteHdrVO1Iterator"
+                     id="TransNextPeriod">
+      <AttrNames>
+        <Item Value="TransNextPeriod"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

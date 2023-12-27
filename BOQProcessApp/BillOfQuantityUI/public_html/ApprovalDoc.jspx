@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:h="http://java.sun.com/jsf/html"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <af:document id="d1">
+      <af:form id="f1">
+        <!--<af:region value="#{bindings.JWTCheckTF1.regionModel}" id="r2"/>-->
+        <!--<af:region id="r1" rendered="#{pageFlowScope.docTypeId=='16'}" value="#{bindings.AgreementTF1.regionModel}"/>-->
+        <af:region value="#{bindings.WorkDoneQtyTF1.regionModel}" id="r2" rendered="#{pageFlowScope.docTypeId=='2'}"/>
+        <af:region value="#{bindings.BOQUploadValidationTF1.regionModel}"  rendered="#{pageFlowScope.docTypeId=='1'}"
+                   id="r1"/>
+        <af:region value="#{bindings.CertifiedQtyTF1.regionModel}" id="r3"  rendered="#{pageFlowScope.docTypeId=='4'}"/>
+        <af:region value="#{bindings.InvoicedQtyTF1.regionModel}" id="r4"  rendered="#{pageFlowScope.docTypeId=='3'}"/>
+        <af:region value="#{bindings.PaymentCertificateTF1.regionModel}"  rendered="#{pageFlowScope.docTypeId=='5'}"
+                   id="r5"/>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View3">
+      <property
+         name="activityId">ProjectJobItemAnalysisSearch</property>
+      <property
+         name="page">/pagefragments/ProjectJobItemAnalysisSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ProjectJobItemAnalysisSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">293.74707</property>
+      <property
+         name="x">352.36914</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <View
+      id="View4">
+      <property
+         name="activityId">JobItemAnalysis</property>
+      <property
+         name="page">/pagefragments/JobItemAnalysis.jsff</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>JobItemAnalysis&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">288.89648</property>
+      <property
+         name="pageFragment">true</property>
+      <property
+         name="x">633.0</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase6"
+      from="View3"
+      to="View4">
+      <property
+         name="fromOutcome">JobItemAnalysis</property>
+      <property
+         name="sdm:polyPoints">R46,393.36914,289.89648,591.91455,285.0459,L46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase7"
+      from="View4"
+      to="View3">
+      <property
+         name="fromOutcome">done</property>
+      <property
+         name="sdm:polyPoints">L54,592.0,292.0459,393.4546,296.89648,R54</property>
+   </ControlFlowCase>
+</SDM>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="PlanningSchedulePageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="PlanningScheduleHdrVO1" RangeSize="25"
+              DataControl="PlanningScheduleAMDataControl"
+              id="PlanningScheduleHdrVO1Iterator"/>
+    <iterator Binds="ActivityLevelPlanningVO1" RangeSize="25"
+              DataControl="PlanningScheduleAMDataControl"
+              id="ActivityLevelPlanningVO1Iterator"/>
+    <searchRegion Binds="ActivityLevelPlanningVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ActivityLevelPlanningVO1Query"/>
+    <iterator Binds="JobLevelPlanningVO1" RangeSize="25"
+              DataControl="PlanningScheduleAMDataControl"
+              id="JobLevelPlanningVO1Iterator"/>
+    <searchRegion Binds="JobLevelPlanningVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobLevelPlanningVO1Query"/>
+    <iterator Binds="ActivityLineLevelPlanVO1" RangeSize="48"
+              DataControl="PlanningScheduleAMDataControl"
+              id="ActivityLineLevelPlanVO1Iterator"/>
+    <searchRegion Binds="ActivityLineLevelPlanVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ActivityLineLevelPlanVO1Query"/>
+    <iterator Binds="JobLineLevelPlanningVO1" RangeSize="48"
+              DataControl="PlanningScheduleAMDataControl"
+              id="JobLineLevelPlanningVO1Iterator"/>
+    <searchRegion Binds="JobLineLevelPlanningVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobLineLevelPlanningVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="BudgetType">
+      <AttrNames>
+        <Item Value="BudgetType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="IaVersion">
+      <AttrNames>
+        <Item Value="IaVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="PlanPeriod">
+      <AttrNames>
+        <Item Value="PlanPeriod"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="ProjectPlan">
+      <AttrNames>
+        <Item Value="ProjectPlan"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="ChangeReason">
+      <AttrNames>
+        <Item Value="ChangeReason"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="VersionNo">
+      <AttrNames>
+        <Item Value="VersionNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator" id="PlanYear">
+      <AttrNames>
+        <Item Value="PlanYear"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="StartDate">
+      <AttrNames>
+        <Item Value="StartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="TotalIncome">
+      <AttrNames>
+        <Item Value="TotalIncome"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="TotalBudget">
+      <AttrNames>
+        <Item Value="TotalBudget"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator" id="EndDate">
+      <AttrNames>
+        <Item Value="EndDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="TransContribution">
+      <AttrNames>
+        <Item Value="TransContribution"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="callpkgForAMEProcessSubmit"
+                  InstanceName="PlanningScheduleAMDataControl.dataProvider"
+                  DataControl="PlanningScheduleAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMEProcessSubmit"
+                  IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false"
+                  IterBinding="PlanningScheduleHdrVO1Iterator"
+                  Uses="LOV_TransStructureCode" id="TransStructureCode"/>
+    
+    <tree IterBinding="ActivityLevelPlanningVO1Iterator"
+          id="ActivityLevelPlanningVO1">
+      <nodeDefinition DefName="model.view.ActivityLevelPlanningVO"
+                      Name="ActivityLevelPlanningVO10">
+        <AttrNames>
+          <Item Value="ActivityStructure"/>
+          <Item Value="Description"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="TransBalQty"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+<methodAction id="populateActivityLines"
+                  InstanceName="PlanningScheduleAMDataControl.dataProvider"
+                  DataControl="PlanningScheduleAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateActivityLines"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="filterLinesUsingStructure"
+                  InstanceName="PlanningScheduleAMDataControl.dataProvider"
+                  DataControl="PlanningScheduleAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="filterLinesUsingStructure"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="JobLevelPlanningVO1Iterator" id="JobLevelPlanningVO1">
+      <nodeDefinition DefName="model.view.JobLevelPlanningVO"
+                      Name="JobLevelPlanningVO10">
+        <AttrNames>
+          <Item Value="JobCode"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="TransBalQty"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator"
+                     id="TransChangeReason">
+      <AttrNames>
+        <Item Value="TransChangeReason"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ActivityLineLevelPlanVO1Iterator"
+          id="ActivityLineLevelPlanVO1">
+      <nodeDefinition DefName="model.view.ActivityLineLevelPlanVO"
+                      Name="ActivityLineLevelPlanVO10">
+        <AttrNames>
+          <Item Value="ActivityLevelLineid"/>
+          <Item Value="ActivityLineLevelId"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="ColumnId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="Period"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="JobLineLevelPlanningVO1Iterator"
+          id="JobLineLevelPlanningVO1">
+      <nodeDefinition DefName="model.view.JobLineLevelPlanningVO"
+                      Name="JobLineLevelPlanningVO10">
+        <AttrNames>
+          <Item Value="BoqQuantity"/>
+          <Item Value="ColumnId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="JobLeavelLineId"/>
+          <Item Value="JobLineLevelId"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="Period"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="revisePlanningSchedule"
+                  InstanceName="PlanningScheduleAMDataControl.dataProvider"
+                  DataControl="PlanningScheduleAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="revisePlanningSchedule"
+                  IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false"
+                  IterBinding="ActivityLevelPlanningVO1Iterator"
+                  Uses="LOV_TransFromMonth" id="TransFromMonth"/>
+    <listOfValues StaticList="false"
+                  IterBinding="ActivityLevelPlanningVO1Iterator"
+                  Uses="LOV_TransToMonth" id="TransToMonth"/>
+    <attributeValues IterBinding="PlanningScheduleHdrVO1Iterator" id="HeaderId">
+      <AttrNames>
+        <Item Value="HeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="splitActivityBOQLine"
+                  InstanceName="PlanningScheduleAMDataControl.dataProvider"
+                  DataControl="PlanningScheduleAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="splitActivityBOQLine" IsViewObjectMethod="false"
+                  ReturnName="data.PlanningScheduleAMDataControl.methodResults.splitActivityBOQLine_PlanningScheduleAMDataControl_dataProvider_splitActivityBOQLine_result"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ActivityMasterPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ActivityGroupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ActivityGroupVO1Iterator"/>
+    <searchRegion Binds="ActivityGroupVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ActivityGroupVO1Query"/>
+    <iterator Binds="ActivityDetailsVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ActivityDetailsVO1Iterator"/>
+    <searchRegion Binds="ActivityDetailsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ActivityDetailsVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ActivityGroupVO1Iterator" id="ActivityGroupVO1">
+      <nodeDefinition DefName="model.view.ActivityGroupVO"
+                      Name="ActivityGroupVO10">
+        <AttrNames>
+          <Item Value="GroupCode"/>
+          <Item Value="Description"/>
+          <Item Value="TransDeleteCondition"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ActivityGroupVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ActivityGroupVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="ActivityDetailsVO1Iterator" id="ActivityDetailsVO1">
+      <nodeDefinition DefName="model.view.ActivityDetailsVO"
+                      Name="ActivityDetailsVO10">
+        <AttrNames>
+          <Item Value="GroupCode"/>
+          <Item Value="ActivityCode"/>
+          <Item Value="Description"/>
+          <Item Value="Uom"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+          <Item Value="TransDeleteCondition"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ActivityDetailsVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="CreateActivityLine"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="CreateActivityLine"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="ActivityGroupVO1Iterator"
+                     id="TransDeleteCondition">
+      <AttrNames>
+        <Item Value="TransDeleteCondition"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ActivityDetailsVO1Iterator"
+                     id="TransDeleteCondition1">
+      <AttrNames>
+        <Item Value="TransDeleteCondition"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1">
+    <f:facet name="center">
+      <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelHeader text="Activity Setup" id="ph1">
+          <af:spacer width="10" height="10" id="s4"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t1">
+              <af:commandButton text="Save" id="cb1"
+                                actionListener="#{backingBeanScope.ActivityMasterBean.SaveActivity}"/>
+              <af:spacer width="4" id="s2"/>
+              <af:commandButton text="Save and Close" id="cb2"
+                                actionListener="#{backingBeanScope.ActivityMasterBean.SaveActivity}"
+                                action="Done"/>
+              <af:spacer width="4" id="s1"/>
+              <af:commandButton text="Cancel" id="cb3" action="Done"
+                                actionListener="#{backingBeanScope.ActivityMasterBean.CanelActivity}"
+                                immediate="true"/>
+            </af:toolbar>
+          </f:facet>
+          <af:showDetailHeader text="Activity Group" disclosed="true" id="sdh1">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+              <f:facet name="toolbar">
+                <af:toolbar id="t3">
+                  <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                    text="Create"
+                                    disabled="#{!bindings.CreateInsert.enabled}"
+                                    id="cb4"/>
+                  <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                    text="Delete"
+                                    disabled="#{!bindings.Delete.enabled  or bindings.TransDeleteCondition.inputValue=='Y'}"
+                                    id="cb5"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.ActivityGroupVO1.collectionModel}"
+                        var="row" rows="#{bindings.ActivityGroupVO1.rangeSize}"
+                        emptyText="#{bindings.ActivityGroupVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.ActivityGroupVO1.rangeSize}"
+                        rowBandingInterval="0"
+                        filterModel="#{bindings.ActivityGroupVO1Query.queryDescriptor}"
+                        queryListener="#{bindings.ActivityGroupVO1Query.processQuery}"
+                        varStatus="vs"
+                        selectedRowKeys="#{bindings.ActivityGroupVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.ActivityGroupVO1.collectionModel.makeCurrent}"
+                        rowSelection="single" id="t2"
+                        partialTriggers="::cb4 ::cb5"
+                        styleClass="AFStretchWidth"
+                        columnStretching="column:c1">
+                <af:column sortProperty="#{bindings.ActivityGroupVO1.hints.GroupCode.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.ActivityGroupVO1.hints.GroupCode.label}"
+                           id="c2">
+                  <af:inputText value="#{row.bindings.GroupCode.inputValue}"
+                                label="#{bindings.ActivityGroupVO1.hints.GroupCode.label}"
+                                required="true" autoSubmit="true"
+                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                columns="#{bindings.ActivityGroupVO1.hints.GroupCode.displayWidth}"
+                                maximumLength="#{bindings.ActivityGroupVO1.hints.GroupCode.precision}"
+                                shortDesc="#{bindings.ActivityGroupVO1.hints.GroupCode.tooltip}"
+                                id="it1">
+                    <f:validator binding="#{row.bindings.GroupCode.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityGroupVO1.hints.Description.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.ActivityGroupVO1.hints.Description.label}"
+                           id="c1">
+                  <af:inputText value="#{row.bindings.Description.inputValue}"
+                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                label="#{bindings.ActivityGroupVO1.hints.Description.label}"
+                                required="#{bindings.ActivityGroupVO1.hints.Description.mandatory}"
+                                columns="#{bindings.ActivityGroupVO1.hints.Description.displayWidth}"
+                                maximumLength="#{bindings.ActivityGroupVO1.hints.Description.precision}"
+                                shortDesc="#{bindings.ActivityGroupVO1.hints.Description.tooltip}"
+                                id="it2">
+                    <f:validator binding="#{row.bindings.Description.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailHeader>
+          <af:spacer width="10" height="10" id="s3"/>
+          <af:showDetailHeader text="Activity" disclosed="true" id="sdh2">
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+              <f:facet name="toolbar">
+                <af:toolbar id="t5">
+                  <af:commandButton text="Create" id="cb6"
+                                    actionListener="#{backingBeanScope.ActivityMasterBean.CreateActivityLine}"/>
+                  <af:commandButton actionListener="#{bindings.Delete1.execute}"
+                                    text="Delete"
+                                    disabled="#{!bindings.Delete1.enabled  or bindings.TransDeleteCondition1.inputValue=='Y'}"
+                                    id="cb7"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.ActivityDetailsVO1.collectionModel}"
+                        var="row"
+                        rows="#{bindings.ActivityDetailsVO1.rangeSize}"
+                        emptyText="#{bindings.ActivityDetailsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.ActivityDetailsVO1.rangeSize}"
+                        rowBandingInterval="0"
+                        filterModel="#{bindings.ActivityDetailsVO1Query.queryDescriptor}"
+                        queryListener="#{bindings.ActivityDetailsVO1Query.processQuery}"
+                        varStatus="vs"
+                        selectedRowKeys="#{bindings.ActivityDetailsVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.ActivityDetailsVO1.collectionModel.makeCurrent}"
+                        rowSelection="single" id="t4"
+                        styleClass="AFStretchWidth" columnStretching="column:c8"
+                        partialTriggers="::cb7 :::pc1:t2">
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.GroupCode.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.GroupCode.label}"
+                           id="c6">
+                  <af:inputText value="#{row.bindings.GroupCode.inputValue}"
+                                readOnly="true"
+                                label="#{bindings.ActivityDetailsVO1.hints.GroupCode.label}"
+                                required="#{bindings.ActivityDetailsVO1.hints.GroupCode.mandatory}"
+                                columns="#{bindings.ActivityDetailsVO1.hints.GroupCode.displayWidth}"
+                                maximumLength="#{bindings.ActivityDetailsVO1.hints.GroupCode.precision}"
+                                shortDesc="#{bindings.ActivityDetailsVO1.hints.GroupCode.tooltip}"
+                                id="it3">
+                    <f:validator binding="#{row.bindings.GroupCode.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.ActivityCode.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.ActivityCode.label}"
+                           id="c3">
+                  <af:inputText value="#{row.bindings.ActivityCode.inputValue}"
+                                label="#{bindings.ActivityDetailsVO1.hints.ActivityCode.label}"
+                                required="true"
+                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                columns="#{bindings.ActivityDetailsVO1.hints.ActivityCode.displayWidth}"
+                                maximumLength="#{bindings.ActivityDetailsVO1.hints.ActivityCode.precision}"
+                                shortDesc="#{bindings.ActivityDetailsVO1.hints.ActivityCode.tooltip}"
+                                id="it4">
+                    <f:validator binding="#{row.bindings.ActivityCode.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.Description.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.Description.label}"
+                           id="c8">
+                  <af:inputText value="#{row.bindings.Description.inputValue}"
+                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                label="#{bindings.ActivityDetailsVO1.hints.Description.label}"
+                                required="#{bindings.ActivityDetailsVO1.hints.Description.mandatory}"
+                                columns="#{bindings.ActivityDetailsVO1.hints.Description.displayWidth}"
+                                maximumLength="#{bindings.ActivityDetailsVO1.hints.Description.precision}"
+                                shortDesc="#{bindings.ActivityDetailsVO1.hints.Description.tooltip}"
+                                id="it5">
+                    <f:validator binding="#{row.bindings.Description.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.Uom.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.Uom.label}"
+                           id="c5" width="50">
+                  <af:inputComboboxListOfValues id="uomId"
+                                                popupTitle="Search and Select: #{bindings.ActivityDetailsVO1.hints.Uom.label}"
+                                                value="#{row.bindings.Uom.inputValue}"
+                                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                                model="#{row.bindings.Uom.listOfValuesModel}"
+                                                required="#{bindings.ActivityDetailsVO1.hints.Uom.mandatory}"
+                                                columns="#{bindings.ActivityDetailsVO1.hints.Uom.displayWidth}"
+                                                shortDesc="#{bindings.ActivityDetailsVO1.hints.Uom.tooltip}">
+                    <f:validator binding="#{row.bindings.Uom.validator}"/>
+                  </af:inputComboboxListOfValues>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.StartDate.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.StartDate.label}"
+                           id="c7">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{vs.filterCriteria.StartDate}"
+                                  id="id4"/>
+                  </f:facet>
+                  <af:inputDate value="#{row.bindings.StartDate.inputValue}"
+                                autoSubmit="true"
+                                readOnly="#{row.row.entities[0].entityState!=0}"
+                                label="#{bindings.ActivityDetailsVO1.hints.StartDate.label}"
+                                required="#{bindings.ActivityDetailsVO1.hints.StartDate.mandatory}"
+                                shortDesc="#{bindings.ActivityDetailsVO1.hints.StartDate.tooltip}"
+                                id="id1">
+                    <f:validator binding="#{row.bindings.StartDate.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.ActivityDetailsVO1.hints.StartDate.format}"/>
+                  </af:inputDate>
+                </af:column>
+                <af:column sortProperty="#{bindings.ActivityDetailsVO1.hints.EndDate.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.ActivityDetailsVO1.hints.EndDate.label}"
+                           id="c4">
+                  <f:facet name="filter">
+                    <af:inputDate value="#{vs.filterCriteria.EndDate}"
+                                  id="id3"/>
+                  </f:facet>
+                  <af:inputDate value="#{row.bindings.EndDate.inputValue}"
+                                autoSubmit="true"
+                                label="#{bindings.ActivityDetailsVO1.hints.EndDate.label}"
+                                required="#{bindings.ActivityDetailsVO1.hints.EndDate.mandatory}"
+                                shortDesc="#{bindings.ActivityDetailsVO1.hints.EndDate.tooltip}"
+                                id="id2">
+                    <f:validator binding="#{row.bindings.EndDate.validator}"/>
+                    <af:convertDateTime pattern="#{bindings.ActivityDetailsVO1.hints.EndDate.format}"/>
+                  </af:inputDate>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailHeader>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

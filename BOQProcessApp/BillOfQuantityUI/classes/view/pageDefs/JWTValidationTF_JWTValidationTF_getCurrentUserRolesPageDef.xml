@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73"
+                id="JWTValidationTF_JWTValidationTF_getCurrentUserRolesPageDef"
+                Package="view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <action id="getCurrentUserRoles" RequiresUpdateModel="true"
+            Action="invokeMethod" MethodName="getCurrentUserRoles"
+            IsViewObjectMethod="false" DataControl="CommonUtilsAMDataControl"
+            InstanceName="CommonUtilsAMDataControl.dataProvider"
+            ReturnName="data.CommonUtilsAMDataControl.methodResults.getCurrentUserRoles_CommonUtilsAMDataControl_dataProvider_getCurrentUserRoles_result"/>
+  </bindings>
+</pageDefinition>

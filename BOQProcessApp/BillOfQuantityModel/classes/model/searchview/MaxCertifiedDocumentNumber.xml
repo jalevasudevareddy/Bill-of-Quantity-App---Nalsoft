@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaxCertifiedDocumentNumber"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  RowClass="model.searchview.MaxCertifiedDocumentNumberRowImpl"
+  ComponentClass="model.searchview.MaxCertifiedDocumentNumberImpl">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_bu_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_prj_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_cert_hdr_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery>
+    <![CDATA[SELECT MAX(CERTIFIED_DOCUMENT_NUM)
+FROM XXBOQ_CERTIFIED_DETAILS_T
+WHERE BUSINESS_UNIT_ID=:p_bu_id
+AND PROJECT_ID        =:p_prj_id
+AND CERTIFIED_HEADER_ID     <>:p_cert_hdr_id]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="MaxCertifiedDocumentNum"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="MAX(CERTIFIED_DOCUMENT_NUM)"
+    Expression="MAX(CERTIFIED_DOCUMENT_NUM)"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="MaxCertifiedDocumentNum"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

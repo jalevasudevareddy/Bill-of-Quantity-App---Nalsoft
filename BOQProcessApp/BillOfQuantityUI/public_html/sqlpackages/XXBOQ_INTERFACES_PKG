@@ -1,0 +1,1738 @@
+create or replace PACKAGE XXBOQ_INTERFACES_PKG IS
+  g_username VARCHAR2(50) := 'PRANEETH.A';
+  g_password VARCHAR2(50) := 'Welcome123';
+  g_host_name VARCHAR2(100) := 'xbf.fa.em1.oraclecloud.com';
+  g_ar_inv_int_wsdl VARCHAR2(3000) := 'https://xbf.fa.em1.oraclecloud.com/finArTrxnsInvoices/InvoiceService?WSDL';
+  g_ar_inv_int_soap_act VARCHAR2(3000) := 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/processInterfaceLine';
+  g_ar_inv_dist_soap_act VARCHAR2(3000) := 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/processInterfaceDistribution';
+  g_rcv_misc_txn_wsdl VARCHAR2(3000) := 'https://xbf.fa.em1.oraclecloud.com/finArTrxnsInvoices/InvoiceService?WSDL';
+  g_rcv_misc_txn_soap_act VARCHAR2(3000) := 'http://xmlns.oracle.com/apps/projects/costing/transactions/transactionService/receiveMiscellaneousTransaction';
+  PROCEDURE Interface_advance_invoice (
+    p_header_id   NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+
+  FUNCTION GET_CODE_COMBINATION_ID (
+    p_bu_id     NUMBER,
+    p_project   VARCHAR2,
+    p_nat_acc   VARCHAR2,
+    p_sub_acc   VARCHAR2
+  ) RETURN NUMBER;
+
+  PROCEDURE Interface_retention_invoice (
+    p_header_id   NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+
+  PROCEDURE Interface_pc_invoice (
+    p_header_id   NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+FUNCTION Is_period_open(
+  p_report_id IN NUMBER, p_ledger_id IN NUMBER, 
+  p_date IN VARCHAR2
+) RETURN VARCHAR2;
+    PROCEDURE VALIDATE_PC_ACCOUNTS (
+    p_header_id NUMBER,
+    p_message OUT VARCHAR2
+  );
+PROCEDURE Interface_pc_doc (
+    p_header_id   IN NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+END XXBOQ_INTERFACES_PKG;
+
+
+-------------------------------------------------------------------
+
+create or replace PACKAGE body XXBOQ_INTERFACES_PKG 
+IS 
+FUNCTION clobToXMLType(myClob IN CLOB)
+RETURN XMLTYPE
+IS
+    l_xmlType XMLTYPE;
+BEGIN
+    l_xmltype := XMLTYPE.createXML(myClob);  
+    RETURN l_xmltype;
+EXCEPTION
+    WHEN OTHERS THEN
+    	RAISE;
+END clobToXMLType;
+FUNCTION Is_period_open(
+  p_report_id IN NUMBER, p_ledger_id IN NUMBER, 
+  p_date IN VARCHAR2
+) RETURN VARCHAR2 IS l_report_date VARCHAR2(60);
+l_report_period VARCHAR2(30);
+l_arg_period VARCHAR2(30);
+l_report_path VARCHAR2(100);
+l_report_params xxws_soap_services_pkg.param_tbl_typ;
+l_xml XMLTYPE;
+l_clob CLOB := NULL;
+l_response CLOB;
+BEGIN BEGIN 
+SELECT 
+  report_path INTO l_report_path 
+FROM 
+  xxds_report_paths_t 
+WHERE 
+  table_id = p_report_id;
+IF l_report_path IS NOT NULL THEN --        dbms_output.put_line('Start');
+l_report_params := xxws_soap_services_pkg.Param_tbl_typ ();
+l_report_params.Extend(2);
+L_report_params(1).param_name := 'P_LEDGER_ID';
+L_report_params(1).param_type := 'String';
+L_report_params(1).param_value := p_ledger_id;
+L_report_params(2).param_name := 'P_GL_DATE';
+L_report_params(2).param_type := 'String';
+L_report_params(2).param_value := p_date;
+xxws_soap_services_pkg.Get_report_data(
+  p_host_address => g_host_name, p_user_name => g_username, 
+  p_password => g_password, p_report_path => l_report_path, 
+  p_report_params => l_report_params, 
+  p_response => l_response, p_response_data => l_xml
+);
+--dbms_output.Put_line ('l_response= =' || l_response);
+IF l_response = 'DATA' THEN l_clob := l_xml.Getclobval ();
+--dbms_output.Put_line('l_clob===' || l_clob);
+IF l_clob IS NOT NULL THEN BEGIN --        IF l_clob IS NOT NULL THEN
+SELECT 
+  xd.ap_open_date INTO l_report_date 
+FROM 
+  dual x, 
+  XMLTABLE (
+    '/DATA_DS/G_1' passing xmltype(l_clob) COLUMNS ap_open_date VARCHAR2(60) path 'AR_OPEN_DATE'
+  ) xd;
+EXCEPTION WHEN OTHERS THEN l_report_date := NULL;
+l_response := 'No Response returned from web service while checking the open accounting period.';
+END;
+IF l_report_date IS NOT NULL THEN BEGIN 
+SELECT 
+  Upper(
+    TO_CHAR(
+      To_date(
+        SUBSTR (
+          l_report_date, 
+          0, 
+          Instr(l_report_date, 'T')-1
+        ), 
+        'yyyy-MM-dd'
+      ), 
+      'MON-yyyy'
+    )
+  ) period INTO l_report_period 
+FROM 
+  dual;
+  
+--dbms_output.Put_line('l_report_period===' || l_report_period);
+EXCEPTION WHEN OTHERS THEN l_report_period := NULL;
+l_response := 'Parsing the returned date is failed.';
+END;
+BEGIN 
+SELECT 
+  Upper(
+    TO_CHAR(
+      To_date(p_date, 'YYYY-MM-DD'), 
+      'MON-yyyy'
+    )
+  ) INTO l_arg_period 
+FROM 
+  dual;
+  
+--dbms_output.Put_line('l_arg_period===' || l_arg_period);
+EXCEPTION WHEN OTHERS THEN l_arg_period := NULL;
+l_response := 'Parsing Argument date is failed.';
+END;
+--dbms_output.Put_line(
+--  l_report_period || ' ' || l_arg_period
+--);
+IF l_report_period = l_arg_period THEN l_response := 'Open';
+ELSE l_response := 'Not in Open';
+END IF;
+ELSE l_response := 'Not in Open';
+END IF;
+END IF;
+END IF;
+ELSE l_response := 'No Report Path found to get Exchange Rate.';
+END IF;
+EXCEPTION WHEN OTHERS THEN l_response := 'Failed in data retrieval from the report -' || l_report_path || '. ERROR:- ' || SQLERRM;
+END;
+RETURN l_response;
+END is_period_open;
+PROCEDURE INSERT_PAYLOAD_LINE (
+    p_int_doc_type   VARCHAR2,
+    p_int_doc_num    VARCHAR2,
+    p_req_payload    CLOB,
+    p_resp_payload   CLOB,
+    p_source_id      NUMBER
+  )
+    IS
+  BEGIN
+    INSERT INTO XX_WS_PAYLOADS_T (
+      INTERFACE_TYPE,
+      INTERFACE_DOC_NUMBER,
+      REQ_PAYLOAD,
+      RESP_PAYLOAD,
+      CREATION_DATE,
+      PAYLOAD_ID,
+      SOURCE_ID
+    ) VALUES (
+      p_int_doc_type,
+      p_int_doc_num,
+      p_req_payload,
+      p_resp_payload,
+      SYSDATE,
+      XX_WS_PAYLOADS_S.NEXTVAL,
+      p_source_id
+    );
+
+  END INSERT_PAYLOAD_LINE;
+    FUNCTION VALIDATE_ACC_LINE (
+    p_prj_number   VARCHAR2,
+    p_bu_id        NUMBER,
+    p_bill_cat     VARCHAR2
+  ) RETURN VARCHAR2 IS
+    l_natural_acc   VARCHAR2(10);
+    l_cc_id         NUMBER;
+  BEGIN
+    SELECT
+      ACT.NATURAL_ACCOUNT
+    INTO l_natural_acc
+    FROM
+      XXBOQ_ACCOUNTS_SETUP_T ACT
+    WHERE
+      ACT.BU_ID = p_bu_id
+      AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+      AND ACT.BILL_CATEGORY = p_bill_cat;
+
+    IF
+      l_natural_acc IS NOT NULL
+    THEN
+      l_cc_id := GET_CODE_COMBINATION_ID(p_bu_id,p_prj_number,l_natural_acc,NULL);
+      IF
+        l_cc_id IS NULL OR l_cc_id < 0
+      THEN
+        RETURN ' Please Review accounting line for '
+               || p_bill_cat
+               || ' in accounting setup.';
+      ELSE
+        RETURN 'Success';
+      END IF;
+
+    ELSE
+      RETURN ' Please create accounting line for '
+             || p_bill_cat
+             || ' in accounting setup.';
+    END IF;
+
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN ' Please create accounting line for '
+             || p_bill_cat
+             || ' in accounting setup.';
+    WHEN OTHERS THEN
+      RETURN SQLERRM;
+  END VALIDATE_ACC_LINE;
+PROCEDURE receive_misc_txn (
+  p_bu_name         VARCHAR2,
+  p_exp_date        DATE,
+  p_prj_number      VARCHAR2,
+  p_task_number     VARCHAR2,
+  p_exp_typ_name    VARCHAR2,
+  p_exp_org_name    VARCHAR2,
+  p_exp_org_id      NUMBER,
+  p_cost             NUMBER,
+  p_trx_ref         VARCHAR2,
+  p_currency_code   VARCHAR2,
+  p_inv_envelope    OUT CLOB
+)
+IS
+  l_inv_envelope CLOB; 
+BEGIN l_inv_envelope :='<typ:list>
+            <tran:BusinessUnitName>'||p_bu_name||'</tran:BusinessUnitName>
+            <tran:BatchName>PJC_Expenditure_Batch</tran:BatchName>
+            <tran:SourceName>URC_Project_Opening_Balance</tran:SourceName>
+            <tran:DocumentName>URC_Project_Opening_Balance</tran:DocumentName>
+            <tran:DocumentEntryName>URC_Project_Opening_Balance</tran:DocumentEntryName>
+            <tran:ExpenditureItemDate>'||TO_CHAR(p_exp_date, 'yyyy-MM-dd')||'</tran:ExpenditureItemDate>
+            <tran:ProjectNumber>'||p_prj_number||'</tran:ProjectNumber>
+            <tran:TaskNumber>'||p_task_number||'</tran:TaskNumber>
+            <tran:ExpenditureTypeName>'||p_exp_typ_name||'</tran:ExpenditureTypeName>
+            <tran:ExpenditureOrganizationName>'||p_exp_org_name||'</tran:ExpenditureOrganizationName>
+            <tran:ExpenditureOrganizationId>'||p_exp_org_id||'</tran:ExpenditureOrganizationId>
+            <tran:Quantity>1</tran:Quantity>
+            <tran:TransactionBurdenedCost>'||p_cost||'</tran:TransactionBurdenedCost>
+            <tran:OrigTransactionReference>'||p_trx_ref||'</tran:OrigTransactionReference>
+            <tran:TransactionCurrency>'||p_currency_code||'</tran:TransactionCurrency>
+         </typ:list>';
+p_inv_envelope := l_inv_envelope;
+END receive_misc_txn;
+  FUNCTION GET_CODE_COMBINATION_ID (
+    p_bu_id     NUMBER,
+    p_project   VARCHAR2,
+    p_nat_acc   VARCHAR2,
+    p_sub_acc   VARCHAR2
+  ) RETURN NUMBER IS
+    l_gl_segment   VARCHAR2(30);
+    l_new_comb     VARCHAR2(100);
+    l_cc_id        NUMBER;
+  BEGIN
+    SELECT
+      GL_SEGMENT
+    INTO l_gl_segment
+    FROM
+      XXPJ_MAPPING_SETS_T
+    WHERE
+      PROJECT_NUMBER = p_project;
+    IF
+      l_gl_segment IS NOT NULL
+    THEN
+      SELECT
+        SEGMENT1
+        || '-'
+        || SEGMENT2
+        || '-'
+        || SEGMENT3
+        || '-'
+        || l_gl_segment
+        || '-'
+        || SEGMENT5
+        || '-'
+        || p_nat_acc
+        || '-'
+        || SEGMENT7
+        || '-'
+        || SEGMENT8
+      INTO l_new_comb
+      FROM
+        XXINV_BUSINESS_UNITS_T BUT,
+        XXFI_GL_ACCOUNTS_T GLT
+      WHERE
+        BUT.ENTITY_CC_ID = GLT.CC_ID
+        AND BUT.BU_ID = p_bu_id; 
+
+      SELECT
+        CC_ID
+      INTO l_cc_id
+      FROM
+        XXFI_GL_ACCOUNTS_T
+      WHERE
+        GL_ACNT = l_new_comb;
+    ELSE
+      RETURN -1;
+    END IF;
+
+    RETURN l_cc_id;
+  EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+      RETURN -1;
+    WHEN OTHERS THEN
+      RETURN -1;
+  END GET_CODE_COMBINATION_ID;
+  FUNCTION interface_header (
+    p_type VARCHAR2
+  ) RETURN CLOB IS
+    l_inv_envelope   CLOB;
+  BEGIN
+    IF
+      p_type = 'I'
+    THEN
+      l_inv_envelope := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"  
+xmlns:typ="http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/"  
+xmlns:inv="http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/"  
+xmlns:tran="http://xmlns.oracle.com/apps/financials/receivables/transactions/autoInvoices/model/flex/TransactionInterfaceGdf/" xmlns:tran1="http://xmlns.oracle.com/apps/financials/receivables/transactions/autoInvoices/model/flex/TransactionLineInterfaceGdf/" xmlns:tran2="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionLineInterfaceLineDff/" xmlns:tran3="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionInterfaceLinkToDff/" xmlns:tran4="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionInterfaceReferenceDff/" xmlns:tran5="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionLineDff/"  
+xmlns:typ1="http://xmlns.oracle.com/adf/svc/types/" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    
+<soapenv:Header/>    
+<soapenv:Body>       
+<typ:processInterfaceLine>          
+<typ:changeOperation>Create</typ:changeOperation>'
+;
+    ELSIF p_type = 'D' THEN
+      l_inv_envelope := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/" xmlns:inv="http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/" xmlns:tran="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionDistributionInterfaceLineDff/" xmlns:tran1="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionDistributionDff/" xmlns:typ1="http://xmlns.oracle.com/adf/svc/types/" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">    
+<soapenv:Header/>    
+<soapenv:Body>       
+<typ:processInterfaceDistribution>          
+<typ:changeOperation>Create</typ:changeOperation>'
+;
+ELSIF p_type = 'OD' THEN
+      l_inv_envelope := '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:typ="http://xmlns.oracle.com/apps/projects/costing/transactions/transactionService/types/" xmlns:tran="http://xmlns.oracle.com/apps/projects/costing/transactions/transactionService/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <typ:receiveMiscellaneousTransaction>'
+;
+    ELSE
+      RETURN NULL;
+    END IF;
+    RETURN l_inv_envelope;
+  END interface_header;
+  FUNCTION interface_end (
+    p_type VARCHAR2
+  ) RETURN CLOB IS
+    l_inv_envelope   CLOB;
+  BEGIN
+    IF
+      p_type = 'I'
+    THEN
+      l_inv_envelope := '<typ:processControl>             
+<typ1:partialFailureAllowed>false</typ1:partialFailureAllowed>          
+</typ:processControl>       
+</typ:processInterfaceLine>    
+</soapenv:Body> 
+</soapenv:Envelope>'; 
+    ELSIF p_type = 'D' THEN
+      l_inv_envelope := '<typ:processControl>             
+<typ1:partialFailureAllowed>false</typ1:partialFailureAllowed>          
+</typ:processControl>       
+</typ:processInterfaceDistribution>    
+</soapenv:Body> 
+</soapenv:Envelope>'; 
+    ELSIF p_type = 'OD' THEN
+      l_inv_envelope := '<typ:partialFailureAllowed>True</typ:partialFailureAllowed>
+         <typ:fullConfirmation>True</typ:fullConfirmation>
+         </typ:receiveMiscellaneousTransaction>
+   </soapenv:Body>
+</soapenv:Envelope>'; 
+    ELSE
+      RETURN NULL;
+    END IF;
+    RETURN l_inv_envelope;
+  END interface_end;
+
+PROCEDURE Invoice_interface_line (p_bu_id           NUMBER, 
+                                  p_amount          NUMBER, 
+                                  p_trx_type        VARCHAR2, 
+                                  p_customer_id     VARCHAR2, 
+                                  p_trx_date        DATE, 
+                                  p_currency_code   VARCHAR2, 
+                                  p_desc            VARCHAR2, 
+                                  p_gl_date         DATE, 
+                                  p_orig_system_ref VARCHAR2, 
+                                  p_terms_id        NUMBER, 
+                                  p_trx_number      VARCHAR2, 
+                                  p_flex_context    VARCHAR2, 
+                                  p_batch_source    VARCHAR2, 
+                                  p_project_number  VARCHAR2, 
+                                  p_invoice_number  VARCHAR2, 
+                                  p_pa_pc_num       VARCHAR2, 
+                                  p_flex_desc       VARCHAR2, 
+                                  p_line_num        VARCHAR2, 
+                                  p_pc_header_id    VARCHAR2, 
+                                  p_project_id      VARCHAR2, 
+                                  p_orig_system_bill_id NUMBER,
+                                  p_orig_system_ship_id NUMBER,
+                                  p_inv_envelope    OUT CLOB) 
+IS 
+  l_inv_envelope CLOB; 
+BEGIN 
+l_inv_envelope := '<typ:interfaceLine>                         
+<inv:OrgId>' || p_bu_id || '</inv:OrgId>             
+<inv:Amount currencyCode="' || p_currency_code || '">' || p_amount || '</inv:Amount>   
+<inv:BatchSourceName>' || p_batch_source || '</inv:BatchSourceName>                         
+<inv:CustomerTrxTypeName>' || p_trx_type || '</inv:CustomerTrxTypeName>                                                   
+<inv:TrxDate>' || TO_CHAR(p_trx_date, 'yyyy-MM-dd') || '</inv:TrxDate>                         
+<inv:CurrencyCode>' || p_currency_code || '</inv:CurrencyCode>                         
+<inv:Description>' || p_desc || '</inv:Description>                         
+<inv:GlDate>' || TO_CHAR(p_gl_date, 'yyyy-MM-dd') || '</inv:GlDate>                         
+<inv:LineType>LINE</inv:LineType>                         
+<inv:OrigSystemBillAddressId>' || p_orig_system_bill_id || '</inv:OrigSystemBillAddressId>                         
+<inv:OrigSystemShipAddressId>' || p_orig_system_ship_id || '</inv:OrigSystemShipAddressId> 
+<inv:OrigSystemBillCustomerId>' || p_customer_id || '</inv:OrigSystemBillCustomerId>
+<inv:OrigSystemShipCustomerId>' || p_customer_id || '</inv:OrigSystemShipCustomerId> 
+<inv:PaymentTermsId>' || p_terms_id || '</inv:PaymentTermsId> 
+<inv:TrxNumber>' || p_trx_number || '</inv:TrxNumber> 
+<inv:TransactionInterfaceLineDff xmlns:tran2="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionLineInterfaceLineDff/" xsi:type="tran2:UbcProjectBilling">                                        
+<tran2:__FLEX_Context>' || p_flex_context || '</tran2:__FLEX_Context>  
+<tran2:projectNumber>' || p_project_number || '</tran2:projectNumber>    
+<tran2:invoiceNumber>' || p_invoice_number || '</tran2:invoiceNumber>       
+<tran2:paPcNumber>' || p_pa_pc_num || '</tran2:paPcNumber>       
+<tran2:revenueType>' || NVL(p_flex_desc,'0') || '</tran2:revenueType>       
+<tran2:uniqueLineNo>' || p_line_num || '</tran2:uniqueLineNo>       
+<tran2:paPcHeaderId>' || p_pc_header_id || '</tran2:paPcHeaderId>       
+<tran2:projectId>' || p_project_id || '</tran2:projectId>                   
+</inv:TransactionInterfaceLineDff>                      
+</typ:interfaceLine>';
+--dbms_output.Put_line ('l_inv_envelope= =' || l_inv_envelope);
+p_inv_envelope := l_inv_envelope;
+EXCEPTION WHEN OTHERS
+THEN dbms_output.Put_line ('ERROR= =' || SQLERRM);
+END invoice_interface_line;
+PROCEDURE Invoice_distribution_line (p_acc_class      VARCHAR2, 
+                                     p_cc_id          NUMBER, 
+                                     p_bu_id          NUMBER, 
+                                     p_flex_context   VARCHAR2, 
+                                     p_project_number VARCHAR2, 
+                                     p_invoice_number VARCHAR2, 
+                                     p_pa_pc_num      VARCHAR2, 
+                                     p_flex_desc      VARCHAR2, 
+                                     p_line_num       VARCHAR2, 
+                                     p_pc_header_id   VARCHAR2, 
+                                     p_project_id     VARCHAR2, 
+                                     p_dis_envelope   OUT CLOB) 
+IS 
+  l_inv_dis_envelope CLOB; 
+BEGIN 
+l_inv_dis_envelope := '<typ:interfaceDistribution>                     
+<inv:AccountClass>' || p_acc_class || '</inv:AccountClass>                     
+<inv:CodeCombinationId>' || p_cc_id || '</inv:CodeCombinationId>                     
+<inv:OrgId>' || p_bu_id || '</inv:OrgId>                     
+<inv:Percent>100</inv:Percent>                     
+<inv:DistributionInterfacLineDff xmlns:tran="http://xmlns.oracle.com/apps/flex/financials/receivables/transactions/autoInvoices/TransactionDistributionInterfaceLineDff/" xsi:type="tran:UbcProjectBilling">                     
+<tran:__FLEX_Context>' || p_flex_context || '</tran:__FLEX_Context> 
+<tran:projectNumber>' || p_project_number || '</tran:projectNumber>    
+<tran:invoiceNumber>' || p_invoice_number || '</tran:invoiceNumber>       
+<tran:paPcNumber>' || p_pa_pc_num || '</tran:paPcNumber>       
+<tran:revenueType>' || NVL(p_flex_desc,'0') || '</tran:revenueType>       
+<tran:uniqueLineNo>' || p_line_num || '</tran:uniqueLineNo>       
+<tran:paPcHeaderId>' || p_pc_header_id || '</tran:paPcHeaderId>       
+<tran:projectId>' || p_project_id || '</tran:projectId>                       
+</inv:DistributionInterfacLineDff>                     
+</typ:interfaceDistribution>';
+p_dis_envelope := l_inv_dis_envelope;
+END invoice_distribution_line;
+PROCEDURE Interface_other_deductions (
+  p_header_id NUMBER,
+  p_message OUT VARCHAR2
+)
+is
+  CURSOR other_ded_c IS SELECT
+    BU.BU_NAME,
+    LAST_DAY(TO_DATE(PCH.PERIOD,'Mon-YYYY') ) EXP_ITEM_DATE,
+    PJ.PROJECT_NUMBER,
+    PCD.TASK_NUMBER,
+    PCD.COST_CODE,
+    PJ.CARRYING_OUT_ORGANIZATION_ID,
+    PCD.AMOUNT,
+    PCH.PC_DOCUMENT_NUM
+    || '-'
+    || PCD.COST_CODE AS TXN_REF,
+    BU.CURRENCY_CODE,
+    PCH.PC_DOCUMENT_NUM
+                        FROM
+    XXBOQ_PC_DEDUCTIONS_T PCD,
+    XXBOQ_PC_HDR_T PCH,
+    XXINV_BUSINESS_UNITS_T BU,
+    XXPJ_PROJECTS_T PJ
+                        WHERE
+    PCD.PC_HEADER_ID = PCH.PC_HEADER_ID
+    AND PCH.BU_ID = BU.BU_ID
+    AND PCH.PROJECT_ID = PJ.PROJECT_ID
+    AND PCH.PC_HEADER_ID = p_header_id;
+  l_message            VARCHAR2(1000); 
+  l_envelope           CLOB;  
+  l_od_envelope           CLOB; 
+  l_od_response       XMLTYPE; 
+  l_line_count         NUMBER;
+  l_soap_response      CLOB;
+  l_doc_num           Varchar2(100);
+  
+BEGIN
+    l_envelope := Interface_header(p_type => 'OD');
+    FOR other_ded_r IN other_ded_c
+    LOOP
+    l_doc_num:=other_ded_r.PC_DOCUMENT_NUM;
+     receive_misc_txn (
+        p_bu_name   =>      other_ded_r.BU_NAME,
+        p_exp_date =>       other_ded_r.EXP_ITEM_DATE,
+        p_prj_number =>     other_ded_r.PROJECT_NUMBER,
+        p_task_number  =>   other_ded_r.TASK_NUMBER,
+        p_exp_typ_name   => other_ded_r.COST_CODE,
+        p_exp_org_name    =>NULL,
+        p_exp_org_id=>      other_ded_r.CARRYING_OUT_ORGANIZATION_ID,
+        p_cost=>             other_ded_r.AMOUNT,
+        p_trx_ref   =>      other_ded_r.TXN_REF,
+        p_currency_code=>   other_ded_r.CURRENCY_CODE,
+        p_inv_envelope  =>     l_od_envelope
+);
+l_envelope :=l_envelope || l_od_envelope;
+    l_od_envelope:=NULL;
+    END LOOP;
+   l_od_envelope :=  interface_end(p_type=>'OD');
+   l_envelope :=l_envelope || l_od_envelope;
+   
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_rcv_misc_txn_wsdl,
+                                P_SOAP_ACTION=>g_rcv_misc_txn_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>l_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+                                
+       IF l_message ='Success' then
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'Receive Miscellaneous Transaction',
+    p_int_doc_num=>   l_doc_num ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+       
+       p_message:=l_message;
+END IF;                               
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := Substr(SQLERRM, 1, 4000); 
+END Interface_other_deductions;
+PROCEDURE Interface_advance_invoice (p_header_id NUMBER, 
+                                     p_user      VARCHAR2, 
+                                     p_message   OUT VARCHAR2) 
+IS 
+  CURSOR adv_c IS 
+SELECT
+  PCH.bu_id,
+  Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+  (
+    SELECT
+    GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT1.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT1.SUB_ACCOUNT
+  )
+    FROM
+      xxboq_accounts_setup_t ACT1
+    WHERE
+      ACT1.bu_id = PCH.bu_id
+      AND ACT1.bill_category = 'Total Receivable'
+      AND SYSDATE BETWEEN ACT1.start_date AND Nvl(ACT1.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT1.DESTINATION   ='AR'
+  ) AS REC_CC_ID,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num ,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE||'-'|| PCH.PC_NUM ||'-'||PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Project Advance'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.PROJECT_ID  =PJ.PROJECT_ID
+  AND PCH.document_type = 'ADV'
+  AND PCL.particulars = 'ADV'
+  AND ACT.bill_category = 'Advance Paid'
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND PCH.pc_header_id = p_header_id;
+  l_message            VARCHAR2(1000); 
+  l_envelope           CLOB; 
+  l_inv_envelop        CLOB; 
+  l_dis_envelop        CLOB; 
+  l_cust_number        VARCHAR2(30); 
+  l_orig_add_ref       VARCHAR2(30); 
+  l_terms_id           NUMBER; 
+  l_inv_end_envlope    CLOB; 
+  l_dis_end_envlope    CLOB; 
+  l_inv_response       XMLTYPE; 
+  l_line_count         NUMBER; 
+  l_inv_dis_response   XMLTYPE; 
+  l_distribution_count NUMBER;
+  l_soap_response      CLOB;
+  l_orig_system_bill_id NUMBER;
+  l_orig_system_ship_id NUMBER;
+BEGIN 
+    FOR adv_r IN adv_c LOOP 
+    IF adv_r.rec_cc_id IS NOT NULL AND adv_r.rec_cc_id<>-1 AND adv_r.rev_cc_id IS NOT NULL AND adv_r.rev_cc_id<>-1 THEN
+        SELECT BILL_TO_ACCT_ID, 
+               orig_system_reference,
+               BILL_TO_ADDRESS_ID,
+                SHIP_TO_ADDRESS_ID
+        INTO   l_cust_number, l_orig_add_ref ,l_orig_system_bill_id,l_orig_system_ship_id
+        FROM   xxpj_project_customers_t 
+        WHERE  party_id = adv_r.customer_id
+        AND PROJECT_ID=adv_r.PROJECT_ID; 
+        SELECT TERM_ID INTO l_terms_id FROM XXRA_TERMS_T WHERE DESCRIPTION=adv_r.pay_terms;
+        l_envelope := Interface_header(p_type => 'I'); 
+        Invoice_interface_line(
+          p_bu_id => adv_r.bu_id, 
+          p_amount => adv_r.amount, 
+          p_trx_type => adv_r.ar_trx_type, 
+          p_customer_id => l_cust_number, 
+          p_trx_date => adv_r.pc_date, 
+          p_currency_code => adv_r.PROJECT_CURRENCY_CODE, 
+          p_desc => 'Advance - '||to_char(adv_r.pc_date,'MON-YYYY')||' - '|| adv_r.PA_PC_NUM, 
+          p_gl_date => adv_r.gl_date, 
+          p_orig_system_ref => l_orig_add_ref, 
+          p_terms_id => l_terms_id, 
+          p_trx_number => adv_r.pc_num, 
+          p_flex_context => adv_r.AR_CONTEXT, 
+          p_batch_source => adv_r.AR_SOURCE, 
+          p_project_number=>  adv_r.PROJECT_NUMBER, 
+          p_invoice_number  =>adv_r.INVOICE_NUM, 
+          p_pa_pc_num =>      adv_r.PA_PC_NUM, 
+          p_flex_desc   =>    adv_r.LINE_COMMENTS, 
+          p_line_num      =>  adv_r.LINE_NUMBER, 
+          p_pc_header_id    =>adv_r.PC_HEADER_ID, 
+          p_project_id      =>adv_r.PROJECT_ID,
+          p_orig_system_bill_id =>l_orig_system_bill_id,
+          p_orig_system_ship_id =>l_orig_system_ship_id,
+          p_inv_envelope => l_inv_envelop
+        );
+
+        l_inv_end_envlope := Interface_end(p_type => 'I'); 
+
+        l_envelope := l_envelope 
+                      || l_inv_envelop 
+                      || l_inv_end_envlope; 
+--  dbms_output.Put_line('INT ENV === ' || l_envelope);                     
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_int_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.1',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+--                                dbms_output.Put_line('INT RESP === ' || l_soap_response); 
+--                                dbms_output.Put_line('INT MSG === ' || p_message);
+     IF p_message ='Success' then
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Interface Line',
+    p_int_doc_num=>   adv_r.PA_PC_NUM ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  l_inv_response:=clobToXMLType(l_soap_response);
+        SELECT Count(x.org_id) 
+        INTO   l_line_count 
+        FROM   dual, 
+               XMLTABLE ( xmlnamespaces ( 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns1", 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns2", DEFAULT 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+), '//processInterfaceLineResponse/result' passing l_inv_response COLUMNS org_id 
+VARCHAR2(10) path 'ns2:OrgId' ) x; 
+
+IF l_line_count > 0 THEN 
+  l_envelope := NULL; 
+l_soap_response:=null;
+  l_envelope := Interface_header(p_type => 'D'); 
+
+
+    Invoice_distribution_line(
+		  p_acc_class => 'REC', 
+		  p_cc_id => adv_r.rec_cc_id, 
+		  p_bu_id => adv_r.bu_id,  
+          p_flex_context => adv_r.AR_CONTEXT, 
+          p_project_number=>  adv_r.PROJECT_NUMBER, 
+          p_invoice_number  =>adv_r.INVOICE_NUM, 
+          p_pa_pc_num =>      adv_r.PA_PC_NUM, 
+          p_flex_desc   =>    adv_r.LINE_COMMENTS, 
+          p_line_num      =>  adv_r.LINE_NUMBER, 
+          p_pc_header_id    =>adv_r.PC_HEADER_ID, 
+          p_project_id      =>adv_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+
+  l_envelope := l_envelope 
+                || l_dis_envelop; 
+  l_dis_envelop := NULL; 
+  Invoice_distribution_line(
+		  p_acc_class => 'REV', 
+		  p_cc_id => adv_r.rev_cc_id, 
+		  p_bu_id => adv_r.bu_id,  
+          p_flex_context => adv_r.AR_CONTEXT, 
+          p_project_number=>  adv_r.PROJECT_NUMBER, 
+          p_invoice_number  =>adv_r.INVOICE_NUM, 
+          p_pa_pc_num =>      adv_r.PA_PC_NUM, 
+          p_flex_desc   =>    adv_r.LINE_COMMENTS, 
+          p_line_num      =>  adv_r.LINE_NUMBER, 
+          p_pc_header_id    =>adv_r.PC_HEADER_ID, 
+          p_project_id      =>adv_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+  l_dis_end_envlope := Interface_end(p_type => 'D'); 
+  l_envelope := l_envelope 
+                || l_dis_envelop 
+                || l_dis_end_envlope; 
+--dbms_output.Put_line('DIST ENV === ' || l_envelope); 
+
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_dist_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>G_USERNAME,
+                                P_PASSWORD =>G_PASSWORD,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+--                                dbms_output.Put_line('DIST RESP === ' || l_soap_response); 
+END IF; 
+      IF p_message ='Success' then
+      
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Distribution Line',
+    p_int_doc_num=>   adv_r.PA_PC_NUM ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  
+  l_inv_dis_response:=clobToXMLType(l_soap_response);
+SELECT Count(x.account_class) 
+INTO   l_distribution_count 
+FROM   dual, 
+       XMLTABLE ( xmlnamespaces ( 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+AS "ns1", 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns2", DEFAULT 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+), '//processInterfaceDistributionResponse/ns1:result' passing 
+l_inv_dis_response COLUMNS account_class VARCHAR2(10) path 'ns2:AccountClass' ) 
+x; 
+
+IF l_line_count > 0 
+   AND l_distribution_count > 0 THEN 
+  UPDATE xxboq_pc_hdr_t 
+  SET    ar_flag = 'Y' ,PC_STATUS='P'
+  WHERE  pc_header_id = p_header_id; 
+  UPDATE XXBOQ_PC_LINES_T SET ACCOUNT_CC_ID=adv_r.rev_cc_id WHERE pc_header_id = p_header_id AND particulars = 'ADV';
+  UPDATE XXBOQ_PC_LINES_T SET ACCOUNT_CC_ID=adv_r.rec_cc_id WHERE pc_header_id = p_header_id AND particulars = 'VOWD'; 
+COMMIT;
+END IF; 
+END IF;
+l_line_count := 0; 
+
+l_distribution_count := 0; 
+end if;
+ELSE 
+p_message :='Please check accounting setup.';
+END IF;
+END LOOP; 
+
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := Substr(SQLERRM, 1, 4000); 
+END interface_advance_invoice; 
+PROCEDURE Interface_retention_invoice (p_header_id NUMBER, 
+                                     p_user      VARCHAR2, 
+                                     p_message   OUT VARCHAR2) 
+IS 
+  CURSOR ret_c IS 
+    SELECT
+  PCH.bu_id,
+  Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+    (
+    SELECT
+    GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT1.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT1.SUB_ACCOUNT
+  )
+    FROM
+      xxboq_accounts_setup_t ACT1
+    WHERE
+      ACT1.bu_id = PCH.bu_id
+      AND ACT1.bill_category = 'Total Receivable'
+      AND SYSDATE BETWEEN ACT1.start_date AND Nvl(ACT1.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT1.DESTINATION   ='AR'
+  ) AS REC_CC_ID,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE||'-'|| PCH.PC_NUM ||'-'||PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Retention'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'RR',
+    'FRR'
+  )
+  AND PCL.particulars = 'RET'
+  AND PCH.PROJECT_ID  =PJ.PROJECT_ID
+  AND ACT.bill_category = 'Retention'
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND PCH.pc_header_id = p_header_id;
+  l_message            VARCHAR2(1000); 
+  l_envelope           CLOB; 
+  l_inv_envelop        CLOB; 
+  l_dis_envelop        CLOB; 
+  l_cust_number        VARCHAR2(30); 
+  l_orig_add_ref       VARCHAR2(30); 
+  l_terms_id           NUMBER; 
+  l_inv_end_envlope    CLOB; 
+  l_dis_end_envlope    CLOB; 
+  l_inv_response       XMLTYPE; 
+  l_line_count         NUMBER; 
+  l_inv_dis_response   XMLTYPE; 
+  l_distribution_count NUMBER; 
+  l_soap_response      CLOB;
+  l_orig_system_bill_id NUMBER;
+  l_orig_system_ship_id NUMBER;
+BEGIN 
+    FOR ret_r IN ret_c LOOP 
+        SELECT BILL_TO_ACCT_ID, 
+               orig_system_reference,
+               BILL_TO_ADDRESS_ID,
+                SHIP_TO_ADDRESS_ID
+        INTO   l_cust_number, l_orig_add_ref ,l_orig_system_bill_id,l_orig_system_ship_id
+        FROM   xxpj_project_customers_t 
+        WHERE  party_id = ret_r.customer_id
+        AND PROJECT_ID=ret_r.PROJECT_ID;  
+SELECT TERM_ID INTO l_terms_id FROM XXRA_TERMS_T WHERE DESCRIPTION=ret_r.pay_terms;
+        l_envelope := Interface_header(p_type => 'I'); 
+
+        Invoice_interface_line(
+          p_bu_id => ret_r.bu_id, 
+          p_amount => ret_r.amount, 
+          p_trx_type => ret_r.ar_trx_type, 
+          p_customer_id => l_cust_number, 
+          p_trx_date => ret_r.pc_date, 
+          p_currency_code => ret_r.PROJECT_CURRENCY_CODE, 
+          p_desc =>  'Retention Release - '||to_char(ret_r.pc_date,'MON-YYYY')||' - '|| ret_r.PA_PC_NUM, 
+          p_gl_date => ret_r.gl_date, 
+          p_orig_system_ref => l_orig_add_ref, 
+          p_terms_id => l_terms_id, 
+          p_trx_number => ret_r.pc_num, 
+          p_flex_context => ret_r.AR_CONTEXT, 
+          p_batch_source => ret_r.AR_SOURCE, 
+          p_project_number=>  ret_r.PROJECT_NUMBER, 
+          p_invoice_number  =>ret_r.INVOICE_NUM, 
+          p_pa_pc_num =>      ret_r.PA_PC_NUM, 
+          p_flex_desc   =>    ret_r.LINE_COMMENTS, 
+          p_line_num      =>  ret_r.LINE_NUMBER, 
+          p_pc_header_id    =>ret_r.PC_HEADER_ID, 
+          p_project_id      =>ret_r.PROJECT_ID,
+          p_orig_system_bill_id =>l_orig_system_bill_id,
+          p_orig_system_ship_id =>l_orig_system_ship_id,
+          p_inv_envelope => l_inv_envelop
+        );
+
+        l_inv_end_envlope := Interface_end(p_type => 'I'); 
+
+        l_envelope := l_envelope 
+                      || l_inv_envelop 
+                      || l_inv_end_envlope; 
+
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_int_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);   
+                                
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Interface Line',
+    p_int_doc_num=>   ret_r.PA_PC_NUM ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  l_inv_response:=clobToXMLType(l_soap_response);
+        SELECT Count(x.org_id) 
+        INTO   l_line_count 
+        FROM   dual, 
+               XMLTABLE ( xmlnamespaces ( 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns1", 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns2", DEFAULT 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+), '//processInterfaceLineResponse/result' passing l_inv_response COLUMNS org_id 
+VARCHAR2(10) path 'ns2:OrgId' ) x; 
+l_line_count:=1;
+IF l_line_count > 0 THEN 
+  l_envelope := NULL; 
+
+  l_envelope := Interface_header(p_type => 'D'); 
+
+  Invoice_distribution_line(
+		  p_acc_class => 'REC', 
+		  p_cc_id => ret_r.rec_cc_id, 
+		  p_bu_id => ret_r.bu_id,  
+          p_flex_context => ret_r.AR_CONTEXT, 
+          p_project_number=>  ret_r.PROJECT_NUMBER, 
+          p_invoice_number  =>ret_r.INVOICE_NUM, 
+          p_pa_pc_num =>      ret_r.PA_PC_NUM, 
+          p_flex_desc   =>    ret_r.LINE_COMMENTS, 
+          p_line_num      =>  ret_r.LINE_NUMBER, 
+          p_pc_header_id    =>ret_r.PC_HEADER_ID, 
+          p_project_id      =>ret_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+
+  l_envelope := l_envelope 
+                || l_dis_envelop; 
+
+  l_dis_envelop := NULL;
+  Invoice_distribution_line(
+		  p_acc_class => 'REV', 
+		  p_cc_id => ret_r.rev_cc_id, 
+		  p_bu_id => ret_r.bu_id,  
+          p_flex_context => ret_r.AR_CONTEXT, 
+          p_project_number=>  ret_r.PROJECT_NUMBER, 
+          p_invoice_number  =>ret_r.INVOICE_NUM, 
+          p_pa_pc_num =>      ret_r.PA_PC_NUM, 
+          p_flex_desc   =>    ret_r.LINE_COMMENTS, 
+          p_line_num      =>  ret_r.LINE_NUMBER, 
+          p_pc_header_id    =>ret_r.PC_HEADER_ID, 
+          p_project_id      =>ret_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+  l_dis_end_envlope := Interface_end(p_type => 'D'); 
+
+  l_envelope := l_envelope 
+                || l_dis_envelop 
+                || l_dis_end_envlope; 
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_dist_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+END IF; 
+
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Distribution Line',
+    p_int_doc_num=>   ret_r.PA_PC_NUM ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  l_inv_dis_response:=clobToXMLType(l_soap_response);
+SELECT Count(x.account_class) 
+INTO   l_distribution_count 
+FROM   dual, 
+       XMLTABLE ( xmlnamespaces ( 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+AS "ns1", 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' 
+AS "ns2", DEFAULT 
+'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/'
+), '//processInterfaceDistributionResponse/ns1:result' passing 
+l_inv_dis_response COLUMNS account_class VARCHAR2(10) path 'ns2:AccountClass' ) 
+x; 
+IF l_line_count > 0 
+   AND l_distribution_count > 0 THEN 
+  UPDATE xxboq_pc_hdr_t 
+  SET    ar_flag = 'Y' ,pc_status='P'
+  WHERE  pc_header_id = p_header_id; 
+  UPDATE XXBOQ_PC_LINES_T SET ACCOUNT_CC_ID=RET_r.rev_cc_id WHERE pc_header_id = p_header_id AND particulars = 'RET';
+  UPDATE XXBOQ_PC_LINES_T SET ACCOUNT_CC_ID=RET_r.rec_cc_id WHERE pc_header_id = p_header_id AND particulars = 'VOWD'; 
+END IF; 
+
+l_line_count := 0; 
+
+l_distribution_count := 0; 
+END LOOP; 
+p_message :='Success';
+COMMIT; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := Substr(SQLERRM, 1, 4000); 
+END Interface_retention_invoice; 
+  PROCEDURE Interface_pc_invoice (
+    p_header_id   NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  ) IS
+
+    CURSOR pc_c IS 
+    SELECT
+  PCH.bu_id,
+  Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) + NVL( (
+  SELECT
+    Nvl(PCL1.cummulative,0) - Nvl(PCL1.previous,0)
+  FROM
+    XXBOQ_PC_LINES_T PCL1
+  WHERE
+    PCL1.PC_HEADER_ID = p_header_id
+    AND PCL1.PARTICULARS = 'MAT_AT_SITE'
+),0) AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE
+  || '-'
+  || PCH.PC_NUM
+  || '-'
+  || PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Value of Workdone'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+  AND PCH.PROJECT_ID = PJ.PROJECT_ID
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'PB',
+    'FPB'
+  )
+  AND PCL.particulars = 'VOWD'
+  AND ACT.bill_category = 'Total VOWD'
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND (Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0))>0
+  AND PCH.pc_header_id = p_header_id
+UNION ALL
+SELECT
+  PCH.bu_id,
+  ( Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) ) *-1 AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE
+  || '-'
+  || PCH.PC_NUM
+  || '-'
+  || PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Retention'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'PB',
+    'FPB'
+  )
+  AND PCL.particulars = 'RET'
+  AND PCH.PROJECT_ID = PJ.PROJECT_ID
+  AND ACT.bill_category = 'Retention'
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND (Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0))>0
+  AND PCH.pc_header_id = p_header_id
+UNION ALL
+SELECT
+  PCH.bu_id,
+  ( Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) ) *-1 AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE
+  || '-'
+  || PCH.PC_NUM
+  || '-'
+  || PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Advance Recovery'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'PB',
+    'FPB'
+  )
+  AND PCL.particulars = 'ADV_RECV'
+  AND ACT.bill_category = 'Advance Recovered'
+  AND PCH.PROJECT_ID = PJ.PROJECT_ID
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND (Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0))>0
+  AND PCH.pc_header_id = p_header_id
+UNION ALL
+SELECT
+  PCH.bu_id,
+  ( Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0) ) *-1 AS AMOUNT,
+  ACT.ar_trx_type,
+  ACT.ar_trx_type_id,
+  PCH.customer_id,
+  PCH.pay_terms,
+  PCH.pc_date,
+  TO_DATE(PCH.period,'MON-YYYY') AS GL_DATE,
+  GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT.SUB_ACCOUNT
+  ) AS REV_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE
+  || '-'
+  || PCH.PC_NUM
+  || '-'
+  || PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Other Deductions'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'PB',
+    'FPB'
+  )
+  AND PCL.particulars = 'OTH_DED'
+  AND ACT.bill_category = 'Other Deductions'
+  AND PCH.PROJECT_ID = PJ.PROJECT_ID
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND (Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0))>0
+  AND PCH.pc_header_id = p_header_id;
+
+    CURSOR pc_rec_c IS 
+    SELECT
+  PCH.bu_id,
+  (
+    SELECT
+    GET_CODE_COMBINATION_ID (
+    p_bu_id     =>PCH.bu_id,
+    p_project =>  PJ.PROJECT_NUMBER,
+    p_nat_acc   =>ACT1.NATURAL_ACCOUNT,
+    p_sub_acc   =>ACT1.SUB_ACCOUNT
+  )
+    FROM
+      xxboq_accounts_setup_t ACT1
+    WHERE
+      ACT1.bu_id = PCH.bu_id
+      AND ACT1.bill_category = 'Total Receivable'
+      AND SYSDATE BETWEEN ACT1.start_date AND Nvl(ACT1.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT1.DESTINATION   ='AR'
+  ) AS REC_CC_ID,
+  PCH.pc_num,
+  ACT.AR_CONTEXT,
+  PJ.PROJECT_NUMBER,
+  PCH.DOCUMENT_TYPE
+  || '-'
+  || PCH.PC_NUM
+  || '-'
+  || PCH.REVISION AS INVOICE_NUM,
+  PCH.pc_document_num PA_PC_NUM,
+  'Value of Workdone'
+  as LINE_COMMENTS,
+  PCL.PC_LINE_ID LINE_NUMBER,
+  PCH.PC_HEADER_ID,
+  PCH.PROJECT_ID,
+  ACT.AR_SOURCE,
+  PJ.PROJECT_CURRENCY_CODE
+FROM
+  xxboq_pc_hdr_t PCH,
+  xxboq_pc_lines_t PCL,
+  xxboq_accounts_setup_t ACT,
+  XXPJ_PROJECTS_T PJ
+WHERE
+  PCH.pc_header_id = PCL.pc_header_id
+--  AND PCL.particulars = ACT.bill_category
+  AND PCH.bu_id = ACT.bu_id
+  AND PCH.document_type IN (
+    'PB',
+    'FPB'
+  )
+  AND PCL.particulars = 'VOWD'
+  AND PCH.PROJECT_ID = PJ.PROJECT_ID
+  AND ACT.bill_category = 'Total VOWD'
+  AND SYSDATE BETWEEN ACT.start_date AND Nvl(ACT.end_date,TO_DATE('31-12-4012','DD-MM-YYYY') )
+  AND ACT.DESTINATION   ='AR'
+  AND (Nvl(PCL.cummulative,0) - Nvl(PCL.previous,0))>0
+  AND PCH.pc_header_id = p_header_id;
+
+    l_message              VARCHAR2(1000);
+    l_envelope             CLOB;
+    l_inv_envelop          CLOB;
+    l_inv_ext_envelop      CLOB:='';
+    l_dis_envelop          CLOB;
+    l_dis_ext_envelop      CLOB;
+    l_cust_number          VARCHAR2(30);
+    l_orig_add_ref         VARCHAR2(30);
+    l_terms_id             NUMBER;
+    l_inv_end_envlope      CLOB;
+    l_dis_end_envlope      CLOB;
+    l_inv_response         XMLTYPE;
+    l_line_count           NUMBER;
+    l_inv_dis_response     XMLTYPE;
+    l_distribution_count   NUMBER;
+    l_soap_response      CLOB;
+    l_od_count            NUMBER;
+    l_pc_doc_num          VARCHAR2(100);
+  l_orig_system_bill_id NUMBER;
+  l_orig_system_ship_id NUMBER;
+  BEGIN
+    l_envelope := Interface_header(p_type => 'I');
+    FOR pc_r IN pc_c LOOP
+      l_cust_number := NULL;
+      l_orig_add_ref := NULL;
+      SELECT BILL_TO_ACCT_ID, 
+               orig_system_reference,
+               BILL_TO_ADDRESS_ID,
+                SHIP_TO_ADDRESS_ID
+        INTO   l_cust_number, l_orig_add_ref ,l_orig_system_bill_id,l_orig_system_ship_id
+      FROM
+        xxpj_project_customers_t
+      WHERE
+        party_id = pc_r.customer_id
+        AND PROJECT_ID=pc_r.PROJECT_ID; 
+      l_pc_doc_num:=pc_r.PA_PC_NUM;
+      SELECT TERM_ID INTO l_terms_id FROM XXRA_TERMS_T WHERE DESCRIPTION=pc_r.pay_terms;
+ Invoice_interface_line(
+          p_bu_id => pc_r.bu_id, 
+          p_amount => pc_r.amount, 
+          p_trx_type => pc_r.ar_trx_type, 
+          p_customer_id => l_cust_number, 
+          p_trx_date => pc_r.pc_date, 
+          p_currency_code => pc_r.PROJECT_CURRENCY_CODE, 
+          p_desc =>  'Progress Billing - '||pc_r.LINE_COMMENTS||' - '||to_char(pc_r.pc_date,'MON-YYYY')||' - '|| pc_r.PA_PC_NUM, 
+          p_gl_date => pc_r.gl_date, 
+          p_orig_system_ref => l_orig_add_ref, 
+          p_terms_id => l_terms_id, 
+          p_trx_number => pc_r.pc_num, 
+          p_flex_context => pc_r.AR_CONTEXT, 
+          p_batch_source => pc_r.AR_SOURCE, 
+          p_project_number=>  pc_r.PROJECT_NUMBER, 
+          p_invoice_number  =>pc_r.INVOICE_NUM, 
+          p_pa_pc_num =>      pc_r.PA_PC_NUM, 
+          p_flex_desc   =>   pc_r.LINE_COMMENTS, 
+          p_line_num      =>  pc_r.LINE_NUMBER, 
+          p_pc_header_id    =>pc_r.PC_HEADER_ID, 
+          p_project_id      =>pc_r.PROJECT_ID,
+          p_orig_system_bill_id =>l_orig_system_bill_id,
+          p_orig_system_ship_id =>l_orig_system_ship_id,
+          p_inv_envelope => l_inv_envelop
+        );
+
+      l_inv_ext_envelop := l_inv_ext_envelop || l_inv_envelop;
+--      dbms_output.Put_line ('l_inv_ext_envelop= =' || l_inv_ext_envelop);
+    END LOOP;
+
+    l_inv_end_envlope := Interface_end(p_type => 'I');
+    l_envelope := l_envelope
+                  || l_inv_ext_envelop
+                  || l_inv_end_envlope; 
+
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_int_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+                                
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Interface Line',
+    p_int_doc_num=>   l_pc_doc_num ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  l_inv_response:=clobToXMLType(l_soap_response);
+    SELECT
+      COUNT(x.org_id)
+    INTO l_line_count
+    FROM
+      dual,
+      XMLTABLE ( XMLNAMESPACES ( 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/' AS "ns1",'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/'
+AS "ns2",DEFAULT 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/' ),'//processInterfaceLineResponse/result'
+PASSING l_inv_response COLUMNS org_id VARCHAR2(10) PATH 'ns2:OrgId' ) x;
+
+    IF
+      l_line_count > 0
+    THEN
+      l_envelope := NULL;
+      l_envelope := Interface_header(p_type => 'D');
+      FOR pc_rec_r IN pc_rec_c LOOP
+
+    Invoice_distribution_line(
+		  p_acc_class => 'REC', 
+		  p_cc_id => pc_rec_r.rec_cc_id, 
+		  p_bu_id => pc_rec_r.bu_id,  
+          p_flex_context => pc_rec_r.AR_CONTEXT, 
+          p_project_number=>  pc_rec_r.PROJECT_NUMBER, 
+          p_invoice_number  =>pc_rec_r.INVOICE_NUM, 
+          p_pa_pc_num =>      pc_rec_r.PA_PC_NUM, 
+          p_flex_desc   =>    pc_rec_r.LINE_COMMENTS, 
+          p_line_num      =>  pc_rec_r.LINE_NUMBER, 
+          p_pc_header_id    =>pc_rec_r.PC_HEADER_ID, 
+          p_project_id      =>pc_rec_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+      END LOOP;
+
+      l_envelope := l_envelope || l_dis_envelop;
+      FOR pc_r IN pc_c LOOP
+        l_dis_envelop := NULL;
+
+  Invoice_distribution_line(
+		  p_acc_class => 'REV', 
+		  p_cc_id => pc_r.rev_cc_id, 
+		  p_bu_id => pc_r.bu_id,  
+          p_flex_context => pc_r.AR_CONTEXT, 
+          p_project_number=>  pc_r.PROJECT_NUMBER, 
+          p_invoice_number  =>pc_r.INVOICE_NUM, 
+          p_pa_pc_num =>      pc_r.PA_PC_NUM, 
+          p_flex_desc   =>    pc_r.LINE_COMMENTS, 
+          p_line_num      =>  pc_r.LINE_NUMBER, 
+          p_pc_header_id    =>pc_r.PC_HEADER_ID, 
+          p_project_id      =>pc_r.PROJECT_ID,
+  p_dis_envelope => l_dis_envelop); 
+--dbms_output.Put_line ('l_dis_envelop= =' || l_dis_envelop);
+        l_envelope := l_envelope || l_dis_envelop;
+      END LOOP;
+
+      l_dis_end_envlope := Interface_end(p_type => 'D');
+      l_envelope := l_envelope
+                    || l_dis_end_envlope; 
+        xxws_soap_services_pkg.SUBMIT_SOAP_SERVICE(P_SOAP_URL=>g_ar_inv_int_wsdl,
+                                P_SOAP_ACTION=>g_ar_inv_dist_soap_act,
+                                P_HTTP_VERSION =>'HTTP/1.2',
+                                P_CONTENT_TYPE=>'text/xml',
+                                P_USER_NAME =>g_username,
+                                P_PASSWORD =>g_password,  
+                                P_PAYLOAD =>l_envelope,
+                                P_RESPONSE =>p_message,
+                                P_RESPONSE_DATA=>l_soap_response);  
+    END IF;
+
+INSERT_PAYLOAD_LINE (
+    p_int_doc_type   =>'AR Invoice Distribution Line',
+    p_int_doc_num=>   l_pc_doc_num ,
+    p_req_payload => l_envelope  ,
+    p_resp_payload=>  l_soap_response ,
+    p_source_id   =>   p_header_id
+  );
+  l_inv_dis_response:=clobToXMLType(l_soap_response);
+    SELECT
+      COUNT(x.account_class)
+    INTO l_distribution_count
+    FROM
+      dual,
+      XMLTABLE ( XMLNAMESPACES ( 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/' AS "ns1",'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/'
+AS "ns2",DEFAULT 'http://xmlns.oracle.com/apps/financials/receivables/transactions/invoices/invoiceService/types/' ),'//processInterfaceDistributionResponse/ns1:result'
+PASSING l_inv_dis_response COLUMNS account_class VARCHAR2(10) PATH 'ns2:AccountClass' ) x;
+
+    IF
+      l_line_count > 0 AND l_distribution_count > 0
+    THEN
+    SELECT COUNT(1) into l_od_count FROM XXBOQ_PC_DEDUCTIONS_T WHERE PC_HEADER_ID=p_header_id;
+    IF l_od_count>0 THEN
+    Interface_other_deductions ( p_header_id =>p_header_id, p_message =>l_message);
+    IF l_message<>'Success' THEN 
+    p_message:=l_message;
+    END IF;
+    END IF;
+      UPDATE xxboq_pc_hdr_t
+      SET
+        ar_flag = 'Y',pc_status='P'
+      WHERE
+        pc_header_id = p_header_id;
+    END IF;
+
+    l_line_count := 0;
+    l_distribution_count := 0;
+    p_message := 'Success';
+    COMMIT;
+  EXCEPTION
+    WHEN OTHERS THEN
+      p_message := Substr(SQLERRM,1,4000);
+  END Interface_pc_invoice;
+    PROCEDURE VALIDATE_PC_ACCOUNTS (
+    p_header_id NUMBER,
+    p_message OUT VARCHAR2
+  ) IS
+
+    l_prj_number    VARCHAR2(50);
+    l_bu_id         NUMBER;
+    l_doc_type      VARCHAR2(30);
+    l_combination   VARCHAR2(100);
+    l_cc_id         NUMBER;
+    l_message       VARCHAR2(1000) := '';
+    l_natural_acc   VARCHAR2(10);
+    l_ledger_id     NUMBER;
+    l_period        VARCHAR2(10);
+    l_acc_date      DATE;
+  BEGIN
+    SELECT
+      PCH.DOCUMENT_TYPE,
+      PCH.BU_ID,
+      PJ.PROJECT_NUMBER,
+      PCH.PERIOD
+    INTO
+      l_doc_type,
+      l_bu_id,
+      l_prj_number,
+      l_period
+    FROM
+      XXBOQ_PC_HDR_T PCH,
+      XXPJ_PROJECTS_T PJ
+    WHERE
+      PCH.PROJECT_ID = PJ.PROJECT_ID
+      AND PC_HEADER_ID = p_header_id;
+
+    p_message := 'Success';
+    IF
+      l_doc_type IS NOT NULL AND l_bu_id IS NOT NULL AND l_prj_number IS NOT NULL
+    THEN
+      l_acc_date := TO_DATE(l_period,'MON-YYYY');
+      SELECT
+        LEDGER_ID
+      INTO l_ledger_id
+      FROM
+        XXINV_BUSINESS_UNITS_T
+      WHERE
+        BU_ID = l_bu_id;
+
+      SELECT
+        Is_period_open(29,l_ledger_id,TO_CHAR(l_acc_date,'YYYY-MM-DD') )
+      INTO p_message
+      FROM
+        dual;
+
+      IF
+        p_message != 'Open'
+      THEN
+        p_message := 'AR Period is not open for accounting date '
+                     || l_acc_date
+                     || ' or '
+                     || Chr(10)
+                     || p_message;
+       ELSE
+                     p_message:='';
+      END IF;
+
+      l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Total Receivable');
+
+      IF
+        l_message != 'Success'
+      THEN
+        p_message := l_message;
+        l_message:='';
+      END IF;
+      IF
+        l_doc_type = 'ADV'
+      THEN
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Advance Paid');
+
+        p_message := p_message || l_message;
+      ELSIF l_doc_type = 'RR' OR l_doc_type = 'FRR' THEN
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Retention');
+
+        p_message := p_message || l_message;
+      ELSIF l_doc_type = 'PB' OR l_doc_type = 'FPB' THEN
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Total VOWD');
+--        IF
+--          l_message != 'Success'
+--        THEN
+          p_message := p_message || l_message;
+--        END IF;
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Retention');
+
+        IF
+          l_message != 'Success'
+        THEN
+          p_message := p_message || l_message;
+        END IF;
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Advance Recovered');
+
+        IF
+          l_message != 'Success'
+        THEN
+          p_message := p_message || l_message;
+        END IF;
+        l_message := VALIDATE_ACC_LINE(p_prj_number => l_prj_number,p_bu_id => l_bu_id,p_bill_cat => 'Other Deductions');
+
+        IF
+          l_message != 'Success'
+        THEN
+          p_message := p_message || l_message;
+        END IF;
+      ELSE
+        p_message := 'Invalid Document type.';
+      END IF;
+
+    ELSE
+      p_message := 'PC validation failed.';
+    END IF;
+
+  EXCEPTION
+    WHEN OTHERS THEN
+      p_message := 'PC validation failed.' || SQLERRM;
+  END VALIDATE_PC_ACCOUNTS;
+    PROCEDURE Interface_pc_doc (
+    p_header_id   IN NUMBER,
+    p_user        VARCHAR2,
+    p_message     OUT VARCHAR2
+  ) IS
+    l_doc_type   VARCHAR2(30);
+    l_message    VARCHAR2(3000);
+  BEGIN
+    BEGIN
+      VALIDATE_PC_ACCOUNTS(p_header_id => p_header_id,p_message => l_message);
+    EXCEPTION
+      WHEN OTHERS THEN
+        p_message := 'ERROR RAISED WHILE VALIDATING PC - ' || SQLERRM;
+    END;
+
+    IF
+      l_message = 'Success'
+    THEN
+      SELECT
+        document_type
+      INTO l_doc_type
+      FROM
+        XXBOQ_PC_HDR_T
+      WHERE
+        pc_header_id = p_header_id;
+      IF
+        l_doc_type IS NOT NULL
+      THEN
+        IF
+          l_doc_type = 'ADV'
+        THEN
+          Interface_advance_invoice(p_header_id => p_header_id,p_user => p_user,p_message => l_message);
+        ELSIF l_doc_type = 'PB' OR l_doc_type = 'FPB' THEN
+          Interface_pc_invoice(p_header_id => p_header_id,p_user => p_user,p_message => l_message);
+        ELSIF l_doc_type = 'RR' OR l_doc_type = 'FRR' THEN
+          Interface_retention_invoice(p_header_id => p_header_id,p_user => p_user,p_message => l_message);
+        ELSE
+          l_message := 'Error, Invalid Document Type.';
+        END IF;
+
+      ELSE
+        l_message := 'Error, Invalid Document Type.';
+      END IF;
+
+    END IF;
+
+    p_message := l_message;
+  EXCEPTION
+    WHEN OTHERS THEN
+      p_message := 'ERROR RAISED WHILE CALLING INTERFACE - ' || SQLERRM;
+  END interface_pc_doc;
+ END XXBOQ_INTERFACES_PKG;

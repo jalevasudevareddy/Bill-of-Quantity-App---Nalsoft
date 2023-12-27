@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="XxboqBoqLinesEO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  DBObjectType="table"
+  DBObjectName="XXBOQ_BOQ_LINES_T"
+  AliasName="XxboqBoqLinesEO"
+  BindingStyle="OracleName"
+  UseGlueCode="false"
+  RowClass="model.entity.XxboqBoqLinesEOImpl"
+  xmlns:validation="http://xmlns.oracle.com/adfm/validation">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Init|Access"/>
+    <AttrArray Name="_publishEvents"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Attribute
+    Name="HeaderId"
+    ColumnName="HEADER_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LineId"
+    ColumnName="LINE_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="BillNumber"
+    Precision="30"
+    ColumnName="BILL_NUMBER"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="model.entity.XxboqBoqLinesEO.BillNumber_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="PageNumber"
+    Precision="30"
+    ColumnName="PAGE_NUMBER"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="model.entity.XxboqBoqLinesEO.PageNumber_LABEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="ItemNumber"
+    Precision="30"
+    ColumnName="ITEM_NUMBER"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ITEM_NUMBER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="ItemDescription"
+    Precision="240"
+    ColumnName="ITEM_DESCRIPTION"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DESCRIPTION"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="BoqQuantity"
+    ColumnName="BOQ_QUANTITY"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BOQ_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <validation:CompareValidationBean
+      Name="BoqQuantity_Rule_0"
+      ResId="model.entity.XxboqBoqLinesEO.BoqQuantity_Rule_0"
+      OnAttribute="BoqQuantity"
+      OperandType="LITERAL"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO"
+      CompareValue="0"/>
+  </Attribute>
+  <Attribute
+    Name="Uom"
+    Precision="10"
+    ColumnName="UOM"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="UOM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="EstimatedQuantity"
+    ColumnName="ESTIMATED_QUANTITY"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ESTIMATED_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <validation:CompareValidationBean
+      Name="EstimatedQuantity_Rule_0"
+      ResId="model.entity.XxboqBoqLinesEO.EstimatedQuantity_Rule_0"
+      OnAttribute="EstimatedQuantity"
+      OperandType="LITERAL"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO"
+      CompareValue="0"/>
+  </Attribute>
+  <Attribute
+    Name="StructureId"
+    ColumnName="STRUCTURE_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="BoqRate"
+    ColumnName="BOQ_RATE"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <validation:CompareValidationBean
+      Name="BoqRate_Rule_0"
+      ResId="model.entity.XxboqBoqLinesEO.BoqRate_Rule_0"
+      OnAttribute="BoqRate"
+      OperandType="LITERAL"
+      Inverse="false"
+      CompareType="GREATERTHANEQUALTO"
+      CompareValue="0"/>
+  </Attribute>
+  <Attribute
+    Name="ContractType"
+    Precision="50"
+    ColumnName="CONTRACT_TYPE"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_TYPE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute
+    Name="CreatedBy"
+    Precision="60"
+    ColumnName="CREATED_BY"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T"
+    IsUpdateable="while_insert"
+    HistoryColumn="13">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CreationDate"
+    ColumnName="CREATION_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="XXBOQ_BOQ_LINES_T"
+    IsUpdateable="while_insert"
+    HistoryColumn="DateHistory">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LastUpdateDate"
+    ColumnName="LAST_UPDATE_DATE"
+    SQLType="TIMESTAMP"
+    Type="java.sql.Date"
+    ColumnType="DATE"
+    TableName="XXBOQ_BOQ_LINES_T"
+    HistoryColumn="DateHistory">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="LastUpdatedBy"
+    Precision="60"
+    ColumnName="LAST_UPDATED_BY"
+    SQLType="VARCHAR"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="XXBOQ_BOQ_LINES_T"
+    HistoryColumn="13">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="60"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ParentLineId"
+    ColumnName="PARENT_LINE_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="BuId"
+    ColumnName="BU_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="ProjectId"
+    ColumnName="PROJECT_ID"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="SequenceNumner"
+    ColumnName="SEQUENCE_NUMNER"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="WorkDoneQty"
+    ColumnName="WORK_DONE_QTY"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="CertifiedQty"
+    ColumnName="CERTIFIED_QTY"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <Attribute
+    Name="InvoicedQty"
+    ColumnName="INVOICED_QTY"
+    SQLType="NUMERIC"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    TableName="XXBOQ_BOQ_LINES_T">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </Attribute>
+  <AccessorAttribute
+    Name="XxboqBoqHeaderEO"
+    Association="model.association.XxboqHdrToLinesAssc"
+    AssociationEnd="model.association.XxboqHdrToLinesAssc.XxboqBoqHeaderEO"
+    AssociationOtherEnd="model.association.XxboqHdrToLinesAssc.XxboqBoqLinesEO"
+    Type="model.entity.XxboqBoqHeaderEOImpl"
+    IsUpdateable="true"/>
+  <Key
+    Name="BillPageAndItemNumbersUK"
+    AltKey="true">
+    <DesignTime>
+      <Attr Name="_isUnique" Value="true"/>
+      <Attr Name="_DBObjectName" Value="XXBOQ_BOQ_LINES_T"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqBoqLinesEO.BillNumber"/>
+      <Item Value="model.entity.XxboqBoqLinesEO.PageNumber"/>
+      <Item Value="model.entity.XxboqBoqLinesEO.ItemNumber"/>
+      <Item Value="model.entity.XxboqBoqLinesEO.HeaderId"/>
+    </AttrArray>
+  </Key>
+  <Key
+    Name="XxboqboqlineseoPrimaryKey"
+    PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="XXBOQBOQLINESEO_PRIMARY_KEY"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqBoqLinesEO.HeaderId"/>
+      <Item Value="model.entity.XxboqBoqLinesEO.LineId"/>
+    </AttrArray>
+  </Key>
+  <validation:UniqueKeyValidationBean
+    Name="XxboqBoqLinesEO_Rule_0"
+    ResId="model.entity.XxboqBoqLinesEO_Rule_0"
+    KeyName="BillPageAndItemNumbersUK">
+    <validation:OnAttributes>
+      <validation:Item
+        Value="BillNumber"/>
+      <validation:Item
+        Value="PageNumber"/>
+      <validation:Item
+        Value="ItemNumber"/>
+    </validation:OnAttributes>
+  </validation:UniqueKeyValidationBean>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</Entity>

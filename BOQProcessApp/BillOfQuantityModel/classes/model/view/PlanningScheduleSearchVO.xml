@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PlanningScheduleSearchVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqPlanningScheduleHdrEO.BU_ID, 
+       XxboqPlanningScheduleHdrEO.BUDGET_TYPE, 
+       XxboqPlanningScheduleHdrEO.CHANGE_REASON, 
+       XxboqPlanningScheduleHdrEO.CREATED_BY, 
+       XxboqPlanningScheduleHdrEO.CREATION_DATE, 
+       XxboqPlanningScheduleHdrEO.DESCRIPTION, 
+       XxboqPlanningScheduleHdrEO.HEADER_ID, 
+       XxboqPlanningScheduleHdrEO.IA_HEADER_ID, 
+       XxboqPlanningScheduleHdrEO.IA_VERSION, 
+       XxboqPlanningScheduleHdrEO.LAST_UPDATED_BY, 
+       XxboqPlanningScheduleHdrEO.LAST_UPDATED_DATE, 
+       XxboqPlanningScheduleHdrEO.PLAN_PERIOD, 
+       XxboqPlanningScheduleHdrEO.PLAN_YEAR, 
+       XxboqPlanningScheduleHdrEO.PROJECT_ID, 
+       XxboqPlanningScheduleHdrEO.STATUS, 
+       XxboqPlanningScheduleHdrEO.STRUCTURE_ID, 
+       XxboqPlanningScheduleHdrEO.TOTAL_BUDGET, 
+       XxboqPlanningScheduleHdrEO.TOTAL_INCOME, 
+       XxpjProjectsEO.PROJECT_NUMBER, 
+       XxboqPlanningScheduleHdrEO.VERSION_NO, 
+       XxinvBusinessUnitsEO.BU_NAME, 
+       XxinvBusinessUnitsEO.BU_ID AS BU_ID1, 
+       XxpjProjectsEO.PROJECT_ID AS PROJECT_ID1, 
+       XxpjProjectsEO.PROJECT_NAME, 
+       XxpjProjectsEO.DESCRIPTION AS DESCRIPTION1, 
+       XxpjProjectsEO.START_DATE, 
+       XxpjProjectsEO.END_DATE, 
+       XxboqPlanningScheduleHdrEO.PROJECT_PLAN"
+  FromList="XXBOQ_PLANNING_SCHEDULE_HDR_T XxboqPlanningScheduleHdrEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO, XXPJ_PROJECTS_T XxpjProjectsEO"
+  Where="XxboqPlanningScheduleHdrEO.BU_ID=XxinvBusinessUnitsEO.BU_ID and 
+XxboqPlanningScheduleHdrEO.PROJECT_ID=XxpjProjectsEO.PROJECT_ID"
+  OrderBy="XxboqPlanningScheduleHdrEO.HEADER_ID desc"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.PlanningScheduleSearchVORowImpl"
+  ComponentClass="model.view.PlanningScheduleSearchVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectSearchVO1"
+    ViewObjectName="model.searchview.ProjectSearchVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="AgreementMonthsVO1"
+    ViewObjectName="model.progview.AgreementMonthsVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PlanPeriodVO1"
+    ViewObjectName="model.progview.PlanPeriodVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="PlanYearVO1"
+    ViewObjectName="model.progview.PlanYearVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_BuId"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectNumber"
+    ListVOName="ProjectSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ProjectNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectSearchVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectPlan"
+    ListVOName="AgreementMonthsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ProjectPlan_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectPlan"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="AgreementMonthsVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_PlanYear"
+    ListVOName="PlanYearVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_PlanYear_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PlanYear"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PlanYear"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PlanYear"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PlanYearVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_PlanPeriod"
+    ListVOName="PlanPeriodVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_PlanPeriod_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="PlanPeriod"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PlanPeriod"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PlanPeriod"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PlanPeriodVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqPlanningScheduleHdrEO"
+    Entity="model.entity.XxboqPlanningScheduleHdrEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.view.PlanningScheduleSearchVO.XxboqPlanningScheduleHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <EntityUsage
+    Name="XxpjProjectsEO"
+    Entity="model.masterentity.XxpjProjectsEO"
+    SourceUsage="model.view.PlanningScheduleSearchVO.XxinvBusinessUnitsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="BU_ID"
+    LOVName="LOV_BuId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BudgetType"
+    PrecisionRule="true"
+    EntityAttrName="BudgetType"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="BUDGET_TYPE"/>
+  <ViewAttribute
+    Name="ChangeReason"
+    PrecisionRule="true"
+    EntityAttrName="ChangeReason"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="CHANGE_REASON"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="HeaderId"
+    PrecisionRule="true"
+    EntityAttrName="HeaderId"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="HEADER_ID"/>
+  <ViewAttribute
+    Name="IaHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="IaHeaderId"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="IA_HEADER_ID"/>
+  <ViewAttribute
+    Name="IaVersion"
+    PrecisionRule="true"
+    EntityAttrName="IaVersion"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="IA_VERSION"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="PlanPeriod"
+    PrecisionRule="true"
+    EntityAttrName="PlanPeriod"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="PLAN_PERIOD"
+    LOVName="LOV_PlanPeriod">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PlanYear"
+    PrecisionRule="true"
+    EntityAttrName="PlanYear"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="PLAN_YEAR"
+    LOVName="LOV_PlanYear">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="Status"
+    PrecisionRule="true"
+    EntityAttrName="Status"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="STATUS"/>
+  <ViewAttribute
+    Name="StructureId"
+    PrecisionRule="true"
+    EntityAttrName="StructureId"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="STRUCTURE_ID"/>
+  <ViewAttribute
+    Name="TotalBudget"
+    PrecisionRule="true"
+    EntityAttrName="TotalBudget"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="TOTAL_BUDGET"/>
+  <ViewAttribute
+    Name="TotalIncome"
+    PrecisionRule="true"
+    EntityAttrName="TotalIncome"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="TOTAL_INCOME"/>
+  <ViewAttribute
+    Name="ProjectNumber"
+    PrecisionRule="true"
+    EntityAttrName="ProjectNumber"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NUMBER"
+    LOVName="LOV_ProjectNumber"
+    IsUpdateable="false">
+    <Dependencies>
+      <Item
+        Value="BuId"/>
+    </Dependencies>
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="VersionNo"
+    PrecisionRule="true"
+    EntityAttrName="VersionNo"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="VERSION_NO"/>
+  <ViewAttribute
+    Name="BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME"/>
+  <ViewAttribute
+    Name="BuId1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID1"/>
+  <ViewAttribute
+    Name="ProjectId1"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_ID1"/>
+  <ViewAttribute
+    Name="ProjectName"
+    PrecisionRule="true"
+    EntityAttrName="ProjectName"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NAME"/>
+  <ViewAttribute
+    Name="Description1"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="DESCRIPTION1"/>
+  <ViewAttribute
+    Name="StartDate"
+    PrecisionRule="true"
+    EntityAttrName="StartDate"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="START_DATE"/>
+  <ViewAttribute
+    Name="EndDate"
+    PrecisionRule="true"
+    EntityAttrName="EndDate"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="END_DATE"/>
+  <ViewAttribute
+    Name="ProjectPlan"
+    PrecisionRule="true"
+    EntityAttrName="ProjectPlan"
+    EntityUsage="XxboqPlanningScheduleHdrEO"
+    AliasName="PROJECT_PLAN"
+    LOVName="LOV_ProjectPlan">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="PlanningScheduleSearchVOCriteria"
+    ViewObjectName="model.view.PlanningScheduleSearchVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow38"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="PlanningScheduleSearchVOCriteria_vcrow38_BuId"
+        ViewAttribute="BuId"
+        Operator="="
+        Conjunction="AND"
+        Required="Required"/>
+      <ViewCriteriaItem
+        Name="ProjectNumber"
+        ViewAttribute="ProjectNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="VersionNo"
+        ViewAttribute="VersionNo"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="HeaderId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

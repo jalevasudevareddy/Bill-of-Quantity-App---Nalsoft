@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73"
+                id="CertifiedQtyTF_CertifiedQtyTF_makeAsCurrentCertDocPageDef"
+                Package="view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="makeAsCurrentCertDoc" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="makeAsCurrentCertDoc"
+                  IsViewObjectMethod="false"
+                  DataControl="BillingDetailsAMDataControl"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.makeAsCurrentCertDoc_BillingDetailsAMDataControl_dataProvider_makeAsCurrentCertDoc_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

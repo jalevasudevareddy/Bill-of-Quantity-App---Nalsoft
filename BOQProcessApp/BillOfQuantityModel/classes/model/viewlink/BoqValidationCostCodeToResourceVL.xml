@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BoqValidationCostCodeToResourceVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  EntityAssociation="model.association.XxBoqValidationCostCodeToResourceAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="BoqvalidationCostCodeVO"
+    Cardinality="1"
+    Owner="model.view.BoqvalidationCostCodeVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_entityAccessor" Value="true"/>
+      <Attr Name="_finderName" Value="BoqvalidationCostCodeVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BoqvalidationCostCodeVO.ValidationCostCodeId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="BoqValidationResourceVO"
+    Cardinality="-1"
+    Owner="model.view.BoqValidationResourceVO">
+    <DesignTime>
+      <Attr Name="_entityAccessor" Value="true"/>
+      <Attr Name="_finderName" Value="BoqValidationResourceVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BoqValidationResourceVO.ValidationCostCodeId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

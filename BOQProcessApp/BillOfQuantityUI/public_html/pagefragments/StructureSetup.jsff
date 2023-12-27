@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1">
+    <f:facet name="center">
+      <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelHeader text="Structure Setup" id="ph1"
+                        binding="#{backingBeanScope.StructureSetupBean.pageBindings}">
+          <af:spacer width="10" height="15" id="s4"/>
+          <f:facet name="toolbar">
+            <af:toolbar id="t1">
+              <af:commandButton text="Save" id="cb1"
+                                actionListener="#{backingBeanScope.StructureSetupBean.SaveStructure}"/>
+              <af:spacer width="4" id="s2"/>
+              <af:commandButton text="Save and Close" id="cb2"
+                                actionListener="#{backingBeanScope.StructureSetupBean.SaveStructure}"
+                                action="Done"/>
+              <af:spacer width="4" id="s1"/>
+              <af:commandButton text="Cancel" id="cb3" action="Done"
+                                actionListener="#{backingBeanScope.StructureSetupBean.cancelStructure}"
+                                immediate="true"/>
+            </af:toolbar>
+          </f:facet>
+          <af:panelFormLayout id="pfl1" maxColumns="2" rows="1" fieldWidth="70%"
+                              labelWidth="30%">
+            <af:selectOneChoice value="#{bindings.BuName.inputValue}"
+                                label="#{bindings.BuName.label}"
+                                autoSubmit="true"
+                                required="#{bindings.BuName.hints.mandatory}"
+                                shortDesc="#{bindings.BuName.hints.tooltip}"
+                                id="soc1">
+              <f:selectItems value="#{bindings.BuName.items}" id="si1"/>
+            </af:selectOneChoice>
+            <af:inputComboboxListOfValues id="projectNumberId" autoSubmit="true"
+                                          partialTriggers="soc1"
+                                          disabled="#{bindings.BuName.inputValue==null or bindings.BuName.inputValue==''}"
+                                          valueChangeListener="#{backingBeanScope.StructureSetupBean.ProjectNumberChanged}"
+                                          popupTitle="Search and Select: #{bindings.ProjectNumber.hints.label}"
+                                          value="#{bindings.ProjectNumber.inputValue}"
+                                          label="#{bindings.ProjectNumber.hints.label}"
+                                          model="#{bindings.ProjectNumber.listOfValuesModel}"
+                                          required="#{bindings.ProjectNumber.hints.mandatory}"
+                                          columns="#{bindings.ProjectNumber.hints.displayWidth}"
+                                          shortDesc="#{bindings.ProjectNumber.hints.tooltip}">
+              <f:validator binding="#{bindings.ProjectNumber.validator}"/>
+            </af:inputComboboxListOfValues>
+          </af:panelFormLayout>
+          <af:spacer width="10" height="15" id="s3"/>
+          <af:showDetailHeader text="Structure Details" disclosed="true"
+                               id="sdh1">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+              <f:facet name="toolbar">
+                <af:toolbar id="t3">
+                  <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                    text="Add"
+                                    disabled="#{!bindings.CreateInsert.enabled}"
+                                    id="cb4"/>
+                  <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                    text="Delete"
+                                    disabled="#{!bindings.Delete.enabled or bindings.TransDeleteCondition.inputValue=='Y'}"
+                                    id="cb5"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.StructureSetupVO1.collectionModel}"
+                        var="row" rows="#{bindings.StructureSetupVO1.rangeSize}"
+                        emptyText="#{bindings.StructureSetupVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.StructureSetupVO1.rangeSize}"
+                        rowBandingInterval="0"
+                        filterModel="#{bindings.StructureSetupVO1Query.queryDescriptor}"
+                        queryListener="#{bindings.StructureSetupVO1Query.processQuery}"
+                        filterVisible="false" varStatus="vs"
+                        selectedRowKeys="#{bindings.StructureSetupVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.StructureSetupVO1.collectionModel.makeCurrent}"
+                        rowSelection="single" id="t2"
+                        styleClass="AFStretchWidth" columnStretching="column:c2"
+                        partialTriggers="::cb4 ::cb5 :::projectNumberId :::soc1">
+                <af:column id="c99" width="45" align="center"
+                           headerText="S.No ">
+                  <af:outputText value=" #{vs.index+1} " id="ot99"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.StructureSetupVO1.hints.StructureCode.name}"
+                           filterable="true" sortable="true" width="150"
+                           headerText="#{bindings.StructureSetupVO1.hints.StructureCode.label}"
+                           id="c1">
+                  <af:inputText value="#{row.bindings.StructureCode.inputValue}"
+                                label="#{bindings.StructureSetupVO1.hints.StructureCode.label}"
+                                readOnly="#{row.bindings.TransDeleteCondition.inputValue=='Y'}"
+                                required="#{bindings.StructureSetupVO1.hints.StructureCode.mandatory}"
+                                columns="#{bindings.StructureSetupVO1.hints.StructureCode.displayWidth}"
+                                maximumLength="#{bindings.StructureSetupVO1.hints.StructureCode.precision}"
+                                shortDesc="#{bindings.StructureSetupVO1.hints.StructureCode.tooltip}"
+                                id="it2">
+                    <f:validator binding="#{row.bindings.StructureCode.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.StructureSetupVO1.hints.Description.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.StructureSetupVO1.hints.Description.label}"
+                           id="c2">
+                  <af:inputText value="#{row.bindings.Description.inputValue}"
+                                label="#{bindings.StructureSetupVO1.hints.Description.label}"
+                                readOnly="#{row.bindings.TransDeleteCondition.inputValue=='Y'}"
+                                required="#{bindings.StructureSetupVO1.hints.Description.mandatory}"
+                                columns="#{bindings.StructureSetupVO1.hints.Description.displayWidth}"
+                                maximumLength="#{bindings.StructureSetupVO1.hints.Description.precision}"
+                                shortDesc="#{bindings.StructureSetupVO1.hints.Description.tooltip}"
+                                id="it1">
+                    <f:validator binding="#{row.bindings.Description.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailHeader>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

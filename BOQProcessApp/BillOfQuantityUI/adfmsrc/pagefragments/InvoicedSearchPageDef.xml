@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="InvoicedSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InvoicedQtySearchVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="InvoicedQtySearchVO1Iterator"/>
+    <searchRegion Criteria="InvoicedQtySearch"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="InvoicedQtySearchVO1Iterator"
+                  id="InvoicedQtySearchQuery"/>
+    <iterator Binds="TransInvoiceHdrVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="TransInvoiceHdrVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="InvoicedQtySearchVO1Iterator" id="InvoicedQtySearchVO1">
+      <nodeDefinition DefName="model.searchview.InvoicedQtySearchVO"
+                      Name="InvoicedQtySearchVO10">
+        <AttrNames>
+          <Item Value="ProjectName"/>
+          <Item Value="InvoiceDocumentDate"/>
+          <Item Value="InvoiceStatus"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="InvoiceApprovedDate"/>
+          <Item Value="CreationDate"/>
+          <Item Value="InvoiceApprovedBy"/>
+          <Item Value="Version"/>
+          <Item Value="TransStatus"/>
+          <Item Value="TransCummAmt"/>
+          <Item Value="TransPreviosAmt"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="BuName1"/>
+          <Item Value="ProjectNumber2"/>
+          <Item Value="InvoiceDocumentNum2"/>
+          <Item Value="PeriodOfMeasure1"/>
+          <Item Value="TransCurrentAmnt"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="TransBOQVersion"/>
+          <Item Value="ContractNumber"/>
+          <Item Value="Cognomen"/>
+          <Item Value="NetInvoiceAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="cancelInvoicedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelInvoicedDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createInvoicedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createInvoicedDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createInvoicedHeaderRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createInvoicedHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="editInvoicedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editInvoicedDocument" IsViewObjectMethod="false"/>
+    <methodAction id="validateInvoicedHdr"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoicedHdr" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvoicedHdr_BillingDetailsAMDataControl_dataProvider_validateInvoicedHdr_result"/>
+    <attributeValues IterBinding="InvoicedQtySearchVO1Iterator" id="InvoicedHeaderId">
+      <AttrNames>
+        <Item Value="InvoiceHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="TransInvoiceHdrVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false" IterBinding="TransInvoiceHdrVO1Iterator"
+                  Uses="LOV_TransProjectNum" id="TransProjectNum"/>
+    <listOfValues StaticList="false" IterBinding="TransInvoiceHdrVO1Iterator"
+                  Uses="LOV_TransPeriod" id="TransPeriod"/>
+    <button IterBinding="InvoicedQtySearchVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="InvoicedQtySearchVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="TransInvoiceHdrVO1Iterator"
+                  Uses="LOV_TransContractNum" id="TransContractNum"/>
+  </bindings>
+</pageDefinition>

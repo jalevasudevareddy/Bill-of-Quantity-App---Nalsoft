@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="BOQDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BOQHeaderVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="BOQHeaderVO1Iterator"/>
+    <iterator Binds="BOQLinesVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="BOQLinesVO1Iterator"/>
+    <searchRegion Binds="BOQLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BOQLinesVO1Query"/>
+    <iterator Binds="BOQLinesVO2" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="BOQLinesVO2Iterator"/>
+    <searchRegion Binds="BOQLinesVO2Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BOQLinesVO2Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="BOQHeaderVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQHeaderVO1Iterator" id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQHeaderVO1Iterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQHeaderVO1Iterator" id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="BOQLinesVO1Iterator" id="BOQLinesVO1">
+      <nodeDefinition DefName="model.view.BOQLinesVO" Name="BOQLinesVO10">
+        <AttrNames>
+          <Item Value="BillNumber"/>
+          <Item Value="PageNumber"/>
+          <Item Value="ItemNumber"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqRate"/>
+          <Item Value="EstimatedQuantity"/>
+          <Item Value="ContractType"/>
+          <Item Value="TransTotalAmt"/>
+          <Item Value="SequenceNumner"/>
+          <Item Value="TransGrandTotal"/>
+          <Item Value="TransStructureCode"/>
+          <Item Value="StructureCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="BOQLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="createBOQParantLine"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBOQParantLine" IsViewObjectMethod="false"/>
+    <tree IterBinding="BOQLinesVO2Iterator" id="BOQLinesVO2">
+      <nodeDefinition DefName="model.view.BOQLinesVO" Name="BOQLinesVO20">
+        <AttrNames>
+          <Item Value="BillNumber"/>
+          <Item Value="PageNumber"/>
+          <Item Value="ItemNumber"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqRate"/>
+          <Item Value="TransTotalAmt"/>
+          <Item Value="StructureId"/>
+          <Item Value="EstimatedQuantity"/>
+          <Item Value="ContractType"/>
+          <Item Value="TransStructureCode"/>
+          <Item Value="StructureCode"/>
+          <Item Value="TransGrandTotal"/>
+          <Item Value="TransBalance"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="BOQLinesVO2Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="createBOQChildLine"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBOQChildLine" IsViewObjectMethod="false"/>
+    <methodAction id="splitBOQLine"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="splitBOQLine" IsViewObjectMethod="false"/>
+    <methodAction id="validateBOQLines"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateBOQLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.validateBOQLines_BillofQuantityAMDataControl_dataProvider_validateBOQLines_result"/>
+    <attributeValues IterBinding="BOQLinesVO1Iterator" id="TransGrandTotal">
+      <AttrNames>
+        <Item Value="TransGrandTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQLinesVO2Iterator" id="TransGrandTotal1">
+      <AttrNames>
+        <Item Value="TransGrandTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="deleteBOQLine"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteBOQLine" IsViewObjectMethod="false"/>
+    <methodAction id="deleteBOQChildLine"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteBOQChildLine" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="BOQLinesVO2Iterator" id="TransDeleteFlag">
+      <AttrNames>
+        <Item Value="TransDeleteFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQLinesVO2Iterator" id="TransBalance">
+      <AttrNames>
+        <Item Value="TransBalance"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQLinesVO1Iterator" id="SequenceNumner">
+      <AttrNames>
+        <Item Value="SequenceNumner"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="downloadExcelSheet"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="downloadExcelSheet" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.downloadExcelSheet_BillofQuantityAMDataControl_dataProvider_downloadExcelSheet_result"/>
+    <methodAction id="validateBOQUploadDetails"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateBOQUploadDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.validateBOQUploadDetails_BillofQuantityAMDataControl_dataProvider_validateBOQUploadDetails_result"/>
+    <methodAction id="uploadXLFile"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="uploadXLFile" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.uploadXLFile_BillofQuantityAMDataControl_dataProvider_uploadXLFile_result">
+      <NamedData NDName="uploadedFile"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <attributeValues IterBinding="BOQHeaderVO1Iterator" id="HeaderId">
+      <AttrNames>
+        <Item Value="HeaderId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

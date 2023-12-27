@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="ApprovalTF_ApprovalTF_decodeUrlPageDef" Package="view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="decodeUrl" RequiresUpdateModel="true" Action="invokeMethod" MethodName="decodeUrl"
+                  IsViewObjectMethod="false" DataControl="CommonUtilsAMDataControl"
+                  InstanceName="bindings.decodeUrl.dataControl.dataProvider"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.decodeUrl_decodeUrl_dataControl_dataProvider_decodeUrl_result"/>
+  </bindings>
+</pageDefinition>

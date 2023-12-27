@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ResourceMasterPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ResourceMasterGroupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ResourceMasterGroupVO1Iterator"/>
+    <iterator Binds="ResouceSubGroupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ResouceSubGroupVO1Iterator"/>
+    <searchRegion Binds="ResouceSubGroupVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ResouceSubGroupVO1Query"/>
+    <iterator Binds="ResourceItemsVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ResourceItemsVO1Iterator"/>
+    <searchRegion Binds="ResourceItemsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ResourceItemsVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator"
+                     id="ResourceType">
+      <AttrNames>
+        <Item Value="ResourceType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator"
+                     id="ResourceGroup">
+      <AttrNames>
+        <Item Value="ResourceGroup"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator"
+                     id="ExpenditureGroup">
+      <AttrNames>
+        <Item Value="ExpenditureGroup"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator"
+                     id="GroupDescription">
+      <AttrNames>
+        <Item Value="GroupDescription"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="ResouceSubGroupVO1Iterator" id="ResouceSubGroupVO1">
+      <nodeDefinition DefName="model.view.ResouceSubGroupVO"
+                      Name="ResouceSubGroupVO10">
+        <AttrNames>
+          <Item Value="ResourceType"/>
+          <Item Value="ResourceGroup"/>
+          <Item Value="ResourceSubGroup"/>
+          <Item Value="SubGroupDescription"/>
+          <Item Value="ExpenditureCategory"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ResouceSubGroupVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="createSubGroupLine"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createSubGroupLine"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="setExpenditureCategoryValue"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setExpenditureCategoryValue"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="ResourceItemsVO1Iterator" id="ResourceItemsVO1">
+      <nodeDefinition DefName="model.view.ResourceItemsVO"
+                      Name="ResourceItemsVO10">
+        <AttrNames>
+          <Item Value="ItemCode"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="Uom"/>
+          <Item Value="ItemRate"/>
+          <Item Value="ExpenditureType"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+          <Item Value="TransDeleteFlag"/>
+          <Item Value="ActivityCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ResourceItemsVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="createItemLine"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createItemLine"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="setExpenditureTypeValue"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setExpenditureTypeValue"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="ResouceSubGroupVO1Iterator"
+                     id="TransDeleteFlag">
+      <AttrNames>
+        <Item Value="TransDeleteFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ResourceItemsVO1Iterator"
+                     id="TransDeleteFlag1">
+      <AttrNames>
+        <Item Value="TransDeleteFlag"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

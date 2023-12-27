@@ -1,0 +1,2689 @@
+create or replace PACKAGE xxboq_bill_of_quantity_pkg IS
+  /********************************************************************************+/
+  / +-----------------------------------------------------------------------------+ /
+  # Script: xxboq_bill_of_quantity_pkg.sql
+  # Authors: Syam.A, Pradeep Kumar.N
+  # System: Bill Of Quantity(B.O.Q)
+  # Date: 01-OCT-18
+  # Version: 1.0
+  # Description:
+  / +-----------------------------------------------------------------------------+/
+  /********************************************************************************/
+  /*-----------******************************************************-------------+/
+  Copyright © 2018 Nalsoft
+  /*******************************************************************************+/
+  # Change Log:
+  / +-----------------------------------------------------------------------------+/
+  # Modified Date:
+  # Module:
+  # Reason:
+  # Modified By:
+  / +-----------------------------------------------------------------------------+/
+  /********************************************************************************/
+  
+  
+  PROCEDURE get_pc_lines(p_pc_header_id IN NUMBER,
+                         p_message  OUT VARCHAR2);
+                         
+ PROCEDURE update_cert_doc_status(p_hdr_id IN NUMBER,
+                                    p_curr_flag IN VARCHAR2,
+                                    p_status IN VARCHAR2,
+                                   p_user  IN VARCHAR2,
+                                   p_message OUT VARCHAR2);
+                                   
+PROCEDURE update_wd_doc_status(p_hdr_id IN NUMBER,
+  p_status IN VARCHAR2,
+                                   p_user  IN VARCHAR2,
+                                   p_message OUT VARCHAR2);
+  PROCEDURE validate_cert_quantities (
+    p_cert_hdr_id   IN NUMBER,
+    p_user_name     IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE validate_upld_cert_quantities (
+    p_upload_id     IN NUMBER,
+    p_cert_hdr_id   IN NUMBER,
+    p_user_name     IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE validate_wd_quantities (
+    p_wd_hdr_id   IN NUMBER,
+    p_user_name   IN VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+
+  PROCEDURE EXTEND_WD_LINES (
+    p_prev_hdr_id   IN NUMBER,
+    p_curr_hdr_id   IN NUMBER,
+    p_user          IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE REVISE_CERT_BOQ_HDR (
+    p_header_id    IN NUMBER,
+    p_username     IN VARCHAR2,
+    p_out_hdr_id   OUT NUMBER,
+    p_message      OUT VARCHAR2
+  );
+
+  PROCEDURE EXTEND_CERT_BOQ_LINES (
+    p_prev_hdr_id   IN NUMBER,
+    p_curr_hdr_id   IN NUMBER,
+    p_user          IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE REVISE_WD_LINES (
+    p_curr_hdr_id   IN NUMBER,
+    p_prev_hdr_id   IN NUMBER,
+    p_user          IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE REVISE_WD_HDR (
+    p_header_id    IN NUMBER,
+    p_username     IN VARCHAR2,
+    p_out_hdr_id   OUT NUMBER,
+    p_message      OUT VARCHAR2
+  );
+
+  PROCEDURE validate_work_done_period (
+    p_prj_id   IN NUMBER,
+    p_period   IN VARCHAR2,
+    p_flag     OUT VARCHAR2
+  );
+
+  PROCEDURE update_boq_qty_hdr_status (
+    p_hdr_id NUMBER,
+    p_from VARCHAR2
+  );
+
+  FUNCTION is_structure_exists (
+    p_structure_code   VARCHAR2,
+    p_bu_id            NUMBER,
+    p_project_id       NUMBER
+  ) RETURN VARCHAR2;
+
+  FUNCTION is_boq_line_exists (
+    p_bill_number   VARCHAR2,
+    p_page_number   VARCHAR2,
+    p_item_number   VARCHAR2
+  ) RETURN VARCHAR2;
+
+  FUNCTION is_uom_valid (
+    p_uom_name VARCHAR2
+  ) RETURN VARCHAR2;
+
+  FUNCTION get_boq_header_id (
+    p_bu_id NUMBER,
+    p_project_id NUMBER
+  ) RETURN NUMBER;
+
+  FUNCTION get_structure_id (
+    p_structure_code   VARCHAR2,
+    p_bu_id            NUMBER,
+    p_project_id       NUMBER
+  ) RETURN VARCHAR2;
+
+  PROCEDURE populate_boqs (
+    p_user_name    VARCHAR2,
+    p_bu_id        NUMBER,
+    p_project_id   NUMBER,
+    p_upload_id    NUMBER
+  );
+
+  PROCEDURE validate_upld_wd_quantities (
+    p_upload_id   IN NUMBER,
+    p_wd_hdr_id   IN NUMBER,
+    p_user_name   VARCHAR2,
+    p_message     OUT VARCHAR2
+  );
+
+  PROCEDURE validate_invoiced_period (
+    p_prj_id   IN NUMBER,
+    p_period   IN VARCHAR2,
+    p_flag     OUT VARCHAR2
+  );
+
+  PROCEDURE validate_certified_period (
+    p_prj_id   IN NUMBER,
+    p_period   IN VARCHAR2,
+    p_flag     OUT VARCHAR2
+  );
+
+  PROCEDURE populate_revise_doc_Invoice (
+    p_header_id    IN NUMBER,
+    p_username     IN VARCHAR2,
+    p_out_hdr_id   OUT NUMBER
+  );
+
+  PROCEDURE validate_pc_period (
+    p_prj_id     NUMBER,
+    p_doc_type   VARCHAR2,
+    p_period     VARCHAR2,
+    p_message    OUT VARCHAR2
+  );
+
+  PROCEDURE update_pc_cummulative_value (
+    p_cumm        VARCHAR2,
+    p_user_name   VARCHAR2,
+    p_hdr_id      NUMBER,
+    p_line_id     NUMBER
+  );
+
+  PROCEDURE update_pc_previous_value (
+    p_prev        VARCHAR2,
+    p_user_name   VARCHAR2,
+    p_hdr_id      NUMBER,
+    p_line_id     NUMBER
+  );
+
+  PROCEDURE set_pc_line_total_values (
+    p_user_name VARCHAR2,
+    p_hdr_id NUMBER
+  );
+
+  PROCEDURE set_pc_line_values (
+    p_hdr_id      NUMBER,
+    p_prj_id      NUMBER,
+    p_user_name   VARCHAR2
+  );
+
+  PROCEDURE delete_pc_line_values (
+    p_hdr_id NUMBER,
+    p_user_name VARCHAR2
+  );
+
+  PROCEDURE extend_invoice_lines (
+    p_prev_hdr_id   IN NUMBER,
+    p_curr_hdr_id   IN NUMBER,
+    p_user          IN VARCHAR2,
+    p_message       OUT VARCHAR2
+  );
+
+  PROCEDURE validate_update_inv_lines (
+    p_upload_id           IN NUMBER,
+    p_invoice_header_id   IN NUMBER,
+    p_user_name           IN VARCHAR2,
+    p_message             OUT VARCHAR2
+  );
+
+  PROCEDURE validate_invoice_lines (
+    p_invoice_header_id   IN NUMBER,
+    p_user_name           IN VARCHAR2,
+    p_message             OUT VARCHAR2
+  );
+    PROCEDURE update_status_code (
+    p_doc_type   VARCHAR2,
+    p_doc_id     NUMBER,
+    p_user       VARCHAR2,
+    p_message OUT   VARCHAR2
+  );
+END xxboq_bill_of_quantity_pkg;
+
+--------------------------------------------------------------------------------------------------
+
+create or replace PACKAGE BODY xxboq_bill_of_quantity_pkg 
+IS 
+/********************************************************************************+/ 
+/ +-----------------------------------------------------------------------------+ / 
+# Script: xxboq_bill_of_quantity_pkg.sql 
+# Authors: Syam.A, Pradeep Kumar.N 
+# System: Bill Of Quantity(B.O.Q) 
+# Date: 01-OCT-18 
+# Version: 1.0 
+# Description: 
+/ +-----------------------------------------------------------------------------+/ 
+/********************************************************************************/ 
+/*-----------******************************************************-------------+/ 
+Copyright © 2018 Nalsoft 
+/*******************************************************************************+/ 
+# Change Log: 
+/ +-----------------------------------------------------------------------------+/ 
+# Modified Date: 
+# Module: 
+# Reason: 
+# Modified By: 
+/ +-----------------------------------------------------------------------------+/ 
+/********************************************************************************/ 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  SYAM A 
+  >>>>Validating Invoice Documnet. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  
+  
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  Pradeep N 
+  >>>>Retriving PC Lines. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+   PROCEDURE get_pc_lines(p_pc_header_id IN NUMBER,
+                         p_message  OUT VARCHAR2)
+   IS
+   
+   P_MAST_HDR_ID        NUMBER;   
+   P_PARNT_HDR_ID       NUMBER;
+   P_PC_CERT_HDR_ID     NUMBER;
+   P_PC_TYPE            VARCHAR2(30);
+   
+   
+   P_VOWD_PREV          NUMBER:=0;
+   P_MAT_AT_SITE_PREV   NUMBER:=0;
+   P_ADV_PREV           NUMBER:=0;
+   P_ADV_RECV_PREV      NUMBER:=0;
+   P_RET_PREV           NUMBER:=0;
+   P_OTH_DED_PREV       NUMBER:=0;
+   
+   P_VOWD_CURR          NUMBER:=0;
+   P_MAT_AT_SITE_CURR   NUMBER:=0;
+   P_ADV_CURR           NUMBER:=0;
+   P_ADV_RECV_CURR      NUMBER:=0;
+   P_RET_CURR           NUMBER:=0;
+   P_OTH_DED_CURR       NUMBER:=0;
+   
+   P_VOWD_PREV_TOT      NUMBER:=0;
+   P_VOWD_CURR_TOT      NUMBER:=0;
+   P_ADV_PREV_TOT       NUMBER:=0;
+   P_ADV_CURR_TOT       NUMBER:=0;
+   P_PREV_TOT           NUMBER:=0;
+   P_CURR_TOT           NUMBER:=0;
+   
+   
+   BEGIN
+   IF p_pc_header_id IS NOT NULL  THEN
+   
+        BEGIN        
+            SELECT PARENT_PC_HEADER_ID , MASTER_PC_HEADER_ID, CERTIFIED_HEADER_ID,DOCUMENT_TYPE INTO P_PARNT_HDR_ID , P_MAST_HDR_ID,P_PC_CERT_HDR_ID,P_PC_TYPE FROM XXBOQ_PC_HDR_T WHERE PC_HEADER_ID =p_pc_header_id;
+        EXCEPTION WHEN OTHERS THEN
+            P_MESSAGE :='EXCEPTION RAISED WHILE RETRIVING CURRENT PC DOC DETAILS.';
+        END;
+
+    
+
+        IF P_PARNT_HDR_ID!=p_pc_header_id THEN
+
+            BEGIN
+                SELECT CUMMULATIVE INTO P_VOWD_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='VOWD';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :='EXCEPTION RAISED WHILE RETRIVING PREVIOUS VOWD AMOUNT DETAILS.';
+                P_VOWD_PREV:=0;
+            END;
+        
+            BEGIN
+                SELECT CUMMULATIVE INTO P_MAT_AT_SITE_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='MAT_AT_SITE';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')|| ' EXCEPTION RAISED WHILE RETRIVING PREVIOUS MATERIAL AT SITE AMOUNT DETAILS.';
+                P_MAT_AT_SITE_PREV:=0;
+            END;
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_ADV_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='ADV';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS ADVANCE AMOUNT DETAILS.';
+                P_ADV_RECV_PREV:=0;
+            END;
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_ADV_RECV_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='ADV_RECV';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS ADVANCE RECOVERY AMOUNT DETAILS.';
+                P_ADV_RECV_PREV:=0;
+            END;
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_RET_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='RET';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS RETENTION AMOUNT DETAILS.';
+                P_RET_PREV:=0;
+            END;
+            
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_OTH_DED_PREV FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='OTH_DED';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS OTHER DEDUCTION AMOUNT DETIALS.';
+                P_OTH_DED_PREV:=0;
+            END;
+    
+            BEGIN
+                SELECT CUMMULATIVE INTO P_VOWD_PREV_TOT FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='VOWD_TOT';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS VOWD TOTAL AMOUNT DETIALS.';
+                P_VOWD_PREV_TOT:=0;
+            END;
+            
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_ADV_PREV_TOT FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='ADV_TOT';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS ADVANCE TOTAL AMOUNT DETIALS.';
+                P_ADV_PREV_TOT:=0;
+            END;
+            
+            BEGIN
+                SELECT CUMMULATIVE INTO P_ADV_PREV_TOT FROM XXBOQ_PC_LINES_T WHERE PC_HEADER_ID = P_PARNT_HDR_ID AND TRIM(UPPER(PARTICULARS))='TOT';
+            EXCEPTION WHEN OTHERS THEN
+                P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING PREVIOUS TOTAL AMOUNT DETIALS.';
+                P_ADV_PREV_TOT:=0;
+            END;
+    
+    END IF;--Comparing Prev Hdr Id with  Current Hdr ID 
+
+  
+        IF P_PC_TYPE IS NOT NULL THEN
+            IF   P_PC_TYPE='PB'   THEN
+                IF P_PC_CERT_HDR_ID IS NOT NULL AND  P_PC_CERT_HDR_ID !=0 THEN 
+                    BEGIN
+                        SELECT SUM(NVL(CERTIFIED_CUMMULATIVE_QTY,0) * NVL(CURRENT_BOQ_RATE,0)) INTO P_VOWD_CURR FROM XXBOQ_CERTIFIED_LINES_T WHERE CERTIFIED_HEADER_ID = P_PC_CERT_HDR_ID;
+                    EXCEPTION WHEN OTHERS THEN
+                        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE RETRIVING CURRENT CERTIFIED BOQ AMOUNTS .';
+                    END; 
+             ELSE 
+                P_MESSAGE:=NVL(P_MESSAGE,'')||' INVALID CERTIFIED DOC ID FOUND i.e. '||P_PC_CERT_HDR_ID;
+            END IF;
+                END IF;
+           
+        ELSE
+            P_MESSAGE:=NVL(P_MESSAGE,'')||' INVALID PC DOC TYPE FOUND i.e.  ' ||P_PC_TYPE;
+        END IF;-- IF PC TYPE IS 'PB'
+     
+    
+    
+    IF P_MESSAGE IS NULL THEN
+--- UPDATE CURRENT DOC LINES IF ERROR MESSAGE IS NULL;
+        
+     P_VOWD_CURR          :=CASE WHEN P_PC_TYPE='PB' THEN P_VOWD_CURR ELSE P_VOWD_PREV END;
+     P_MAT_AT_SITE_CURR   :=P_MAT_AT_SITE_PREV;
+     P_ADV_CURR           :=P_ADV_PREV;
+     P_ADV_RECV_CURR      :=P_ADV_RECV_PREV;
+     P_RET_CURR           :=P_RET_PREV;
+     P_OTH_DED_CURR       :=P_OTH_DED_PREV; 
+     
+     P_VOWD_CURR_TOT      :=P_VOWD_CURR + P_MAT_AT_SITE_CURR;
+     P_ADV_CURR_TOT       :=P_ADV_CURR  + P_VOWD_CURR_TOT;
+     P_CURR_TOT           :=(P_ADV_CURR_TOT ) - (P_ADV_RECV_CURR + P_RET_CURR + P_OTH_DED_CURR);
+     
+        
+
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_VOWD_PREV, CUMMULATIVE= P_VOWD_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='VOWD';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC VOWD AMOUNT. ';
+    END;
+
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_MAT_AT_SITE_PREV, CUMMULATIVE= P_MAT_AT_SITE_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='MAT_AT_SITE';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC MATERIAL AT SITE AMOUNT. ';
+    END;
+    
+     BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_ADV_PREV, CUMMULATIVE= P_ADV_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='ADV';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC ADVANCE AMOUNT. ';
+    END;
+    
+     BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_ADV_RECV_PREV, CUMMULATIVE= P_ADV_RECV_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='ADV_RECV';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC ADVANCE RECOVERY AMOUNT. ';
+    END;
+    
+     BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_RET_PREV, CUMMULATIVE= P_RET_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='RET';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC RETENTION AMOUNT. ';
+    END;
+    
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_OTH_DED_PREV, CUMMULATIVE= P_OTH_DED_CURR WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='OTH_DED';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING PC OTHER DEDUCTION AMOUNT. ';
+    END;
+    
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_VOWD_PREV_TOT, CUMMULATIVE= P_VOWD_CURR_TOT WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='VOWD_TOT';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING VOWD TOTAL AMOUNT. ';
+    END;
+    
+    
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_ADV_PREV_TOT, CUMMULATIVE= P_ADV_CURR_TOT WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='ADV_TOT';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING ADVANCE TOTAL AMOUNT. ';
+    END;
+    
+    BEGIN
+        UPDATE XXBOQ_PC_LINES_T SET  PREVIOUS=P_PREV_TOT, CUMMULATIVE= P_CURR_TOT WHERE PC_HEADER_ID =p_pc_header_id AND TRIM(UPPER(PARTICULARS))='TOT';
+    EXCEPTION WHEN OTHERS THEN
+        P_MESSAGE :=NVL(P_MESSAGE,'')||' EXCEPTION RAISED WHILE UPDATING TOTAL AMOUNT. ';
+    END;
+
+    COMMIT;
+     P_MESSAGE:='Success';
+
+    END IF; -- END OF UPDATING LINE AMOUNT
+    
+   END IF;-- Curr Hdr ID Null Check
+   
+   NULL;
+   EXCEPTION WHEN OTHERS THEN 
+   P_MESSAGE:='EXCEPTION RAISED WHILE INSERTING PC LINES. '||SQLERRM;
+   END get_pc_lines;
+  
+    
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  Pradeep N 
+  >>>Updating Certified Docuemtn Status. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+PROCEDURE update_cert_doc_status(p_hdr_id IN NUMBER,
+    p_curr_flag IN VARCHAR2,
+                                    p_status IN VARCHAR2,
+                                   p_user  IN VARCHAR2,
+                                   p_message OUT VARCHAR2)
+IS
+BEGIN
+if(p_hdr_id is not null) then
+
+update XXBOQ_CERTIFIED_DETAILS_T  set CERTIFIED_STATUS =p_status , current_flag='N',last_updated_by=p_user , last_updated_date=sysdate where certified_header_id = p_hdr_id;
+p_message:='Success';
+end if;
+
+EXCEPTION WHEN OTHERS THEN
+P_MESSAGE :='Unable to update the previous document status as Archived. '||SQLERRM;
+END update_cert_doc_status;
+ 
+                
+/*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  Pradeep N 
+  >>>Updating Workdone Docuement Status. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/                        
+PROCEDURE update_wd_doc_status(p_hdr_id IN NUMBER,
+                                    p_status IN VARCHAR2,
+                                   p_user  IN VARCHAR2,
+                                   p_message OUT VARCHAR2)
+                                   IS
+BEGIN
+if(p_hdr_id is not null) then
+
+update XXBOQ_WORK_DONE_DETAILS_T set wd_STATUS =p_status , last_updated_by=p_user , last_updated_date=sysdate where wd_header_id = p_hdr_id;
+p_message:='Success';
+end if;
+
+EXCEPTION WHEN OTHERS THEN
+P_MESSAGE :='Unable to update the previous document status as Archived. '||SQLERRM;
+END;
+  
+  PROCEDURE Validate_invoice_lines (p_invoice_header_id IN NUMBER, 
+                                    p_user_name         IN VARCHAR2, 
+                                    p_message           OUT VARCHAR2) 
+  IS 
+    CURSOR lines_c IS 
+      SELECT * 
+      FROM   xxboq_invoice_lines_t 
+      WHERE  invoice_header_id = p_invoice_header_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+    l_bill_qty NUMBER:=0;
+  BEGIN 
+      BEGIN 
+          FOR line IN lines_c LOOP 
+              p_message := NULL; 
+              l_bill_qty:=0;
+              BEGIN 
+              SELECT BILL_QTY INTO l_bill_qty FROM XXBOQ_BILL_OF_QTY_LINES_T WHERE BOQ_LINE_ID=line.BOQ_LINE_ID;
+
+                  IF ( line.invoice_cummulative_qty > l_bill_qty ) 
+                  THEN 
+                    p_message := 
+' Invoice Cumulative quantity cannot be greater than Cummulative Bill Quantity i.e. ' 
+|| l_bill_qty; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg Quantities. ' 
+                   || SQLERRM; 
+END; 
+
+--IF p_message IS NOT NULL THEN
+UPDATE xxboq_invoice_lines_t 
+SET    error_msg = p_message 
+WHERE  invoice_header_id = p_invoice_header_id 
+       AND invoice_line_id = line.invoice_line_id; 
+--END IF;
+END LOOP; 
+
+COMMIT; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Invoice lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+
+COMMIT; 
+
+SELECT Count(1) 
+INTO   lv_count 
+FROM   xxboq_invoice_lines_t 
+WHERE  invoice_header_id = p_invoice_header_id 
+       AND error_msg IS NOT NULL; 
+
+IF lv_count > 0 THEN 
+COMMIT;
+  p_message := 'Errors Found in the Invoice Lines, Please Check'; 
+ELSE 
+  p_message := 'Success'; 
+END IF; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+             'EXCEPTION RAISED WHILE  VALIDATING THE WORK DONE LINES.' 
+             || SQLERRM; 
+END validate_invoice_lines; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  SYAM A 
+  >>>>Extending Invoice Documnet. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Extend_invoice_lines (p_prev_hdr_id IN NUMBER, 
+                                  p_curr_hdr_id IN NUMBER, 
+                                  p_user        IN VARCHAR2, 
+                                  p_message     OUT VARCHAR2) 
+  IS 
+    l_boq_hdr_id        NUMBER; 
+    l_boq_line_id       NUMBER; 
+    l_wd_header_id      NUMBER; 
+    CURSOR prev_inv_lines_c IS 
+      SELECT * 
+      FROM   xxboq_invoice_lines_t IL1 
+      WHERE  IL1.invoice_header_id = p_prev_hdr_id 
+             AND NOT EXISTS (SELECT 1 
+                             FROM   xxboq_invoice_lines_t IL2 
+                             WHERE  IL2.invoice_header_id = p_curr_hdr_id 
+                                    AND IL2.master_boq_line_id = 
+                                        IL1.master_boq_line_id); 
+    l_current_boq_rate  NUMBER; 
+    l_inv_line_id       NUMBER; 
+    l_boq_rate          NUMBER; 
+    l_wd_line_id        NUMBER; 
+    l_master_wd_line_id NUMBER; 
+  BEGIN 
+      BEGIN 
+          SELECT boq_header_id, 
+                 wd_header_id 
+          INTO   l_boq_hdr_id, l_wd_header_id 
+          FROM   xxboq_invoice_details_t 
+          WHERE  invoice_header_id = p_curr_hdr_id; 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            p_message := 'EXCEPTION RAISED WHILE RETRIVING BOQ HEADER ID. ' 
+                         || SQLERRM; 
+
+            l_boq_hdr_id := NULL; 
+      END; 
+
+      IF ( l_boq_hdr_id IS NOT NULL ) THEN 
+        FOR prev_boq IN prev_inv_lines_c LOOP 
+            l_current_boq_rate := NULL; 
+
+            l_boq_rate := NULL; 
+
+            SELECT Nvl(selling_rate, 0), 
+                   boq_line_id 
+            INTO   l_boq_rate, l_boq_line_id 
+            FROM   xxboq_bill_of_qty_lines_t 
+            WHERE  master_boq_line_id = prev_boq.master_boq_line_id 
+                   AND boq_header_id = l_boq_hdr_id; 
+
+            SELECT wd_line_id, 
+                   master_wd_line_id 
+            INTO   l_wd_line_id, l_master_wd_line_id 
+            FROM   xxboq_work_done_lines_t 
+            WHERE  wd_header_id = l_wd_header_id 
+                   AND master_boq_line_id = prev_boq.master_boq_line_id; 
+
+            l_inv_line_id := xxboq_invoice_lines_s.NEXTVAL; 
+
+            INSERT INTO xxboq_invoice_lines_t 
+                        (invoice_header_id, 
+                         invoice_line_id, 
+                         boq_line_id, 
+                         invoice_cummulative_qty, 
+                         creation_date, 
+                         created_by, 
+                         last_updated_date, 
+                         last_updated_by, 
+                         boq_header_id, 
+                         wd_cummulative_qty, 
+                         previous_cummulative_qty, 
+                         previous_boq_rate, 
+                         current_boq_rate, 
+                         actual_invoice_qty, 
+                         remarks, 
+                         error_msg, 
+                         extended_flag, 
+                         master_invoice_line_id, 
+                         wd_line_id, 
+                         master_wd_line_id, 
+                         master_boq_header_id, 
+                         master_boq_line_id) 
+            VALUES      ( p_curr_hdr_id, 
+                         l_inv_line_id, 
+                         l_boq_line_id, 
+                         prev_boq.invoice_cummulative_qty, 
+                         SYSDATE, 
+                         p_user, 
+                         SYSDATE, 
+                         p_user, 
+                         l_boq_hdr_id, 
+                         prev_boq.wd_cummulative_qty, 
+                         prev_boq.invoice_cummulative_qty, 
+                         prev_boq.current_boq_rate, 
+                         l_boq_rate, 
+                         prev_boq.actual_invoice_qty, 
+                         prev_boq.remarks, 
+                         prev_boq.error_msg, 
+                         'Y', 
+                         l_inv_line_id, 
+                         l_wd_line_id, 
+                         l_master_wd_line_id, 
+                         prev_boq.master_boq_header_id, 
+                         prev_boq.master_boq_line_id ); 
+        END LOOP; 
+
+        p_message := 'Success'; 
+      END IF; 
+  EXCEPTION 
+    WHEN no_data_found THEN 
+               p_message := 'Success'; WHEN OTHERS THEN 
+               p_message := 
+               'EXCEPTION RAISED WHILE INSERTING/EXTENDING INVOICE LINES. ' 
+               || SQLERRM; 
+  END extend_invoice_lines; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  SYAM A 
+  >>>>Upload and Validate Interface table values. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Validate_update_inv_lines (p_upload_id         IN NUMBER, 
+                                       p_invoice_header_id IN NUMBER, 
+                                       p_user_name         IN VARCHAR2, 
+                                       p_message           OUT VARCHAR2) 
+  IS 
+    CURSOR upload_invoices IS 
+      SELECT * 
+      FROM   xxboq_invoiced_int_t 
+      WHERE  upload_id = p_upload_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+    l_bill_qty    NUMBER;
+  BEGIN 
+      BEGIN 
+          FOR uploaded_invoice IN upload_invoices LOOP 
+              p_message := NULL; 
+              l_bill_qty :=0;
+              BEGIN 
+              SELECT NVL(BOQ.BILL_QTY,0) INTO l_bill_qty FROM XXBOQ_BILL_OF_QTY_LINES_T BOQ,XXBOQ_INVOICE_LINES_T ILT WHERE ILT.BOQ_LINE_ID=BOQ.BOQ_LINE_ID AND ILT.INVOICE_LINE_ID=uploaded_invoice.invoice_line_id;
+                  IF ( uploaded_invoice.invoiced_cummulative_qty > 
+                       l_bill_qty ) 
+                  THEN 
+                    p_message := 
+' Invoice Cumulative quantity cannot be greater than Bill Quantity i.e. ' 
+|| l_bill_qty; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg uploaded Quantities. ' 
+                   || SQLERRM; 
+END; 
+UPDATE xxboq_invoice_lines_t 
+SET    invoice_cummulative_qty = uploaded_invoice.invoiced_cummulative_qty, 
+       actual_invoice_qty = uploaded_invoice.actual_invoice_qty, 
+       remarks = uploaded_invoice.remarks, 
+       error_msg = p_message 
+WHERE  invoice_header_id = p_invoice_header_id 
+       AND invoice_line_id = uploaded_invoice.invoice_line_id; 
+END LOOP; 
+p_message := 'Success'; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Work down lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+COMMIT; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+'EXCEPTION RAISED WHILE INSERTING AND VALIDATING THE UPLOADED WORK DONE LINES.' 
+|| SQLERRM; 
+END validate_update_inv_lines; 
+  PROCEDURE Validate_upld_cert_quantities (p_upload_id   IN NUMBER, 
+                                           p_cert_hdr_id IN NUMBER, 
+                                           p_user_name   IN VARCHAR2, 
+                                           p_message     OUT VARCHAR2) 
+  IS 
+    CURSOR upload_cert_qtys_c IS 
+      SELECT * 
+      FROM   xxboq_certified_int_t 
+      WHERE  upload_id = p_upload_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+  BEGIN 
+      BEGIN 
+          FOR upload_cert_qty IN upload_cert_qtys_c LOOP 
+              p_message := NULL; 
+
+              BEGIN 
+                  IF ( upload_cert_qty.certified_cummulative_qty > 
+                       upload_cert_qty.invoiced_quantity 
+                     ) THEN 
+                    p_message := 
+' Certified Cumulative quantity cannot be greater than actual Invoiced Quantity i.e. ' 
+|| upload_cert_qty.invoiced_quantity; 
+END IF; 
+
+IF ( upload_cert_qty.certified_prev_cummulative_qty > 
+        upload_cert_qty.certified_cummulative_qty ) THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Pevious Certified Cumulative quantity cannot be greater than entered Cumulative Quantity i.e. '
+|| upload_cert_qty.certified_cummulative_qty; 
+END IF; 
+
+IF ( upload_cert_qty.actual_certified_qty > upload_cert_qty.invoiced_quantity ) 
+THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Actual  Certified Cumulative quantity cannot be greater  than Invoiced Quantity i.e. ' 
+|| upload_cert_qty.invoiced_quantity; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg uploaded Quantities. ' 
+                   || SQLERRM; 
+END; 
+
+dbms_output.Put_line('ERROR === ' 
+                     || p_message); 
+
+UPDATE xxboq_certified_lines_t 
+SET    certified_cummulative_qty = upload_cert_qty.certified_cummulative_qty, 
+       actual_certified_qty = upload_cert_qty.actual_certified_qty, 
+       remarks = upload_cert_qty.remarks, 
+       error_msg = p_message 
+WHERE  certified_header_id = p_cert_hdr_id 
+       AND certified_line_id = upload_cert_qty.certified_line_id; 
+
+dbms_output.Put_line('inserted === ' 
+                     || upload_cert_qty.certified_line_id); 
+END LOOP; 
+
+COMMIT; 
+
+SELECT Count(1) 
+INTO   lv_count 
+FROM   xxboq_certified_lines_t 
+WHERE  certified_header_id = p_cert_hdr_id 
+       AND error_msg IS NOT NULL; 
+
+IF lv_count > 0 THEN 
+  p_message := 
+'Document Successfully Uploaded. Errors Found in the Certified Quantity Lines, Please Check' 
+  ; 
+ELSE 
+  p_message := 'Success'; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Certified lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+
+-- 
+--      
+COMMIT; 
+
+NULL; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+'EXCEPTION RAISED WHILE INSERTING AND VALIDATING THE UPLOADED CERTIFIED LINES.' 
+|| SQLERRM; 
+END validate_upld_cert_quantities; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: PRADEEP. N 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Validate_cert_quantities (p_cert_hdr_id IN NUMBER, 
+                                      p_user_name   IN VARCHAR2, 
+                                      p_message     OUT VARCHAR2) 
+  IS 
+    CURSOR lines_c IS 
+      SELECT line.*, 
+             bl.bill_qty 
+      FROM   xxboq_certified_lines_t line, 
+             xxboq_bill_of_qty_lines_t bL 
+      WHERE  line.boq_line_id = bl.boq_line_id 
+             AND line.certified_header_id = p_cert_hdr_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+  BEGIN 
+      BEGIN 
+          FOR line IN lines_c LOOP 
+              p_message := NULL; 
+
+              BEGIN 
+                  dbms_output.Put_line('Qty === ' 
+                                       || line.invoice_cummulative_qty); 
+
+                  IF ( line.certified_cummulative_qty > 
+                       line.bill_qty ) 
+                  THEN 
+                    p_message := 
+' Certified Cumulative quantity cannot be greater than Actual Bill Quantity i.e. ' 
+|| line.bill_qty; 
+END IF; 
+
+--IF ( line.previous_cummulative_qty > line.certified_cummulative_qty ) THEN 
+--  p_message := Nvl(p_message, '') 
+--               || 
+--' Pevious Certified Cumulative quantity cannot be greater than entered Cumulative Quantity i.e. '
+--|| line.certified_cummulative_qty; 
+--END IF; 
+
+IF ( line.actual_certified_qty > line.bill_qty ) THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Actual Certified Cumulative quantity cannot be greater than Actual Bill Quantity i.e. ' 
+|| line.bill_qty; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg Quantities. ' 
+                   || SQLERRM; 
+END; 
+
+dbms_output.Put_line('ERROR === ' 
+                     || p_message); 
+
+UPDATE xxboq_certified_lines_t 
+SET    error_msg = p_message 
+WHERE  certified_header_id = p_cert_hdr_id 
+       AND certified_line_id = line.certified_line_id; 
+
+dbms_output.Put_line('inserted === ' 
+                     || line.certified_line_id); 
+END LOOP; 
+
+COMMIT; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Certified lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+
+COMMIT; 
+
+SELECT Count(1) 
+INTO   lv_count 
+FROM   xxboq_certified_lines_t 
+WHERE  certified_header_id = p_cert_hdr_id 
+       AND error_msg IS NOT NULL; 
+
+IF lv_count > 0 THEN 
+  p_message := 'Errors Found in the Certified Quantity Lines, Please Check'; 
+ELSE 
+  p_message := 'Success'; 
+END IF; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+             'EXCEPTION RAISED WHILE  VALIDATING THE CERTIFIED QUANTITY LINES.' 
+             || SQLERRM; 
+END validate_cert_quantities; 
+  PROCEDURE Extend_cert_boq_lines (p_prev_hdr_id IN NUMBER, 
+                                   p_curr_hdr_id IN NUMBER, 
+                                   p_user        IN VARCHAR2, 
+                                   p_message     OUT VARCHAR2) 
+  IS 
+    l_invoice_hdr_id   NUMBER; 
+    l_invoice_line_id  NUMBER; 
+     l_extended_flag    VARCHAR2(10);
+    l_doc_version      NUMBER;
+    -- 
+    CURSOR prev_cert_lines IS 
+      SELECT * 
+      FROM   xxboq_certified_lines_t 
+      WHERE  certified_header_id = p_prev_hdr_id 
+             AND master_cert_line_id NOT IN (SELECT SL.master_cert_line_id 
+                                             FROM   xxboq_certified_lines_t SL 
+                                             WHERE 
+                 SL.certified_header_id = p_curr_hdr_id); 
+    l_current_inv_rate NUMBER; 
+    l_cert_line_id     NUMBER; 
+    l_inv_qty          NUMBER; 
+    l_wd_qty           NUMBER; 
+  BEGIN 
+      -- 
+      BEGIN 
+          SELECT invoice_header_id , version
+          INTO   l_invoice_hdr_id , l_doc_version
+          FROM   xxboq_certified_details_t 
+          WHERE  certified_header_id = p_curr_hdr_id; 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            p_message := 'EXCEPTION RAISED WHILE RETRIVING INVOICE HEADER ID. ' 
+                         || SQLERRM; 
+
+            l_invoice_hdr_id := NULL; 
+      END; 
+
+      -- 
+      IF ( l_invoice_hdr_id IS NOT NULL ) THEN 
+        -- 
+        FOR prev_cert IN prev_cert_lines LOOP 
+            l_current_inv_rate := NULL; 
+
+            l_invoice_line_id := NULL; 
+
+            l_inv_qty := NULL; 
+
+            l_wd_qty := NULL; 
+            l_extended_flag :=prev_cert.extended_flag;
+
+            SELECT Nvl(current_boq_rate, 0), 
+                   invoice_line_id, 
+                   invoice_cummulative_qty, 
+                   wd_cummulative_qty 
+            INTO   l_current_inv_rate, l_invoice_line_id, l_inv_qty, l_wd_qty 
+            FROM   xxboq_invoice_lines_t 
+            WHERE  master_invoice_line_id = prev_cert.master_invoice_line_id 
+                   AND invoice_header_id = l_invoice_hdr_id; 
+
+            l_cert_line_id := xxboq_certified_lines_s.NEXTVAL; 
+
+            INSERT INTO xxboq_certified_lines_t 
+                        (certified_header_id, 
+                         certified_line_id, 
+                         boq_line_id, 
+                         certified_cummulative_qty, 
+                         creation_date, 
+                         created_by, 
+                         last_updated_date, 
+                         last_updated_by, 
+                         boq_header_id, 
+                         wd_cummulative_qty, 
+                         invoice_cummulative_qty, 
+                         previous_cummulative_qty, 
+                         previous_boq_rate, 
+                         current_boq_rate, 
+                         actual_certified_qty, 
+                         remarks, 
+                         error_msg, 
+                         extended_flag, 
+                         master_invoice_line_id, 
+                         invoice_line_id, 
+                         master_cert_line_id, 
+                         master_boq_header_id, 
+                         master_boq_line_id, 
+                         master_cert_header_id) 
+            ----                                                     
+            VALUES      ( p_curr_hdr_id, 
+                         l_cert_line_id, 
+                         prev_cert.boq_line_id, 
+                         prev_cert.certified_cummulative_qty, 
+                         SYSDATE, 
+                         p_user, 
+                         SYSDATE, 
+                         p_user, 
+                         prev_cert.boq_header_id, 
+                         l_wd_qty, 
+                         --PREV_CERT.WD_CUMMULATIVE_QTY             ,          
+                         l_inv_qty, 
+                         --PREV_CERT.INVOICE_CUMMULATIVE_QTY        ,          
+                         prev_cert.certified_cummulative_qty, 
+                         --PREVIOUS_CUMMULATIVE_QTY ,          
+                         prev_cert.current_boq_rate, 
+                         l_current_inv_rate, 
+                         prev_cert.actual_certified_qty, 
+                         NULL, 
+                         NULL, 
+                         (case when l_doc_version=0 then
+                     'Y'
+                     else
+                     (l_extended_flag) end) , 
+                         prev_cert.master_invoice_line_id, 
+                         l_invoice_line_id, 
+                         prev_cert.master_cert_line_id, 
+                         prev_cert.master_boq_header_id, 
+                         prev_cert.master_boq_line_id, 
+                         prev_cert.master_cert_header_id ); 
+        END LOOP; 
+
+        p_message := 'Success'; 
+      END IF; 
+
+      NULL; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 
+               'EXCEPTION RAISED WHILE INSERTING/EXTENDING BOQ LINES. ' 
+               || SQLERRM; 
+  END extend_cert_boq_lines; 
+  PROCEDURE Revise_cert_boq_lines (p_prev_hdr_id IN NUMBER, 
+                                   p_curr_hdr_id IN NUMBER, 
+                                   p_user        IN VARCHAR2, 
+                                   p_message     OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      INSERT INTO xxboq_certified_lines_t 
+                  (certified_header_id, 
+                   certified_line_id, 
+                   boq_line_id, 
+                   certified_cummulative_qty, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   boq_header_id, 
+                   wd_cummulative_qty, 
+                   invoice_cummulative_qty, 
+                   previous_cummulative_qty, 
+                   previous_boq_rate, 
+                   current_boq_rate, 
+                   actual_certified_qty, 
+                   remarks, 
+                   error_msg, 
+                   extended_flag, 
+                   master_invoice_line_id, 
+                   invoice_line_id, 
+                   master_cert_line_id, 
+                   master_boq_header_id, 
+                   master_boq_line_id, 
+                   master_cert_header_id) 
+      SELECT p_curr_hdr_id, 
+             xxboq_certified_lines_s.NEXTVAL, 
+             boq_line_id, 
+             certified_cummulative_qty, 
+             SYSDATE, 
+             p_user, 
+             SYSDATE, 
+             p_user, 
+             boq_header_id, 
+             wd_cummulative_qty, 
+             invoice_cummulative_qty, 
+             previous_cummulative_qty, 
+             previous_boq_rate, 
+             current_boq_rate, 
+             actual_certified_qty, 
+             remarks, 
+             error_msg, 
+             extended_flag, 
+             master_invoice_line_id, 
+             invoice_line_id, 
+             master_cert_line_id, 
+             master_boq_header_id, 
+             master_boq_line_id, 
+             master_cert_header_id 
+      FROM   xxboq_certified_lines_t 
+      WHERE  certified_header_id = p_prev_hdr_id; 
+
+      p_message := 'Success'; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 
+               'EXCEPTION RAISED WHILE INSERTING/EXTENDING BOQ LINES. ' 
+               || SQLERRM; 
+  END revise_cert_boq_lines; 
+  PROCEDURE Revise_cert_boq_hdr (p_header_id  IN NUMBER, 
+                                 p_username   IN VARCHAR2, 
+                                 p_out_hdr_id OUT NUMBER, 
+                                 p_message    OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      p_out_hdr_id := xxboq_certified_details_s.NEXTVAL; 
+
+      INSERT INTO xxboq_certified_details_t 
+                  (certified_header_id, 
+                   business_unit_id, 
+                   project_id, 
+                   period_of_measure, 
+                   certified_document_date, 
+                   certified_document_num, 
+                   certified_status, 
+                   certified_approved_date, 
+                   certified_approved_by, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   version, 
+                   master_cert_header_id, 
+                   master_invoice_header_id, 
+                   parent_cert_header_id, 
+                   master_boq_header_id, 
+                   invoice_header_id, 
+                   boq_header_id) 
+      SELECT p_out_hdr_id, 
+             business_unit_id, 
+             project_id, 
+             period_of_measure, 
+             certified_document_date, 
+             certified_document_num, 
+             'D', 
+             certified_approved_date, 
+             certified_approved_by, 
+             SYSDATE, 
+             p_username, 
+             SYSDATE, 
+             p_username, 
+             version + 1, 
+             master_cert_header_id, 
+             master_invoice_header_id, 
+             parent_cert_header_id, 
+             master_boq_header_id, 
+             invoice_header_id, 
+             boq_header_id 
+      FROM   xxboq_certified_details_t 
+      WHERE  certified_header_id = p_header_id; 
+
+      BEGIN 
+          Revise_cert_boq_lines(p_header_id, p_out_hdr_id, p_username, p_message 
+          ); 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            ROLLBACK; 
+      END; 
+
+--      IF 'Success' = p_message THEN 
+--        UPDATE xxboq_certified_details_t 
+--        SET    certified_status = 'RV' 
+--        WHERE  certified_header_id = p_header_id; 
+--      END IF; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               ROLLBACK; 
+
+               p_message := 
+               'EXCEPTION RAISE WHILE INSERTING CERTIFIED DETAILS HEADER. ' 
+               || SQLERRM; 
+  END revise_cert_boq_hdr; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  PRADEEP. N 
+  >>>>Extending Work Done Documnet. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Extend_wd_lines (p_prev_hdr_id IN NUMBER, 
+                             p_curr_hdr_id IN NUMBER, 
+                             p_user        IN VARCHAR2, 
+                             p_message     OUT VARCHAR2) 
+  IS 
+    l_boq_hdr_id       NUMBER; 
+    l_boq_line_id      NUMBER; 
+    l_extended_flag    VARCHAR2(10);
+    l_doc_version      NUMBER;
+    CURSOR prev_boq_lines_c IS 
+      SELECT * 
+      FROM   xxboq_work_done_lines_t 
+      WHERE  wd_header_id = p_prev_hdr_id 
+             AND master_boq_line_id NOT IN (SELECT master_boq_line_id 
+                                            FROM   xxboq_work_done_lines_t 
+                                            WHERE  wd_header_id = p_curr_hdr_id); 
+    l_current_boq_rate NUMBER; 
+    l_wd_line_id       NUMBER; 
+  BEGIN 
+      BEGIN 
+          SELECT boq_header_id , version
+          INTO   l_boq_hdr_id , l_doc_version
+          FROM   xxboq_work_done_details_t 
+          WHERE  wd_header_id = p_curr_hdr_id; 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            p_message := 'EXCEPTION RAISED WHILE RETRIVING BOQ HEADER ID. ' 
+                         || SQLERRM; 
+
+            l_boq_hdr_id := NULL; 
+      END; 
+
+      IF ( l_boq_hdr_id IS NOT NULL ) THEN 
+        FOR prev_boq IN prev_boq_lines_c LOOP 
+            l_current_boq_rate := NULL; 
+
+    l_extended_flag:=prev_boq.extended_flag ;
+                         
+                         
+            SELECT Nvl(selling_rate, 0), 
+                   boq_line_id 
+            INTO   l_current_boq_rate, l_boq_line_id 
+            FROM   xxboq_bill_of_qty_lines_t 
+            WHERE  master_boq_line_id = prev_boq.master_boq_line_id 
+                   AND boq_header_id = l_boq_hdr_id; 
+
+            l_wd_line_id := xxboq_work_done_lines_s.NEXTVAL; 
+
+            INSERT INTO xxboq_work_done_lines_t 
+                        (wd_header_id, 
+                         wd_line_id, 
+                         boq_line_id, 
+                         creation_date, 
+                         created_by, 
+                         last_updated_date, 
+                         last_updated_by, 
+                         boq_header_id, 
+                         wd_cummulative_qty, 
+                         previous_cummulative_qty, 
+                         previous_boq_rate, 
+                         current_boq_rate, 
+                         actual_wd_qty, 
+                         remarks, 
+                         error_msg, 
+                         extended_flag, 
+                         master_wd_line_id, 
+                         master_boq_header_id, 
+                         master_boq_line_id) 
+            VALUES      ( p_curr_hdr_id, 
+                         l_wd_line_id, 
+                         l_boq_line_id, 
+                         SYSDATE, 
+                         p_user, 
+                         SYSDATE, 
+                         p_user, 
+                         l_boq_hdr_id, 
+                         prev_boq.wd_cummulative_qty, 
+                         prev_boq.wd_cummulative_qty, 
+                         prev_boq.current_boq_rate, 
+                         l_current_boq_rate, 
+                         prev_boq.actual_wd_qty, 
+                         prev_boq.remarks, 
+                         prev_boq.error_msg, 
+                     
+                    (case when l_doc_version=0 then
+                     'Y'
+                     else
+                     (l_extended_flag) end) ,
+                     
+                         l_wd_line_id, 
+                         prev_boq.master_boq_header_id, 
+                         prev_boq.master_boq_line_id ); 
+        END LOOP; 
+
+        p_message := 'Success'; 
+      END IF; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 
+               'EXCEPTION RAISED WHILE INSERTING/EXTENDING BOQ LINES. ' 
+               || SQLERRM; 
+  END extend_wd_lines; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author:  PRADEEP. N 
+  >>>>Revising Work Done Documnet. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Revise_wd_lines (p_curr_hdr_id IN NUMBER, 
+                             p_prev_hdr_id IN NUMBER, 
+                             p_user        IN VARCHAR2, 
+                             p_message     OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      IF p_curr_hdr_id IS NOT NULL 
+         AND p_user IS NOT NULL THEN 
+        INSERT INTO xxboq_work_done_lines_t 
+                    (wd_header_id, 
+                     wd_line_id, 
+                     boq_line_id, 
+                     wd_cummulative_qty, 
+                     creation_date, 
+                     created_by, 
+                     last_updated_date, 
+                     last_updated_by, 
+                     boq_header_id, 
+                     previous_cummulative_qty, 
+                     previous_boq_rate, 
+                     current_boq_rate, 
+                     actual_wd_qty, 
+                     remarks, 
+                     error_msg, 
+                     extended_flag, 
+                     master_wd_line_id, 
+                     master_boq_header_id, 
+                     master_boq_line_id) 
+        SELECT p_curr_hdr_id, 
+               xxboq_work_done_lines_s.NEXTVAL, 
+               boq_line_id, 
+               wd_cummulative_qty, 
+               SYSDATE, 
+               p_user, 
+               SYSDATE, 
+               p_user, 
+               boq_header_id, 
+               previous_cummulative_qty, 
+               previous_boq_rate, 
+               current_boq_rate, 
+               actual_wd_qty, 
+               remarks, 
+               error_msg, 
+               extended_flag, 
+               master_wd_line_id, 
+               master_boq_header_id, 
+               master_boq_line_id 
+        FROM   xxboq_work_done_lines_t 
+        WHERE  wd_header_id = p_prev_hdr_id; 
+
+        p_message := 'Success'; 
+      END IF; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'EXCEPTION RAISED WHILE INSERTING WORKDONE LINES. ' 
+                            || SQLERRM; 
+  END revise_wd_lines; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Syam.A, PRADEEP.N 
+  >>>>Revising Work Done Documnet. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Revise_wd_hdr (p_header_id  IN NUMBER, 
+                           p_username   IN VARCHAR2, 
+                           p_out_hdr_id OUT NUMBER, 
+                           p_message    OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      p_out_hdr_id := xxboq_work_done_details_s.NEXTVAL; 
+
+      INSERT INTO xxboq_work_done_details_t 
+                  (wd_header_id, 
+                   business_unit_id, 
+                   project_id, 
+                   period_of_measure, 
+                   wd_document_date, 
+                   wd_document_num, 
+                   wd_status, 
+                   wd_approved_date, 
+                   wd_approved_by, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   version, 
+                   master_wd_header_id,
+                   parent_wd_header_id,
+                   boq_header_id, 
+                   master_boq_header_id) 
+      SELECT p_out_hdr_id, 
+             business_unit_id, 
+             project_id, 
+             period_of_measure, 
+             SYSDATE, 
+             wd_document_num, 
+             'D', 
+             wd_approved_date, 
+             wd_approved_by, 
+             SYSDATE, 
+             p_username, 
+             SYSDATE, 
+             p_username, 
+             version + 1, 
+             master_wd_header_id, 
+             p_header_id,
+             boq_header_id, 
+             master_boq_header_id 
+      FROM   xxboq_work_done_details_t 
+      WHERE  wd_header_id = p_header_id; 
+
+      BEGIN 
+          Revise_wd_lines(p_out_hdr_id, p_header_id, p_username, p_message); 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            ROLLBACK; 
+      END; 
+
+--      IF 'Success' = p_message THEN 
+--        UPDATE xxboq_work_done_details_t 
+--        SET    wd_status = 'RV' 
+--        WHERE  wd_header_id = p_header_id; 
+--      END IF; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               ROLLBACK; 
+
+               p_message := 'EXCEPTION RAISE WHILE INSERTING WORKDONE HEADER. ' 
+                            || SQLERRM; 
+  END revise_wd_hdr; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Syam.A 
+  >>>>procedure to validate is there any wd document present 
+  after the given period. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Validate_work_done_period (p_prj_id IN NUMBER, 
+                                       p_period IN VARCHAR2, 
+                                       p_flag   OUT VARCHAR2) 
+  IS 
+    l_prev_period DATE; 
+    l_curr_date   DATE; 
+  BEGIN 
+      SELECT To_date(period_of_measure, 'MON-YYYY') 
+      INTO   l_prev_period 
+      FROM   xxboq_work_done_details_t 
+      WHERE  project_id = p_prj_id 
+             AND wd_header_id = (SELECT Max(wd_header_id) 
+                                 FROM   xxboq_work_done_details_t 
+                                 WHERE  project_id = p_prj_id 
+                                        AND wd_status IN ( 
+                                            'Approved', 'In Process' )) 
+      ; 
+
+      l_curr_date := To_date(p_period, 'MON-YYYY'); 
+
+      IF l_curr_date > l_prev_period THEN 
+        p_flag := 'Y'; 
+      ELSE 
+        p_flag := 'N'; 
+      END IF; 
+  EXCEPTION 
+    WHEN no_data_found THEN 
+               p_flag := 'Y'; 
+  END validate_work_done_period; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  >>>>UPDATING STATUS OF OLD DOCUMENT TO REVISED and 
+  UPDATING WORKDONE QUANTITY IN BOQ LINES TABLE. 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Update_boq_qty_hdr_status (p_hdr_id NUMBER, 
+                                       p_from   VARCHAR2) 
+  IS 
+    l_doc_num    VARCHAR2(30); 
+    CURSOR lines_c ( 
+      hdr_id NUMBER ) IS 
+      SELECT * 
+      FROM   xxboq_work_done_lines_t 
+      WHERE  wd_header_id = hdr_id; 
+    lines_r      xxboq_work_done_lines_t%ROWTYPE; 
+    CURSOR inv_lines_c ( 
+      hdr_id NUMBER ) IS 
+      SELECT * 
+      FROM   xxboq_invoice_lines_t 
+      WHERE  invoice_header_id = hdr_id; 
+    inv_lines_r  xxboq_invoice_lines_t%ROWTYPE; 
+    CURSOR cert_lines_c ( 
+      hdr_id NUMBER ) IS 
+      SELECT * 
+      FROM   xxboq_certified_lines_t 
+      WHERE  certified_header_id = hdr_id; 
+    cert_lines_r xxboq_certified_lines_t%ROWTYPE; 
+  BEGIN 
+      IF p_from = 'W' THEN 
+        SELECT wd_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_work_done_details_t 
+        WHERE  wd_header_id = p_hdr_id; 
+
+        UPDATE xxboq_work_done_details_t 
+        SET    wd_status = 'Revised' 
+        WHERE  wd_header_id <> p_hdr_id 
+               AND wd_document_num = l_doc_num; 
+
+        FOR lines_r IN lines_c(p_hdr_id) LOOP 
+            UPDATE xxboq_boq_lines_t 
+            SET    work_done_qty = lines_r.wd_cummulative_qty 
+            WHERE  header_id = lines_r.boq_header_id 
+                   AND line_id = lines_r.boq_line_id; 
+        END LOOP; 
+      ELSIF p_from = 'I' THEN 
+        SELECT invoice_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_invoice_details_t 
+        WHERE  invoice_header_id = p_hdr_id; 
+
+        UPDATE xxboq_invoice_details_t 
+        SET    invoice_status = 'Revised' 
+        WHERE  invoice_header_id <> p_hdr_id 
+               AND invoice_document_num = l_doc_num; 
+
+        FOR inv_lines_r IN inv_lines_c(p_hdr_id) LOOP 
+            UPDATE xxboq_boq_lines_t 
+            SET    invoiced_qty = inv_lines_r.invoice_cummulative_qty 
+            WHERE  header_id = inv_lines_r.boq_header_id 
+                   AND line_id = inv_lines_r.boq_line_id; 
+        END LOOP; 
+      ELSIF p_from = 'C' THEN 
+        SELECT certified_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_certified_details_t 
+        WHERE  certified_header_id = p_hdr_id; 
+
+        UPDATE xxboq_certified_details_t 
+        SET    certified_status = 'Revised' 
+        WHERE  certified_header_id <> p_hdr_id 
+               AND certified_document_num = l_doc_num; 
+
+        FOR cert_lines_r IN cert_lines_c(p_hdr_id) LOOP 
+            UPDATE xxboq_boq_lines_t 
+            SET    certified_qty = cert_lines_r.certified_cummulative_qty 
+            WHERE  header_id = cert_lines_r.boq_header_id 
+                   AND line_id = cert_lines_r.boq_line_id; 
+        END LOOP; 
+      END IF; 
+
+      COMMIT; 
+  END update_boq_qty_hdr_status; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  FUNCTION Is_structure_exists (p_structure_code VARCHAR2, 
+                                p_bu_id          NUMBER, 
+                                p_project_id     NUMBER) 
+  RETURN VARCHAR2 
+  IS 
+    lv_flag VARCHAR2(1); 
+  BEGIN 
+      SELECT 'Y' 
+      INTO   lv_flag 
+      FROM   xxboq_structure_setup_t 
+      WHERE  bu_id = p_bu_id 
+             AND project_id = p_project_id 
+             AND structure_code = p_structure_code; 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 'N'; 
+  END is_structure_exists; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  FUNCTION Is_uom_valid (p_uom_name VARCHAR2) 
+  RETURN VARCHAR2 
+  IS 
+    lv_flag VARCHAR2(1); 
+  BEGIN 
+      SELECT 'Y' 
+      INTO   lv_flag 
+      FROM   xxinv_uom_conversions_t 
+      WHERE  from_uom_code = to_uom_code 
+             AND from_uom_name = p_uom_name; 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 'N'; 
+  END is_uom_valid; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  FUNCTION Is_boq_line_exists (p_bill_number VARCHAR2, 
+                               p_page_number VARCHAR2, 
+                               p_item_number VARCHAR2) 
+  RETURN VARCHAR2 
+  IS 
+    lv_flag VARCHAR2(1); 
+  BEGIN 
+      SELECT 'Y' 
+      INTO   lv_flag 
+      FROM   xxboq_boq_lines_t 
+      WHERE  bill_number = p_bill_number 
+             AND page_number = p_page_number 
+             AND item_number = p_item_number; 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 'N'; 
+  END is_boq_line_exists; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  FUNCTION Get_boq_header_id (p_bu_id      NUMBER, 
+                              p_project_id NUMBER) 
+  RETURN NUMBER 
+  IS 
+    lv_boq_header_id NUMBER; 
+  BEGIN 
+      SELECT header_id 
+      INTO   lv_boq_header_id 
+      FROM   xxboq_boq_header_t 
+      WHERE  bu_id = p_bu_id 
+             AND project_id = p_project_id; 
+
+      RETURN lv_boq_header_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN NULL; 
+  END get_boq_header_id; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  FUNCTION Get_structure_id (p_structure_code VARCHAR2, 
+                             p_bu_id          NUMBER, 
+                             p_project_id     NUMBER) 
+  RETURN VARCHAR2 
+  IS 
+    lv_structure_id NUMBER; 
+  BEGIN 
+      SELECT structure_id 
+      INTO   lv_structure_id 
+      FROM   xxboq_structure_setup_t 
+      WHERE  bu_id = p_bu_id 
+             AND project_id = p_project_id 
+             AND structure_code = p_structure_code; 
+
+      RETURN lv_structure_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN NULL; 
+  END get_structure_id; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Populate_boqs (p_user_name  VARCHAR2, 
+                           p_bu_id      NUMBER, 
+                           p_project_id NUMBER, 
+                           p_upload_id  NUMBER) 
+  IS 
+    CURSOR boq_c IS 
+      SELECT * 
+      FROM   xxboq_boq_lines_int_t 
+      WHERE  upload_id = p_upload_id; 
+  BEGIN 
+      FOR boq_r IN boq_c LOOP 
+          INSERT INTO xxboq_boq_lines_t 
+                      (header_id, 
+                       line_id, 
+                       parent_line_id, 
+                       bill_number, 
+                       page_number, 
+                       item_number, 
+                       item_description, 
+                       boq_quantity, 
+                       uom, 
+                       estimated_quantity, 
+                       structure_id, 
+                       boq_rate, 
+                       contract_type, 
+                       created_by, 
+                       creation_date, 
+                       last_update_date, 
+                       last_updated_by, 
+                       bu_id, 
+                       project_id, 
+                       sequence_numner, 
+                       work_done_qty) 
+          VALUES      ( Get_boq_header_id(p_bu_id, p_project_id), 
+                       xxboq_boq_lines_s.NEXTVAL, 
+                       NULL, 
+                       boq_r.bill_number, 
+                       boq_r.page_number, 
+                       boq_r.item_number, 
+                       boq_r.item_description, 
+                       boq_r.boq_quantity, 
+                       boq_r.uom, 
+                       boq_r.estimated_quantity, 
+  Get_structure_id(boq_r.structure_code, p_bu_id, p_project_id), 
+  boq_r.boq_rate, 
+  boq_r.contract_type, 
+  p_user_name, 
+  SYSDATE, 
+  SYSDATE, 
+  p_user_name, 
+  p_bu_id, 
+  p_project_id, 
+  0, 
+  0 ); 
+  END LOOP; 
+  END populate_boqs; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: Srinadh.Ch 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Update_wd_cummulative_qty (p_user_name    VARCHAR2, 
+                                       p_wd_header_id NUMBER, 
+                                       p_bu_id        NUMBER, 
+                                       p_project_id   NUMBER, 
+                                       p_upload_id    NUMBER) 
+  IS 
+    CURSOR wd_c IS 
+      SELECT * 
+      FROM   xxboq_work_done_int_t 
+      WHERE  upload_id = p_upload_id; 
+  BEGIN 
+      FOR wd_r IN wd_c LOOP 
+          UPDATE xxboq_work_done_lines_t xwdlt 
+          SET    xwdlt.wd_cummulative_qty = wd_r.wd_cummulative_qty, 
+                 xwdlt.last_updated_date = SYSDATE, 
+                 xwdlt.last_updated_by = p_user_name, 
+                 xwdlt.actual_wd_qty = wd_r.actual_wd_qty, 
+                 xwdlt.remarks = wd_r.remarks,
+                 XWDLT.ACTUAL_WD_QTY_PERCT=wd_r.ACTUAL_WD_QTY_PERCT,
+                 XWDLT.WD_CUMMULATIVE_QTY_PERCT=wd_r.WD_CUMMULATIVE_QTY_PERCT
+          WHERE  xwdlt.wd_header_id = p_wd_header_id 
+                 AND xwdlt.wd_line_id = 
+                     Nvl(wd_r.wd_line_id, wd_r.wd_line_number); 
+      END LOOP; 
+
+      COMMIT; 
+  END update_wd_cummulative_qty; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: PRADEEP. N 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Validate_upld_wd_quantities (p_upload_id IN NUMBER, 
+                                         p_wd_hdr_id IN NUMBER, 
+                                         p_user_name IN VARCHAR2, 
+                                         p_message   OUT VARCHAR2) 
+  IS 
+    CURSOR upload_wds IS 
+      SELECT * 
+      FROM   xxboq_work_done_int_t 
+      WHERE  upload_id = p_upload_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+    l_cumm_qty  number;
+    l_cumm_per  number;
+    l_act_qty number;
+    l_act_per number;
+  BEGIN 
+      BEGIN 
+          FOR uploaded_wd IN upload_wds LOOP 
+              p_message := NULL; 
+
+              BEGIN 
+                  IF ( uploaded_wd.wd_cummulative_qty > 
+                       uploaded_wd.bill_quantity 
+                     ) 
+                  THEN 
+                    p_message := 
+' Work Done Cumulative quantity cannot be greater than actual Bill Quantity i.e. ' 
+|| uploaded_wd.bill_quantity; 
+END IF; 
+
+IF ( uploaded_wd.wd_prev_cummulative_qty > uploaded_wd.wd_cummulative_qty ) THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Pevious Work Done Cumulative quantity cannot be greater than entered Cumulative Quantity i.e. '
+|| uploaded_wd.wd_cummulative_qty; 
+END IF; 
+
+IF ( uploaded_wd.actual_wd_qty > uploaded_wd.bill_quantity ) THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Actual  Work Done Cumulative quantity cannot be greater  than Bill Quantity i.e. ' 
+|| uploaded_wd.bill_quantity; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg uploaded Quantities. ' 
+                   || SQLERRM; 
+END; 
+
+IF
+  uploaded_wd.WD_CUMMULATIVE_QTY_PERCT IS NOT NULL AND uploaded_wd.WD_CUMMULATIVE_QTY_PERCT > 0
+THEN
+  l_cumm_qty := ( uploaded_wd.WD_CUMMULATIVE_QTY_PERCT * uploaded_wd.bill_quantity ) / 100;
+  l_cumm_per := uploaded_wd.WD_CUMMULATIVE_QTY_PERCT;
+ELSIF uploaded_wd.wd_cummulative_qty IS NOT NULL AND uploaded_wd.wd_cummulative_qty > 0 THEN
+  IF
+    nvl(uploaded_wd.bill_quantity,0) <> 0
+  THEN
+    l_cumm_per := round(uploaded_wd.wd_cummulative_qty / uploaded_wd.bill_quantity) * 100;
+  END IF;
+    l_cumm_qty := uploaded_wd.wd_cummulative_qty;
+ELSE
+  l_cumm_qty := uploaded_wd.wd_cummulative_qty;
+  l_cumm_per := uploaded_wd.WD_CUMMULATIVE_QTY_PERCT;
+END IF;
+
+IF
+  uploaded_wd.ACTUAL_WD_QTY_PERCT IS NOT NULL AND uploaded_wd.ACTUAL_WD_QTY_PERCT > 0
+THEN
+  l_act_qty := ( uploaded_wd.ACTUAL_WD_QTY_PERCT * uploaded_wd.bill_quantity ) / 100;
+  l_act_per := uploaded_wd.WD_CUMMULATIVE_QTY_PERCT;
+ELSIF uploaded_wd.actual_wd_qty IS NOT NULL AND uploaded_wd.actual_wd_qty > 0 THEN
+  IF
+    nvl(uploaded_wd.bill_quantity,0) <> 0
+  THEN
+    l_act_per := round(uploaded_wd.actual_wd_qty / uploaded_wd.bill_quantity) * 100;
+  END IF;
+    l_act_qty := uploaded_wd.actual_wd_qty;
+ELSE
+  l_act_qty := uploaded_wd.actual_wd_qty;
+  l_act_per := uploaded_wd.WD_CUMMULATIVE_QTY_PERCT;
+END IF;
+--dbms_output.Put_line('ERROR === ' 
+--                     || p_message); 
+
+UPDATE xxboq_work_done_lines_t 
+SET    wd_cummulative_qty = l_cumm_qty, 
+       actual_wd_qty = l_act_qty, 
+       remarks = uploaded_wd.remarks, 
+       error_msg = p_message ,
+       ACTUAL_WD_QTY_PERCT=l_act_per,
+       WD_CUMMULATIVE_QTY_PERCT=l_cumm_per
+WHERE  wd_header_id = p_wd_hdr_id 
+       AND wd_line_id = uploaded_wd.wd_line_id; 
+
+dbms_output.Put_line('inserted === ' 
+                     || uploaded_wd.wd_line_id); 
+END LOOP; 
+
+p_message := 'Success'; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Work down lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+
+SELECT Count(1) 
+INTO   lv_count 
+FROM   xxboq_work_done_lines_t 
+WHERE  wd_header_id = p_wd_hdr_id 
+       AND error_msg IS NOT NULL; 
+
+IF lv_count > 0 THEN 
+  p_message := 
+'Document Successfully Uploaded. Errors Found in the Work Done Lines, Please Check' 
+  ; 
+ELSE 
+  p_message := 'Success'; 
+END IF; 
+
+COMMIT; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+'EXCEPTION RAISED WHILE INSERTING AND VALIDATING THE UPLOADED WORK DONE LINES.' 
+|| SQLERRM; 
+END validate_upld_wd_quantities; 
+  /*+++++++++++++++++++++++++++++++++++++++++++++++++++++++/ 
+  # Author: PRADEEP. N 
+  >>>> 
+  /+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+  PROCEDURE Validate_wd_quantities (p_wd_hdr_id IN NUMBER, 
+                                    p_user_name IN VARCHAR2, 
+                                    p_message   OUT VARCHAR2) 
+  IS 
+    CURSOR lines_c IS 
+      SELECT line.*, 
+             bl.bill_qty 
+      FROM   xxboq_work_done_lines_t line, 
+             xxboq_bill_of_qty_lines_t bL 
+      WHERE  line.boq_line_id = bl.boq_line_id 
+             AND wd_header_id = p_wd_hdr_id; 
+    lv_count     NUMBER; 
+    l_error_info VARCHAR2(4000); 
+  BEGIN 
+      BEGIN 
+          FOR line IN lines_c LOOP 
+              p_message := NULL; 
+
+              BEGIN 
+                  dbms_output.Put_line('Qty === ' 
+                                       || line.bill_qty); 
+
+                  IF ( line.wd_cummulative_qty > line.bill_qty ) THEN 
+                    p_message := 
+' Work Done Cumulative quantity cannot be greater than actual Bill Quantity i.e. ' 
+|| line.bill_qty; 
+END IF; 
+
+--IF ( line.previous_cummulative_qty > line.wd_cummulative_qty ) THEN 
+--  p_message := Nvl(p_message, '') 
+--               || 
+--' Pevious Work Done Cumulative quantity cannot be greater than entered Cumulative Quantity i.e. '
+--|| line.wd_cummulative_qty; 
+--END IF; 
+
+IF ( line.actual_wd_qty > line.bill_qty ) THEN 
+  p_message := Nvl(p_message, '') 
+               || 
+' Actual  Work Done Cumulative quantity cannot be greater  than Bill Quantity i.e. ' 
+|| line.bill_qty; 
+END IF; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := Nvl(p_message, '') 
+                   || 
+      ' EXCEPTION":- Exception raised while validationg Quantities. ' 
+                   || SQLERRM; 
+END; 
+
+dbms_output.Put_line('ERROR === ' 
+                     || p_message); 
+
+UPDATE xxboq_work_done_lines_t 
+SET    error_msg = p_message 
+WHERE  wd_header_id = p_wd_hdr_id 
+       AND wd_line_id = line.wd_line_id; 
+
+dbms_output.Put_line('inserted === ' 
+                     || line.wd_line_id); 
+END LOOP; 
+
+COMMIT; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      p_message := 
+      'EXCEPTION :- While Updating Work down lines with Uploaded data. ' 
+      || SQLERRM; 
+END; 
+
+COMMIT; 
+
+SELECT Count(1) 
+INTO   lv_count 
+FROM   xxboq_work_done_lines_t 
+WHERE  wd_header_id = p_wd_hdr_id 
+       AND error_msg IS NOT NULL; 
+
+IF lv_count > 0 THEN 
+  p_message := 'Errors Found in the Work Done Lines, Please Check'; 
+ELSE 
+  p_message := 'Success'; 
+END IF; 
+EXCEPTION 
+  WHEN OTHERS THEN 
+             p_message := 
+             'EXCEPTION RAISED WHILE  VALIDATING THE WORK DONE LINES.' 
+             || SQLERRM; 
+END validate_wd_quantities; 
+  PROCEDURE Validate_invoiced_period (p_prj_id IN NUMBER, 
+                                      p_period IN VARCHAR2, 
+                                      p_flag   OUT VARCHAR2) 
+  IS 
+    l_prev_period DATE; 
+    l_curr_date   DATE; 
+  BEGIN 
+      SELECT To_date(period_of_measure, 'MON-YYYY') 
+      INTO   l_prev_period 
+      FROM   xxboq_invoice_details_t 
+      WHERE  project_id = p_prj_id 
+             AND invoice_header_id = (SELECT Max(invoice_header_id) 
+                                      FROM   xxboq_invoice_details_t 
+                                      WHERE  project_id = p_prj_id 
+                                             AND invoice_status IN ( 
+                                                 'Approved', 'In Process' 
+                                                                   )); 
+
+      l_curr_date := To_date(p_period, 'MON-YYYY'); 
+
+      IF l_curr_date > l_prev_period THEN 
+        p_flag := 'Y'; 
+      ELSE 
+        p_flag := 'N'; 
+      END IF; 
+  EXCEPTION 
+    WHEN no_data_found THEN 
+               p_flag := 'Y'; 
+  END validate_invoiced_period; 
+  PROCEDURE Validate_certified_period (p_prj_id IN NUMBER, 
+                                       p_period IN VARCHAR2, 
+                                       p_flag   OUT VARCHAR2) 
+  IS 
+    l_prev_period DATE; 
+    l_curr_date   DATE; 
+  BEGIN 
+      SELECT To_date(period_of_measure, 'MON-YYYY') 
+      INTO   l_prev_period 
+      FROM   xxboq_certified_details_t 
+      WHERE  project_id = p_prj_id 
+             AND certified_header_id = (SELECT Max(certified_header_id) 
+                                        FROM   xxboq_certified_details_t 
+                                        WHERE  project_id = p_prj_id 
+                                               AND certified_status IN ( 
+                                                   'Approved', 'In Process' 
+                                                                       )); 
+
+      l_curr_date := To_date(p_period, 'MON-YYYY'); 
+
+      IF l_curr_date > l_prev_period THEN 
+        p_flag := 'Y'; 
+      ELSE 
+        p_flag := 'N'; 
+      END IF; 
+  EXCEPTION 
+    WHEN no_data_found THEN 
+               p_flag := 'Y'; 
+  END validate_certified_period; 
+  PROCEDURE Populate_revise_doc_invoice(p_header_id  IN NUMBER, 
+                                        p_username   IN VARCHAR2, 
+                                        p_out_hdr_id OUT NUMBER) 
+  IS 
+    CURSOR lines_c( 
+      hdrid NUMBER) IS 
+      SELECT * 
+      FROM   xxboq_invoice_lines_t 
+      WHERE  invoice_header_id = hdrid; 
+    lines_r xxboq_invoice_lines_t%ROWTYPE; 
+    hdr_r   xxboq_invoice_details_t%ROWTYPE; 
+  BEGIN 
+      SELECT * 
+      INTO   hdr_r 
+      FROM   xxboq_invoice_details_t 
+      WHERE  invoice_header_id = p_header_id; 
+
+      INSERT INTO xxboq_invoice_details_t 
+                  (invoice_header_id, 
+                   business_unit_id, 
+                   project_id, 
+                   period_of_measure, 
+                   invoice_document_date, 
+                   invoice_document_num, 
+                   invoice_status, 
+                   invoice_approved_date, 
+                   invoice_approved_by, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   wd_header_id, 
+                   version, 
+                   master_wd_header_id, 
+                   master_invoice_header_id, 
+                   parent_invoice_header_id, 
+                   master_boq_header_id, 
+                   boq_header_id) 
+      VALUES      ( xxboq_invoice_details_s.NEXTVAL, 
+                   hdr_r.business_unit_id, 
+                   hdr_r.project_id, 
+                   hdr_r.period_of_measure, 
+                   SYSDATE, 
+                   hdr_r.invoice_document_num, 
+                   'D', 
+                   hdr_r.invoice_approved_date, 
+                   hdr_r.invoice_approved_by, 
+                   SYSDATE, 
+                   p_username, 
+                   SYSDATE, 
+                   p_username, 
+                   hdr_r.wd_header_id, 
+                   hdr_r.version + 1, 
+                   hdr_r.master_wd_header_id, 
+                   hdr_r.master_invoice_header_id, 
+                   p_header_id, 
+                   hdr_r.master_boq_header_id, 
+                   hdr_r.boq_header_id ); 
+
+      p_out_hdr_id := xxboq_invoice_details_s.CURRVAL; 
+
+      FOR lines_r IN lines_c ( p_header_id ) LOOP 
+          INSERT INTO xxboq_invoice_lines_t 
+                      (invoice_header_id, 
+                       invoice_line_id, 
+                       boq_line_id, 
+                       invoice_cummulative_qty, 
+                       creation_date, 
+                       created_by, 
+                       last_updated_date, 
+                       last_updated_by, 
+                       boq_header_id, 
+                       wd_cummulative_qty, 
+                       previous_cummulative_qty, 
+                       previous_boq_rate, 
+                       current_boq_rate, 
+                       actual_invoice_qty, 
+                       remarks, 
+                       error_msg, 
+                       extended_flag, 
+                       master_invoice_line_id, 
+                       wd_line_id, 
+                       master_wd_line_id, 
+                       master_boq_header_id, 
+                       master_boq_line_id) 
+          VALUES      ( xxboq_invoice_details_s.CURRVAL, 
+                       xxboq_invoice_lines_s.NEXTVAL, 
+                       lines_r.boq_line_id, 
+                       lines_r.invoice_cummulative_qty, 
+                       SYSDATE, 
+                       p_username, 
+                       SYSDATE, 
+                       p_username, 
+                       lines_r.boq_header_id, 
+                       lines_r.wd_cummulative_qty, 
+                       lines_r.previous_cummulative_qty, 
+                       lines_r.previous_boq_rate, 
+                       lines_r.current_boq_rate, 
+                       lines_r.actual_invoice_qty, 
+                       lines_r.remarks, 
+                       lines_r.error_msg, 
+                       lines_r.extended_flag, 
+                       lines_r.master_invoice_line_id, 
+                       lines_r.wd_line_id, 
+                       lines_r.master_wd_line_id, 
+                       lines_r.master_boq_header_id, 
+                       lines_r.master_boq_line_id ); 
+      END LOOP; 
+
+      COMMIT; 
+  END populate_revise_doc_invoice; 
+  PROCEDURE Update_certified_cumm_qty (p_user_name           VARCHAR2, 
+                                       p_certified_header_id NUMBER, 
+                                       p_bu_id               NUMBER, 
+                                       p_project_id          NUMBER, 
+                                       p_upload_id           NUMBER) 
+  IS 
+    CURSOR certified_c IS 
+      SELECT * 
+      FROM   xxboq_certified_int_t 
+      WHERE  upload_id = p_upload_id; 
+  BEGIN 
+      FOR certified_r IN certified_c LOOP 
+          UPDATE xxboq_certified_lines_t xcertifiedlt 
+          SET    xcertifiedlt.certified_cummulative_qty = 
+                 certified_r.certified_cummulative_qty, 
+                 xcertifiedlt.last_updated_date = SYSDATE, 
+                 xcertifiedlt.last_updated_by = p_user_name 
+          WHERE  xcertifiedlt.certified_header_id = p_certified_header_id 
+                 AND xcertifiedlt.certified_line_id = 
+                     certified_r.certified_line_number; 
+      END LOOP; 
+
+      COMMIT; 
+  END update_certified_cumm_qty; 
+  PROCEDURE Update_invoiced_cumm_qty (p_user_name          VARCHAR2, 
+                                      p_invoiced_header_id NUMBER, 
+                                      p_bu_id              NUMBER, 
+                                      p_project_id         NUMBER, 
+                                      p_upload_id          NUMBER) 
+  IS 
+    CURSOR invoiced_c IS 
+      SELECT * 
+      FROM   xxboq_invoiced_int_t 
+      WHERE  upload_id = p_upload_id; 
+  BEGIN 
+      FOR invoiced_r IN invoiced_c LOOP 
+          UPDATE xxboq_invoice_lines_t xinvoicedlt 
+          SET    xinvoicedlt.invoice_cummulative_qty = 
+                 invoiced_r.invoiced_cummulative_qty, 
+                 xinvoicedlt.last_updated_date = SYSDATE, 
+                 xinvoicedlt.last_updated_by = p_user_name 
+          WHERE  xinvoicedlt.invoice_header_id = p_invoiced_header_id 
+                 AND xinvoicedlt.invoice_line_id = 
+          invoiced_r.invoiced_line_number; 
+      END LOOP; 
+
+      COMMIT; 
+  END update_invoiced_cumm_qty; 
+  PROCEDURE Validate_pc_period (p_prj_id   NUMBER, 
+                                p_doc_type VARCHAR2, 
+                                p_period   VARCHAR2, 
+                                p_message  OUT VARCHAR2) 
+  IS 
+    l_period VARCHAR2(32); 
+    l_flag   VARCHAR2(1); 
+  BEGIN 
+      p_message := 'Y'; 
+
+      BEGIN 
+          SELECT 'Y' 
+          INTO   l_flag 
+          FROM   dual 
+          WHERE  EXISTS (SELECT 1 
+                         FROM   xxboq_pc_hdr_t 
+                         WHERE  project_id = p_prj_id 
+                                AND pc_status <> 'Approved'); 
+
+          IF l_flag = 'Y' THEN 
+            p_message := 
+            'There is an open Payment Certificate is exist for this Project.' 
+            ; 
+          END IF; 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            p_message := 'Y'; 
+      END; 
+
+      BEGIN 
+          l_flag := NULL; 
+
+          IF p_message = 'Y' THEN 
+            SELECT 'Y' 
+            INTO   l_flag 
+            FROM   dual 
+            WHERE  EXISTS (SELECT 1 
+                           FROM   xxboq_certified_details_t cdt 
+                           WHERE  cdt.project_id = p_prj_id 
+                                  AND cdt.period_of_measure = p_period 
+                                  AND cdt.certified_status = 'Approved'); 
+
+            IF l_flag = 'Y' THEN 
+              p_message := 'Y'; 
+            ELSE 
+              p_message := 'Certified Details is not created on this Period.'; 
+            END IF; 
+          END IF; 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            p_message := 'Certified Details is not created on this Period.'; 
+      END; 
+
+      BEGIN 
+          l_flag := NULL; 
+
+          IF p_message = 'Y' 
+             AND p_doc_type IN ( 'Progress Billing', 'Advance', 
+                                 'Final Progress Billing' ) 
+          THEN 
+            SELECT 'Y' 
+            INTO   l_flag 
+            FROM   dual 
+            WHERE  EXISTS (SELECT 1 
+                           FROM   xxboq_pc_hdr_t 
+                           WHERE  project_id = p_prj_id 
+                                  AND document_type = 'Final Progress Billing'); 
+
+            IF l_flag = 'Y' THEN 
+              p_message := 
+              'Already Final Progress Billing is done to the Project.'; 
+            END IF; 
+          END IF; 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            p_message := 'Y'; 
+      END; 
+
+      BEGIN 
+          IF p_message = 'Y' 
+             AND p_doc_type IN ( 'Progress Billing', 'Final Progress Billing' ) 
+          THEN 
+            SELECT period 
+            INTO   l_period 
+            FROM   xxboq_pc_hdr_t 
+            WHERE  pc_header_id = (SELECT Nvl(Max(pc_header_id), -99) 
+                                   FROM   xxboq_pc_hdr_t 
+                                   WHERE  project_id = p_prj_id 
+                                          AND pc_status = 'Approved' 
+                                          AND document_type <> 'Advance'); 
+
+            IF To_date(l_period, 'MON-RRRR') < To_date(p_period, 'MON-RRRR') 
+            THEN 
+              p_message := 'Y'; 
+            ELSE 
+              p_message := 'Invalid Period.'; 
+            END IF; 
+          END IF; 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            p_message := 'Y'; 
+      END; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error'; 
+  END validate_pc_period; 
+  PROCEDURE Update_pc_cummulative_value (p_cumm      VARCHAR2, 
+                                         p_user_name VARCHAR2, 
+                                         p_hdr_id    NUMBER, 
+                                         p_line_id   NUMBER) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_pc_lines_t 
+      SET    cummulative = p_cumm, 
+             last_updated_by = p_user_name, 
+             last_updated_date = SYSDATE 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id = p_line_id; 
+
+      COMMIT; 
+  END update_pc_cummulative_value; 
+  PROCEDURE Update_pc_previous_value (p_prev      VARCHAR2, 
+                                      p_user_name VARCHAR2, 
+                                      p_hdr_id    NUMBER, 
+                                      p_line_id   NUMBER) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_pc_lines_t 
+      SET    previous = p_prev, 
+             last_updated_by = p_user_name, 
+             last_updated_date = SYSDATE 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id = p_line_id; 
+
+      COMMIT; 
+  END update_pc_previous_value; 
+  PROCEDURE Set_pc_line_total_values (p_user_name VARCHAR2, 
+                                      p_hdr_id    NUMBER) 
+  IS 
+    l_cum      NUMBER := 0; 
+    l_prev     NUMBER := 0; 
+    l_cum2     NUMBER := 0; 
+    l_prev2    NUMBER := 0; 
+    l_doc_type VARCHAR2(60); 
+    l_prj_id   NUMBER; 
+  BEGIN 
+      SELECT document_type, 
+             project_id 
+      INTO   l_doc_type, l_prj_id 
+      FROM   xxboq_pc_hdr_t 
+      WHERE  pc_header_id = p_hdr_id; 
+
+      IF 'Advance' = l_doc_type THEN 
+        SELECT cummulative 
+        INTO   l_cum 
+        FROM   xxboq_pc_lines_t 
+        WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                               FROM   xxboq_pc_hdr_t 
+                               WHERE  project_id = l_prj_id 
+                                      AND pc_status = 'Approved' 
+                                      AND document_type = 'Advance') 
+               AND pc_line_id = '4'; 
+
+        Update_pc_previous_value(l_cum, p_user_name, p_hdr_id, 4); 
+      END IF; 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum, l_prev 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 1, 2 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(l_cum, p_user_name, p_hdr_id, 3); 
+
+      Update_pc_previous_value(l_prev, p_user_name, p_hdr_id, 3); 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum, l_prev 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 1, 2, 4 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(l_cum, p_user_name, p_hdr_id, 5); 
+
+      Update_pc_previous_value(l_prev, p_user_name, p_hdr_id, 5); 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum2, l_prev2 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 6, 7, 8 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(( l_cum - l_cum2 ), p_user_name, p_hdr_id, 9); 
+
+      Update_pc_previous_value(( l_prev - l_prev2 ), p_user_name, p_hdr_id, 9); 
+  END set_pc_line_total_values; 
+  PROCEDURE Set_pc_line_values (p_hdr_id    NUMBER, 
+                                p_prj_id    NUMBER, 
+                                p_user_name VARCHAR2) 
+  IS 
+    l_period VARCHAR2(30); 
+    CURSOR prev_c IS 
+      SELECT * 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                             FROM   xxboq_pc_hdr_t 
+                             WHERE  project_id = p_prj_id 
+                                    AND pc_status = 'Approved' 
+                                    AND document_type IN ( 'Progress Billing', 
+                                        'Final Progress Billing' 
+                                                         )); 
+    l_cumm   NUMBER; 
+    l_i      NUMBER := 0; 
+    prev_r   xxboq_pc_lines_t%ROWTYPE; 
+  BEGIN 
+      BEGIN 
+          SELECT period 
+          INTO   l_period 
+          FROM   xxboq_pc_hdr_t 
+          WHERE  pc_header_id = p_hdr_id; 
+      END; 
+
+      BEGIN 
+          SELECT cummulative 
+          INTO   l_cumm 
+          FROM   xxboq_pc_lines_t 
+          WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                                 FROM   xxboq_pc_hdr_t 
+                                 WHERE  project_id = p_prj_id 
+                                        AND pc_status = 'Approved' 
+                                        AND document_type = 'Advance') 
+                 AND pc_line_id = '4'; 
+
+          Update_pc_cummulative_value(l_cumm, p_user_name, p_hdr_id, 4); 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            l_cumm := 0; 
+      END; 
+
+      BEGIN 
+          FOR prev_r IN prev_c LOOP 
+              l_i := l_i + 1; 
+
+              IF prev_r.cummulative IS NOT NULL THEN 
+      Update_pc_previous_value(prev_r.cummulative, p_user_name, p_hdr_id, l_i); 
+      ELSIF prev_r.cummulative IS NULL 
+          AND l_i = 4 
+          AND l_cumm <> 0 THEN 
+      Update_pc_previous_value(l_cumm, p_user_name, p_hdr_id, l_i); 
+      END IF; 
+      END LOOP; 
+      END; 
+
+      BEGIN 
+          SELECT SUM(Nvl(CL.certified_cummulative_qty, 0) * Nvl(BL.boq_rate, 0)) 
+          INTO   l_cumm 
+          FROM   xxboq_certified_details_t CD, 
+                 xxboq_certified_lines_t CL, 
+                 xxboq_boq_lines_t BL 
+          WHERE  CD.certified_header_id = CL.certified_header_id 
+                 AND CD.period_of_measure = l_period 
+                 AND CD.certified_status = 'Approved' 
+                 AND CL.boq_header_id = BL.header_id 
+                 AND CL.boq_line_id = BL.line_id 
+          GROUP  BY CD.certified_header_id; 
+
+          Update_pc_cummulative_value(l_cumm, p_user_name, p_hdr_id, 1); 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            l_cumm := 0; 
+      END; 
+
+      --    BEGIN 
+      --      SELECT 
+      --        SUM(NVL(ML.QUANTITY,0) * NVL(RI.ITEM_RATE,0) ) 
+      --      INTO l_cumm 
+      --      FROM 
+      --        XXBOQ_MATERIAL_AT_SITE_HDR_T MH, 
+      --        XXBOQ_MATERIAL_AT_SITE_LINES_T ML, 
+      --        XXBOQ_RESOURCE_ITEMS_T RI 
+      --      WHERE 
+      --        MH.DOC_HEADER_ID = ML.DOC_HEADER_ID 
+      --        AND ML.RESOURCE_ITEM_ID = RI.ITEM_ID 
+      --        AND MH.STATUS = 'Completed' 
+      --        AND MH.PERIOD_OF_MEASURE = l_period 
+      --      GROUP BY 
+      --        MH.DOC_HEADER_ID; 
+      -- 
+      --      update_pc_cummulative_value(l_cumm,p_user_name,p_hdr_id,2); 
+      --    EXCEPTION 
+      --      WHEN OTHERS THEN 
+      --        l_cumm := 0; 
+      --    END; 
+      BEGIN 
+          UPDATE xxboq_pc_lines_t 
+          SET    enable_flag = 'Y' 
+          WHERE  pc_header_id = p_hdr_id 
+                 AND pc_line_id IN ( 6, 7, 8 ); 
+
+          Set_pc_line_total_values(p_user_name, p_hdr_id); 
+      END; 
+
+      COMMIT; 
+  END set_pc_line_values; 
+  PROCEDURE Delete_pc_line_values (p_hdr_id    NUMBER, 
+                                   p_user_name VARCHAR2) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_pc_lines_t 
+      SET    cummulative = NULL, 
+             previous = NULL, 
+             last_updated_by = p_user_name, 
+             last_updated_date = SYSDATE 
+      WHERE  pc_header_id = p_hdr_id; 
+
+      COMMIT; 
+  END delete_pc_line_values;
+    PROCEDURE update_status_code (
+    p_doc_type   VARCHAR2,
+    p_doc_id     NUMBER,
+    p_user       VARCHAR2,
+    p_message OUT   VARCHAR2
+  ) IS
+    l_master_doc_id   NUMBER;
+    l_message         VARCHAR2(1000);
+  BEGIN
+    IF
+      p_doc_type IS NOT NULL AND p_doc_id IS NOT NULL
+    THEN
+    l_message := 'Success';
+      IF
+        p_doc_type = 'WD'
+      THEN
+        SELECT
+          MASTER_WD_HEADER_ID
+        INTO l_master_doc_id
+        FROM
+          XXBOQ_WORK_DONE_DETAILS_T
+        WHERE
+          WD_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_WORK_DONE_DETAILS_T
+        SET
+          WD_STATUS = 'A',
+          CURRENT_FLAG = 'Y'
+        WHERE
+          WD_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_WORK_DONE_DETAILS_T
+        SET
+          CURRENT_FLAG = 'N'
+        WHERE
+          WD_HEADER_ID <> p_doc_id
+          AND MASTER_WD_HEADER_ID = l_master_doc_id;
+
+      ELSIF p_doc_type = 'INV' THEN
+        SELECT
+          MASTER_INVOICE_HEADER_ID
+        INTO l_master_doc_id
+        FROM
+          XXBOQ_INVOICE_DETAILS_T
+        WHERE
+          INVOICE_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_INVOICE_DETAILS_T
+        SET
+          INVOICE_STATUS = 'A',
+          CURRENT_FLAG = 'Y'
+        WHERE
+          INVOICE_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_INVOICE_DETAILS_T
+        SET
+          CURRENT_FLAG = 'N'
+        WHERE
+          INVOICE_HEADER_ID <> p_doc_id
+          AND MASTER_INVOICE_HEADER_ID = l_master_doc_id;
+
+      ELSIF p_doc_type = 'CERT' THEN
+        SELECT
+          MASTER_CERT_HEADER_ID
+        INTO l_master_doc_id
+        FROM
+          XXBOQ_CERTIFIED_DETAILS_T
+        WHERE
+          CERTIFIED_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_CERTIFIED_DETAILS_T
+        SET
+          CERTIFIED_STATUS = 'A',
+          CURRENT_FLAG = 'Y'
+        WHERE
+          CERTIFIED_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_CERTIFIED_DETAILS_T
+        SET
+          CURRENT_FLAG = 'N'
+        WHERE
+          CERTIFIED_HEADER_ID <> p_doc_id
+          AND MASTER_CERT_HEADER_ID = l_master_doc_id;
+
+      ELSIF p_doc_type = 'PC' THEN
+        SELECT
+          MASTER_PC_HEADER_ID
+        INTO l_master_doc_id
+        FROM
+          XXBOQ_PC_HDR_T
+        WHERE
+          PC_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_PC_HDR_T
+        SET
+          PC_STATUS = 'A',
+          CURRENT_FLAG = 'Y'
+        WHERE
+          PC_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_PC_HDR_T
+        SET
+          CURRENT_FLAG = 'N'
+        WHERE
+          PC_HEADER_ID <> p_doc_id
+          AND MASTER_PC_HEADER_ID = l_master_doc_id;
+
+      ELSIF p_doc_type = 'BOQ' THEN
+        SELECT
+          MASTER_VALIDATION_HEADER_ID
+        INTO l_master_doc_id
+        FROM
+          XXBOQ_VALIDATION_HEADER_T
+        WHERE
+          VALIDATION_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_VALIDATION_HEADER_T
+        SET
+          STATUS = 'A',
+          CURRENT_FLAG = 'Y'
+        WHERE
+          VALIDATION_HEADER_ID = p_doc_id;
+
+        UPDATE XXBOQ_VALIDATION_HEADER_T
+        SET
+          CURRENT_FLAG = 'N'
+        WHERE
+          VALIDATION_HEADER_ID <> p_doc_id
+          AND MASTER_VALIDATION_HEADER_ID = l_master_doc_id;
+
+      ELSE
+        l_message := 'Error while updating document status.';
+      END IF;
+    ELSE
+      l_message := 'Error while updating document status.';
+    END IF;
+
+    COMMIT;
+    p_message := l_message;
+  EXCEPTION
+    WHEN OTHERS THEN
+      l_message := 'Error while updating Resources';
+      p_message := l_message;
+      ROLLBACK;
+  END update_status_code;
+END xxboq_bill_of_quantity_pkg;

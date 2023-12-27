@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="MaterialAtSiteSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="MaterialAtSiteSearchVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="MaterialAtSiteSearchVO1Iterator"/>
+    <searchRegion Criteria="MaterialAtSiteSearch"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="MaterialAtSiteSearchVO1Iterator"
+                  id="MaterialAtSiteSearchQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="MaterialAtSiteSearchVO1Iterator"
+          id="MaterialAtSiteSearchVO1">
+      <nodeDefinition DefName="model.searchview.MaterialAtSiteSearchVO"
+                      Name="MaterialAtSiteSearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="Revision"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="Status"/>
+          <Item Value="CreationDate"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="ProjectName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="createMatHeaderRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createMatHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="cancelMatDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelMatDocument" IsViewObjectMethod="false"/>
+    <methodAction id="editMatDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editMatDocument" IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false"
+                  IterBinding="MaterialAtSiteSearchVO1Iterator"
+                  Uses="LOV_TransProjectNumber" id="TransProjectNumber"/>
+    <listOfValues StaticList="false"
+                  IterBinding="MaterialAtSiteSearchVO1Iterator"
+                  Uses="LOV_PeriodOfMeasure" id="PeriodOfMeasure"/>
+    <attributeValues IterBinding="MaterialAtSiteSearchVO1Iterator"
+                     id="TransProjectName">
+      <AttrNames>
+        <Item Value="TransProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false"
+                  IterBinding="MaterialAtSiteSearchVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <methodAction id="validateMaterialHdr"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateMaterialHdr" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateMaterialHdr_BillingDetailsAMDataControl_dataProvider_validateMaterialHdr_result"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ProjectJobItemAnalysisPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProjectJobHeaderSearchVO1" RangeSize="25"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="ProjectJobHeaderSearchVO1Iterator"/>
+    <searchRegion Criteria="ProjectJobHeaderSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectJobHeaderSearchVO1Iterator"
+                  id="ProjectJobHeaderSearchVOCriteriaQuery"/>
+    <iterator Binds="TransProjectJobHeaderVO1" RangeSize="25"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="TransProjectJobHeaderVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectJobHeaderSearchVO1Iterator"
+          id="ProjectJobHeaderSearchVO1">
+      <nodeDefinition DefName="model.view.ProjectJobHeaderSearchVO"
+                      Name="ProjectJobHeaderSearchVO10">
+        <AttrNames>
+          <Item Value="ApprovedBy"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="BusinessUnitId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="ProjectId"/>
+          <Item Value="ProjectJobHeaderId"/>
+          <Item Value="Status"/>
+          <Item Value="Version"/>
+          <Item Value="BuId"/>
+          <Item Value="ProjectId1"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="StartDate"/>
+          <Item Value="Description"/>
+          <Item Value="EndDate"/>
+          <Item Value="BuId1"/>
+          <Item Value="BuName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false"
+                  IterBinding="TransProjectJobHeaderVO1Iterator"
+                  Uses="LOV_TransBusinessUnitName" id="TransBusinessUnitName"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransProjectJobHeaderVO1Iterator"
+                  Uses="LOV_TransProjectNumber" id="TransProjectNumber"/>
+    <methodAction id="initTransProjectJobHeaderVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initTransProjectJobHeaderVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createNewProjectJobHeaderAnalysis"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createNewProjectJobHeaderAnalysis"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.createNewProjectJobHeaderAnalysis_ProjectJobItemAnalysisAMDataControl_dataProvider_createNewProjectJobHeaderAnalysis_result"/>
+    <methodAction id="isJobItemAnalysisCreatedForProject"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isJobItemAnalysisCreatedForProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.isJobItemAnalysisCreatedForProject_ProjectJobItemAnalysisAMDataControl_dataProvider_isJobItemAnalysisCreatedForProject_result"/>
+    <methodAction id="makeAsCurrentProjectJobHeader"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentProjectJobHeader"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.makeAsCurrentProjectJobHeader_ProjectJobItemAnalysisAMDataControl_dataProvider_makeAsCurrentProjectJobHeader_result">
+      <NamedData NDName="prjJobHdrId" NDValue="#{pageFlowScope.prjJobHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <attributeValues IterBinding="ProjectJobHeaderSearchVO1Iterator"
+                     id="ProjectJobHeaderId">
+      <AttrNames>
+        <Item Value="ProjectJobHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

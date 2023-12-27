@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.1.65.57" id="ActionHistoryTF_ActionHistoryTF_setActionHistoryForDocumentPageDef" Package="notification"
+                SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="setActionHistoryForDocument" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setActionHistoryForDocument"
+                  IsViewObjectMethod="false" DataControl="ApprovalAMDataControl"
+                  InstanceName="ApprovalAMDataControl.dataProvider">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

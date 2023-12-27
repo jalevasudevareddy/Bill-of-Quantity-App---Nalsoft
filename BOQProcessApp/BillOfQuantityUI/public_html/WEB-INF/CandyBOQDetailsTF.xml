@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="CandyBOQDetailsTF">
+    <default-activity id="__6">CandyBOQSearch</default-activity>
+    <transaction id="__1">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__4">
+      <managed-bean-name id="__2">CandyBOQSearchBean</managed-bean-name>
+      <managed-bean-class id="__5">bean.CandyBOQSearchBean</managed-bean-class>
+      <managed-bean-scope id="__3">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="CandyBOQSearch">
+      <page>/pagefragments/CandyBOQSearch.jsff</page>
+    </view>
+    <view id="CandyBOQDetails">
+      <page>/pagefragments/CandyBOQDetails.jsff</page>
+    </view>
+    <task-flow-call id="ActionHistoryTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/ActionHistoryTF.xml</document>
+        <id>ActionHistoryTF</id>
+      </task-flow-reference>
+      <input-parameter id="__25">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__26">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <control-flow-rule id="__7">
+      <from-activity-id id="__8">CandyBOQSearch</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome id="__11">Create</from-outcome>
+        <to-activity-id id="__10">CandyBOQDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__12">
+      <from-activity-id id="__13">CandyBOQDetails</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome id="__16">Done</from-outcome>
+        <to-activity-id id="__15">CandyBOQSearch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__17">
+        <from-outcome id="__19">ActionHistory</from-outcome>
+        <to-activity-id id="__18">ActionHistoryTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__20">
+      <from-activity-id id="__21">ActionHistoryTF</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome id="__22">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__24">CandyBOQDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

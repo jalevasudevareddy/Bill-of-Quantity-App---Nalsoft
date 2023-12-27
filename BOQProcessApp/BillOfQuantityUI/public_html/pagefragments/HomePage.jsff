@@ -1,0 +1,1095 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:dvt="http://xmlns.oracle.com/dss/adf/faces">
+  <af:panelGroupLayout id="pgl1" layout="scroll" styleClass="AFStretchWidth"
+                       binding="#{backingBeanScope.HomePageBean.homePageBind}">
+    <af:panelGroupLayout id="pgl2">
+      <af:commandLink id="cl1"
+                      rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_PL_ROLE=='Y'}"
+                      actionListener="#{backingBeanScope.HomePageBean.BOQBoxAL}">
+        <af:panelGroupLayout id="pgl5" layout="vertical" valign="top"
+                             styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard PGLHomePage"
+                             inlineStyle="#{pageFlowScope.switcher == 'BOQ'?'border-color:Blue;':''}">
+          <af:panelGroupLayout id="pgl8" layout="vertical">
+            <af:outputFormatted value="BOQ" id="of5"
+                                styleClass="WBDashboardCardTitle"/>
+          </af:panelGroupLayout>
+          <!--<dvt:pieChart selectionListener="#{backingBeanScope.HomePageBean.BOQSelectionListener}"
+                          dataSelection="single" id="pieChart1" var="row" rendered="false"
+                          value="#{bindings.AllPageCountVO11.collectionModel}"
+                          sliceLabelPosition="none" contentDelivery="immediate"
+                          inlineStyle="width:180.0px; height:180px;"
+                          threeDEffect="on" hoverBehavior="dim">
+              <dvt:chartLegend id="cl6"/>
+              <dvt:pieDataItem id="di1" value="#{row.DocCount}"
+                               label="#{row.Meaning}"
+                               color="#{row.TransColor}"/>
+            </dvt:pieChart>-->
+          <af:listView value="#{bindings.AllPageCountVO1.collectionModel}"
+                       var="item"
+                       emptyText="#{bindings.AllPageCountVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                       fetchSize="#{bindings.AllPageCountVO1.rangeSize}"
+                       id="lv1">
+            <af:listItem id="li1">
+              <af:panelGroupLayout id="pgl3">
+                <af:commandLink id="cl2"
+                                actionListener="#{backingBeanScope.HomePageBean.BOQDocAL}">
+                  <af:outputText value="#{item.bindings.DocCount.inputValue}"
+                                 id="of1"
+                                 inlineStyle="color:Red; font-size:large; font-weight:bold;">
+                    <af:convertNumber type="number" minIntegerDigits="2"/>
+                  </af:outputText>
+                  <af:spacer width="10" height="10" id="s1"/>
+                  <af:outputFormatted value="#{item.bindings.Meaning.inputValue}"
+                                      id="of2"
+                                      styleClass="WBDashboardMetricLabel"/>
+                  <af:setActionListener from="#{item.bindings.Meaning.inputValue}"
+                                        to="#{pageFlowScope.DocType}"/>
+                </af:commandLink>
+              </af:panelGroupLayout>
+            </af:listItem>
+          </af:listView>
+        </af:panelGroupLayout>
+      </af:commandLink>
+      <af:commandLink id="cl3"
+                      rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_EVAL_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_EVAL_PL_ROLE=='Y'}"
+                      actionListener="#{backingBeanScope.HomePageBean.WDBoxAL}">
+        <af:panelGroupLayout id="pgl6" layout="vertical" valign="top"
+                             styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard"
+                             inlineStyle="#{pageFlowScope.switcher == 'WD'?'border-color:Blue;':''}">
+          <af:panelGroupLayout id="pgl9" layout="vertical">
+            <af:outputFormatted value="Work Done" id="of6"
+                                styleClass="WBDashboardCardTitle"/>
+          </af:panelGroupLayout>
+          <dvt:pieChart selectionListener="#{backingBeanScope.HomePageBean.WDSelectionListener}"
+                        dataSelection="single" id="pieChart2" var="row"
+                        value="#{bindings.AllPageCountVO21.collectionModel}"
+                        sliceLabelPosition="none" contentDelivery="immediate"
+                        inlineStyle="width:180.0px; height:180px;"
+                        threeDEffect="on" hoverBehavior="dim">
+            <dvt:chartLegend id="cl5" position="bottom"/>
+            <dvt:pieDataItem id="di2" value="#{row.DocCount}"
+                             label="#{row.Meaning}" color="#{row.TransColor}"/>
+          </dvt:pieChart>
+          <af:outputText value="#{bindings.DocType1.inputValue}" id="ot36"
+                         rendered="false"/>
+          <af:listView value="#{bindings.AllPageCountVO2.collectionModel}"
+                       var="item" rendered="false"
+                       emptyText="#{bindings.AllPageCountVO2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                       fetchSize="#{bindings.AllPageCountVO2.rangeSize}"
+                       id="lv2">
+            <af:listItem id="li2">
+              <af:panelGroupLayout id="pgl4" halign="center">
+                <af:commandLink id="cl4"
+                                actionListener="#{backingBeanScope.HomePageBean.WDDocAL}">
+                  <af:outputText value="#{item.bindings.DocCount.inputValue}"
+                                 id="of3"
+                                 inlineStyle="color:Red; font-size:large;">
+                    <af:convertNumber type="number" minIntegerDigits="2"/>
+                  </af:outputText>
+                </af:commandLink>
+                <af:spacer width="10" height="10" id="s2"/>
+                <af:outputFormatted value="#{item.bindings.Meaning.inputValue}"
+                                    id="of4"
+                                    styleClass="WBDashboardMetricLabel"/>
+              </af:panelGroupLayout>
+            </af:listItem>
+          </af:listView>
+        </af:panelGroupLayout>
+      </af:commandLink>
+      <af:commandLink id="cl8"
+                      rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_INVOICE_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_INVOICE_PL_ROLE=='Y'}"
+                      actionListener="#{backingBeanScope.HomePageBean.InvBoxAL}">
+        <af:panelGroupLayout id="pgl12" layout="vertical" valign="top"
+                             styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard"
+                             inlineStyle="#{pageFlowScope.switcher == 'INV'?'border-color:Blue;':''}">
+          <af:panelGroupLayout id="pgl13" layout="vertical">
+            <af:outputFormatted value="Payment Application" id="of8"
+                                styleClass="WBDashboardCardTitle"/>
+          </af:panelGroupLayout>
+          <dvt:pieChart selectionListener="#{backingBeanScope.HomePageBean.InvSelectionListener}"
+                        dataSelection="single" id="pieChart3" var="row"
+                        rendered="false"
+                        value="#{bindings.AllPageCountVO3.collectionModel}"
+                        sliceLabelPosition="none" contentDelivery="immediate"
+                        inlineStyle="width:180.0px; height:180px;"
+                        threeDEffect="on" hoverBehavior="dim">
+            <dvt:chartLegend id="cl9"/>
+            <dvt:pieDataItem id="di3" value="#{row.DocCount}"
+                             label="#{row.Meaning}" color="#{row.TransColor}"/>
+          </dvt:pieChart>
+          <dvt:barChart selectionListener="#{backingBeanScope.HomePageBean.InvSelectionListener}"
+                        dataSelection="single" id="barChart1" var="row"
+                        value="#{bindings.AllPageCountVO31.collectionModel}"
+                        hoverBehavior="dim" contentDelivery="immediate"
+                        inlineStyle="width:180.0px; height:180px;"
+                        dataCursor="on" dataCursorBehavior="smooth">
+            <dvt:chartLegend id="cl6"/>
+            <f:facet name="dataStamp">
+              <dvt:chartDataItem id="di6" value="#{row.DocCount}"
+                                 group="#{row.Meaning}"
+                                 color="#{row.TransColor}"/>
+            </f:facet>
+          </dvt:barChart>
+        </af:panelGroupLayout>
+      </af:commandLink>
+      <af:commandLink id="cl10"
+                      rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                      actionListener="#{backingBeanScope.HomePageBean.CerBoxAL}">
+        <af:panelGroupLayout id="pgl14" layout="vertical" valign="top"
+                             styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard"
+                             inlineStyle="#{pageFlowScope.switcher == 'CER'?'border-color:Blue;':''}">
+          <af:panelGroupLayout id="pgl15" layout="vertical">
+            <af:outputFormatted value="Certified Details" id="of9"
+                                styleClass="WBDashboardCardTitle"/>
+          </af:panelGroupLayout>
+          <dvt:pieChart selectionListener="#{backingBeanScope.HomePageBean.CerSelectionListener}"
+                        dataSelection="single" id="pieChart4" var="row"
+                        rendered="false"
+                        value="#{bindings.AllPageCountVO4.collectionModel}"
+                        sliceLabelPosition="none" contentDelivery="immediate"
+                        inlineStyle="width:180.0px; height:180px;"
+                        threeDEffect="on" hoverBehavior="dim">
+            <dvt:chartLegend id="cl12"/>
+            <dvt:pieDataItem id="di4" value="#{row.DocCount}"
+                             label="#{row.Meaning}" color="#{row.TransColor}"/>
+          </dvt:pieChart>
+          <dvt:funnelChart selectionListener="#{backingBeanScope.HomePageBean.CerSelectionListener}"
+                           dataSelection="single" id="funnelChart1" var="row"
+                           contentDelivery="immediate"
+                           value="#{bindings.AllPageCountVO41.collectionModel}"
+                           inlineStyle="width:180.0px; height:180px;"
+                           threeDEffect="on" hoverBehavior="dim">
+            <dvt:funnelDataItem id="di1" value="#{row.DocCount}"
+                                label="#{row.Meaning}"
+                                color="#{row.TransColor}"/>
+          </dvt:funnelChart>
+        </af:panelGroupLayout>
+      </af:commandLink>
+      <af:commandLink id="cl11"
+                      rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_PC_PL_ROLE=='Y'}"
+                      actionListener="#{backingBeanScope.HomePageBean.PCBoxAL}">
+        <af:panelGroupLayout id="pgl16" layout="vertical" valign="top"
+                             styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard"
+                             inlineStyle="#{pageFlowScope.switcher == 'PC'?'border-color:Blue;':''}">
+          <af:panelGroupLayout id="pgl17" layout="vertical">
+            <af:outputFormatted value="Certificate" id="of10"
+                                styleClass="WBDashboardCardTitle"/>
+          </af:panelGroupLayout>
+          <dvt:pieChart selectionListener="#{backingBeanScope.HomePageBean.PCSelectionListener}"
+                        dataSelection="single" id="pieChart5" var="row"
+                        value="#{bindings.AllPageCountVO5.collectionModel}"
+                        sliceLabelPosition="none" contentDelivery="immediate"
+                        inlineStyle="width:180.0px; height:180px;"
+                        hoverBehavior="dim">
+            <dvt:chartLegend id="cl13" position="bottom"/>
+            <dvt:pieDataItem id="di5" value="#{row.DocCount}"
+                             label="#{row.Meaning}" color="#{row.TransColor}"/>
+          </dvt:pieChart>
+        </af:panelGroupLayout>
+      </af:commandLink>
+      <af:panelGroupLayout id="pb3" rendered="false"
+                           styleClass="WBDisplayBlock WBDisplayBlockMargin WBDashboardCardSize WBDashboardCard"
+                           inlineStyle="width:250.0px;">
+        <af:panelGroupLayout id="pgl10" layout="vertical">
+          <af:outputFormatted value="My Notifications" id="of7"
+                              styleClass="WBDashboardCardTitle"/>
+        </af:panelGroupLayout>
+        <af:panelGridLayout id="tlActs">
+          <af:gridRow id="rl1Acts">
+            <af:gridCell id="cf1Acts" width="33%" halign="stretch">
+              <af:panelGroupLayout id="pgl11" layout="vertical" halign="center">
+                <af:commandLink text="" id="cl7">
+                  <af:image id="imgAppr"
+                            source="/resources/images/qual_approved_32_full.png"
+                            shortDesc="Approved Icon"
+                            inlineStyle="vertical-align:middle; width:50.0px;"
+                            styleClass="WBDashboardCardIcon"/>
+                  <af:outputText id="otApprNum" value="123"
+                                 inlineStyle="font-size:medium; vertical-align:middle;"
+                                 styleClass="WBDashboardCardBadge"/>
+                </af:commandLink>
+              </af:panelGroupLayout>
+            </af:gridCell>
+            <af:gridCell id="gc2" width="33%" halign="stretch">
+              <af:panelGroupLayout id="pglntr2" layout="horizontal">
+                <af:image id="imgAppr1"
+                          source="/resources/images/qual_info_32_full.png"
+                          shortDesc="Info Icon"
+                          inlineStyle="vertical-align:middle; width:50.0px;"
+                          styleClass="WBDashboardCardIcon"/>
+                <af:outputText id="otApprNum2" value="321"
+                               styleClass="WBDashboardCardBadge"
+                               inlineStyle="font-size:medium;"/>
+              </af:panelGroupLayout>
+            </af:gridCell>
+            <af:gridCell id="gc1" width="34%" halign="stretch">
+              <af:panelGroupLayout id="pglntr3" layout="vertical"
+                                   halign="center">
+                <af:image id="imgAppr2"
+                          source="/resources/images/qual_reject_32_full.png"
+                          shortDesc="Reject Icon"
+                          inlineStyle="vertical-align:middle; width:50.0px;"
+                          styleClass="WBDashboardCardIcon"/>
+                <af:outputText id="otApprNum3" value="341"
+                               styleClass="WBDashboardCardBadge"
+                               inlineStyle="font-size:medium;"/>
+              </af:panelGroupLayout>
+            </af:gridCell>
+          </af:gridRow>
+          <af:gridRow id="gr1">
+            <af:gridCell id="gc3" width="33%" halign="stretch">
+              <af:outputText id="otAppr3" value="Approved"
+                             styleClass="WBDashboardMetricLabel"/>
+            </af:gridCell>
+            <af:gridCell id="gc4" width="33%" halign="stretch">
+              <af:outputText id="ot38" value="Pending Approval"
+                             styleClass="WBDashboardMetricLabel"/>
+            </af:gridCell>
+            <af:gridCell id="gc5" width="34%" halign="stretch">
+              <af:outputText id="ot39" value="Rejected"
+                             styleClass="WBDashboardMetricLabel"/>
+            </af:gridCell>
+          </af:gridRow>
+        </af:panelGridLayout>
+      </af:panelGroupLayout>
+    </af:panelGroupLayout>
+    <af:spacer width="10" height="15" id="s3"/>
+    <af:panelGroupLayout id="pgl7">
+      <af:switcher id="s4"
+                   defaultFacet="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_PL_ROLE=='Y'?'BOQ':''}"
+                   facetName="#{pageFlowScope.switcher}">
+        <f:facet name="BOQ">
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t4">
+                <af:outputText value="#{bindings.Precision1.inputValue}"
+                               id="ot37" rendered="false">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.Precision1.format}"/>
+                </af:outputText>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.BOQHomePageVO1.collectionModel}"
+                      var="row" rows="#{bindings.BOQHomePageVO1.rangeSize}"
+                      emptyText="#{bindings.BOQHomePageVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.BOQHomePageVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.BOQHomePageVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.BOQHomePageVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t1">
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.BoqHeaderId.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.BOQHomePageVO1.hints.BoqHeaderId.label}"
+                         id="c9">
+                <af:outputText value="#{row.BoqHeaderId}" id="ot12"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ProjectName.name}"
+                         sortable="true" width="170" rendered="false"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ProjectName.label}"
+                         id="c11">
+                <af:outputText value="#{row.ProjectName}" id="ot17"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ProjectNumber.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ProjectNumber.label}"
+                         id="c8">
+                <af:outputText value="#{row.ProjectNumber}" id="ot15"/>
+              </af:column>
+              <af:column headerText="#{bindings.BOQHomePageVO1.hints.ContractName.label}"
+                         sortProperty="#{bindings.BOQHomePageVO1.hints.ContractName.name}"
+                         sortable="true" width="170" id="c92">
+                <af:outputText value="#{row.ContractName}" id="ot84"/>
+              </af:column>
+              <af:column headerText="#{bindings.BOQHomePageVO1.hints.ContractNumber.label}"
+                         sortProperty="#{bindings.BOQHomePageVO1.hints.ContractNumber.name}"
+                         sortable="true" id="c91">
+                <af:outputText value="#{row.ContractNumber}" id="ot35"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.Version.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.Version.label}"
+                         id="c12">
+                <af:outputText value="#{row.Version}" id="ot7"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.Status.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.Status.label}"
+                         id="c5">
+                <af:outputText value="#{row.Status}" id="ot8"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.BudgetType.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.BudgetType.label}"
+                         id="c2">
+                <af:outputText value="#{row.BudgetType}" id="ot5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.CustomerName.name}"
+                         sortable="true" width="200"
+                         headerText="#{bindings.BOQHomePageVO1.hints.CustomerName.label}"
+                         id="c17">
+                <af:outputText value="#{row.CustomerName}" id="ot10"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.BuName.name}"
+                         sortable="true" width="150"
+                         headerText="#{bindings.BOQHomePageVO1.hints.BuName.label}"
+                         id="c4">
+                <af:outputText value="#{row.BuName}" id="ot1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.RevenueTotal.name}"
+                         sortable="true" align="right"
+                         headerText="#{bindings.BOQHomePageVO1.hints.RevenueTotal.label}"
+                         id="c7">
+                <af:outputText value="#{row.RevenueTotal}" id="ot13">
+                  <af:convertNumber groupingUsed="true"
+                                    minFractionDigits="#{bindings.Precision1.inputValue}"
+                                    pattern="#{row.bindings.RevenueTotal.format}"
+                                    maxFractionDigits="#{bindings.Precision1.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.CostTotal.name}"
+                         sortable="true" align="right"
+                         headerText="#{bindings.BOQHomePageVO1.hints.CostTotal.label}"
+                         id="c6">
+                <af:outputText value="#{row.CostTotal}" id="ot14">
+                  <af:convertNumber groupingUsed="true"
+                                    minFractionDigits="#{bindings.Precision1.inputValue}"
+                                    pattern="#{row.bindings.CostTotal.format}"
+                                    maxFractionDigits="#{bindings.Precision1.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ProjectCurrencyCode.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ProjectCurrencyCode.label}"
+                         id="c15">
+                <af:outputText value="#{row.ProjectCurrencyCode}" id="ot16"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.BaseLine.name}"
+                         sortable="true" width="60"
+                         headerText="#{bindings.BOQHomePageVO1.hints.BaseLine.label}"
+                         id="c14">
+                <af:selectBooleanCheckbox value="#{row.bindings.BaseLine.inputValue}"
+                                          label="#{row.bindings.BaseLine.label}"
+                                          readOnly="true"
+                                          shortDesc="#{bindings.BOQHomePageVO1.hints.BaseLine.tooltip}"
+                                          id="sbc1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.CreatedBy.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.CreatedBy.label}"
+                         id="c16">
+                <af:outputText value="#{row.CreatedBy}" id="ot3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.RevisionDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.RevisionDate.label}"
+                         id="c10">
+                <af:outputText value="#{row.RevisionDate}" id="ot6">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ApprovedBy.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ApprovedBy.label}"
+                         id="c3">
+                <af:outputText value="#{row.ApprovedBy}" id="ot11"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ApprovedDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ApprovedDate.label}"
+                         id="c13">
+                <af:outputText value="#{row.ApprovedDate}" id="ot4">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQHomePageVO1.hints.ImportDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.BOQHomePageVO1.hints.ImportDate.label}"
+                         id="c1">
+                <af:outputText value="#{row.ImportDate}" id="ot2">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="WD">
+          <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t3">
+                <af:outputText value="#{bindings.Precision.inputValue}"
+                               id="ot33" rendered="false">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.Precision.format}"/>
+                </af:outputText>
+                <af:outputText value="#{bindings.WdHeaderId.inputValue}"
+                               rendered="false" id="ot34"/>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.WDHomePageVO1.collectionModel}"
+                      var="row" rows="#{bindings.WDHomePageVO1.rangeSize}"
+                      emptyText="#{bindings.WDHomePageVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.WDHomePageVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.WDHomePageVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.WDHomePageVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t2">
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.WdHeaderId.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.WDHomePageVO1.hints.WdHeaderId.label}"
+                         id="c30">
+                <af:outputText value="#{row.WdHeaderId}" id="ot30"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.ProjectName.name}"
+                         sortable="true" width="170" rendered="false"
+                         headerText="#{bindings.WDHomePageVO1.hints.ProjectName.label}"
+                         id="c34">
+                <af:outputText value="#{row.ProjectName}" id="ot28"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.ProjectNumber.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.WDHomePageVO1.hints.ProjectNumber.label}"
+                         id="c32">
+                <af:outputText value="#{row.ProjectNumber}" id="ot23"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.ContractName.name}"
+                         sortable="true" width="170"
+                         headerText="#{bindings.WDHomePageVO1.hints.ContractName.label}"
+                         id="c93">
+                <af:outputText value="#{row.ContractName}" id="ot97"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.ContractNumber.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.ContractNumber.label}"
+                         id="c94">
+                <af:outputText value="#{row.ContractNumber}" id="ot98"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.WdDocumentNum.name}"
+                         sortable="true" width="150"
+                         headerText="#{bindings.WDHomePageVO1.hints.WdDocumentNum.label}"
+                         id="c25">
+                <af:outputText value="#{row.WdDocumentNum}" id="ot29"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.Version.name}"
+                         sortable="true" width="70"
+                         headerText="#{bindings.WDHomePageVO1.hints.Version.label}"
+                         id="c21">
+                <af:outputText value="#{row.Version}" id="ot32"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.BoqVersion.name}"
+                         sortable="true" width="70"
+                         headerText="#{bindings.WDHomePageVO1.hints.BoqVersion.label}"
+                         id="c33">
+                <af:outputText value="#{row.BoqVersion}" id="ot20"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.Status.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.Status.label}"
+                         id="c23">
+                <af:outputText value="#{row.Status}" id="ot9"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.CustomerName.name}"
+                         sortable="true" width="200"
+                         headerText="#{bindings.WDHomePageVO1.hints.CustomerName.label}"
+                         id="c20">
+                <af:outputText value="#{row.CustomerName}" id="ot31"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.BuName.name}"
+                         sortable="true" width="150"
+                         headerText="#{bindings.WDHomePageVO1.hints.BuName.label}"
+                         id="c18">
+                <af:outputText value="#{row.BuName}" id="ot25"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.PeriodOfMeasure.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.PeriodOfMeasure.label}"
+                         id="c29">
+                <af:outputText value="#{row.PeriodOfMeasure}" id="ot22"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.PrevWdAmount.name}"
+                         sortable="true" align="right"
+                         headerText="#{bindings.WDHomePageVO1.hints.PrevWdAmount.label}"
+                         id="c24">
+                <af:outputText value="#{row.PrevWdAmount}" id="ot21">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision.inputValue}"
+                                    pattern="#{row.bindings.PrevWdAmount.format}"
+                                    minFractionDigits="#{bindings.Precision.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{bindings.WDHomePageVO1.hints.TransCurrentWDAmount.label}"
+                         id="c54" align="right">
+                <af:outputText value="#{row.TransCurrentWDAmount}" id="ot59">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision.inputValue}"
+                                    pattern="#{row.bindings.TransCurrentWDAmount.format}"
+                                    minFractionDigits="#{bindings.Precision.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.CummWdTotal.name}"
+                         sortable="true" align="right"
+                         headerText="#{bindings.WDHomePageVO1.hints.CummWdTotal.label}"
+                         id="c31">
+                <af:outputText value="#{row.CummWdTotal}" id="ot24">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision.inputValue}"
+                                    pattern="#{row.bindings.CummWdTotal.format}"
+                                    minFractionDigits="#{bindings.Precision.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.ProjectCurrencyCode.name}"
+                         sortable="true" rendered="false"
+                         headerText="#{bindings.WDHomePageVO1.hints.ProjectCurrencyCode.label}"
+                         id="c19">
+                <af:outputText value="#{row.ProjectCurrencyCode}" id="ot19"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.CurrentFlag.name}"
+                         sortable="true" width="70"
+                         headerText="#{bindings.WDHomePageVO1.hints.CurrentFlag.label}"
+                         id="c26">
+                <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                          label="#{row.bindings.CurrentFlag.label}"
+                                          readOnly="true"
+                                          shortDesc="#{bindings.WDHomePageVO1.hints.CurrentFlag.tooltip}"
+                                          id="sbc2"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.CreationDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.CreationDate.label}"
+                         id="c28">
+                <af:outputText value="#{row.CreationDate}" id="ot18">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.WdApprovedBy.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.WdApprovedBy.label}"
+                         id="c27">
+                <af:outputText value="#{row.WdApprovedBy}" id="ot27"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.WDHomePageVO1.hints.WdApprovedDate.name}"
+                         sortable="true"
+                         headerText="#{bindings.WDHomePageVO1.hints.WdApprovedDate.label}"
+                         id="c22">
+                <af:outputText value="#{row.WdApprovedDate}" id="ot26">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="INV">
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t6">
+                <af:outputText value="#{bindings.Precision2.inputValue}"
+                               id="ot60" rendered="false">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.Precision2.format}"/>
+                </af:outputText>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.InvoiceHomePageVO1.collectionModel}"
+                      var="row" rows="#{bindings.InvoiceHomePageVO1.rangeSize}"
+                      emptyText="#{bindings.InvoiceHomePageVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.InvoiceHomePageVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.InvoiceHomePageVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.InvoiceHomePageVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t5">
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.InvoiceHeaderId.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.InvoiceHeaderId.label}"
+                         id="c46">
+                <af:outputText value="#{row.InvoiceHeaderId}" id="ot54"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.ProjectName.name}"
+                         sortable="false" width="170" rendered="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.ProjectName.label}"
+                         id="c41">
+                <af:outputText value="#{row.ProjectName}" id="ot40"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.ProjectNumber.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.ProjectNumber.label}"
+                         id="c51">
+                <af:outputText value="#{row.ProjectNumber}" id="ot43"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.ProjectName.name}"
+                         sortable="false" width="170"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.ContractName.label}"
+                         id="c99">
+                <af:outputText value="#{row.ContractName}" id="ot103"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.ProjectName.name}"
+                         sortable="false" width="170"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.ContractNumber.label}"
+                         id="c100">
+                <af:outputText value="#{row.ContractNumber}" id="ot104"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.InvoiceDocumentNum.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.InvoiceDocumentNum.label}"
+                         id="c37">
+                <af:outputText value="#{row.InvoiceDocumentNum}" id="ot52"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.Version.name}"
+                         sortable="false" width="70"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.Version.label}"
+                         id="c47">
+                <af:outputText value="#{row.Version}" id="ot49"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.BoqVersion.name}"
+                         sortable="false" width="70"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.BoqVersion.label}"
+                         id="c44">
+                <af:outputText value="#{row.BoqVersion}" id="ot56"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.Status.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.Status.label}"
+                         id="c49">
+                <af:outputText value="#{row.Status}" id="ot47"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.CustomerName.name}"
+                         sortable="false" width="200"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.CustomerName.label}"
+                         id="c50">
+                <af:outputText value="#{row.CustomerName}" id="ot41"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.BuName.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.BuName.label}"
+                         id="c38">
+                <af:outputText value="#{row.BuName}" id="ot55"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.PeriodOfMeasure.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.PeriodOfMeasure.label}"
+                         id="c40">
+                <af:outputText value="#{row.PeriodOfMeasure}" id="ot57"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.PrevInvoiceAmount.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.PrevInvoiceAmount.label}"
+                         id="c52">
+                <af:outputText value="#{row.PrevInvoiceAmount}" id="ot45">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision2.inputValue}"
+                                    pattern="#{row.bindings.PrevInvoiceAmount.format}"
+                                    minFractionDigits="#{bindings.Precision2.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{bindings.InvoiceHomePageVO1.hints.TransCurrentInvoiceAmount.label}"
+                         id="c53" align="right">
+                <af:outputText value="#{row.TransCurrentInvoiceAmount}"
+                               id="ot58">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision2.inputValue}"
+                                    pattern="#{row.bindings.TransCurrentInvoiceAmount.format}"
+                                    minFractionDigits="#{bindings.Precision2.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.CummInvoiceTotal.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.CummInvoiceTotal.label}"
+                         id="c36">
+                <af:outputText value="#{row.CummInvoiceTotal}" id="ot51">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision2.inputValue}"
+                                    pattern="#{row.bindings.CummInvoiceTotal.format}"
+                                    minFractionDigits="#{bindings.Precision2.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.ProjectCurrencyCode.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.ProjectCurrencyCode.label}"
+                         id="c39">
+                <af:outputText value="#{row.ProjectCurrencyCode}" id="ot46"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.InvCurrentFlag.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.InvCurrentFlag.label}"
+                         id="c35">
+                <af:selectBooleanCheckbox value="#{row.bindings.InvCurrentFlag.inputValue}"
+                                          label="#{row.bindings.InvCurrentFlag.label}"
+                                          readOnly="true"
+                                          shortDesc="#{bindings.InvoiceHomePageVO1.hints.InvCurrentFlag.tooltip}"
+                                          id="sbc3"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.CreationDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.CreationDate.label}"
+                         id="c42">
+                <af:outputText value="#{row.CreationDate}" id="ot50">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.InvoiceApprovedBy.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.InvoiceApprovedBy.label}"
+                         id="c45">
+                <af:outputText value="#{row.InvoiceApprovedBy}" id="ot42"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.InvoiceApprovedDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.InvoiceApprovedDate.label}"
+                         id="c43">
+                <af:outputText value="#{row.InvoiceApprovedDate}" id="ot53">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.InvoiceHomePageVO1.hints.Precision.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.InvoiceHomePageVO1.hints.Precision.label}"
+                         id="c48">
+                <af:outputText value="#{row.Precision}" id="ot48">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.InvoiceHomePageVO1.hints.Precision.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="CER">
+          <af:panelCollection id="pc4" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t8">
+                <af:outputText value="#{bindings.Precision3.inputValue}"
+                               id="ot77" rendered="false">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.Precision3.format}"/>
+                </af:outputText>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.CertifiedHomePageVO1.collectionModel}"
+                      var="row"
+                      rows="#{bindings.CertifiedHomePageVO1.rangeSize}"
+                      emptyText="#{bindings.CertifiedHomePageVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CertifiedHomePageVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.CertifiedHomePageVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CertifiedHomePageVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t7">
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CertifiedHeaderId.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CertifiedHeaderId.label}"
+                         id="c70">
+                <af:outputText value="#{row.CertifiedHeaderId}" id="ot71"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.ProjectName.name}"
+                         sortable="false" width="170" rendered="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.ProjectName.label}"
+                         id="c59">
+                <af:outputText value="#{row.ProjectName}" id="ot78"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.ProjectNumber.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.ProjectNumber.label}"
+                         id="c60">
+                <af:outputText value="#{row.ProjectNumber}" id="ot61"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.ContractName.name}"
+                         sortable="false" width="170"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.ContractName.label}"
+                         id="c97">
+                <af:outputText value="#{row.ContractName}" id="ot101"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.ContractNumber.name}"
+                         sortable="false" width="170"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.ContractNumber.label}"
+                         id="c98">
+                <af:outputText value="#{row.ContractNumber}" id="ot102"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CertifiedDocumentNum.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CertifiedDocumentNum.label}"
+                         id="c55">
+                <af:outputText value="#{row.CertifiedDocumentNum}" id="ot76"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.Version.name}"
+                         sortable="false" width="70"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.Version.label}"
+                         id="c64">
+                <af:outputText value="#{row.Version}" id="ot75"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.BoqVersion.name}"
+                         sortable="false" width="70"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.BoqVersion.label}"
+                         id="c63">
+                <af:outputText value="#{row.BoqVersion}" id="ot73"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.Status.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.Status.label}"
+                         id="c56">
+                <af:outputText value="#{row.Status}" id="ot67"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CustomerName.name}"
+                         sortable="false" width="200"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CustomerName.label}"
+                         id="c65">
+                <af:outputText value="#{row.CustomerName}" id="ot72"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.BuName.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.BuName.label}"
+                         id="c71">
+                <af:outputText value="#{row.BuName}" id="ot74"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.PeriodOfMeasure.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.PeriodOfMeasure.label}"
+                         id="c66">
+                <af:outputText value="#{row.PeriodOfMeasure}" id="ot70"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.PrevCertifiedAmount.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.PrevCertifiedAmount.label}"
+                         id="c73">
+                <af:outputText value="#{row.PrevCertifiedAmount}" id="ot44">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision3.inputValue}"
+                                    pattern="#{row.bindings.PrevCertifiedAmount.format}"
+                                    minFractionDigits="#{bindings.Precision3.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.TransCurrentCertifiedAmount.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.TransCurrentCertifiedAmount.label}"
+                         id="c72">
+                <af:outputText value="#{row.TransCurrentCertifiedAmount}"
+                               id="ot66">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision3.inputValue}"
+                                    pattern="#{row.bindings.TransCurrentCertifiedAmount.format}"
+                                    minFractionDigits="#{bindings.Precision3.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CummCertifiedTotal.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CummCertifiedTotal.label}"
+                         id="c62">
+                <af:outputText value="#{row.CummCertifiedTotal}" id="ot68">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision3.inputValue}"
+                                    pattern="#{row.bindings.CummCertifiedTotal.format}"
+                                    minFractionDigits="#{bindings.Precision3.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.ProjectCurrencyCode.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.ProjectCurrencyCode.label}"
+                         id="c67">
+                <af:outputText value="#{row.ProjectCurrencyCode}" id="ot69"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CerCurrentFlag.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CerCurrentFlag.label}"
+                         id="c69">
+                <af:selectBooleanCheckbox value="#{row.bindings.CerCurrentFlag.inputValue}"
+                                          label="#{row.bindings.CerCurrentFlag.label}"
+                                          readOnly="true"
+                                          shortDesc="#{bindings.CertifiedHomePageVO1.hints.CerCurrentFlag.tooltip}"
+                                          id="sbc4"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CreationDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CreationDate.label}"
+                         id="c57">
+                <af:outputText value="#{row.CreationDate}" id="ot63">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CertifiedApprovedBy.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CertifiedApprovedBy.label}"
+                         id="c61">
+                <af:outputText value="#{row.CertifiedApprovedBy}" id="ot65"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.CertifiedApprovedDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.CertifiedApprovedDate.label}"
+                         id="c68">
+                <af:outputText value="#{row.CertifiedApprovedDate}" id="ot62">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedHomePageVO1.hints.Precision.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.CertifiedHomePageVO1.hints.Precision.label}"
+                         id="c58">
+                <af:outputText value="#{row.Precision}" id="ot64">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.CertifiedHomePageVO1.hints.Precision.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+        <f:facet name="PC">
+          <af:panelCollection id="pc5" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t10">
+                <af:outputText value="#{bindings.Precision4.inputValue}"
+                               id="ot95" rendered="false">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.Precision4.format}"/>
+                </af:outputText>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.PCHomePageVO1.collectionModel}"
+                      var="row" rows="#{bindings.PCHomePageVO1.rangeSize}"
+                      emptyText="#{bindings.PCHomePageVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.PCHomePageVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      selectedRowKeys="#{bindings.PCHomePageVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.PCHomePageVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t9">
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcHeaderId.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcHeaderId.label}"
+                         id="c83">
+                <af:outputText value="#{row.PcHeaderId}" id="ot94"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ProjectName.name}"
+                         sortable="false" width="170" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.ProjectName.label}"
+                         id="c80">
+                <af:outputText value="#{row.ProjectName}" id="ot88"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ProjectNumber.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.ProjectNumber.label}"
+                         id="c84">
+                <af:outputText value="#{row.ProjectNumber}" id="ot90"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ContractName.name}"
+                         sortable="false" width="170"
+                         headerText="#{bindings.PCHomePageVO1.hints.ContractName.label}"
+                         id="c95">
+                <af:outputText value="#{row.ContractName}" id="ot99"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ContractNumber.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.ContractNumber.label}"
+                         id="c96">
+                <af:outputText value="#{row.ContractNumber}" id="ot100"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcDocumentNum.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcDocumentNum.label}"
+                         id="c86">
+                <af:outputText value="#{row.PcDocumentNum}" id="ot89"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcDate.label}"
+                         id="c75">
+                <af:outputText value="#{row.PcDate}" id="ot85">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcNum.name}"
+                         sortable="false" width="150" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcNum.label}"
+                         id="c76">
+                <af:outputText value="#{row.PcNum}" id="ot81"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.Status.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.Status.label}"
+                         id="c74">
+                <af:outputText value="#{row.Status}" id="ot83"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.CustomerName.name}"
+                         sortable="false" width="200"
+                         headerText="#{bindings.PCHomePageVO1.hints.CustomerName.label}"
+                         id="c88">
+                <af:outputText value="#{row.CustomerName}" id="ot86"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.BuName.name}"
+                         sortable="false" width="150"
+                         headerText="#{bindings.PCHomePageVO1.hints.BuName.label}"
+                         id="c78">
+                <af:outputText value="#{row.BuName}" id="ot79"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PrevPcAmount.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.PCHomePageVO1.hints.PrevPcAmount.label}"
+                         id="c79">
+                <af:outputText value="#{row.PrevPcAmount}" id="ot87">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision4.inputValue}"
+                                    pattern="#{row.bindings.PrevPcAmount.format}"
+                                    minFractionDigits="#{bindings.Precision4.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{bindings.PCHomePageVO1.hints.TransCurrPCAmount.label}"
+                         id="c90" align="right">
+                <af:outputText value="#{row.TransCurrPCAmount}" id="ot96">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision4.inputValue}"
+                                    pattern="#{row.bindings.TransCurrPCAmount.format}"
+                                    minFractionDigits="#{bindings.Precision4.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.CummPcTotal.name}"
+                         sortable="false" align="right"
+                         headerText="#{bindings.PCHomePageVO1.hints.CummPcTotal.label}"
+                         id="c81">
+                <af:outputText value="#{row.CummPcTotal}" id="ot82">
+                  <af:convertNumber groupingUsed="true"
+                                    maxFractionDigits="#{bindings.Precision4.inputValue}"
+                                    pattern="#{row.bindings.CummPcTotal.format}"
+                                    minFractionDigits="#{bindings.Precision4.inputValue}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ProjectCurrencyCode.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.ProjectCurrencyCode.label}"
+                         id="c85">
+                <af:outputText value="#{row.ProjectCurrencyCode}" id="ot91"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.ArFlag.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.ArFlag.label}"
+                         id="c87">
+                <af:selectBooleanCheckbox value="#{row.bindings.ArFlag.inputValue}"
+                                          label="#{row.bindings.ArFlag.label}"
+                                          readOnly="true"
+                                          shortDesc="#{bindings.PCHomePageVO1.hints.ArFlag.tooltip}"
+                                          id="sbc5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcApprovedBy.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcApprovedBy.label}"
+                         id="c89">
+                <af:outputText value="#{row.PcApprovedBy}" id="ot93"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.PcApprovedDate.name}"
+                         sortable="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.PcApprovedDate.label}"
+                         id="c82">
+                <af:outputText value="#{row.PcApprovedDate}" id="ot80">
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.PCHomePageVO1.hints.Precision.name}"
+                         sortable="false" rendered="false"
+                         headerText="#{bindings.PCHomePageVO1.hints.Precision.label}"
+                         id="c77">
+                <af:outputText value="#{row.Precision}" id="ot92">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.PCHomePageVO1.hints.Precision.format}"/>
+                </af:outputText>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </f:facet>
+      </af:switcher>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

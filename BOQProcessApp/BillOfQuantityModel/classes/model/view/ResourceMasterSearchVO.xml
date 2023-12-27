@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ResourceMasterSearchVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqResourceMasterGroupEO.BU_ID, 
+       XxboqResourceMasterGroupEO.CREATED_BY, 
+       XxboqResourceMasterGroupEO.CREATION_DATE, 
+       XxboqResourceMasterGroupEO.EXPENDITURE_GROUP, 
+       XxboqResourceMasterGroupEO.GROUP_DESCRIPTION, 
+       XxboqResourceMasterGroupEO.LAST_UPDATED_BY, 
+       XxboqResourceMasterGroupEO.RESOURCE_TYPE, 
+       XxboqResourceMasterGroupEO.LAST_UPDATED_DATE, 
+       XxboqResourceMasterGroupEO.RESOURCE_GROUP, 
+       XxboqResourceMasterGroupEO.RESOURCE_GROUP_ID, 
+       XxboqResourceMasterGroupEO.RESOURCE_TYPE_CODE, 
+       XxinvBusinessUnitsEO.BU_ID AS BU_ID1, 
+       XxinvBusinessUnitsEO.BU_NAME"
+  FromList="XXBOQ_RESOURCE_MASTER_GROUP_T XxboqResourceMasterGroupEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.ResourceMasterSearchVORowImpl"
+  ComponentClass="model.view.ResourceMasterSearchVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqResourceMasterGroupEO.BU_ID=XxinvBusinessUnitsEO.BU_ID"
+  OrderBy="XxboqResourceMasterGroupEO.RESOURCE_GROUP_ID desc">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="LookupVO1"
+    ViewObjectName="model.view.LookupVO">
+    <ParameterMap>
+      <PIMap Variable="p_lookup_type">
+        <TransientExpression><![CDATA["RESOURCE_TYPE"]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_BuId"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ResourceType"
+    ListVOName="LookupVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ResourceType"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqResourceMasterGroupEO"
+    Entity="model.entity.XxboqResourceMasterGroupEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.view.ResourceMasterSearchVO.XxboqResourceMasterGroupEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="BU_ID"
+    LOVName="LOV_BuId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="ExpenditureGroup"
+    PrecisionRule="true"
+    EntityAttrName="ExpenditureGroup"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="EXPENDITURE_GROUP"/>
+  <ViewAttribute
+    Name="GroupDescription"
+    PrecisionRule="true"
+    EntityAttrName="GroupDescription"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="GROUP_DESCRIPTION"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="ResourceType"
+    PrecisionRule="true"
+    EntityAttrName="ResourceType"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_TYPE"
+    LOVName="LOV_ResourceType">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="choice"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="ResourceGroup"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroup"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_GROUP"/>
+  <ViewAttribute
+    Name="ResourceGroupId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_GROUP_ID"/>
+  <ViewAttribute
+    Name="ResourceTypeCode"
+    PrecisionRule="true"
+    EntityAttrName="ResourceTypeCode"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_TYPE_CODE"/>
+  <ViewAttribute
+    Name="BuId1"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME"/>
+  <ViewCriteria
+    Name="ResourceMasterSearchVOCriteria"
+    ViewObjectName="model.view.ResourceMasterSearchVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow62"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="ResourceMasterSearchVOCriteria_vcrow62_BuId"
+        ViewAttribute="BuId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ResourceType"
+        ViewAttribute="ResourceType"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ResourceGroup"
+        ViewAttribute="ResourceGroup"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ResourceGroupId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

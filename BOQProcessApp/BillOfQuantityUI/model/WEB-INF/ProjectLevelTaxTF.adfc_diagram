@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">TaxSetupHeaderSearch</property>
+      <property
+         name="page">/pagefragments/TaxSetupHeaderSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>TaxSetupHeaderSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">257.49414</property>
+      <property
+         name="x">414.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <View
+      id="View3">
+      <property
+         name="activityId">TaxSetupLines</property>
+      <property
+         name="page">/pagefragments/TaxSetupLines.jsff</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>TaxSetupLines&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">256.98828</property>
+      <property
+         name="x">761.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View2"
+      to="View3">
+      <property
+         name="fromOutcome">Edit</property>
+      <property
+         name="sdm:polyPoints">R46,455.0,253.64355,719.99335,253.1377,L46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View3"
+      to="View2">
+      <property
+         name="fromOutcome">Done</property>
+      <property
+         name="sdm:polyPoints">L54,720.0,260.1377,455.00668,260.64355,R54</property>
+   </ControlFlowCase>
+</SDM>

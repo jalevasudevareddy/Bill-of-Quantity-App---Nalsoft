@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="XxJobTemplateToJobTemplateActivityAssc"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="XxboqJobTemplateEO"
+    Cardinality="1"
+    Source="true"
+    Owner="model.entity.XxboqJobTemplateEO"
+    DeleteContainee="true"
+    LockLevel="NONE">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqJobTemplateEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqJobTemplateEO.TemplateId"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="XxboqJobTemplateActivityEO"
+    Cardinality="-1"
+    Owner="model.entity.XxboqJobTemplateActivityEO"
+    HasOwner="true">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqJobTemplateActivityEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqJobTemplateActivityEO.TemplateId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

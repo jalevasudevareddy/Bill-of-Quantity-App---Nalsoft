@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="XxboqRevenueRecogHdrToLinesAssc"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="XxboqRevenueRecogHdrEO"
+    Cardinality="1"
+    Source="true"
+    Owner="model.entity.XxboqRevenueRecogHdrEO"
+    DeleteContainee="true"
+    LockLevel="NONE">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqRevenueRecogHdrEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqRevenueRecogHdrEO.RevHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="XxboqRevenueRecogLinesEO"
+    Cardinality="-1"
+    Owner="model.entity.XxboqRevenueRecogLinesEO"
+    HasOwner="true">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqRevenueRecogLinesEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqRevenueRecogLinesEO.RevHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

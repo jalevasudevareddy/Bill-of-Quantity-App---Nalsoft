@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="JobTemplateActivityPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="JobTemplateActivityVO1" RangeSize="-1"
+              DataControl="JobTemplateAMDataControl"
+              id="JobTemplateActivityVO1Iterator"/>
+    <searchRegion Binds="JobTemplateActivityVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobTemplateActivityVO1Query"/>
+    <iterator Binds="JobTemplateResourceVO1" RangeSize="-1"
+              DataControl="JobTemplateAMDataControl"
+              id="JobTemplateResourceVO1Iterator"/>
+    <searchRegion Binds="JobTemplateResourceVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobTemplateResourceVO1Query"/>
+    <iterator Binds="JobTemplateVO1" RangeSize="-1"
+              DataControl="JobTemplateAMDataControl"
+              id="JobTemplateVO1Iterator"/>
+    <iterator Binds="JobTempGroupRescPopulateVO1" RangeSize="25"
+              DataControl="JobTemplateAMDataControl"
+              id="JobTempGroupRescPopulateVO1Iterator"/>
+    <searchRegion Binds="JobTempGroupRescPopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobTempGroupRescPopulateVO1Query"/>
+    <iterator Binds="TemplateJobsVO1" RangeSize="-1"
+              DataControl="JobTemplateAMDataControl"
+              id="TemplateJobsVO1Iterator"/>
+    <iterator Binds="JobsCopyToProjectsVO1" RangeSize="-1"
+              DataControl="JobTemplateAMDataControl"
+              id="JobsCopyToProjectsVO1Iterator"/>
+    <searchRegion Binds="TemplateJobsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="TemplateJobsVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="JobTemplateActivityVO1Iterator"
+          id="JobTemplateActivityVO1">
+      <nodeDefinition DefName="model.view.JobTemplateActivityVO"
+                      Name="JobTemplateActivityVO10">
+        <AttrNames>
+          <Item Value="ActivityCode"/>
+          <Item Value="Description"/>
+          <Item Value="Uom1"/>
+          <Item Value="TransActivityCode"/>
+          <Item Value="JobCode"/>
+          <Item Value="Quantity"/>
+          <Item Value="Uom"/>
+          <Item Value="TransUnitRate"/>
+          <Item Value="TransActivityDescription"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="JobTemplateActivityVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <tree IterBinding="JobTemplateResourceVO1Iterator"
+          id="JobTemplateResourceVO1">
+      <nodeDefinition DefName="model.view.JobTemplateResourceVO"
+                      Name="JobTemplateResourceVO10">
+        <AttrNames>
+          <Item Value="Quantity"/>
+          <Item Value="SparesPercentage"/>
+          <Item Value="MaintenancePercentage"/>
+          <Item Value="WastagePercentage"/>
+          <Item Value="ResourceTypeCode"/>
+          <Item Value="TransItemNumber"/>
+          <Item Value="TransGroup"/>
+          <Item Value="TransSubGroup"/>
+          <Item Value="TransType"/>
+          <Item Value="TransUOM"/>
+          <Item Value="ItemCode"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="ResourceGroup"/>
+          <Item Value="ResourceSubGroup"/>
+          <Item Value="ResourceType"/>
+          <Item Value="Uom"/>
+          <Item Value="TransItemDescription"/>
+          <Item Value="ActivityJobId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="ItemId"/>
+          <Item Value="ItemId1"/>
+          <Item Value="JobResourceId"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="ResourceGroupId"/>
+          <Item Value="ResourceGroupId1"/>
+          <Item Value="ResourceGroupId2"/>
+          <Item Value="ResourceGroupId3"/>
+          <Item Value="ResourceSubGroupId"/>
+          <Item Value="ResourceSubGroupId1"/>
+          <Item Value="ResourceSubGroupId2"/>
+          <Item Value="TemplateId"/>
+          <Item Value="ItemRate"/>
+          <Item Value="TransItemRate"/>
+          <Item Value="TransAmount"/>
+          <Item Value="TransDeleteLineFlag"/>
+          <Item Value="TransTypeCode"/>
+          <Item Value="UnitRate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="initJobTemplateResourceVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initJobTemplateResourceVO"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="TemplateName">
+      <AttrNames>
+        <Item Value="TemplateName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="TemplateNumber">
+      <AttrNames>
+        <Item Value="TemplateNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="CreatedBy">
+      <AttrNames>
+        <Item Value="CreatedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="CreationDate">
+      <AttrNames>
+        <Item Value="CreationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="LastUpdatedBy">
+      <AttrNames>
+        <Item Value="LastUpdatedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="LastUpdatedDate">
+      <AttrNames>
+        <Item Value="LastUpdatedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="JobTemplateResourceVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="deleteJobTemplateResources"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteJobTemplateResources"
+                  IsViewObjectMethod="false"/>
+    <action IterBinding="JobTemplateResourceVO1Iterator" id="Execute"
+            RequiresUpdateModel="true" Action="iteratorExecute"/>
+    <methodAction id="refreshJobTemplate"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobTemplate" IsViewObjectMethod="false"/>
+    <methodAction id="refreshJobTemplateActivitiesVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobTemplateActivitiesVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshJobTemplateResourcesVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobTemplateResourcesVO"
+                  IsViewObjectMethod="false"/>
+    <action IterBinding="JobTemplateActivityVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="deleteJobTemplateActivity"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteJobTemplateActivity"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="addResourceData"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="addResourceData" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransManPower">
+      <AttrNames>
+        <Item Value="TransManPower"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransMaterial">
+      <AttrNames>
+        <Item Value="TransMaterial"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransSubcontractor">
+      <AttrNames>
+        <Item Value="TransSubcontractor"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransEquipment">
+      <AttrNames>
+        <Item Value="TransEquipment"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="ActivityCode">
+      <AttrNames>
+        <Item Value="ActivityCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator" id="JobCode">
+      <AttrNames>
+        <Item Value="JobCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator" id="Quantity">
+      <AttrNames>
+        <Item Value="Quantity"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator" id="UnitRate">
+      <AttrNames>
+        <Item Value="UnitRate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransGenaralExpences">
+      <AttrNames>
+        <Item Value="TransGenaralExpences"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="TransUnitRate">
+      <AttrNames>
+        <Item Value="TransUnitRate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator" id="Uom">
+      <AttrNames>
+        <Item Value="Uom"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="refreshJobTemplateResourcesVO1"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobTemplateResourcesVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshJobTemplateRescVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobTemplateRescVO"
+                  IsViewObjectMethod="false"/>
+    <button IterBinding="JobTempGroupRescPopulateVO1Iterator"
+            id="TransSelectFlag" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransSelectFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="JobTempGroupRescPopulateVO1Iterator"
+          id="JobTempGroupRescPopulateVO1" >
+      <nodeDefinition DefName="model.searchview.JobTempGroupRescPopulateVO"
+                      Name="JobTempGroupRescPopulateVO10">
+        <AttrNames>
+          <Item Value="ResourceTypeCode"/>
+          <Item Value="ItemCode"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="ItemRate"/>
+          <Item Value="Uom"/>
+          <Item Value="ExpenditureType"/>
+          <Item Value="ResourceType"/>
+          <Item Value="ResourceSubGroup"/>
+          <Item Value="ResourceGroup"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+          <Item Value="TransSelectFlag" Binds="TransSelectFlag"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="JobTemplateActivityVO1Iterator"
+                     id="ActivityJobId">
+      <AttrNames>
+        <Item Value="ActivityJobId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="makeAsCurrentJobActivity"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentJobActivity"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.JobTemplateAMDataControl.methodResults.makeAsCurrentJobActivity_JobTemplateAMDataControl_dataProvider_makeAsCurrentJobActivity_result">
+      <NamedData NDName="jobActivityId" NDValue="#{pageFlowScope.jobActivityId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="initCopyJobsToProjectsRow"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initCopyJobsToProjectsRow"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshTemplateJobsVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshTemplateJobsVO"
+                  IsViewObjectMethod="false"/>
+    <listOfValues StaticList="false" IterBinding="JobsCopyToProjectsVO1Iterator"
+                  Uses="LOV_TransProjectNum" id="TransProjectNum"/>
+    <attributeValues IterBinding="JobTempGroupRescPopulateVO1Iterator"
+                     id="ItemId">
+      <AttrNames>
+        <Item Value="ItemId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="populateSelectedResources"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateSelectedResources"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="tempSelectedResc"
+                 NDValue="#{pageFlowScope.tempSelectedResc}"
+                 NDType="java.util.Set"/>
+    </methodAction>
+    <methodAction id="copyJobsToProject"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="copyJobsToProject" IsViewObjectMethod="false"
+                  ReturnName="data.JobTemplateAMDataControl.methodResults.copyJobsToProject_JobTemplateAMDataControl_dataProvider_copyJobsToProject_result">
+      <NamedData NDName="tempSelectedJobs"
+                 NDValue="#{pageFlowScope.tempSelectedJobs}"
+                 NDType="java.util.Set"/>
+    </methodAction>
+    <tree IterBinding="TemplateJobsVO1Iterator" id="TemplateJobsVO1">
+      <nodeDefinition DefName="model.view.TemplateJobsVO"
+                      Name="TemplateJobsVO10">
+        <AttrNames>
+          <Item Value="JobCode"/>
+          <Item Value="Quantity"/>
+          <Item Value="Uom"/>
+          <Item Value="TransJobSelectFlag" Binds="TransJobSelectFlag"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="TemplateJobsVO1Iterator" id="TransJobSelectFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransJobSelectFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="TemplateJobsVO1Iterator" id="ActivityJobId1">
+      <AttrNames>
+        <Item Value="ActivityJobId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

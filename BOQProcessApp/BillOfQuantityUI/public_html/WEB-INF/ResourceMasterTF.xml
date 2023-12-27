@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ResourceMasterTF">
+    <default-activity id="__10">ResourceMasterSearch</default-activity>
+    <transaction id="__1">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name id="__5">ResouceMasterSearchBean</managed-bean-name>
+      <managed-bean-class id="__2">bean.ResouceMasterSearchBean</managed-bean-class>
+      <managed-bean-scope id="__4">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__9">
+      <managed-bean-name id="__8">ResourceMasterBean</managed-bean-name>
+      <managed-bean-class id="__6">bean.ResourceMasterBean</managed-bean-class>
+      <managed-bean-scope id="__7">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="ResourceMasterSearch">
+      <page>/pagefragments/ResourceMasterSearch.jsff</page>
+    </view>
+    <view id="ResourceMaster">
+      <page>/pagefragments/ResourceMaster.jsff</page>
+    </view>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">ResourceMasterSearch</from-activity-id>
+      <control-flow-case id="__13">
+        <from-outcome id="__15">Create</from-outcome>
+        <to-activity-id id="__14">ResourceMaster</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__16">
+      <from-activity-id id="__17">ResourceMaster</from-activity-id>
+      <control-flow-case id="__19">
+        <from-outcome id="__20">Done</from-outcome>
+        <to-activity-id id="__18">ResourceMasterSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

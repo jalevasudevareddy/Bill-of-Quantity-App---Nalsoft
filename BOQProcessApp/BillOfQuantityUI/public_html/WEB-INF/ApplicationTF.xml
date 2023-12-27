@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ApplicationTF">
+    <default-activity id="__1">BillOfQuantityIndex</default-activity>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__11">
+      <name id="__10">jwt</name>
+      <value>#{pageFlowScope.jwt}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__3">
+      <managed-bean-name id="__5">DynamicBean</managed-bean-name>
+      <managed-bean-class id="__4">bean.DynamicBean</managed-bean-class>
+      <managed-bean-scope id="__2">view</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__6">
+      <managed-bean-name id="__9">JWTConfigBean</managed-bean-name>
+      <managed-bean-class id="__7">bean.JWTConfigBean</managed-bean-class>
+      <managed-bean-scope id="__8">session</managed-bean-scope>
+    </managed-bean>
+    <view id="BillOfQuantityIndex">
+      <page>/BillOfQuantityIndex.jspx</page>
+    </view>
+  </task-flow-definition>
+</adfc-config>

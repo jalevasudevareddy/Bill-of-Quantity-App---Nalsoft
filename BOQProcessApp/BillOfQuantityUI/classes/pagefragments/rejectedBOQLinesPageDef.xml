@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73" id="rejectedBOQLinesPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BoqValidationRejectionLinesVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqValidationRejectionLinesVO1Iterator"/>
+    <searchRegion Binds="BoqValidationRejectionLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoqValidationRejectionLinesVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="BoqValidationRejectionLinesVO1Iterator"
+          id="BoqValidationRejectionLinesVO1">
+      <nodeDefinition DefName="model.view.BoqValidationRejectionLinesVO"
+                      Name="BoqValidationRejectionLinesVO10">
+        <AttrNames>
+          <Item Value="ValidationRejectiondId"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="LineType"/>
+          <Item Value="PageItem"/>
+          <Item Value="Item"/>
+          <Item Value="BillDescription"/>
+          <Item Value="BillQty"/>
+          <Item Value="FinalQty"/>
+          <Item Value="Unit"/>
+          <Item Value="SellingRate"/>
+          <Item Value="Trade"/>
+          <Item Value="PriceCode"/>
+          <Item Value="ErrorDetails"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

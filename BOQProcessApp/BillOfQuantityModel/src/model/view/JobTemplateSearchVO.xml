@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="JobTemplateSearchVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqJobTemplateEO.BUSINESS_UNIT_ID, 
+       XxboqJobTemplateEO.CREATED_BY, 
+       XxboqJobTemplateEO.CREATION_DATE, 
+       XxboqJobTemplateEO.LAST_UPDATED_BY, 
+       XxboqJobTemplateEO.LAST_UPDATED_DATE, 
+       XxboqJobTemplateEO.TEMPLATE_ID, 
+       XxboqJobTemplateEO.TEMPLATE_NAME, 
+       XxboqJobTemplateEO.TEMPLATE_NUMBER, 
+       XxinvBusinessUnitsEO.BU_ID, 
+       XxinvBusinessUnitsEO.BU_NAME"
+  FromList="XXBOQ_JOB_TEMPLATE_T XxboqJobTemplateEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.JobTemplateSearchVORowImpl"
+  ComponentClass="model.view.JobTemplateSearchVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqJobTemplateEO.BUSINESS_UNIT_ID = XxinvBusinessUnitsEO.BU_ID">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ViewCriteriaUsage
+      Name="UserBUSearchVOCriteria"
+      FullName="model.masterview.UserBUSearchVO.UserBUSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="JobTemplatesForBUSearchVO1"
+    ViewObjectName="model.searchview.JobTemplatesForBUSearchVO">
+    <ViewCriteriaUsage
+      Name="JobTemplatesForBUSearchVOCriteria"
+      FullName="model.searchview.JobTemplatesForBUSearchVO.JobTemplatesForBUSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BusinessUnitId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_BusinessUnitId"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BusinessUnitId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TemplateNumber"
+    ListVOName="JobTemplatesForBUSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TemplateNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TemplateNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TemplateNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TemplateNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="JobTemplatesForBUSearchVOCriteria"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqJobTemplateEO"
+    Entity="model.entity.XxboqJobTemplateEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.view.JobTemplateSearchVO.XxboqJobTemplateEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="BusinessUnitId"
+    PrecisionRule="true"
+    EntityAttrName="BusinessUnitId"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="BUSINESS_UNIT_ID"
+    LOVName="LOV_BusinessUnitId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="TemplateId"
+    PrecisionRule="true"
+    EntityAttrName="TemplateId"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="TEMPLATE_ID"/>
+  <ViewAttribute
+    Name="TemplateName"
+    PrecisionRule="true"
+    EntityAttrName="TemplateName"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="TEMPLATE_NAME"/>
+  <ViewAttribute
+    Name="TemplateNumber"
+    PrecisionRule="true"
+    EntityAttrName="TemplateNumber"
+    EntityUsage="XxboqJobTemplateEO"
+    AliasName="TEMPLATE_NUMBER"
+    LOVName="LOV_TemplateNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="TEMPLATE_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="JobTemplateSearchVOCriteria"
+    ViewObjectName="model.view.JobTemplateSearchVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow92"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="BusinessUnitId"
+        ViewAttribute="BusinessUnitId"
+        Operator="="
+        Conjunction="AND"
+        Required="Required"/>
+      <ViewCriteriaItem
+        Name="TemplateNumber"
+        ViewAttribute="TemplateNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="TemplateId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

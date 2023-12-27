@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">266.5</property>
+      <property
+         name="x">119.69336</property>
+   </OverallProperties>
+   <View
+      id="View2">
+      <property
+         name="activityId">ActionHistory</property>
+      <property
+         name="page">/pagefragments/notifications/ActionHistory.jsff</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ActionHistory&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">90.44824</property>
+      <property
+         name="x">447.73828</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <TaskFlowReturn
+      id="TaskFlowReturn4">
+      <property
+         name="activityId">taskFlowReturn1</property>
+      <property
+         name="finish">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>taskFlowReturn1&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Return&lt;/p>&lt;p>Outcome:  taskFlowReturn1&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">85.69531</property>
+      <property
+         name="x">772.58984</property>
+   </TaskFlowReturn>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View2"
+      to="TaskFlowReturn4">
+      <property
+         name="fromOutcome">done</property>
+      <property
+         name="sdm:polyPoints">R50,488.73828,90.09766,731.58984,85.34473,L50</property>
+   </ControlFlowCase>
+   <MethodCall
+      id="MethodCall7">
+      <property
+         name="activityId">setActionHistoryForDocument</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>setActionHistoryForDocument&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Method Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">93.29297</property>
+      <property
+         name="x">104.69336</property>
+   </MethodCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase8"
+      from="MethodCall7"
+      to="View2">
+      <property
+         name="fromOutcome">setActionHistoryForDocument</property>
+      <property
+         name="sdm:polyPoints">R50,145.69336,92.94238,406.73828,90.09766,L50</property>
+   </ControlFlowCase>
+</SDM>

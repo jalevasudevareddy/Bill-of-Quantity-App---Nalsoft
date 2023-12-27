@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="vertical" id="pgl1">
+    <af:panelHeader text="Job Template Search" id="ph1">
+      <af:query id="qryId2" headerText="Search" disclosed="true" maxColumns="2" rows="1"
+                value="#{bindings.JobTemplateSearchVOCriteriaQuery1.queryDescriptor}"
+                model="#{bindings.JobTemplateSearchVOCriteriaQuery1.queryModel}"
+                queryListener="#{bindings.JobTemplateSearchVOCriteriaQuery1.processQuery}"
+                queryOperationListener="#{bindings.JobTemplateSearchVOCriteriaQuery1.processQueryOperation}"
+                resultComponentId="::pc1:resId1"/>
+    </af:panelHeader>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t1">
+          <af:commandButton text="Create Template" id="cb1"
+                            actionListener="#{backingBeanScope.JobTemplateBean.createJobTempAL}"/>
+          <af:commandButton text="Edit Template" id="cb2"
+                            actionListener="#{backingBeanScope.JobTemplateBean.editJobTempAL}"/>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.JobTemplateSearchVO1.collectionModel}"
+                var="row" rows="#{bindings.JobTemplateSearchVO1.rangeSize}"
+                emptyText="#{bindings.JobTemplateSearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.JobTemplateSearchVO1.rangeSize}"
+                rowBandingInterval="0"
+                filterModel="#{bindings.ImplicitViewCriteriaQuery.queryDescriptor}"
+                queryListener="#{bindings.ImplicitViewCriteriaQuery.processQuery}"
+                filterVisible="false" varStatus="vs"
+                selectedRowKeys="#{bindings.JobTemplateSearchVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.JobTemplateSearchVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="resId1">
+        <af:column headerText="#{bindings.JobTemplateSearchVO1.hints.BuName.label}"
+                   id="c7"
+                   sortProperty="#{bindings.JobTemplateSearchVO1.hints.BuName.name}"
+                   filterable="true" sortable="true" width="200%">
+          <af:outputText value="#{row.BuName}" id="ot7"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.TemplateName.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.TemplateName.label}"
+                   id="c3" width="150%">
+          <af:commandLink text="#{row.TemplateName}" id="ot3"
+                          actionListener="#{backingBeanScope.JobTemplateBean.editJobTempAL}"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.TemplateNumber.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.TemplateNumber.label}"
+                   id="c5" width="150%">
+          <af:commandLink text="#{row.TemplateNumber}" id="ot2"
+                          actionListener="#{backingBeanScope.JobTemplateBean.editJobTempAL}"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.CreatedBy.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.CreatedBy.label}"
+                   id="c6" width="150%">
+          <af:outputText value="#{row.CreatedBy}" id="ot1"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.CreationDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.CreationDate.label}"
+                   id="c1">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.CreationDate}" id="id1"/>
+          </f:facet>
+          <af:outputText value="#{row.CreationDate}" id="ot5">
+            <af:convertDateTime pattern="#{bindings.JobTemplateSearchVO1.hints.CreationDate.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.LastUpdatedBy.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.LastUpdatedBy.label}"
+                   id="c4" width="150%">
+          <af:outputText value="#{row.LastUpdatedBy}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.JobTemplateSearchVO1.hints.LastUpdatedDate.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.JobTemplateSearchVO1.hints.LastUpdatedDate.label}"
+                   id="c2">
+          <f:facet name="filter">
+            <af:inputDate value="#{vs.filterCriteria.LastUpdatedDate}"
+                          id="id2"/>
+          </f:facet>
+          <af:outputText value="#{row.LastUpdatedDate}" id="ot4">
+            <af:convertDateTime pattern="#{bindings.JobTemplateSearchVO1.hints.LastUpdatedDate.format}"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:popup id="p1" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.JobTemplateBean.createJobTempPopupCL}"
+              binding="#{backingBeanScope.JobTemplateBean.createJobTempPopupBindgs}">
+      <af:dialog id="d1" title="Create New Activity-Job Template" resize="off"
+                 type="none" stretchChildren="none">
+        <af:panelFormLayout id="pfl1">
+          <af:inputComboboxListOfValues id="transBUNameId" autoSubmit="true"
+                                        partialTriggers="it2 it1"
+                                        binding="#{backingBeanScope.JobTemplateBean.transBuNamaBindgs}"
+                                        valueChangeListener="#{backingBeanScope.JobTemplateBean.transTempBUNameVL}"
+                                        popupTitle="Search and Select: #{bindings.TransBUName.hints.label}"
+                                        value="#{bindings.TransBUName.inputValue}"
+                                        label="#{bindings.TransBUName.hints.label}"
+                                        model="#{bindings.TransBUName.listOfValuesModel}"
+                                        required="true"
+                                        columns="#{bindings.TransBUName.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransBUName.hints.tooltip}">
+            <f:validator binding="#{bindings.TransBUName.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:inputText value="#{bindings.TransTemplateNumber.inputValue}"
+                        label="#{bindings.TransTemplateNumber.hints.label}"
+                        required="true"
+                        disabled="#{bindings.TransBUName.inputValue==null}"
+                        binding="#{backingBeanScope.JobTemplateBean.transTempNumberBindgs}"
+                        autoSubmit="true"
+                        columns="#{bindings.TransTemplateNumber.hints.displayWidth}"
+                        maximumLength="#{bindings.TransTemplateNumber.hints.precision}"
+                        shortDesc="#{bindings.TransTemplateNumber.hints.tooltip}"
+                        id="it2">
+            <f:validator binding="#{bindings.TransTemplateNumber.validator}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.TransTemplateName.inputValue}"
+                        disabled="#{bindings.TransBUName.inputValue==null}"
+                        label="#{bindings.TransTemplateName.hints.label}"
+                        binding="#{backingBeanScope.JobTemplateBean.transTempNameBindgs}"
+                        required="true" autoSubmit="true"
+                        columns="#{bindings.TransTemplateName.hints.displayWidth}"
+                        maximumLength="#{bindings.TransTemplateName.hints.precision}"
+                        shortDesc="#{bindings.TransTemplateName.hints.tooltip}"
+                        id="it1">
+            <f:validator binding="#{bindings.TransTemplateName.validator}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+        <f:facet name="buttonBar">
+          <af:group id="pgl2">
+            <af:commandButton text="Create" id="cb3"
+                              actionListener="#{backingBeanScope.JobTemplateBean.createJobTempPopupAL}"/>
+            <af:spacer width="1%" id="s1"/>
+            <af:commandButton text="Cancel" id="cb4" immediate="true"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

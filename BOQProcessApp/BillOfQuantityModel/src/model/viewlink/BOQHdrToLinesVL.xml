@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BOQHdrToLinesVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  EntityAssociation="model.association.XxboqHdrToLinesAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="BOQHeaderVO"
+    Cardinality="1"
+    Owner="model.view.BOQHeaderVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_finderName" Value="BOQHeaderVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BOQHeaderVO.HeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="BOQLinesVO"
+    Cardinality="-1"
+    Owner="model.view.BOQLinesVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="BOQLinesVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BOQLinesVO.HeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

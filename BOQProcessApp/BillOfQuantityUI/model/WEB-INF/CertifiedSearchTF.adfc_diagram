@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View3">
+      <property
+         name="activityId">CertifiedSearch</property>
+      <property
+         name="page">/pagefragments/CertifiedSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>CertifiedSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">415.09766</property>
+      <property
+         name="x">329.35254</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <TaskFlowCall
+      id="TaskFlowCall4">
+      <property
+         name="taskFlowId">CertifiedQtyTF</property>
+      <property
+         name="activityId">CertifiedQtyTF</property>
+      <property
+         name="documentReference">/WEB-INF/CertifiedQtyTF.xml</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>CertifiedQtyTF&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">408.72363</property>
+      <property
+         name="x">579.00586</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="TaskFlowCall4"
+      to="View3">
+      <property
+         name="fromOutcome">taskFlowReturn1</property>
+      <property
+         name="sdm:polyPoints">L46,537.8728,404.87305,370.35254,411.24707,R46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase6"
+      from="View3"
+      to="TaskFlowCall4">
+      <property
+         name="fromOutcome">edit</property>
+      <property
+         name="sdm:polyPoints">R54,370.48557,418.24707,538.00586,411.87305,L54</property>
+   </ControlFlowCase>
+</SDM>

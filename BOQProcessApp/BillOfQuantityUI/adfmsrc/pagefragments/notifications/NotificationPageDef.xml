@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.1.65.57" id="NotificationPageDef" Package="pagefragments.notifications">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <taskFlow id="notificationsDynamicRegionId" taskFlowId="#{viewScope.NotificationsDynamicBean.notificationtaskFlowId}" xmlns="http://xmlns.oracle.com/adf/controller/binding"/>
+  </executables>
+  <bindings/>
+</pageDefinition>

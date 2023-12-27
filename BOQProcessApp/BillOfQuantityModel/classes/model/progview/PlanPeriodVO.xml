@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PlanPeriodVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.progview.PlanPeriodVORowImpl"
+  ComponentClass="model.progview.PlanPeriodVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_start_date"
+    Kind="where"
+    Type="java.sql.Date"/>
+  <Variable
+    Name="p_end_date"
+    Kind="where"
+    Type="java.sql.Date"/>
+  <ViewAttribute
+    Name="PlanPeriod"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    Passivate="true"
+    SQLType="VARCHAR"/>
+  <ViewCriteria
+    Name="PlanPeriodVOCriteria"
+    ViewObjectName="model.progview.PlanPeriodVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow92"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="PlanPeriodVOCriteria_vcrow92_PlanPeriod"
+        ViewAttribute="PlanPeriod"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Value=""
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="PlanPeriod"/>
+  </AttrArray>
+</ViewObject>

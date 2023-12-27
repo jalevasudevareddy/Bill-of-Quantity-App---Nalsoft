@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl2" layout="scroll">
+    <af:panelGroupLayout layout="vertical" id="pgl1">
+      <af:panelHeader text="Create Tax Setup" id="ph1">
+        <af:query id="qryId1" headerText="Search" disclosed="true"
+                  value="#{bindings.ProjectTaxHeaderVOCriteriaQuery.queryDescriptor}"
+                  model="#{bindings.ProjectTaxHeaderVOCriteriaQuery.queryModel}"
+                  queryListener="#{bindings.ProjectTaxHeaderVOCriteriaQuery.processQuery}"
+                  queryOperationListener="#{bindings.ProjectTaxHeaderVOCriteriaQuery.processQueryOperation}"
+                  resultComponentId="::pc1:resId1" maxColumns="2"
+                  fieldWidth="70%" rows="2" labelWidth="30%" 
+                  saveQueryMode="hidden"/>
+      </af:panelHeader>
+      <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="toolbar">
+            <af:toolbar id="t1">
+              <af:commandImageLink id="cb1" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.ProjectLevelTaxBean.createProjectTaxHeader}"
+                                   shortDesc="Create"/>
+              <af:commandImageLink id="cb3" icon="/images/delete.png"
+                                   hoverIcon="/images/delete_active.png"
+                                   disabledIcon="/images/delete_disable.png"
+                                   disabled="#{bindings.TransPCExistsFlag.inputValue=='Y'}"
+                                   partialTriggers="resId1 ::qryId1"
+                                   shortDesc="Delete">
+                <af:showPopupBehavior popupId="::p6"/>
+              </af:commandImageLink>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.ProjectTaxHeaderVO1.collectionModel}"
+                    var="row" rows="#{bindings.ProjectTaxHeaderVO1.rangeSize}"
+                    emptyText="#{bindings.ProjectTaxHeaderVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.ProjectTaxHeaderVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.ProjectTaxHeaderVOCriteriaQuery.queryDescriptor}"
+                    queryListener="#{bindings.ProjectTaxHeaderVOCriteriaQuery.processQuery}"
+                    filterVisible="false" varStatus="vs"
+                    selectedRowKeys="#{bindings.ProjectTaxHeaderVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.ProjectTaxHeaderVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="resId1"
+                    binding="#{backingBeanScope.ProjectLevelTaxBean.projectTaxHeaderTableBind}">
+            <af:column id="c9" width="10" rowHeader="true"/>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.HeaderId.name}"
+                       filterable="true" sortable="true" rendered="false"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.HeaderId.label}"
+                       id="resId1c1">
+              <af:outputText value="#{row.HeaderId}" id="ot7"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransBuName.name}"
+                       filterable="true" sortable="true" width="200"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransBuName.label}"
+                       id="resId1c2">
+              <af:outputText value="#{row.TransBuName}" id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransProjectName.name}"
+                       filterable="true" sortable="true" width="150" rendered="false"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransProjectName.label}"
+                       id="resId1c3">
+              <af:commandLink text="#{row.TransProjectName}" id="ot3" action="Edit"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransProjectNumber.name}"
+                       filterable="true" sortable="true" width="150" rendered="false"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransProjectNumber.label}"
+                       id="resId1c4">
+              <af:outputText value="#{row.TransProjectNumber}" id="ot5"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransContractNumber.name}"
+                       filterable="true" sortable="true" width="150"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransContractNumber.label}"
+                       id="c2">
+              <af:outputText value="#{row.TransContractNumber}" id="ot8"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransCognomen.name}"
+                       filterable="true" sortable="true" width="150"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransCognomen.label}"
+                       id="c1">
+              <af:commandLink text="#{row.TransCognomen}" id="cl1" action="Edit"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.TransCustomerName.name}"
+                       filterable="true" sortable="true" width="200"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.TransCustomerName.label}"
+                       id="resId1c5">
+              <af:outputText value="#{row.TransCustomerName}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.CreatedBy.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.CreatedBy.label}"
+                       id="resId1c6">
+              <af:outputText value="#{row.CreatedBy}" id="ot6"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.ProjectTaxHeaderVO1.hints.CreationDate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.ProjectTaxHeaderVO1.hints.CreationDate.label}"
+                       id="resId1c7">
+              <f:facet name="filter">
+                <af:inputDate value="#{vs.filterCriteria.CreationDate}"
+                              id="id1"/>
+              </f:facet>
+              <af:outputText value="#{row.CreationDate}" id="ot4">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:showDetailHeader>
+      <af:popup id="p1"
+                binding="#{backingBeanScope.ProjectLevelTaxBean.createTaxSetupBind}">
+        <af:dialog id="d1" title="Create Tax Setup"
+                   dialogListener="#{backingBeanScope.ProjectLevelTaxBean.createTaxHeader}">
+          <af:panelFormLayout id="pfl1">
+            <af:inputText value="#{bindings.TransBuId.inputValue}"
+                          label="#{bindings.TransBuId.hints.label}" rendered="false"
+                          required="#{bindings.TransBuId.hints.mandatory}"
+                          columns="#{bindings.TransBuId.hints.displayWidth}"
+                          maximumLength="#{bindings.TransBuId.hints.precision}"
+                          shortDesc="#{bindings.TransBuId.hints.tooltip}"
+                          partialTriggers="transBuNameId" id="it1">
+              <f:validator binding="#{bindings.TransBuId.validator}"/>
+            </af:inputText>
+            <af:inputComboboxListOfValues id="transBuNameId"
+                                          popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                          value="#{bindings.TransBuName.inputValue}"
+                                          label="#{bindings.TransBuName.hints.label}"
+                                          model="#{bindings.TransBuName.listOfValuesModel}"
+                                          required="#{bindings.TransBuName.hints.mandatory||true}"
+                                          columns="#{bindings.TransBuName.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransBuName.hints.tooltip}"
+                                          autoSubmit="true">
+              <f:validator binding="#{bindings.TransBuName.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transProjectNameId"  rendered="false"
+                                          popupTitle="Search and Select: #{bindings.TransProjectName.hints.label}"
+                                          value="#{bindings.TransProjectName.inputValue}"
+                                          label="#{bindings.TransProjectName.hints.label}" partialTriggers="transBuNameId"
+                                          model="#{bindings.TransProjectName.listOfValuesModel}"
+                                          required="#{bindings.TransProjectName.hints.mandatory||true}"
+                                          columns="#{bindings.TransProjectName.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransProjectName.hints.tooltip}"
+                                          autoSubmit="true">
+              <f:validator binding="#{bindings.TransProjectName.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transContractNumberId"
+                                          popupTitle="Search and Select: #{bindings.TransContractNumber.hints.label}"
+                                          value="#{bindings.TransContractNumber.inputValue}"  partialTriggers="transBuNameId"
+                                          label="#{bindings.TransContractNumber.hints.label}"
+                                          model="#{bindings.TransContractNumber.listOfValuesModel}"
+                                          required="#{bindings.TransContractNumber.hints.mandatory}"
+                                          columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransContractNumber.hints.tooltip}">
+              <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputText value="#{bindings.TransCustomerName.inputValue}"
+                          label="#{bindings.TransCustomerName.hints.label}" readOnly="true"
+                          required="#{bindings.TransCustomerName.hints.mandatory}"
+                          columns="#{bindings.TransCustomerName.hints.displayWidth}"
+                          maximumLength="#{bindings.TransCustomerName.hints.precision}"
+                          shortDesc="#{bindings.TransCustomerName.hints.tooltip}"
+                             partialTriggers="transContractNumberId transBuNameId">
+              <f:validator binding="#{bindings.TransCustomerName.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p6"
+                binding="#{backingBeanScope.ProjectLevelTaxBean.deleteTaxDocPopupBindgs}">
+        <af:dialog id="d6" title="Confirmation"
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.ProjectLevelTaxBean.deleteTaxHeaderDoc}">
+          <af:outputText id="ot44"
+                         value="The selected document will be permanently deleted. This action cannot be undone. Do you want to continue?"/>
+        </af:dialog>
+      </af:popup>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

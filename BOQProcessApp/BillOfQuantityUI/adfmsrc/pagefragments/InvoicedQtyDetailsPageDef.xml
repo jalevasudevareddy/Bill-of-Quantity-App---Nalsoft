@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="InvoicedQtyDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="InvoicedQtyDetailsVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="InvoicedQtyDetailsVO1Iterator"/>
+    <iterator Binds="InvoicedQtyLinesVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="InvoicedQtyLinesVO1Iterator"/>
+    <searchRegion Binds="InvoicedQtyLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="InvoicedQtyLinesVO1Query"/>
+    <iterator Binds="InvoicedLInesPopulateVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="InvoicedLInesPopulateVO1Iterator"/>
+    <searchRegion Binds="InvoicedLInesPopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="InvoicedLInesPopulateVO1Query"/>
+    <iterator Binds="AttachmentsVO2" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="AttachmentsVO2Iterator"/>
+    <searchRegion Binds="AttachmentsVO2Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="AttachmentsVO2Query"/>
+    <iterator Binds="InvoicedQtySearchVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="InvoicedQtySearchVO1Iterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="PeriodOfMeasure">
+      <AttrNames>
+        <Item Value="PeriodOfMeasure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="InvoicedDocumentNum">
+      <AttrNames>
+        <Item Value="InvoiceDocumentNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="InvoicedDocumentDate">
+      <AttrNames>
+        <Item Value="InvoiceDocumentDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="InvoicedStatus">
+      <AttrNames>
+        <Item Value="InvoiceStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="InvoicedApprovedDate">
+      <AttrNames>
+        <Item Value="InvoiceApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="InvoicedQtyLinesVO1Iterator" id="InvoicedQtyLinesVO1">
+      <nodeDefinition DefName="model.view.InvoicedQtyLinesVO"
+                      Name="InvoicedQtyLinesVO10">
+        <AttrNames>
+          <Item Value="Uom"/>
+          <Item Value="InvoiceCummulativeQty"/>
+          <Item Value="TransAmount"/>
+          <Item Value="TransInvoicePeriod"/>
+          <Item Value="TransRemainingQty"/>
+          <Item Value="TransGrandTotal"/>
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqHeaderId"/>
+          <Item Value="BoqHeaderId1"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="BoqLineId"/>
+          <Item Value="BoqLineId1"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="Description"/>
+          <Item Value="FinalQty"/>
+          <Item Value="InvoiceHeaderId"/>
+          <Item Value="InvoiceLineId"/>
+          <Item Value="Item"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="PageItem"/>
+          <Item Value="PreviousCummulativeQty"/>
+          <Item Value="SellingRate"/>
+          <Item Value="ActualInvoiceQty"/>
+          <Item Value="CurrentBoqRate"/>
+          <Item Value="ErrorMsg"/>
+          <Item Value="PreviousBoqRate"/>
+          <Item Value="Remarks"/>
+          <Item Value="TransActualInvoiceAmount"/>
+          <Item Value="ExtendedFlag"/>
+          <Item Value="TransCurentInvAmt"/>
+          <Item Value="TransPreviousInvoicedAmt"/>
+          <Item Value="TransActualTotal"/>
+          <Item Value="TransCurrentTotal"/>
+          <Item Value="TransPrevTotal"/>
+          <Item Value="InvCummQtyPer"/>
+          <Item Value="ActInvQtyPer"/>
+          <Item Value="TransInvoicedQtyPercnt"/>
+          <Item Value="TransLineType"/>
+          <Item Value="PriceCode"/>
+          <Item Value="PreviousCertifiedCummulativeQty"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="TransCalCurrApplicationQty"/>
+          <Item Value="SellingAmount"/>
+          <Item Value="TransCalCurrApplicationAmount"/>
+          <Item Value="TransCalCurrApplicationAmountTotal"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransGrandTotal">
+      <AttrNames>
+        <Item Value="TransGrandTotal"/>
+      </AttrNames>
+    </attributeValues>
+     <tree IterBinding="InvoicedLInesPopulateVO1Iterator"
+          id="InvoicedLInesPopulateVO1">
+      <nodeDefinition DefName="model.searchview.InvoicedLInesPopulateVO"
+                      Name="InvoicedLInesPopulateVO10">
+        <AttrNames>
+          <Item Value="Uom"/>
+          <Item Value="TransFlag"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="BusinessUnitId"/>
+          <Item Value="Description"/>
+          <Item Value="FinalQty"/>
+          <Item Value="HeaderId"/>
+          <Item Value="InvoicedQty"/>
+          <Item Value="Item"/>
+          <Item Value="LineId"/>
+          <Item Value="PageItem"/>
+          <Item Value="ProjectId"/>
+          <Item Value="SellingRate"/>
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="MasterBoqHeaderId"/>
+          <Item Value="MasterBoqLineId"/>
+          <Item Value="MasterWdLineId"/>
+          <Item Value="PrevActInvQty"/>
+          <Item Value="PrevInvQty"/>
+          <Item Value="PrevInvRate"/>
+          <Item Value="PrevRemarks"/>
+          <Item Value="WdLineId"/>
+          <Item Value="LineType"/>
+          <Item Value="PriceCode"/>
+          <Item Value="PrevCertCummulativeQty"/>
+          <Item Value="BillPageItem"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="InvoicedLInesPopulateVO1Iterator" id="TransFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="executePopulateInvoicedLinesVO"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executePopulateInvoicedLinesVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="executeInvoicedLinesQuery"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeInvoicedLinesQuery" IsViewObjectMethod="false"/>
+    <methodAction id="populateInvoicedLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateInvoicedLines" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="InvoicedApprovedBy">
+      <AttrNames>
+        <Item Value="InvoiceApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="InvoicedHeaderId">
+      <AttrNames>
+        <Item Value="InvoiceHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="ReviseInvoicedDoc"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ReviseInvoicedDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.ReviseInvoicedDoc_BillingDetailsAMDataControl_dataProvider_ReviseInvoicedDoc_result"/>
+    <methodAction id="callpkgForAMEProcessSubmit1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMEProcessSubmit1"
+                  IsViewObjectMethod="false"/>
+    <action IterBinding="InvoicedQtyLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="validateInvoicedLineQuantities"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoicedLineQuantities" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateLineQuantities_BillingDetailsAMDataControl_dataProvider_validateInvoicedLineQuantities_result"/>
+    <methodAction id="validateInvoicedLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoicedLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvoicedLines_BillingDetailsAMDataControl_dataProvider_validateInvoicedLines_result"/>
+
+    <methodAction id="downloadInvoicedDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="downloadInvoicedDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.downloadInvoicedDetails_BillingDetailsAMDataControl_dataProvider_downloadInvoicedDetails_result"/>
+    <methodAction id="uploadInvoicedXLFile"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="uploadInvoicedXLFile" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.uploadInvoicedXLFile_BillingDetailsAMDataControl_dataProvider_uploadInvoicedXLFile_result">
+      <NamedData NDName="uploadedFile"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <methodAction id="validateInvoicedUploadDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoicedUploadDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvoicedUploadDetails_BillingDetailsAMDataControl_dataProvider_validateInvoicedUploadDetails_result"/>
+    <methodAction id="markAllInvLinesAs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="markAllInvLinesAs" IsViewObjectMethod="false">
+      <NamedData NDName="markAs" NDValue="#{pageFlowScope.markAs}"
+                 NDType="java.lang.Boolean"/>
+    </methodAction>
+    <methodAction id="cancelInvoicedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelInvoicedDocument"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="cancelInvoiceRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelInvoiceRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.cancelInvoiceRow_BillingDetailsAMDataControl_dataProvider_cancelInvoiceRow_result"/>
+    <methodAction id="deleteInvoiceRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteInvoiceRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.deleteInvoiceRow_BillingDetailsAMDataControl_dataProvider_deleteInvoiceRow_result"/>
+    <methodAction id="validateWDUploadDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDUploadDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDUploadDetails_BillingDetailsAMDataControl_dataProvider_validateWDUploadDetails_result"/>
+    <methodAction id="isDocEnabledforCurrentUser"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isDocEnabledforCurrentUser"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isDocEnabledforCurrentUser_ApprovalAMDataControl_dataProvider_isDocEnabledforCurrentUser_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="updateDocStatus"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="updateDocStatus"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.updateDocStatus_ApprovalAMDataControl_dataProvider_updateDocStatus_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMa}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="isEmployeeAFinalApprover"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isEmployeeAFinalApprover"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isEmployeeAFinalApprover_ApprovalAMDataControl_dataProvider_isEmployeeAFinalApprover_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="currEmpId" NDValue="#{pageFlowScope.currEmpId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="callpkgForAMEProcess"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="callpkgForAMEProcess"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.callpkgForAMEProcess_ApprovalAMDataControl_dataProvider_callpkgForAMEProcess_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="withdrawFromApproval"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="withdrawFromApproval" IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.withdrawFromApproval_CommonUtilsAMDataControl_dataProvider_withdrawFromApproval_result">
+      <NamedData NDName="remarks" NDValue="#{pageFlowScope.WITHDRAWL_REASON}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransIsLatestDoc">
+      <AttrNames>
+        <Item Value="TransIsLatestDoc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransPrevTotal">
+      <AttrNames>
+        <Item Value="TransPrevTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransCurrentTotal">
+      <AttrNames>
+        <Item Value="TransCurrentTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransActualTotal">
+      <AttrNames>
+        <Item Value="TransActualTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="ExtendedFlag">
+      <AttrNames>
+        <Item Value="ExtendedFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updateDocStatusAndCurrFlag"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateDocStatusAndCurrFlag"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.updateDocStatusAndCurrFlag_CommonUtilsAMDataControl_dataProvider_updateDocStatusAndCurrFlag_result">
+      <NamedData NDName="docType" NDValue="#{pageFlowScope.docType}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docHdrId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransReviseSelectFlag">
+      <AttrNames>
+        <Item Value="TransReviseSelectFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransRevisePeriodFlag">
+      <AttrNames>
+        <Item Value="TransRevisePeriodFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="InvoicedQtyDetailsVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransContractValue">
+      <AttrNames>
+        <Item Value="TransContractValue"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calculateInvoiceLineValues"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculateInvoiceLineValues"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.calculateInvoiceLineValues_BillingDetailsAMDataControl_dataProvider_calculateInvoiceLineValues_result"/>
+    <methodAction id="validateInvLineActPercentage"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvLineActPercentage"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvLineActPercentage_BillingDetailsAMDataControl_dataProvider_validateInvLineActPercentage_result"/>
+    <methodAction id="validateInvLineActQty"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvLineActQty" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvLineActQty_BillingDetailsAMDataControl_dataProvider_validateInvLineActQty_result"/>
+    <methodAction id="validateInvoiceLinePercentage"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoiceLinePercentage"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvoiceLinePercentage_BillingDetailsAMDataControl_dataProvider_validateInvoiceLinePercentage_result"/>
+    <methodAction id="validateInvoiceLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateInvoiceLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateInvoiceLines_BillingDetailsAMDataControl_dataProvider_validateInvoiceLines_result"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransPrecision1">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator" id="BillQty">
+      <AttrNames>
+        <Item Value="BillQty"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransBOQVersion">
+      <AttrNames>
+        <Item Value="TransBOQVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="AttachmentsVO2Iterator" id="AttachmentsVO2">
+      <nodeDefinition DefName="model.view.AttachmentsVO" Name="AttachmentsVO20">
+        <AttrNames>
+          <Item Value="AttachmentId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="FileName"/>
+          <Item Value="FileType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AttachmentsVO2Iterator" id="CreateInsert"
+            InstanceName="BillingDetailsAMDataControl.AttachmentsVO2"
+            DataControl="BillingDetailsAMDataControl" RequiresUpdateModel="true"
+            Action="createInsertRow"/>
+    <action IterBinding="AttachmentsVO2Iterator" id="Delete1"
+            InstanceName="BillingDetailsAMDataControl.AttachmentsVO2"
+            DataControl="BillingDetailsAMDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransMainContractAmount">
+      <AttrNames>
+        <Item Value="TransMainContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransVariationRevenueAmount">
+      <AttrNames>
+        <Item Value="TransVariationRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransClaimsRevenueAmount">
+      <AttrNames>
+        <Item Value="TransClaimsRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="AdvanceRecovered">
+      <AttrNames>
+        <Item Value="AdvanceRecovered"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="MaterialAtSite">
+      <AttrNames>
+        <Item Value="MaterialAtSite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="Retention">
+      <AttrNames>
+        <Item Value="Retention"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="OtherPayments">
+      <AttrNames>
+        <Item Value="OtherPayments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="AdvanceReceived">
+      <AttrNames>
+        <Item Value="AdvanceReceived"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="FileName">
+      <AttrNames>
+        <Item Value="FileName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransAttachments">
+      <AttrNames>
+        <Item Value="TransAttachments"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="saveAttachedFileInvoice"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveAttachedFileInvoice"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.saveAttachedFileInvoice_BillingDetailsAMDataControl_dataProvider_saveAttachedFileInvoice_result">
+      <NamedData NDName="attachedFile" NDValue="#{pageFlowScope.attachedFile}"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransBOQSatus">
+      <AttrNames>
+        <Item Value="TransBOQSatus"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="InvoicedLinesDeleteAll"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="InvoicedLinesDeleteAll" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.InvoicedLinesDeleteAll_BillingDetailsAMDataControl_dataProvider_InvoicedLinesDeleteAll_result"/>
+    <methodAction id="getPAPrintReport"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getPAPrintReport" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.getPAPrintReport_BillingDetailsAMDataControl_dataProvider_getPAPrintReport_result"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="ApplicationNum">
+      <AttrNames>
+        <Item Value="ApplicationNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="DateOfApplication">
+      <AttrNames>
+        <Item Value="DateOfApplication"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="PaymentDueDate">
+      <AttrNames>
+        <Item Value="PaymentDueDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="ValuationDate">
+      <AttrNames>
+        <Item Value="ValuationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransWdDocuNumVersion">
+      <AttrNames>
+        <Item Value="TransWdDocuNumVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransPreviousPCNum">
+      <AttrNames>
+        <Item Value="TransPreviousPCNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransPreviousCertifiedNum">
+      <AttrNames>
+        <Item Value="TransPreviousCertifiedNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="RetentionRelease">
+      <AttrNames>
+        <Item Value="RetentionRelease"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calculateInvoiceAmounts"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculateInvoiceAmounts"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.calculateInvoiceAmounts_BillingDetailsAMDataControl_dataProvider_calculateInvoiceAmounts_result"/>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransClaimsSum">
+      <AttrNames>
+        <Item Value="TransClaimsSum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator" id="TransVarSum">
+      <AttrNames>
+        <Item Value="TransVarSum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransMainSum">
+      <AttrNames>
+        <Item Value="TransMainSum"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="refreshInvoiceHeader"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshInvoiceHeader" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.refreshInvoiceHeader_BillingDetailsAMDataControl_dataProvider_refreshInvoiceHeader_result"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator"
+                     id="TransNetSum">
+      <AttrNames>
+        <Item Value="TransNetSum"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="makeAsCurrentInvoiceHdrRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentInvoiceHdrRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.makeAsCurrentInvoiceHdrRow_BillingDetailsAMDataControl_dataProvider_makeAsCurrentInvoiceHdrRow_result">
+      <NamedData NDName="invHeaderId" NDValue="#{pageFlowScope.invHeaderId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="InvoicedQtyLinesVO1Iterator"
+                     id="TransCalCurrApplicationAmountTotal">
+      <AttrNames>
+        <Item Value="TransCalCurrApplicationAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="getPADetailsReport"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getPADetailsReport" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.getPADetailsReport_BillingDetailsAMDataControl_dataProvider_getPADetailsReport_result"/>
+    <attributeValues IterBinding="InvoicedQtyDetailsVO1Iterator" id="AdjAmount">
+      <AttrNames>
+        <Item Value="AdjAmount"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

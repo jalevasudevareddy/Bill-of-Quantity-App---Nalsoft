@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelFormLayout id="pfl1">
+    <af:panelLabelAndMessage label="#{bindings.Address1.hints.label}" id="plam11">
+      <af:outputText value="#{bindings.Address1.inputValue}" id="ot14"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.Address2.hints.label}" id="plam6">
+      <af:outputText value="#{bindings.Address2.inputValue}" id="ot19"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.BuId.hints.label}" id="plam20">
+      <af:outputText value="#{bindings.BuId.inputValue}" id="ot23">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.BuId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.City.hints.label}" id="plam3">
+      <af:outputText value="#{bindings.City.inputValue}" id="ot4"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.Country.hints.label}" id="plam10">
+      <af:outputText value="#{bindings.Country.inputValue}" id="ot21"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CreatedBy.hints.label}" id="plam16">
+      <af:outputText value="#{bindings.CreatedBy.inputValue}" id="ot18"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CreationDate.hints.label}" id="plam27">
+      <af:outputText value="#{bindings.CreationDate.inputValue}" id="ot8">
+                    <af:convertDateTime pattern="dd-MMM-yyyy"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerId.hints.label}" id="plam12">
+      <af:outputText value="#{bindings.CustomerId.inputValue}" id="ot11">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.CustomerId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerNumber.hints.label}" id="plam22">
+      <af:outputText value="#{bindings.CustomerNumber.inputValue}" id="ot16"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerType.hints.label}" id="plam15">
+      <af:outputText value="#{bindings.CustomerType.inputValue}" id="ot20"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.FirstName.hints.label}" id="plam1">
+      <af:outputText value="#{bindings.FirstName.inputValue}" id="ot28"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.LastName.hints.label}" id="plam8">
+      <af:outputText value="#{bindings.LastName.inputValue}" id="ot27"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.LastUpdatedBy.hints.label}" id="plam9">
+      <af:outputText value="#{bindings.LastUpdatedBy.inputValue}" id="ot6"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.LastUpdatedDate.hints.label}" id="plam24">
+      <af:outputText value="#{bindings.LastUpdatedDate.inputValue}" id="ot17">
+                    <af:convertDateTime pattern="dd-MMM-yyyy"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.MiddleName.hints.label}" id="plam21">
+      <af:outputText value="#{bindings.MiddleName.inputValue}" id="ot3"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PartyNumber.hints.label}" id="plam32">
+      <af:outputText value="#{bindings.PartyNumber.inputValue}" id="ot25"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PoBox.hints.label}" id="plam18">
+      <af:outputText value="#{bindings.PoBox.inputValue}" id="ot26"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.SiteName.hints.label}" id="plam28">
+      <af:outputText value="#{bindings.SiteName.inputValue}" id="ot15"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}" id="plam13">
+      <af:outputText value="#{bindings.BuName.inputValue}" id="ot9"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.BuId1.hints.label}" id="plam23">
+      <af:outputText value="#{bindings.BuId1.inputValue}" id="ot2">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.BuId1.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.TransBUName.hints.label}" id="plam31">
+      <af:outputText value="#{bindings.TransBUName.inputValue}" id="ot30"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.Status.hints.label}" id="plam25">
+      <af:outputText value="#{bindings.Status.inputValue}" id="ot12"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.LocationId.hints.label}" id="plam26">
+      <af:outputText value="#{bindings.LocationId.inputValue}" id="ot24">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.LocationId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.OrigSystemRef.hints.label}" id="plam5">
+      <af:outputText value="#{bindings.OrigSystemRef.inputValue}" id="ot29"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PartyId.hints.label}" id="plam4">
+      <af:outputText value="#{bindings.PartyId.inputValue}" id="ot13">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.PartyId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.TransCustomerType.hints.label}" id="plam17">
+      <af:outputText value="#{bindings.TransCustomerType.inputValue}" id="ot7"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PartySiteId.hints.label}" id="plam7">
+      <af:outputText value="#{bindings.PartySiteId.inputValue}" id="ot32">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.PartySiteId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PartySiteNumber.hints.label}" id="plam29">
+      <af:outputText value="#{bindings.PartySiteNumber.inputValue}" id="ot33"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.SetId.hints.label}" id="plam33">
+      <af:outputText value="#{bindings.SetId.inputValue}" id="ot22">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.SetId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerAccountId.hints.label}" id="plam19">
+      <af:outputText value="#{bindings.CustomerAccountId.inputValue}" id="ot34">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.CustomerAccountId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.PartySiteUseId.hints.label}" id="plam30">
+      <af:outputText value="#{bindings.PartySiteUseId.inputValue}" id="ot10">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.PartySiteUseId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CountryAbbrivation.hints.label}" id="plam34">
+      <af:outputText value="#{bindings.CountryAbbrivation.inputValue}" id="ot1"/>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerAccountSiteId.hints.label}" id="plam2">
+      <af:outputText value="#{bindings.CustomerAccountSiteId.inputValue}" id="ot5">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.CustomerAccountSiteId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+    <af:panelLabelAndMessage label="#{bindings.CustomerAccountSiteUseId.hints.label}" id="plam14">
+      <af:outputText value="#{bindings.CustomerAccountSiteUseId.inputValue}" id="ot31">
+        <af:convertNumber groupingUsed="false" pattern="#{bindings.CustomerAccountSiteUseId.format}"/>
+      </af:outputText>
+    </af:panelLabelAndMessage>
+  </af:panelFormLayout>
+</jsp:root>

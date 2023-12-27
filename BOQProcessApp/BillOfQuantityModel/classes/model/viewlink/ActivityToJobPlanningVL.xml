@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ActivityToJobPlanningVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  EntityAssociation="model.association.ActivityToJobPlanningAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="ActivityLevelPlanningVO"
+    Cardinality="1"
+    Owner="model.view.ActivityLevelPlanningVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="ActivityLevelPlanningVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.ActivityLevelPlanningVO.ActivityLevelLineid"/>
+      <Item Value="model.view.ActivityLevelPlanningVO.HeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="JobLevelPlanningVO"
+    Cardinality="-1"
+    Owner="model.view.JobLevelPlanningVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="JobLevelPlanningVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.JobLevelPlanningVO.ActivityLevelLineid"/>
+      <Item Value="model.view.JobLevelPlanningVO.HeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

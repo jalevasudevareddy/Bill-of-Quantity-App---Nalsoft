@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="CertifiedSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CertifiedQtySearchVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="CertifiedQtySearchVO1Iterator"/>
+    <searchRegion Criteria="CertifiedQtySearch"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="CertifiedQtySearchVO1Iterator"
+                  id="CertifiedQtySearchQuery"/>
+    <iterator Binds="TransCertifiedDocHdrVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="TransCertifiedDocHdrVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="CertifiedQtySearchVO1Iterator" id="CertifiedQtySearchVO1">
+      <nodeDefinition DefName="model.searchview.CertifiedQtySearchVO"
+                      Name="CertifiedQtySearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="ProjectName"/>
+          <Item Value="CertifiedDocumentNum"/>
+          <Item Value="CertifiedDocumentDate"/>
+          <Item Value="CertifiedStatus"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="CertifiedApprovedDate"/>
+          <Item Value="CreationDate"/>
+          <Item Value="CertifiedApprovedBy"/>
+          <Item Value="Version"/>
+          <Item Value="TransStatus"/>
+          <Item Value="TransCurrentCumltTotal"/>
+          <Item Value="TransCumltTotal"/>
+          <Item Value="TransActualAmnt"/>
+          <Item Value="TransInvoiceNumber"/>
+          <Item Value="TransInvoiceVersion"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="BuName1"/>
+          <Item Value="PeriodOfMeasure1"/>
+          <Item Value="TransPrecision"/>
+          <Item Value="TransPreviousTotal"/>
+          <Item Value="TransBOQVersion"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="Cognomen"/>
+          <Item Value="ContractNumber"/>
+          <Item Value="ValuationDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false" IterBinding="CertifiedQtySearchVO1Iterator"
+                  Uses="LOV_TransBusinessUnit" id="TransBusinessUnit"/>
+    <listOfValues StaticList="false" IterBinding="CertifiedQtySearchVO1Iterator"
+                  Uses="LOV_TransProject" id="TransProject"/>
+    <listOfValues StaticList="false" IterBinding="CertifiedQtySearchVO1Iterator"
+                  Uses="LOV_PeriodOfMeasure" id="PeriodOfMeasure"/>
+    <attributeValues IterBinding="CertifiedQtySearchVO1Iterator"
+                     id="TransProjectName">
+      <AttrNames>
+        <Item Value="TransProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelCertifiedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelCertifiedDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createCertifiedHeaderRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createCertifiedHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="editCertifiedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editCertifiedDocument" IsViewObjectMethod="false"/>
+    <methodAction id="validateCertifiedHdr"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateCertifiedHdr" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateCertifiedHdr_BillingDetailsAMDataControl_dataProvider_validateCertifiedHdr_result"/>
+    <attributeValues IterBinding="CertifiedQtySearchVO1Iterator" id="CertifiedHeaderId">
+      <AttrNames>
+        <Item Value="CertifiedHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createCertifiedDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createCertifiedDocument"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.createCertifiedDocument_BillingDetailsAMDataControl_dataProvider_createCertifiedDocument_result"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCertifiedDocHdrVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCertifiedDocHdrVO1Iterator"
+                  Uses="LOV_TransProjectNum" id="TransProjectNum"/>
+    <methodAction id="refreshCertHdrVOAttrs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshCertHdrVOAttrs" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.refreshCertHdrVOAttrs_BillingDetailsAMDataControl_dataProvider_refreshCertHdrVOAttrs_result">
+      <NamedData NDName="attributesMap" NDValue="#{pageFlowScope.attributesMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCertifiedDocHdrVO1Iterator"
+                  Uses="LOV_TransPeriod" id="TransPeriod"/>
+    <button IterBinding="CertifiedQtySearchVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CertifiedQtySearchVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false"
+                  IterBinding="TransCertifiedDocHdrVO1Iterator"
+                  Uses="LOV_TransContractNumber" id="TransContractNumber"/>
+  </bindings>
+</pageDefinition>

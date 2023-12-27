@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://xmlns.oracle.com/adfm/application"
+             version="11.1.1.65.57" id="DataBindings" SeparateXMLFiles="false"
+             Package="view" ClientType="Generic">
+  <definitionFactories>
+    <factory nameSpace="http://xmlns.oracle.com/adf/controller/binding"
+             className="oracle.adf.controller.internal.binding.TaskFlowBindingDefFactoryImpl"/>
+    <dtfactory className="oracle.adf.controller.internal.dtrt.binding.BindingDTObjectFactory"/>
+    <factory nameSpace="http://xmlns.oracle.com/adfm/dvt"
+             className="oracle.adfinternal.view.faces.dvt.model.binding.FacesBindingFactory"/>
+  </definitionFactories>
+  <pageMap>
+    <page path="/BillOfQuantityIndex.jspx"
+          usageId="view_BillOfQuantityIndexPageDef"/>
+          <page path="/WEB-INF/JWTValidationTF.xml#JWTValidationTF@loadJWTData"
+          usageId="view_JWTValidationTF_JWTValidationTF_loadJWTDataPageDef"/>
+    <page path="/pagefragments/ActivityMaster.jsff"
+          usageId="view_ActivityMasterPageDef"/>
+    <page path="/pagefragments/BOQSearch.jsff" usageId="view_BOQLinesPageDef"/>   
+    <page path="/pagefragments/ResourceMasterSearch.jsff"
+          usageId="view_ResourceMasterSearchPageDef"/>
+    <page path="/pagefragments/ResourceMaster.jsff"
+          usageId="view_ResourceMasterPageDef"/>
+    <page path="/pagefragments/StructureSetup.jsff"
+          usageId="view_StructureSetupPageDef"/>
+    <page path="/pagefragments/BOQDetails.jsff"
+          usageId="view_BOQDetailsPageDef"/>
+  <page path="/pagefragments/BOQDetailsReject.jsff"
+          usageId="view_BOQDetailsPageDef"/>
+    <page path="/pagefragments/JobTemplateSearch.jsff"
+          usageId="view_JobTemplateSearchPageDef"/>
+    <page path="/pagefragments/JobTemplateActivity.jsff"
+          usageId="view_JobTemplateActivityPageDef"/>
+    <page path="/pagefragments/WorkDoneSearch.jsff"
+          usageId="view_WorkDoneSearchPageDef"/>
+    <page path="/pagefragments/WorkDoneQtyDetails.jsff"
+          usageId="view_WorkDoneQtyDetailsPageDef"/>
+   <page path="/pagefragments/WorkDoneReject.jsff"
+          usageId="view_WorkDoneQtyDetailsPageDef"/>
+    <page path="/pagefragments/PlanningScheduleSearch.jsff"
+          usageId="view_PlanningScheduleSearchPageDef"/>
+    <page path="/pagefragments/ProjectJobItemAnalysisSearch.jsff"
+          usageId="view_ProjectJobItemAnalysisPageDef"/>
+    <page path="/pagefragments/JobItemAnalysis.jsff"
+          usageId="view_JobItemAnalysisPageDef"/>
+    <page path="/pagefragments/PlanningSchedule.jsff"
+          usageId="view_PlanningSchedulePageDef"/>
+    <page path="/pagefragments/CostingDetailsSearch.jsff"
+          usageId="view_CostingDetailsSearchPageDef"/>
+    <page path="/pagefragments/MaterialAtSiteSearch.jsff"
+          usageId="view_MaterialAtSiteSearchPageDef"/>
+    <page path="/pagefragments/MaterialAtSite.jsff"
+          usageId="view_MaterialAtSitePageDef"/>
+    <page path="/pagefragments/ProgressDetails.jsff"
+          usageId="view_ProgressDetailsPageDef"/>
+
+    <page path="/pagefragments/uploadErrors.jsff"
+          usageId="view_uploadErrorsPageDef"/>
+
+    <page path="/pagefragments/JobItemCostingDetails.jsff"
+          usageId="view_JobItemCostingDetailsPageDef"/>
+    <page path="/WEB-INF/UploadErrorsTF.xml#UploadErrorsTF@setUploadErrorDetails"
+          usageId="view_UploadErrorsTF_UploadErrorsTF_setUploadErrorDetailsPageDef"/>
+    <page path="/pagefragments/CertifiedSearch.jsff"
+          usageId="view_CertifiedSearchPageDef"/>
+    <page path="/pagefragments/CertifiedQtyDetails.jsff"
+          usageId="view_CertifiedQtyDetailsPageDef"/>
+    <page path="/pagefragments/CertifiedQtyReject.jsff"
+          usageId="view_CertifiedQtyDetailsPageDef"/>
+    <page path="/pagefragments/InvoicedSearch.jsff"
+          usageId="view_InvoicedSearchPageDef"/>
+    <page path="/pagefragments/InvoicedQtyDetails.jsff"
+          usageId="view_InvoicedQtyDetailsPageDef"/>
+    <page path="/pagefragments/InvoiceQtyDetailsReject.jsff"
+          usageId="view_InvoicedQtyDetailsPageDef"/>
+    <page path="/pagefragments/PaymentCertSearch.jsff"
+          usageId="view_PaymentCertSearchPageDef"/>
+    <page path="/pagefragments/PaymentCertificate.jsff"
+          usageId="view_PaymentCertificatePageDef"/>
+    <page path="/pagefragments/PaymentCertificateReject.jsff"
+          usageId="view_PaymentCertificatePageDef"/>
+    <page path="/pagefragments/PCDeductions.jsff"
+          usageId="view_PCDeductionsPageDef"/>
+    <page path="/pagefragments/BoqUploadHeaderSearch.jsff"
+          usageId="view_BoqUploadHeaderSearchPageDef"/>
+    <page path="/pagefragments/BoqValidationLines.jsff"
+          usageId="view_BoqValidationLinesPageDef"/>
+    <page path="/pagefragments/BoqValidationReject.jsff"
+          usageId="view_BoqValidationLinesPageDef"/>
+    <page path="/pagefragments/CandyBOQSearch.jsff"
+          usageId="view_CandyBOQSearchPageDef"/>
+    <page path="/pagefragments/CandyBOQDetails.jsff"
+          usageId="view_CandyBOQDetailsPageDef"/>
+    <page path="/pagefragments/RevenueRecognitionSearch.jsff"
+          usageId="view_RevenueRecognitionSearchPageDef"/>
+    <page path="/pagefragments/RevenueRecognition.jsff"
+          usageId="view_RevenueRecognitionPageDef"/>
+    <page path="/pagefragments/BOQAccounntsSetup.jsff"
+          usageId="view_BOQAccounntsSetupPageDef"/>
+    <page path="/pagefragments/UploadRemarks.jsff"
+          usageId="view_UploadRemarksPageDef"/>
+    <page path="/WEB-INF/notification/workListTF.xml#workListTF@setWorkListForEmployee"
+          usageId="view_workListTF_workListTF_setWorkListForEmployeePageDef"/>
+    <page path="/WEB-INF/notification/ActionHistoryTF.xml#ActionHistoryTF@setActionHistoryForDocument"
+          usageId="view_ActionHistoryTF_ActionHistoryTF_setActionHistoryForDocumentPageDef1"/>
+    <page path="/pagefragments/notifications/WorkList.jsff"
+          usageId="view_WorkListPageDef1"/>
+    <page path="/pagefragments/notifications/ActionHistory.jsff"
+          usageId="view_ActionHistoryPageDef1"/>
+    <page path="/pagefragments/notifications/Notification.jsff"
+          usageId="view_NotificationPageDef1"/>
+    <page path="/WEB-INF/notification/Workdone_Notification_TF.xml#Workdone_Notification_TF@SetCurrentRowWithKeyValue"
+          usageId="view_Workdone_Notification_TF_Workdone_Notification_TF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/BillOfQuantityTF.xml#BillOfQuantityTF@SetCurrentRowWithKeyValue"
+          usageId="view_BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/BillOfQuantityTF.xml#BillOfQuantityTF@SetCurrentRowWithKeyValue1"
+          usageId="view_BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/ApprovalDoc.jspx" usageId="view_ApprovalDocPageDef"/>
+    <page path="/WEB-INF/WorkDoneQtyTF.xml#WorkDoneQtyTF@SetCurrentRowWithKeyValue"
+          usageId="view_WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/InvoicedQtyTF.xml#InvoicedQtyTF@SetCurrentRowWithKeyValue"
+          usageId="view_InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/PaymentCertificateTF.xml#PaymentCertificateTF@SetCurrentRowWithKeyValue"
+          usageId="view_PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/PaymentCertificateTF.xml#PaymentCertificateTF@SetCurrentRowWithKeyValue1"
+          usageId="view_PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/WEB-INF/InvoicedQtyTF.xml#InvoicedQtyTF@SetCurrentRowWithKeyValue1"
+          usageId="view_InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/WEB-INF/CertifiedQtyTF.xml#CertifiedQtyTF@SetCurrentRowWithKeyValue"
+          usageId="view_CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/CertifiedQtyTF.xml#CertifiedQtyTF@SetCurrentRowWithKeyValue1"
+          usageId="view_CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/WEB-INF/BOQUploadValidationTF.xml#BOQUploadValidationTF@SetCurrentRowWithKeyValue"
+          usageId="view_BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page path="/WEB-INF/BOQUploadValidationTF.xml#BOQUploadValidationTF@SetCurrentRowWithKeyValue1"
+          usageId="view_BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/WEB-INF/WorkDoneQtyTF.xml#WorkDoneQtyTF@SetCurrentRowWithKeyValue1"
+          usageId="view_WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page path="/WEB-INF/WorkDoneQtyTF.xml#WorkDoneQtyTF@makeAsCurrentWDdoc"
+          usageId="view_WorkDoneQtyTF_WorkDoneQtyTF_makeAsCurrentWDdocPageDef"/>
+    <page path="/WEB-INF/JWTValidationTF.xml#JWTValidationTF@getCurrentUserRoles"
+          usageId="view_JWTValidationTF_JWTValidationTF_getCurrentUserRolesPageDef"/>
+    <page path="/WEB-INF/CertifiedQtyTF.xml#CertifiedQtyTF@makeAsCurrentCertDoc"
+          usageId="view_CertifiedQtyTF_CertifiedQtyTF_makeAsCurrentCertDocPageDef"/>
+    <page path="/pagefragments/rejectedBOQLines.jsff"
+          usageId="view_rejectedBOQLinesPageDef"/>
+    <page path="/pagefragments/TaxSetupHeaderSearch.jsff"
+          usageId="view_TaxSetupHeaderSearchPageDef"/>
+    <page path="/pagefragments/TaxSetupLines.jsff"
+          usageId="view_TaxSetupLinesPageDef"/>
+    <page path="/WEB-INF/HomePageTF.xml#HomePageTF@loadHomePage"
+          usageId="view_HomePageTF_HomePageTF_loadHomePagePageDef"/>
+    <page path="/pagefragments/HomePage.jsff" usageId="view_HomePagePageDef"/>
+    <page path="/WEB-INF/ApprovalTF.xml#ApprovalTF@decodeUrl" usageId="view_ApprovalTF_ApprovalTF_decodeUrlPageDef"/>
+    <page path="/WEB-INF/InvoicedQtyTF.xml#InvoicedQtyTF@makeAsCurrentInvoiceHdrRow"
+          usageId="view_InvoicedQtyTF_InvoicedQtyTF_makeAsCurrentInvoiceHdrRowPageDef"/>
+  </pageMap>
+  <pageDefinitionUsages>
+    <page id="view_BillOfQuantityIndexPageDef"
+          path="view.pageDefs.BillOfQuantityIndexPageDef"/>
+           <page id="view_JWTValidationTF_JWTValidationTF_loadJWTDataPageDef"
+          path="view.pageDefs.JWTValidationTF_JWTValidationTF_loadJWTDataPageDef"/>
+    <page id="view_ActivityMasterPageDef"
+          path="pagefragments.ActivityMasterPageDef"/>
+    <page id="view_BOQLinesPageDef" path="pagefragments.BOQLinesPageDef"/>
+    <page id="view_ResourceMasterSearchPageDef"
+          path="pagefragments.ResourceMasterSearchPageDef"/>
+    <page id="view_ResourceMasterPageDef"
+          path="pagefragments.ResourceMasterPageDef"/>
+    <page id="view_StructureSetupPageDef"
+          path="pagefragments.StructureSetupPageDef"/>
+    <page id="view_BOQDetailsPageDef" path="pagefragments.BOQDetailsPageDef"/>
+    <page id="view_JobItemAnalysisSearchPageDef"
+          path="pagefragments.JobItemAnalysisSearchPageDef"/>
+    <page id="view_JobTemplateSearchPageDef"
+          path="pagefragments.JobTemplateSearchPageDef"/>
+    <page id="view_JobTemplateActivityPageDef"
+          path="pagefragments.JobTemplateActivityPageDef"/>
+    <page id="view_WorkDoneSearchPageDef"
+          path="pagefragments.WorkDoneSearchPageDef"/>
+    <page id="view_WorkDoneQtyDetailsPageDef"
+          path="pagefragments.WorkDoneQtyDetailsPageDef"/>
+    <page id="view_PlanningScheduleSearchPageDef"
+          path="pagefragments.PlanningScheduleSearchPageDef"/>
+    <page id="view_ProjectJobHeaderSearchPageDef"
+          path="pagefragments.ProjectJobHeaderSearchPageDef"/>
+    <page id="view_ProjectJobItemAnalysisPageDef"
+          path="pagefragments.ProjectJobItemAnalysisPageDef"/>
+    <page id="view_JobItemAnalysisPageDef"
+          path="pagefragments.JobItemAnalysisPageDef"/>
+    <page id="view_PlanningSchedulePageDef"
+          path="pagefragments.PlanningSchedulePageDef"/>
+    <page id="view_CostingDetailsSearchPageDef"
+          path="pagefragments.CostingDetailsSearchPageDef"/>
+    <page id="view_MaterialAtSiteSearchPageDef"
+          path="pagefragments.MaterialAtSiteSearchPageDef"/>
+    <page id="view_MaterialAtSitePageDef"
+          path="pagefragments.MaterialAtSitePageDef"/>
+    <page id="view_ProgressDetailsPageDef"
+          path="pagefragments.ProgressDetailsPageDef"/>
+
+    <page id="view_uploadErrorsPageDef"
+          path="pagefragments.uploadErrorsPageDef"/>
+
+    <page id="view_JobItemCostingDetailsPageDef"
+          path="pagefragments.JobItemCostingDetailsPageDef"/>
+    <page id="view_UploadErrorsTF_UploadErrorsTF_setUploadErrorDetailsPageDef"
+          path="view.pageDefs.UploadErrorsTF_UploadErrorsTF_setUploadErrorDetailsPageDef"/>
+    <page id="view_CertifiedSearchPageDef"
+          path="pagefragments.CertifiedSearchPageDef"/>
+    <page id="view_CertifiedQtyDetailsPageDef"
+          path="pagefragments.CertifiedQtyDetailsPageDef"/>
+    <page id="view_InvoicedSearchPageDef"
+          path="pagefragments.InvoicedSearchPageDef"/>
+    <page id="view_InvoicedQtyDetailsPageDef"
+          path="pagefragments.InvoicedQtyDetailsPageDef"/>
+    <page id="view_PaymentCertSearchPageDef"
+          path="pagefragments.PaymentCertSearchPageDef"/>
+    <page id="view_PaymentCertificatePageDef"
+          path="pagefragments.PaymentCertificatePageDef"/>
+    <page id="view_PCDeductionsPageDef"
+          path="pagefragments.PCDeductionsPageDef"/>
+    <page id="view_BoqUploadHeaderSearchPageDef"
+          path="pagefragments.BoqUploadHeaderSearchPageDef"/>
+    <page id="view_BoqValidationLinesPageDef"
+          path="pagefragments.BoqValidationLinesPageDef"/>
+    <page id="view_CandyBOQSearchPageDef"
+          path="pagefragments.CandyBOQSearchPageDef"/>
+    <page id="view_CandyBOQDetailsPageDef"
+          path="pagefragments.CandyBOQDetailsPageDef"/>
+    <page id="view_RevenueRecognitionSearchPageDef"
+          path="pagefragments.RevenueRecognitionSearchPageDef"/>
+    <page id="view_RevenueRecognitionPageDef"
+          path="pagefragments.RevenueRecognitionPageDef"/>
+    <page id="view_BOQAccounntsSetupPageDef"
+          path="pagefragments.BOQAccounntsSetupPageDef"/>
+    <page id="view_UploadRemarksPageDef"
+          path="pagefragments.UploadRemarksPageDef"/>
+    <page id="view_workListTF_workListTF_setWorkListForEmployeePageDef"
+          path="notification.workListTF_workListTF_setWorkListForEmployeePageDef"/>
+    <page id="view_ActionHistoryTF_ActionHistoryTF_setActionHistoryForDocumentPageDef1"
+          path="notification.ActionHistoryTF_ActionHistoryTF_setActionHistoryForDocumentPageDef"/>
+    <page id="view_WorkListPageDef1"
+          path="pagefragments.notifications.WorkListPageDef"/>
+    <page id="view_ActionHistoryPageDef1"
+          path="pagefragments.notifications.ActionHistoryPageDef"/>
+    <page id="view_NotificationPageDef1"
+          path="pagefragments.notifications.NotificationPageDef"/>
+    <page id="view_Workdone_Notification_TF_Workdone_Notification_TF_SetCurrentRowWithKeyValuePageDef"
+          path="notification.Workdone_Notification_TF_Workdone_Notification_TF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.BillOfQuantityTF_BillOfQuantityTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_ApprovalDocPageDef" path="view.pageDefs.ApprovalDocPageDef"/>
+    <page id="view_WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.PaymentCertificateTF_PaymentCertificateTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.InvoicedQtyTF_InvoicedQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.CertifiedQtyTF_CertifiedQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValuePageDef"
+          path="view.pageDefs.BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValuePageDef"/>
+    <page id="view_BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.BOQUploadValidationTF_BOQUploadValidationTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValue1PageDef"
+          path="view.pageDefs.WorkDoneQtyTF_WorkDoneQtyTF_SetCurrentRowWithKeyValue1PageDef"/>
+    <page id="view_WorkDoneQtyTF_WorkDoneQtyTF_makeAsCurrentWDdocPageDef"
+          path="view.pageDefs.WorkDoneQtyTF_WorkDoneQtyTF_makeAsCurrentWDdocPageDef"/>
+    <page id="view_JWTValidationTF_JWTValidationTF_getCurrentUserRolesPageDef"
+          path="view.pageDefs.JWTValidationTF_JWTValidationTF_getCurrentUserRolesPageDef"/>
+    <page id="view_CertifiedQtyTF_CertifiedQtyTF_makeAsCurrentCertDocPageDef"
+          path="view.pageDefs.CertifiedQtyTF_CertifiedQtyTF_makeAsCurrentCertDocPageDef"/>
+    <page id="view_rejectedBOQLinesPageDef"
+          path="pagefragments.rejectedBOQLinesPageDef"/>
+    <page id="view_TaxSetupHeaderSearchPageDef"
+          path="pagefragments.TaxSetupHeaderSearchPageDef"/>
+    <page id="view_TaxSetupLinesPageDef"
+          path="pagefragments.TaxSetupLinesPageDef"/>
+    <page id="view_HomePageTF_HomePageTF_loadHomePagePageDef"
+          path="view.pageDefs.HomePageTF_HomePageTF_loadHomePagePageDef"/>
+    <page id="view_HomePagePageDef" path="pagefragments.HomePagePageDef"/>
+    <page id="view_ApprovalTF_ApprovalTF_decodeUrlPageDef" path="view.pageDefs.ApprovalTF_ApprovalTF_decodeUrlPageDef"/>
+    <page id="view_InvoicedQtyTF_InvoicedQtyTF_makeAsCurrentInvoiceHdrRowPageDef"
+          path="view.pageDefs.InvoicedQtyTF_InvoicedQtyTF_makeAsCurrentInvoiceHdrRowPageDef"/>
+  </pageDefinitionUsages>
+  <dataControlUsages>
+    <BC4JDataControl id="CommonUtilsAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="CommonUtilsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="BOQSetupAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="BOQSetupsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="BillofQuantityAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="BillofQuantityAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+   
+    <BC4JDataControl id="JobTemplateAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="JobTemplateAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="BillingDetailsAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="BillingDetailsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="PlanningScheduleAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="PlanningScheduleAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="ProjectJobItemAnalysisAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="ProjectJobItemAnalysisAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="CostingDetailsAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="CostingDetailsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="BOQUploadsAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="BOQUploadsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="PaymentCertificateAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="PaymentCertificateAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="BoqUploadValidationAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="BoqUploadValidationAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="CandyBillofQuantityAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="CandyBillofQuantityAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="RevenueRecognitionAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="RevenueRecognitionAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="ApprovalAMDataControl"
+                     Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="ApprovalAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+    <BC4JDataControl id="ReportsAMDataControl" Package="model.applicationmodule"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true"
+                     Configuration="ReportsAMLocal" syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+  </dataControlUsages>
+</Application>

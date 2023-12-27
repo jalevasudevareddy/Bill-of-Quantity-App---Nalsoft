@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="RevenueRecognitionTF">
+    <default-activity id="__10">RevenueRecognitionSearch</default-activity>
+    <transaction id="__1">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__3">
+      <managed-bean-name id="__2">RevenueRecognitionSearchBean</managed-bean-name>
+      <managed-bean-class id="__5">bean.RevenueRecognitionSearchBean</managed-bean-class>
+      <managed-bean-scope id="__4">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__8">
+      <managed-bean-name id="__9">RevenueRecognitionBean</managed-bean-name>
+      <managed-bean-class id="__7">bean.RevenueRecognitionBean</managed-bean-class>
+      <managed-bean-scope id="__6">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="RevenueRecognitionSearch">
+      <page>/pagefragments/RevenueRecognitionSearch.jsff</page>
+    </view>
+    <view id="RevenueRecognition">
+      <page>/pagefragments/RevenueRecognition.jsff</page>
+    </view>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">RevenueRecognitionSearch</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome id="__15">Create</from-outcome>
+        <to-activity-id id="__13">RevenueRecognition</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__16">
+      <from-activity-id id="__17">RevenueRecognition</from-activity-id>
+      <control-flow-case id="__19">
+        <from-outcome id="__20">Done</from-outcome>
+        <to-activity-id id="__18">RevenueRecognitionSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

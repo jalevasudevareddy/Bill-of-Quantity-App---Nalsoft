@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ActivityPlanToLinesVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  EntityAssociation="model.association.ActivityPlanToLinesAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="ActivityLevelPlanningVO"
+    Cardinality="1"
+    Owner="model.view.ActivityLevelPlanningVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="ActivityLevelPlanningVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.ActivityLevelPlanningVO.ActivityLevelLineid"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="ActivityLineLevelPlanVO"
+    Cardinality="-1"
+    Owner="model.view.ActivityLineLevelPlanVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="ActivityLineLevelPlanVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.ActivityLineLevelPlanVO.ActivityLevelLineid"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

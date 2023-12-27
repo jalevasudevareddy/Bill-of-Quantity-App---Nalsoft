@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UserRolesVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  SelectList="XxhrUserRolesEO.ROLE_COMMON_NAME, 
+       XxhrUserRolesEO.ROLE_ID, 
+       XxhrUserRolesEO.ROLE_NAME, 
+       XxhrUserRolesEO.ROWID, 
+       XxhrUserRolesEO.USER_ID, 
+       XxhrUserRolesEO.USER_NAME"
+  FromList="XXHR_USER_ROLES_T XxhrUserRolesEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.UserRolesVORowImpl"
+  ComponentClass="model.view.UserRolesVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxhrUserRolesEO.USER_ID =:p_user_id">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_user_id"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <EntityUsage
+    Name="XxhrUserRolesEO"
+    Entity="model.entity.XxhrUserRolesEO"/>
+  <ViewAttribute
+    Name="RoleCommonName"
+    PrecisionRule="true"
+    EntityAttrName="RoleCommonName"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="ROLE_COMMON_NAME"/>
+  <ViewAttribute
+    Name="RoleId"
+    PrecisionRule="true"
+    EntityAttrName="RoleId"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="ROLE_ID"/>
+  <ViewAttribute
+    Name="RoleName"
+    PrecisionRule="true"
+    EntityAttrName="RoleName"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="ROLE_NAME"/>
+  <ViewAttribute
+    Name="RowID"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="RowID"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="ROWID"/>
+  <ViewAttribute
+    Name="UserId"
+    PrecisionRule="true"
+    EntityAttrName="UserId"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="USER_ID"/>
+  <ViewAttribute
+    Name="UserName"
+    PrecisionRule="true"
+    EntityAttrName="UserName"
+    EntityUsage="XxhrUserRolesEO"
+    AliasName="USER_NAME"/>
+</ViewObject>

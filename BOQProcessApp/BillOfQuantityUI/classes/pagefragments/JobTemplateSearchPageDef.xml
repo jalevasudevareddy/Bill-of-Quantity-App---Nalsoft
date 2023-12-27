@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="JobTemplateSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="JobTemplateSearchVO1" RangeSize="25"
+              DataControl="JobTemplateAMDataControl"
+              id="JobTemplateSearchVO1Iterator"/>
+    <searchRegion Criteria="__ImplicitViewCriteria__"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="JobTemplateSearchVO1Iterator"
+                  id="ImplicitViewCriteriaQuery"/>
+    <searchRegion Criteria="JobTemplateSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="JobTemplateSearchVO1Iterator"
+                  id="JobTemplateSearchVOCriteriaQuery1"/>
+    <iterator Binds="TransJobTemplateVO1" RangeSize="25"
+              DataControl="JobTemplateAMDataControl"
+              id="TransJobTemplateVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="JobTemplateSearchVO1Iterator" id="JobTemplateSearchVO1">
+      <nodeDefinition DefName="model.view.JobTemplateSearchVO"
+                      Name="JobTemplateSearchVO10">
+        <AttrNames>
+          <Item Value="BuId"/>
+          <Item Value="BuName"/>
+          <Item Value="BusinessUnitId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="TemplateId"/>
+          <Item Value="TemplateName"/>
+          <Item Value="TemplateNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false" IterBinding="TransJobTemplateVO1Iterator"
+                  Uses="LOV_TransBUName" id="TransBUName"/>
+    <attributeValues IterBinding="TransJobTemplateVO1Iterator"
+                     id="TransTemplateNumber">
+      <AttrNames>
+        <Item Value="TransTemplateNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TransJobTemplateVO1Iterator"
+                     id="TransTemplateName">
+      <AttrNames>
+        <Item Value="TransTemplateName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="initTransJobTemplateVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initTransJobTemplateVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createNewActivityJobTemplate"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createNewActivityJobTemplate"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.JobTemplateAMDataControl.methodResults.createNewActivityJobTemplate_JobTemplateAMDataControl_dataProvider_createNewActivityJobTemplate_result"/>
+    <methodAction id="makeAsCurrentrJobActivityTemplate"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentrJobActivityTemplate"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.JobTemplateAMDataControl.methodResults.makeAsCurrentrJobActivityTemplate_JobTemplateAMDataControl_dataProvider_makeAsCurrentrJobActivityTemplate_result">
+      <NamedData NDName="templateId" NDValue="#{pageFlowScope.templateId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="refreshTransJobtemplateVO"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshTransJobtemplateVO"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="attributeMap" NDValue="#{pageFlowScope.attributeMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <attributeValues IterBinding="JobTemplateSearchVO1Iterator" id="TemplateId">
+      <AttrNames>
+        <Item Value="TemplateId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isJobTemplateExistsForSelectedBU"
+                  InstanceName="JobTemplateAMDataControl.dataProvider"
+                  DataControl="JobTemplateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isJobTemplateExistsForSelectedBU"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.JobTemplateAMDataControl.methodResults.isJobTemplateExistsForSelectedBU_JobTemplateAMDataControl_dataProvider_isJobTemplateExistsForSelectedBU_result"/>
+  </bindings>
+</pageDefinition>

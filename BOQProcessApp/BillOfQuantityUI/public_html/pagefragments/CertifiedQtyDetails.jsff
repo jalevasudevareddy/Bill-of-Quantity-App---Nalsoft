@@ -1,0 +1,1245 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll"
+                       binding="#{backingBeanScope.CertifiedDetailsBean.pageBindings}">
+    <af:panelHeader text="" id="ph1"
+                    binding="#{backingBeanScope.NotificationBean.panelHdrBind}">
+      <f:facet name="toolbar">
+        <af:toolbar id="t3">
+          <af:commandToolbarButton text="Actions" id="ctb1231"
+                                   rendered="#{sessionScope.fromApplication=='Y'}">
+            <f:facet name="popup">
+              <af:menu id="m1123">
+                <af:commandMenuItem text="View Action History" immediate="true"
+                                    actionListener="#{backingBeanScope.CertifiedDetailsBean.actHistAL}"
+                                    id="cmi4"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:commandToolbarButton text="Actions" id="ctb2"
+                                   rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y'}">
+            <f:facet name="popup">
+              <af:menu id="m2">
+                <af:commandMenuItem text="Attachments" id="cmi9">
+                  <af:showPopupBehavior popupId="p15"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="View Action History" immediate="true"
+                                    action="ActionHistory"
+                                    actionListener="#{backingBeanScope.CertifiedDetailsBean.actHistAL}"
+                                    id="cmi11"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:commandToolbarButton text="Actions" id="ctb1"
+                                   rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}">
+            <f:facet name="popup">
+              <af:menu id="m1">
+                <af:commandMenuItem text="Submit for Approval" partialTriggers="pc1:t1"
+                                    actionListener="#{backingBeanScope.CertifiedDetailsBean.SubmitCertified}"
+                                    disabled="#{bindings.CertifiedQtyLinesVO1.estimatedRowCount==0 or (bindings.CertifiedStatus.inputValue!='D' and  bindings.CertifiedStatus.inputValue!='R' and  bindings.CertifiedStatus.inputValue!='W')}"
+                                    id="cmi3"/>
+                <af:commandMenuItem text="Withdraw Submission" id="cmi7"
+                                    immediate="true"
+                                    disabled="#{bindings.CertifiedStatus.inputValue!='I'}">
+                  <af:showPopupBehavior popupId="p10"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Recalculate"
+                                    actionListener="#{backingBeanScope.CertifiedDetailsBean.recalculateValues}"
+                                    id="cmi81"  disabled="#{bindings.CertifiedStatus.inputValue!='D'}"/>
+                <af:commandMenuItem text="Revise"
+                                    disabled="#{ !(bindings.CertifiedStatus.inputValue=='A'  and (bindings.TransIsLatestDoc.inputValue=='Y' and  bindings.IsPCExists.inputValue !='Y'))}"
+                                    id="cmi5">
+                  <af:showPopupBehavior popupId="p7"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Delete"
+                                    disabled="#{bindings.CertifiedStatus.inputValue!='D' }"
+                                    id="cmi2">
+                  <af:showPopupBehavior popupId="p5"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Cancel"
+                                    disabled="#{bindings.TransIsLatestDoc.inputValue!='Y' or bindings.IsPCExists.inputValue =='Y' or (bindings.CertifiedStatus.inputValue!='A'  and  bindings.CertifiedStatus.inputValue!='W' and bindings.CertifiedStatus.inputValue!='R')}"
+                                    id="cmi6">
+                  <af:showPopupBehavior popupId="p4"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Attachments" id="cmi8">
+                  <af:showPopupBehavior popupId="p15"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="View Action History" immediate="true"
+                                    action="ActionHistory"
+                                    actionListener="#{backingBeanScope.CertifiedDetailsBean.actHistAL}"
+                                    id="cmi1"/>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:commandButton text="Approve"
+                            rendered="#{sessionScope.fromApplication=='Y'}"
+                            disabled="#{!(bindings.CertifiedStatus.inputValue=='I') }"
+                            id="cb10">
+            <af:showPopupBehavior popupId="p9"/>
+          </af:commandButton>
+          <af:commandButton text="Reject" id="cb11"
+                            rendered="#{sessionScope.fromApplication=='Y'}"
+                            disabled="#{!(bindings.CertifiedStatus.inputValue=='I') }">
+            <af:showPopupBehavior popupId="p11"/>
+          </af:commandButton>
+          <af:commandButton text="Save" id="cb3"
+                            rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                            visible="#{bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W'}"
+                            actionListener="#{backingBeanScope.CertifiedDetailsBean.saveCertified}"/>
+          <af:commandButton text="Save and Close" id="cb4" action="Done"
+                            rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                            visible="#{bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W'}"
+                            actionListener="#{backingBeanScope.CertifiedDetailsBean.saveAndCloseCertified}"/>
+          <af:commandButton text="Cancel" id="cb5" action="done"
+                            rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                            visible="#{bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W'}"
+                            actionListener="#{backingBeanScope.CertifiedDetailsBean.cancelCertified}"
+                            immediate="true"/>
+          <af:commandButton text="Done" id="cb7" action="done" immediate="true"
+                            rendered="#{((bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W') and sessionScope.fromApplication!='Y') or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y'}"/>
+        </af:toolbar>
+      </f:facet>
+      <af:showDetailHeader text="Manage Certification Details : #{bindings.ContractNumber.inputValue}" disclosed="true" id="sdh1">
+        <af:panelFormLayout id="pfl1" maxColumns="3" rows="6" fieldWidth="70%"
+                            labelWidth="30%">
+          <!--<af:panelLabelAndMessage label="#{bindings.TransIsLatestDoc.hints.label}"
+                                 id="plam127">
+          <af:outputText value="#{bindings.TransIsLatestDoc.inputValue}" id="ot127"/>
+        </af:panelLabelAndMessage>-->
+          <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                   id="plam7">
+            <af:outputText value="#{bindings.BuName.inputValue}" id="ot7"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                                   id="plam8" rendered="false">
+            <af:outputText value="#{bindings.ProjectNumber.inputValue}"
+                           id="ot8"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}"
+                                   id="plam13" rendered="false">
+            <af:outputText value="#{bindings.ProjectName.inputValue}"
+                           id="ot29"/>
+          </af:panelLabelAndMessage>
+             <af:panelLabelAndMessage label="#{bindings.Cognomen.hints.label}"
+                                   id="plam19">
+            <af:outputText value="#{bindings.Cognomen.inputValue}"
+                           id="ot55"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransCustomerName.hints.label}"
+                                   id="plam14">
+            <af:outputText value="#{bindings.TransCustomerName.inputValue}"
+                           id="ot32"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.Description.hints.label}"
+                                   id="plam9" rendered="false">
+            <af:outputText value="#{bindings.Description.inputValue}" id="ot9"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CertifiedDocumentNum.hints.label}"
+                                   id="plam6">
+            <af:outputText value="#{bindings.CertifiedDocumentNum.inputValue}"
+                           id="ot4"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.Version.hints.label}"
+                                   id="plam10">
+            <af:outputText value="#{bindings.Version.inputValue}" id="ot33"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransInvoiceDocNumWithVersion.hints.label}"
+                                   id="plam11">
+            <af:outputText value="#{bindings.TransInvoiceDocNumWithVersion.inputValue}"
+                           id="ot34"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransContractValue.hints.label}"
+                                   id="plam12">
+            <af:outputText value="#{bindings.TransContractValue.inputValue}"
+                           id="ot36">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransContractValue.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransCumltTotal.hints.label}"
+                                   id="plam16">
+            <af:outputText value="#{bindings.TransCumltTotal.inputValue}"
+                           id="ot38">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransCumltTotal.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransCurrentTotal.hints.label}"
+                                   id="plam17">
+            <af:outputText value="#{bindings.TransCurrentTotal.inputValue}"
+                           id="ot39">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransCurrentTotal.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransNetSum.hints.label}"
+                                   id="plam20" rendered="false">
+            <af:outputText value="#{bindings.TransNetSum.inputValue}"
+                           id="ot58">
+            <af:convertNumber groupingUsed="true" type="currency"
+                    currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                    minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                    maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                    pattern="#{bindings.TransCurrentTotal.format}"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.PeriodOfMeasure.hints.label}"
+                                   id="plam2">
+            <af:outputText value="#{bindings.PeriodOfMeasure.inputValue}"
+                           id="ot2"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CertifiedDocumentDate.hints.label}"
+                                   id="plam4">
+            <af:outputText value="#{bindings.CertifiedDocumentDate.inputValue}"
+                           id="ot6">
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+         <af:inputDate value="#{bindings.ValuationDate.inputValue}"
+                    label="#{bindings.ValuationDate.hints.label}" autoSubmit="true"
+                    readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                    shortDesc="#{bindings.ValuationDate.hints.tooltip}"
+                    required="true"
+                    id="id2">
+            <f:validator binding="#{bindings.ValuationDate.validator}"/>
+            <af:convertDateTime pattern="dd-MMM-yyyy"/>
+          </af:inputDate>
+          <af:panelLabelAndMessage label="#{bindings.FileName.hints.label}"
+                                   id="plam15">
+            <af:outputText value="#{bindings.FileName.inputValue}" id="ot37"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CertifiedStatus.hints.label}"
+                                   id="plam5">
+            <af:outputText value="#{bindings.TransStatus.inputValue}" id="ot5"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.TransAttachments.hints.label}"
+                                   id="plam18">
+            <af:commandLink text="#{bindings.TransAttachments.inputValue}"
+                           id="ot40">
+              <af:showPopupBehavior popupId="p15"/>
+            </af:commandLink>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CertifiedApprovedBy.hints.label}"
+                                   rendered="false" id="plam1">
+            <af:outputText value="#{bindings.CertifiedApprovedBy.inputValue}"
+                           id="ot1"/>
+          </af:panelLabelAndMessage>
+          <af:panelLabelAndMessage label="#{bindings.CertifiedApprovedDate.hints.label}"
+                                   rendered="false" id="plam3">
+            <af:outputText value="#{bindings.CertifiedApprovedDate.inputValue}"
+                           id="ot3">
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:outputText>
+          </af:panelLabelAndMessage>
+          <af:selectBooleanCheckbox value="#{bindings.CurrentFlag1.inputValue}"
+                                    label="Current Flag" readOnly="true"
+                                    shortDesc="#{bindings.CurrentFlag1.hints.tooltip}"
+                                    id="sbc2"/>
+        </af:panelFormLayout>
+      </af:showDetailHeader>
+      <af:showDetailHeader text="Additional Details" disclosed="true" id="sdh2">
+        <af:panelFormLayout id="pfl2" rows="2" maxColumns="4" fieldWidth="70%"
+                            labelWidth="30%">
+          <af:inputText value="#{bindings.TransMainSum.inputValue}"
+                        label="#{bindings.TransMainContractAmount.hints.label}" readOnly="true"
+                        required="#{bindings.TransMainSum.hints.mandatory}"
+                        columns="#{bindings.TransMainSum.hints.displayWidth}"
+                        maximumLength="#{bindings.TransMainSum.hints.precision}"
+                        shortDesc="#{bindings.TransMainSum.hints.tooltip}"
+                        id="it18">
+            <f:validator binding="#{bindings.TransMainSum.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransMainContractAmount.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.TransVarSum.inputValue}"
+                        label="#{bindings.TransVariationRevenueAmount.hints.label}" readOnly="true"
+                        required="#{bindings.TransVarSum.hints.mandatory}"
+                        columns="#{bindings.TransVarSum.hints.displayWidth}"
+                        maximumLength="#{bindings.TransVarSum.hints.precision}"
+                        shortDesc="#{bindings.TransVarSum.hints.tooltip}"
+                        id="it15">
+            <f:validator binding="#{bindings.TransVarSum.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransVariationRevenueAmount.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.TransClaimsSum.inputValue}"
+                        label="#{bindings.TransClaimsRevenueAmount.hints.label}" readOnly="true"
+                        required="#{bindings.TransClaimsSum.hints.mandatory}"
+                        columns="#{bindings.TransClaimsSum.hints.displayWidth}"
+                        maximumLength="#{bindings.TransClaimsSum.hints.precision}"
+                        shortDesc="#{bindings.TransClaimsSum.hints.tooltip}"
+                        id="it12">
+            <f:validator binding="#{bindings.TransClaimsSum.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransClaimsRevenueAmount.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.MaterialAtSite.inputValue}"
+                        label="#{bindings.MaterialAtSite.hints.label}" autoSubmit="true"
+                        readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                        required="#{bindings.MaterialAtSite.hints.mandatory}"
+                        columns="#{bindings.MaterialAtSite.hints.displayWidth}"
+                        maximumLength="#{bindings.MaterialAtSite.hints.precision}"
+                        shortDesc="#{bindings.MaterialAtSite.hints.tooltip}"
+                        id="it14" contentStyle="text-align:right;"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.materialAtSiteVL}"
+                        binding="#{backingBeanScope.CertifiedDetailsBean.materialAtSiteBind}">
+            <f:validator binding="#{bindings.MaterialAtSite.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.MaterialAtSite.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.AdvanceReceived.inputValue}"
+                        label="#{bindings.AdvanceReceived.hints.label}" readOnly="true"
+                        required="#{bindings.AdvanceReceived.hints.mandatory}"
+                        columns="#{bindings.AdvanceReceived.hints.displayWidth}"
+                        maximumLength="#{bindings.AdvanceReceived.hints.precision}"
+                        shortDesc="#{bindings.AdvanceReceived.hints.tooltip}"
+                        id="it17">
+            <f:validator binding="#{bindings.AdvanceReceived.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.AdvanceReceived.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.AdvanceRecovered.inputValue}"
+                        label="#{bindings.AdvanceRecovered.hints.label}" autoSubmit="true"
+                        readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                        required="#{bindings.AdvanceRecovered.hints.mandatory}"
+                        columns="#{bindings.AdvanceRecovered.hints.displayWidth}"
+                        maximumLength="#{bindings.AdvanceRecovered.hints.precision}"
+                        shortDesc="#{bindings.AdvanceRecovered.hints.tooltip}"
+                        id="it19" contentStyle="text-align:right;"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.AdvanceRecoveredVL}"
+                        binding="#{backingBeanScope.CertifiedDetailsBean.advanceRecoveredBind}">
+            <f:validator binding="#{bindings.AdvanceRecovered.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.AdvanceRecovered.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.Retention.inputValue}"
+                        label="#{bindings.Retention.hints.label}" autoSubmit="true"
+                        readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                        required="#{bindings.Retention.hints.mandatory}"
+                        columns="#{bindings.Retention.hints.displayWidth}"
+                        maximumLength="#{bindings.Retention.hints.precision}"
+                        shortDesc="#{bindings.Retention.hints.tooltip}"
+                        id="it11" contentStyle="text-align:right;"
+                        binding="#{backingBeanScope.CertifiedDetailsBean.retentionBind}"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.RetentionVL}">
+            <f:validator binding="#{bindings.Retention.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.TransCurrentTotal.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.RetentionRelease.inputValue}"
+                        label="#{bindings.RetentionRelease.hints.label}" autoSubmit="true"
+                        readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                        required="#{bindings.RetentionRelease.hints.mandatory}"
+                        columns="#{bindings.RetentionRelease.hints.displayWidth}" contentStyle="text-align:right;"
+                        maximumLength="#{bindings.RetentionRelease.hints.precision}"
+                        shortDesc="#{bindings.RetentionRelease.hints.tooltip}"
+                         id="it22"
+                        binding="#{backingBeanScope.CertifiedDetailsBean.retentionReleaseBind}"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.retentionReleaseVL}">
+            <f:validator binding="#{bindings.RetentionRelease.validator}"/>
+             <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.Retention.format}"/>
+          </af:inputText>
+          <af:inputText value="#{bindings.OtherPayments.inputValue}"
+                        label="#{bindings.OtherPayments.hints.label}" autoSubmit="true"
+                        readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                        required="#{bindings.OtherPayments.hints.mandatory}"
+                        columns="#{bindings.OtherPayments.hints.displayWidth}"
+                        maximumLength="#{bindings.OtherPayments.hints.precision}"
+                        shortDesc="#{bindings.OtherPayments.hints.tooltip}"
+                        id="it16"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.OtherPaymentsVL}"
+                        binding="#{backingBeanScope.CertifiedDetailsBean.otherPaymentsBind}">
+            <f:validator binding="#{bindings.OtherPayments.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol="#{bindings.CurrencyCode.inputValue} "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.OtherPayments.format}"/>
+          </af:inputText>
+        </af:panelFormLayout>
+      </af:showDetailHeader>
+      <af:showDetailHeader text="Lines" disclosed="true" id="sdh3">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="toolbar">
+            <af:toolbar id="t2">
+              <af:commandButton text="Add from Payment Application" id="cb1"
+                                disabled="#{sessionScope.fromApplication=='Y' or ( bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                                actionListener="#{backingBeanScope.CertifiedDetailsBean.getLines}"
+                                rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"/>
+              <af:commandToolbarButton text="Export" id="ctb3">
+                <f:facet name="popup">
+                  <af:menu id="m3">
+                    <af:commandMenuItem text="Export to Excel" partialTriggers="t1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Workdone #{bindings.CertifiedDocumentNum.inputValue}.xls"
+                                                         exportedId="t1"/>
+                    </af:commandMenuItem>
+                    <af:commandMenuItem text="Export Template" id="cb13"
+                                        disabled="#{sessionScope.fromApplication=='Y' or (bindings.CertifiedStatus.inputValue!='D' and  bindings.CertifiedStatus.inputValue!='R' and  bindings.CertifiedStatus.inputValue!='W')}"
+                                        rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}">
+                      <af:fileDownloadActionListener contentType="application/vnd.ms-excel"
+                                                     filename="Upload Certified Details .xlsx"
+                                                     method="#{backingBeanScope.CertifiedDetailsBean.downloadExcel}"/>
+                    </af:commandMenuItem>
+                  </af:menu>
+                </f:facet>
+              </af:commandToolbarButton>
+              <af:commandButton text="Import" id="cb8"
+                                actionListener="#{backingBeanScope.CertifiedDetailsBean.uploadCertifiedDetails}"
+                                rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                                visible="#{sessionScope.fromApplication!='Y' and (  bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W')}"/>
+              <!--<af:commandButton text="Validate" id="cb9"
+                              actionListener="#{backingBeanScope.CertifiedDetailsBean.validateCertDocAL}"
+                              disabled="#{sessionScope.fromApplication=='Y' or ( bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R')}"/>-->
+              <af:commandButton actionListener="#{bindings.Delete.execute}"
+                                text="Delete"
+                                rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                                disabled="#{sessionScope.fromApplication=='Y' or bindings.ExtendedFlag.inputValue=='Y' or (!bindings.Delete.enabled or bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                                id="cb6"/>
+              <af:commandButton text="Delete All" id="cb16"
+                                rendered="#{sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                                disabled="#{sessionScope.fromApplication=='Y' or ( bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}">
+                <af:showPopupBehavior popupId="::p14"/>
+              </af:commandButton>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.CertifiedQtyLinesVO1.collectionModel}"
+                    var="row" rows="#{bindings.CertifiedQtyLinesVO1.rangeSize}"
+                    emptyText="#{bindings.CertifiedQtyLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.CertifiedQtyLinesVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    binding="#{backingBeanScope.CertifiedDetailsBean.linesTableBindings}"
+                    filterModel="#{bindings.CertifiedQtyLinesVO1Query.queryDescriptor}"
+                    queryListener="#{bindings.CertifiedQtyLinesVO1Query.processQuery}"
+                    varStatus="vs"
+                    selectedRowKeys="#{bindings.CertifiedQtyLinesVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.CertifiedQtyLinesVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="t1" styleClass="AFStretchWidth"
+                    columnStretching="column:c7" partialTriggers="::cb6">
+            <af:column id="c99" width="30" align="center" headerText="S.no.">
+              <af:outputText value=" #{vs.index+1} " id="ot99"/>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.PriceCode.label}"
+                       id="c36" sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.PriceCode.name}"
+                       filterable="true" sortable="true" rendered="false">
+              <af:outputText value="#{row.PriceCode}" id="ot49"/>
+            </af:column>
+               <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.BillPageItem.label}"
+                       id="c43" sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.BillPageItem.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.BillPageItem}" id="ot57"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.label}"
+                       id="c6" visible="false">
+              <af:inputText value="#{row.bindings.BoqLevel.inputValue}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.BoqLevel.tooltip}"
+                            id="it7">
+                <f:validator binding="#{row.bindings.BoqLevel.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransLineType.label}"
+                       id="c31" sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransLineType.name}"
+                       filterable="true" sortable="true" visible="false">
+              <af:outputText value="#{row.TransLineType}" id="ot43"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.name}"
+                       filterable="true" sortable="true" visible="false"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.label}"
+                       id="c3">
+              <af:inputText value="#{row.bindings.PageItem.inputValue}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.PageItem.tooltip}"
+                            id="it1">
+                <f:validator binding="#{row.bindings.PageItem.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.Item.name}"
+                       filterable="true" sortable="true" rendered="false"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.Item.label}"
+                       id="c8">
+              <af:inputText value="#{row.bindings.Item.inputValue}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.Item.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.Item.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.Item.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.Item.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.Item.tooltip}"
+                            id="it8">
+                <f:validator binding="#{row.bindings.Item.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.Description.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.Description.label}"
+                       id="c7">
+              <af:inputText value="#{row.bindings.Description.inputValue}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.Description.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.Description.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.Description.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.Description.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.Description.tooltip}"
+                            id="it9">
+                <f:validator binding="#{row.bindings.Description.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="Quantity" id="c45" align="center">
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.BillQty.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.BillQty.label}"
+                       id="c4" align="right">
+              <af:outputText value="#{row.BillQty}" id="ot24"
+                             binding="#{backingBeanScope.CertifiedDetailsBean.invQtyBindgs}">
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.BillQty.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.WdCummulativeQty.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.WdCummulativeQty.label}"
+                       id="c23" align="right">
+              <af:outputText value="#{row.WdCummulativeQty}" id="ot23">
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.WdCummulativeQty.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.InvoiceCummulativeQty.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.InvoiceCummulativeQty.label}"
+                       id="c24" align="right">
+              <af:outputText value="#{row.InvoiceCummulativeQty}" id="ot35">
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.InvoiceCummulativeQty.format}"/>
+              </af:outputText>
+            </af:column>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.Uom.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.Uom.label}"
+                       id="c2">
+              <af:inputText value="#{row.bindings.Uom.inputValue}"
+                            readOnly="true"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.Uom.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.Uom.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.Uom.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.Uom.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.Uom.tooltip}"
+                            id="it5">
+                <f:validator binding="#{row.bindings.Uom.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="Certified Quantity" id="c37" align="center">
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.PreviousCummulativeQty.label}"
+                       id="c11" align="right">
+              <af:outputText value="#{row.PreviousCummulativeQty}" id="ot11"
+                             partialTriggers="it4"
+                             binding="#{backingBeanScope.CertifiedDetailsBean.prevCumultQtyBindgs}">
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.PreviousCummulativeQty.format}"/>
+              </af:outputText>
+            </af:column>
+            <!--<af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.label}"
+                     id="c20" align="right">
+            <af:inputText value="#{row.bindings.CertCummQtyPer.inputValue}"
+                          autoSubmit="true"
+                          readOnly="#{sessionScope.fromApplication=='Y' or ( bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R')}"
+                          label="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.label}"
+                          required="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.mandatory}"
+                          columns="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.displayWidth}"
+                          maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.precision}"
+                          shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.CertCummQtyPer.tooltip}"
+                          id="it2"
+                          binding="#{backingBeanScope.CertifiedDetailsBean.certQtyCummPerBindings}"
+                          valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.CertCummQtyPerChanged}">
+              <f:validator binding="#{row.bindings.CertCummQtyPer.validator}"/>
+              <af:convertNumber pattern="#,##0.00;-#,##0.00"/>
+            </af:inputText>
+          </af:column>-->
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.label}"
+                       id="c9" align="right">
+              <af:inputText value="#{row.bindings.CertifiedCummulativeQty.inputValue}"
+                            autoSubmit="true"
+                            readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or ( bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.mandatory}"
+                            valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.validateLineQuantities}"
+                            binding="#{backingBeanScope.CertifiedDetailsBean.cummulativeQtyBindings}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.tooltip}"
+                            id="it4" inlineStyle="text-align:right;">
+                <f:validator binding="#{row.bindings.CertifiedCummulativeQty.validator}"/>
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.CertifiedCummulativeQty.format}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.label}"
+                       align="right" id="c20"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.name}"
+                       filterable="true" sortable="true">
+              <af:inputText value="#{row.bindings.TransCertifiedQtyPercnt.inputValue}"
+                            readOnly="true"
+                            binding="#{backingBeanScope.CertifiedDetailsBean.certQtyCummPerBindings}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.tooltip}"
+                            id="it2">
+                <f:validator binding="#{row.bindings.TransCertifiedQtyPercnt.validator}"/>
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="2"
+                                  minFractionDigits="2"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransCertifiedQtyPercnt.format}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransCurrentQty.label}"
+                       id="c41" sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransCurrentQty.name}"
+                       filterable="true" sortable="true" align="right">
+              <af:outputText value="#{row.TransCurrentQty}" id="ot52" partialTriggers="it4"/>
+            </af:column>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.label}"
+                       rendered="false" id="c27" align="right">
+              <af:inputText value="#{row.bindings.ActCertQtyPer.inputValue}"
+                            autoSubmit="true"
+                            readOnly="#{bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W'}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.ActCertQtyPer.tooltip}"
+                            id="it10"
+                            valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.ActCertQtyPerChanged}"
+                            binding="#{backingBeanScope.CertifiedDetailsBean.actCertQtyPerBindings}">
+                <f:validator binding="#{row.bindings.ActCertQtyPer.validator}"/>
+                <af:convertNumber pattern="#,##0.00;-#,##0.00"/>
+              </af:inputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.name}"
+                       filterable="true" sortable="true" rendered="false"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.label}"
+                       id="c1" align="right">
+              <af:inputText value="#{row.bindings.ActualCertifiedQty.inputValue}"
+                            autoSubmit="true"
+                            valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.actualQtyVL}"
+                            readOnly="#{bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W'}"
+                            binding="#{backingBeanScope.CertifiedDetailsBean.actCertifiedQtyBindgs}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.tooltip}"
+                            id="it6">
+                <f:validator binding="#{row.bindings.ActualCertifiedQty.validator}"/>
+                <af:convertNumber groupingUsed="true" type="number"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.ActualCertifiedQty.format}"/>
+              </af:inputText>
+              <f:facet name="footer">
+                <af:panelGroupLayout id="pgl3" layout="horizontal"
+                                     halign="right">
+                  <af:outputText value="Total" inlineStyle="font-weight:bold;"
+                                 id="ot130"/>
+                </af:panelGroupLayout>
+              </f:facet>
+            </af:column>
+            <!--<af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.label}"
+                     id="c5" align="right">
+            <af:inputText value="#{row.bindings.PreviousBoqRate.inputValue}"
+                          label="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.label}"
+                          required="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.mandatory}"
+                          columns="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.displayWidth}"
+                          maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.precision}"
+                          shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.tooltip}"
+                          id="it3">
+              <f:validator binding="#{row.bindings.PreviousBoqRate.validator}"/>
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.CertifiedQtyLinesVO1.hints.PreviousBoqRate.format}"/>
+            </af:inputText>
+          </af:column>-->
+            <!--<af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.CurrentBoqRate.label}"
+                     id="c10" align="right">
+            <af:outputText value="#{row.CurrentBoqRate}" id="ot10"
+                           partialTriggers="it4">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.CertifiedQtyLinesVO1.hints.CurrentBoqRate.format}"/>
+            </af:outputText>
+            <f:facet name="footer">
+              <af:panelGroupLayout id="pgl3" layout="scroll" halign="right">
+                <af:outputText value="Net Value" inlineStyle="font-weight:bold;"
+                               id="ot130"></af:outputText>
+              </af:panelGroupLayout>
+            </f:facet>
+          </af:column>-->
+          <af:column sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.SellingRate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedQtyLinesVO1.hints.SellingRate.label} (#{bindings.CurrencyCode.inputValue})"
+                       id="c40" align="right">
+              <af:outputText value="#{row.SellingRate}" id="ot51">
+                <af:convertNumber groupingUsed="true" maxFractionDigits="10"
+                                      pattern="#{bindings.CertifiedQtyLinesVO1.hints.SellingRate.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.SellingAmount.label}"
+                       id="c48"
+                       filterable="true" sortable="true"
+                       align="right">
+              <af:outputText value="#{row.SellingAmount}" id="ot62">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.SellingAmount.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="Certified Amount (#{bindings.CurrencyCode.inputValue})" id="c39" align="center">
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransPreviousAmount.label}"
+                       id="c19" align="right">
+              <af:outputText value="#{row.bindings.TransPreviousAmount.inputValue}"
+                             id="ot42">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransPreviousAmount.format}"/>
+              </af:outputText>
+              <f:facet name="footer">
+                <af:panelGroupLayout id="pgl28" layout="scroll" halign="right">
+                  <af:outputText value="#{bindings.TransPreviousAmountTotal.inputValue}"
+                                 inlineStyle="font-weight:bold;" id="ot138">
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransPreviousAmount.format}"/>
+                  </af:outputText>
+                </af:panelGroupLayout>
+              </f:facet>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.label}"
+                       id="c5" align="right"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransCumulativeCertAmnt}" id="ot10">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.format}"/>
+              </af:outputText>
+              <f:facet name="footer">
+                <af:panelGroupLayout id="pgl2" layout="scroll" halign="right">
+                  <af:outputText value="#{bindings.TransCumltTotal.inputValue}"
+                                 inlineStyle="font-weight:bold;" id="ot13">
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.format}"/>
+                  </af:outputText>
+                </af:panelGroupLayout>
+              </f:facet>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransCurrentCertAmount.label}"
+                       id="c10" align="right"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransCurrentCertAmount.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransCurrentCertAmount}" id="ot21">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.format}"/>
+              </af:outputText>
+              <f:facet name="footer">
+                <af:panelGroupLayout id="pgl4" layout="scroll" halign="right">
+                  <af:outputText value="#{bindings.TransCurrentTotal.inputValue}"
+                                 inlineStyle="font-weight:bold;" id="ot15">
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                      pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransCumulativeCertAmnt.format}"/>
+                  </af:outputText>
+                </af:panelGroupLayout>
+              </f:facet>
+            </af:column>
+            </af:column>
+            <!--<af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransActualCertifiedAmt.label}"
+                     id="c19" align="right" rendered="false"
+                     sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransActualCertifiedAmt.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransActualCertifiedAmt}" id="ot29">
+              <af:convertNumber pattern="#,##0.00;-#,##0.00"/>
+            </af:outputText>
+            <f:facet name="footer">
+              <af:panelGroupLayout id="pgl5" layout="scroll" halign="right">
+                <af:outputText value="#{bindings.TransActualTotal.inputValue}"
+                               inlineStyle="font-weight:bold;" id="ot32">
+                  <af:convertNumber pattern="#,##0.00;-#,##0.00"/>
+                </af:outputText>
+              </af:panelGroupLayout>
+            </f:facet>
+          </af:column>-->
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransRemainingQty.label}"
+                       id="c12" align="right"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.TransRemainingQty.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransRemainingQty}" id="ot12"
+                             partialTriggers="it4">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" " maxFractionDigits="10"
+                                  pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransActualCertifiedAmt.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.label}"
+                       id="c25"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.name}"
+                       filterable="true" sortable="true" width="200">
+              <af:inputText value="#{row.bindings.Remarks.inputValue}"
+                            readOnly="#{sessionScope.fromApplication=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE!='Y' or (bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')}"
+                            label="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.label}"
+                            required="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.mandatory}"
+                            columns="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.displayWidth}"
+                            maximumLength="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.precision}"
+                            shortDesc="#{bindings.CertifiedQtyLinesVO1.hints.Remarks.tooltip}"
+                            id="it3">
+                <f:validator binding="#{row.bindings.Remarks.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.ErrorMsg.label}"
+                       width="300" id="c26"
+                       sortProperty="#{bindings.CertifiedQtyLinesVO1.hints.ErrorMsg.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.ErrorMsg}" id="ot31"/>
+            </af:column>
+            <!--<af:column headerText="#{bindings.CertifiedQtyLinesVO1.hints.TransAmount.label}"
+                     id="c20" align="right" width="150">
+            <af:outputText value="#{row.TransAmount}" id="ot15"
+                           partialTriggers="it4">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransAmount.format}"/>
+            </af:outputText>
+            <f:facet name="footer">
+              <af:panelGroupLayout id="pgl4" layout="scroll" halign="right">
+                <af:outputText value="#{bindings.TransGrandTotal.inputValue}"
+                               id="ot13" partialTriggers="ot10">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.CertifiedQtyLinesVO1.hints.TransGrandTotal.format}"/>
+                </af:outputText>
+              </af:panelGroupLayout>
+            </f:facet>
+          </af:column>-->
+          </af:table>
+        </af:panelCollection>
+      </af:showDetailHeader>
+      <af:popup id="p1" contentDelivery="lazyUncached"
+                binding="#{backingBeanScope.CertifiedDetailsBean.populateLinesPopup}">
+        <af:dialog id="d1" title="Lines" type="cancel" closeIconVisible="false" resize="on">
+          <f:facet name="buttonBar">
+            <af:commandButton text="Populate" id="cb2"
+                              actionListener="#{backingBeanScope.CertifiedDetailsBean.populateLines}"/>
+          </f:facet>
+          <af:panelHeader text="" id="ph2" styleClass="AFStretchWidth">
+            <af:table value="#{bindings.CertifiedLinesPopulateVO1.collectionModel}"
+                      var="row"
+                      rows="#{bindings.CertifiedLinesPopulateVO1.rangeSize}"
+                      emptyText="#{bindings.CertifiedLinesPopulateVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.CertifiedLinesPopulateVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      filterModel="#{bindings.CertifiedLinesPopulateVO1Query.queryDescriptor}"
+                      queryListener="#{bindings.CertifiedLinesPopulateVO1Query.processQuery}"
+                      varStatus="vs"
+                      binding="#{backingBeanScope.CertifiedDetailsBean.popupTableBindings}"
+                      selectedRowKeys="#{bindings.CertifiedLinesPopulateVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.CertifiedLinesPopulateVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t4" styleClass="AFStretchWidth">
+              <af:column rowHeader="true" width="5" id="c30" headerText=" ">
+                <af:outputText value=" " id="ot28"/>
+              </af:column>
+              <af:column headerText=" " id="c22" width="30">
+                <f:facet name="header">
+                  <af:selectBooleanCheckbox simple="true" text=""
+                                            autoSubmit="true"
+                                            disabled="#{(bindings.CertifiedStatus.inputValue!='D' and bindings.CertifiedStatus.inputValue!='R' and bindings.CertifiedStatus.inputValue!='W')  or sessionScope.fromApplication=='Y'}"
+                                            binding="#{backingBeanScope.CertifiedDetailsBean.selectAllLineBindings}"
+                                            valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.selectAllVL}"
+                                            id="selectAll2"/>
+                </f:facet>
+                <af:selectBooleanCheckbox value="#{row.bindings.TransFlag.inputValue}"
+                                          autoSubmit="true" simple="true"
+                                          label="#{row.bindings.TransFlag.label}"
+                                          shortDesc="#{bindings.CertifiedLinesPopulateVO1.hints.TransFlag.tooltip}"
+                                          id="sbc1"/>
+              </af:column>
+              <af:column headerText="#{bindings.CertifiedLinesPopulateVO1.hints.PriceCode.label}"
+                         id="c42" rendered="false"
+                         sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.PriceCode.name}"
+                         filterable="true" sortable="true">
+                <af:outputText value="#{row.PriceCode}" id="ot53"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.BoqLevel.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.BoqLevel.label}"
+                         id="c14">
+                <af:outputText value="#{row.BoqLevel}" id="ot19"/>
+              </af:column>
+              <af:column headerText="#{bindings.CertifiedLinesPopulateVO1.hints.BillPageItem.label}"
+                         id="c47"
+                         sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.BillPageItem.name}"
+                         filterable="true" sortable="true">
+                <af:outputText value="#{row.BillPageItem}" id="ot61"/>
+              </af:column>
+              <af:column headerText="#{bindings.CertifiedLinesPopulateVO1.hints.LineType.label}"
+                         id="c35"
+                         sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.LineType.name}"
+                         filterable="true" sortable="true">
+                <af:outputText value="#{row.LineType}" id="ot47"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.PageItem.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.PageItem.label}"
+                         id="c13">
+                <af:outputText value="#{row.PageItem}" id="ot20"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.Item.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.Item.label}"
+                         id="c15">
+                <af:outputText value="#{row.Item}" id="ot18"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.Description.name}"
+                         filterable="true" sortable="true" width="200"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.Description.label}"
+                         id="c16">
+                <af:outputText value="#{row.Description}" id="ot16"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.BillQty.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.BillQty.label}"
+                         id="c17" align="right">
+                <af:outputText value="#{row.BillQty}" id="ot22"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.Uom.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.Uom.label}"
+                         id="c21">
+                <af:outputText value="#{row.Uom}" id="ot17"/>
+              </af:column>
+              <af:column headerText="#{bindings.CertifiedLinesPopulateVO1.hints.CurrentRate.label}"
+                         filterable="true" sortable="true"
+                         id="c44">
+                <af:outputText value="#{row.CurrentRate}" id="ot59"/>
+              </af:column>
+              <af:column headerText="#{bindings.CertifiedLinesPopulateVO1.hints.SellingAmount.label}"
+                         filterable="true" sortable="true"
+                         id="c46">
+                <af:outputText value="#{row.SellingAmount}" id="ot60"/>
+              </af:column>
+              <!--<af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.SellingRate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CertifiedLinesPopulateVO1.hints.SellingRate.label}"
+                       id="c19">
+              <af:outputText value="#{row.SellingRate}" id="ot21"/>
+            </af:column>-->
+              <af:column sortProperty="#{bindings.CertifiedLinesPopulateVO1.hints.FinalQty.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.CertifiedLinesPopulateVO1.hints.FinalQty.label}"
+                         id="c18">
+                <af:outputText value="#{row.FinalQty}" id="ot14"/>
+              </af:column>
+            </af:table>
+          </af:panelHeader>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p3"
+                binding="#{backingBeanScope.CertifiedDetailsBean.uploadCertifiedPopUp}">
+        <af:dialog id="d3" title="Browse File"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.uploadCertifiedDialog}"
+                   affirmativeTextAndAccessKey="Import">
+          <af:inputFile label="File" id="if1"
+                        autoSubmit="true"
+                        valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.fileXLUploaded}"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p2"
+                binding="#{backingBeanScope.CertifiedDetailsBean.validateCertifiedPopUp}">
+        <af:dialog id="d2" title="Validate Work Done Qty Lines" type="okCancel"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.uploadCertifiedDialog}">
+          <af:outputText value="Given File details are obtained successfully. Do you want to continue to upload Work Done Lines?"
+                         id="ot25"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p8"
+                binding="#{backingBeanScope.CertifiedDetailsBean.cancelCertifiedDocPopupBindgs}">
+        <af:dialog id="d8" title="Cancel Certified Document Confirmation."
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.cancelCertifiedPopupAL}">
+          <af:outputText id="ot54"
+                         value="Are you sure. Do you want to cancel the selecet Certified Details Document."/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p6"
+                binding="#{backingBeanScope.CertifiedDetailsBean.deleteCertifiedPopupBindgs}">
+        <af:dialog id="d6" title="Delete Certified Document Confirmation."
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.deleteCertifiedPopupAL}">
+          <af:outputText id="ot44"
+                         value="Are you sure do you want to delete the selected  Certified Details Document."/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p7"
+                binding="#{backingBeanScope.CertifiedDetailsBean.reviseCertifiedDocPopupBindgs}">
+        <af:dialog id="d7" title="Revising Certified Document Confirmation."
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.reviseCertifiedPopupAL}">
+          <af:outputText id="ot30"
+                         value="This action will create a revision on this document. Do you want to continue?"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p4"
+                binding="#{backingBeanScope.CertifiedDetailsBean.cancelCertDocPopupBindgs}">
+        <af:dialog id="d4"
+                   title="Warning"
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.cancelCertDocPopupAL}">
+          <af:outputText id="ot26"
+                         value="You cannot undo this action. Do you want to continue?"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p13"
+              binding="#{backingBeanScope.CertifiedDetailsBean.cancelCertDocBind}">
+      <af:dialog id="d13" title="Cancel Document"
+                 dialogListener="#{backingBeanScope.CertifiedDetailsBean.cancelCertDocAL}">
+        <af:inputText label="Reason" id="it13" required="true" value="#{pageFlowScope.CANCEL_REMARKS}"/>
+      </af:dialog>
+    </af:popup>
+      <af:popup id="p5"
+                binding="#{backingBeanScope.CertifiedDetailsBean.deleteCertPopupBindgs}">
+        <af:dialog id="d5"
+                   title="Delete Certificate Details Document Confirmation."
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.deleteCertDocPopupAL}">
+          <af:outputText id="ot27"
+                         value="The selected document will be permanently deleted. This action cannot be undone. Do you want to continue?"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p10">
+        <af:dialog id="d10"
+                   title="Withdraw Document"
+                   type="none">
+          <!--<af:outputText value="Are you sure. Do you want to withdraw the current Liability Document from Approval?  " 
+                         id="ot34" inlineStyle="font-weight:bold;"/>-->
+          <af:inputText label="Reason" id="it39" columns="40" rows="2"
+                        value="#{pageFlowScope.WITHDRAWL_REASON}"/>
+          <f:facet name="buttonBar">
+            <af:group id="g5">
+              <af:commandButton actionListener="#{backingBeanScope.CertifiedDetailsBean.withdrawSubmission}"
+                                text="Yes" id="cb20"/>
+              <af:commandButton text="No" id="cb21" immediate="true"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p9"
+                binding="#{backingBeanScope.NotificationBean.approvePopUp}">
+        <af:dialog id="d9" title="Approve" type="yesNo"
+                   dialogListener="#{backingBeanScope.NotificationBean.approveDialog}">
+          <af:inputText id="ot50" label="Comment"
+                         value="#{pageFlowScope.APPROVAL_REMARKS}"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p11"
+                binding="#{backingBeanScope.NotificationBean.rejectPopUp}">
+        <af:dialog id="d11" title="Reject" type="yesNo"
+                   dialogListener="#{backingBeanScope.NotificationBean.rejectDialog}">
+          <af:inputText id="ot45" label="Comment" required="true"
+                         value="#{pageFlowScope.APPROVAL_REMARKS}"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p12"
+                binding="#{backingBeanScope.CertifiedDetailsBean.submitForApprPopupBindgs}">
+        <af:dialog id="d12" title="Confirmation" type="none">
+          <af:outputText id="ot46"
+                         value="You are submitting the document for approval. Do you want to continue?"/>
+          <f:facet name="buttonBar">
+            <af:group id="g56">
+              <af:commandButton actionListener="#{backingBeanScope.CertifiedDetailsBean.submitForApprlPopupAL}"
+                                text="Yes" id="cb206"/>
+              <af:commandButton text="No" id="cb216" immediate="true"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p15"
+                popupCanceledListener="#{backingBeanScope.CertifiedDetailsBean.attachmemntFilesPopupCL}"
+                binding="#{backingBeanScope.CertifiedDetailsBean.attachmentFilesPopupBindgs}">
+        <af:dialog id="d15" title="Attachments" type="none">
+          <af:panelCollection id="pc4" styleClass="AFStretWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t8">
+                <af:commandButton actionListener="#{bindings.CreateInsert.execute}"
+                                  text="Add" partialSubmit="true"
+                                  rendered="#{ sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y' and  (bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W')}"
+                                  id="cb12"/>
+                <af:commandButton actionListener="#{bindings.Delete1.execute}"
+                                  text="Delete"
+                                  rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y' and ( bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W')}"
+                                  partialSubmit="true" id="cb14"/>
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.AttachmentsVO3.collectionModel}"
+                      var="row" rows="#{bindings.AttachmentsVO3.rangeSize}"
+                      emptyText="#{bindings.AttachmentsVO3.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.AttachmentsVO3.rangeSize}"
+                      rowBandingInterval="0"
+                      filterModel="#{bindings.AttachmentsVO3Query.queryDescriptor}"
+                      queryListener="#{bindings.AttachmentsVO3Query.processQuery}"
+                      filterVisible="false" varStatus="vs"
+                      partialTriggers="::cb12 ::cb14"
+                      selectedRowKeys="#{bindings.AttachmentsVO3.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.AttachmentsVO3.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t5">
+              <af:column sortProperty="#{bindings.AttachmentsVO3.hints.AttachmentId.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.AttachmentsVO3.hints.AttachmentId.label}"
+                         id="c34">
+                <af:inputText value="#{row.bindings.AttachmentId.inputValue}"
+                              label="#{bindings.AttachmentsVO3.hints.AttachmentId.label}"
+                              required="#{bindings.AttachmentsVO3.hints.AttachmentId.mandatory}"
+                              columns="#{bindings.AttachmentsVO3.hints.AttachmentId.displayWidth}"
+                              maximumLength="#{bindings.AttachmentsVO3.hints.AttachmentId.precision}"
+                              shortDesc="#{bindings.AttachmentsVO3.hints.AttachmentId.tooltip}"
+                              id="it21">
+                  <f:validator binding="#{row.bindings.AttachmentId.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.AttachmentsVO3.hints.FileName.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.AttachmentsVO3.hints.FileName.label}"
+                         id="c33">
+                <af:commandLink text="#{row.FileName}" id="ot56" partialTriggers="if2"
+                                binding="#{backingBeanScope.CertifiedDetailsBean.fileNameBindgs}">
+                  <af:fileDownloadActionListener contentType="#{row.FileType}"
+                                                 method="#{backingBeanScope.CertifiedDetailsBean.downloadFileAction}"/>
+                </af:commandLink>
+              </af:column>
+              <af:column sortProperty="#{bindings.AttachmentsVO3.hints.CreatedBy.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.AttachmentsVO3.hints.CreatedBy.label}"
+                         id="c28">
+                <af:outputText value="#{row.CreatedBy}"
+                               binding="#{backingBeanScope.CertifiedDetailsBean.fileCcreatedByBindgs}"
+                               id="ot41"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.AttachmentsVO3.hints.CreationDate.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.AttachmentsVO3.hints.CreationDate.label}"
+                         id="c32">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.CreationDate}"
+                                id="id3"/>
+                </f:facet>
+                <af:inputDate value="#{row.bindings.CreationDate.inputValue}" readOnly="true"
+                              label="#{bindings.AttachmentsVO3.hints.CreationDate.label}"
+                              required="#{bindings.AttachmentsVO3.hints.CreationDate.mandatory}"
+                              shortDesc="#{bindings.AttachmentsVO3.hints.CreationDate.tooltip}"
+                              id="id1">
+                  <f:validator binding="#{row.bindings.CreationDate.validator}"/>
+                  <af:convertDateTime pattern="#{bindings.AttachmentsVO3.hints.CreationDate.format}"/>
+                </af:inputDate>
+              </af:column>
+              <af:column sortProperty="#{bindings.AttachmentsVO3.hints.FileType.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.AttachmentsVO3.hints.FileType.label}"
+                         id="c29">
+                <af:outputText value="#{row.FileType}" id="it20"/>
+              </af:column>
+              <af:column headerText="Upload File" id="c38" width="150">
+                <af:inputFile id="if2" autoSubmit="true"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              binding="#{backingBeanScope.CertifiedDetailsBean.attachFileBindgs}"
+                              valueChangeListener="#{backingBeanScope.CertifiedDetailsBean.attachFileVL}"></af:inputFile>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+          <f:facet name="buttonBar">
+            <af:group id="g1">
+              <af:commandButton text="Save" id="cb9"
+                                rendered="#{sessionScope.fromApplication!='Y' and sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y' and ( bindings.CertifiedStatus.inputValue=='D' or bindings.CertifiedStatus.inputValue=='R' or bindings.CertifiedStatus.inputValue=='W')}"
+                                actionListener="#{backingBeanScope.CertifiedDetailsBean.saveBoqLinesAL}"/>
+              <af:commandButton text="Cancel" id="cb15"
+                                actionListener="#{backingBeanScope.CertifiedDetailsBean.cancelAL}"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p14">
+        <af:dialog id="d14"
+                   dialogListener="#{backingBeanScope.CertifiedDetailsBean.CertifiedLinesDeleteAll}"
+                   title="Delete Confirmation">
+          <af:outputText value="All the lines will be deleted from document. This action cannot be undone. Do you want to continue?"
+                         id="ot48"/>
+        </af:dialog>
+      </af:popup>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</jsp:root>

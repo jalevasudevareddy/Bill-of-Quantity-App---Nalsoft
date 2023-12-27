@@ -1,0 +1,12 @@
+//Groovy Scripts for model.view.PaymentCertLinesVO
+
+package model.view
+
+import oracle.jbo.script.annotation.AccessorParameterExpression;
+
+@AccessorParameterExpression(accessorName="PaymentCertHdrVO1", name="p_hdr_id")
+def p_hdr_id_PaymentCertHdrVO1_BindVariable_BoundParameter()
+{
+PcHeaderId
+}
+

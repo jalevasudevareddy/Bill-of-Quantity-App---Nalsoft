@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="MaterialAtSiteSearchTF">
+    <default-activity id="__1">MaterialAtSiteSearch</default-activity>
+    <transaction id="__2">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__9">
+      <managed-bean-name id="__10">MaterialAtSiteDetailsBean</managed-bean-name>
+      <managed-bean-class id="__8">bean.MaterialAtSiteDetailsBean</managed-bean-class>
+      <managed-bean-scope id="__11">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="MaterialAtSiteSearch">
+      <page>/pagefragments/MaterialAtSiteSearch.jsff</page>
+    </view>
+    <task-flow-call id="MaterialAtSiteTF">
+      <task-flow-reference>
+        <document>/WEB-INF/MaterialAtSiteTF.xml</document>
+        <id>MaterialAtSiteTF</id>
+      </task-flow-reference>
+    </task-flow-call>
+    <control-flow-rule id="__3">
+      <from-activity-id id="__4">MaterialAtSiteSearch</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome id="__7">Edit</from-outcome>
+        <to-activity-id id="__6">MaterialAtSiteTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

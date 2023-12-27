@@ -1,0 +1,51 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">ActivityMaster</property>
+      <property
+         name="page">/pagefragments/ActivityMaster.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ActivityMaster&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">240.29883</property>
+      <property
+         name="x">425.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View2"
+      to="TaskFlowCall5">
+      <property
+         name="fromOutcome">Done</property>
+      <property
+         name="sdm:polyPoints">R50,466.0,239.94824,667.34766,237.34473,L50</property>
+   </ControlFlowCase>
+   <TaskFlowCall
+      id="TaskFlowCall5">
+      <property
+         name="activityId">HomePageTF</property>
+      <property
+         name="documentReference">/WEB-INF/HomePageTF.xml</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>HomePageTF&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="taskFlowId">HomePageTF</property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">237.34473</property>
+      <property
+         name="x">708.34766</property>
+   </TaskFlowCall>
+</SDM>

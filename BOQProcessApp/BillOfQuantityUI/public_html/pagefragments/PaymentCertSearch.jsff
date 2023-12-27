@@ -1,0 +1,372 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Manage Certificate" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true"
+                fieldWidth="70%" labelWidth="30%"
+                value="#{bindings.PaymentCertSearchVOCriteriaQuery.queryDescriptor}"
+                model="#{bindings.PaymentCertSearchVOCriteriaQuery.queryModel}"
+                queryListener="#{bindings.PaymentCertSearchVOCriteriaQuery.processQuery}"
+                queryOperationListener="#{bindings.PaymentCertSearchVOCriteriaQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1" maxColumns="2" rows="3" saveQueryMode="hidden"/>
+    </af:panelHeader>
+    <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+      <f:facet name="legend">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="toolbar">
+            <af:toolbar id="t1">
+              <af:commandImageLink id="cb2" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.PaymentCertificateSearchBean.createHeaderRow}"
+                                   shortDesc="Create"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"/>
+              <af:commandImageLink id="cb1" icon="/images/edit.png"
+                                   partialTriggers="resId1 ::qryId1"
+                                   disabledIcon="/images/edit_disable.png"
+                                   disabled="#{backingBeanScope.PaymentCertificateSearchBean.searchTable.rowCount==0}"
+                                   actionListener="#{backingBeanScope.PaymentCertificateSearchBean.editDocument}"
+                                   hoverIcon="/images/edit_active.png"
+                                   shortDesc="Edit"/>
+              <af:outputText value="#{bindings.BuName2.inputValue}" id="ot20" rendered="false"/>
+              <af:outputText value="#{bindings.PcNum.inputValue}" id="ot21" rendered="false"/>
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.PaymentCertSearchVO1.collectionModel}"
+                    var="row"
+                    binding="#{backingBeanScope.PaymentCertificateSearchBean.searchTable}"
+                    rows="#{bindings.PaymentCertSearchVO1.rangeSize}"
+                    emptyText="#{bindings.PaymentCertSearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.PaymentCertSearchVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.PaymentCertSearchVOCriteriaQuery.queryDescriptor}"
+                    queryListener="#{bindings.PaymentCertSearchVOCriteriaQuery.processQuery}"
+                    varStatus="vs"
+                    selectedRowKeys="#{bindings.PaymentCertSearchVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.PaymentCertSearchVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="resId1">
+            <af:column rowHeader="true" width="5" id="rowHdr" headerText=" ">
+              <af:outputText value=" " id="otrowHdr"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.ProjectName.name}"
+                       filterable="true" sortable="true" width="150"
+                       frozen="true" rendered="false"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.ProjectName.label}"
+                       id="resId1c3">
+              <af:outputText value="#{row.ProjectName}" id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.ProjectNumber1.name}"
+                       filterable="true" sortable="true" width="100"
+                       frozen="true" rendered="false"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.ProjectNumber1.label}"
+                       id="c8">
+              <af:outputText value="#{row.ProjectNumber1}" id="ot16"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.Cognomen.name}"
+                       filterable="true" sortable="true" width="100" frozen="true"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.Cognomen.label}"
+                       id="c16">
+              <af:outputText value="#{row.Cognomen}" id="ot23"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.ContractNumber.name}"
+                       filterable="true" sortable="true" width="100" frozen="true"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.ContractNumber.label}"
+                       id="c15">
+              <af:outputText value="#{row.ContractNumber}" id="ot22"/>
+            </af:column>            
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.PcDocumentNum.name}"
+                       filterable="true" sortable="true" width="150"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.PcDocumentNum.label}"
+                       id="resId1c5">
+              <af:commandLink text="#{row.PcDocumentNum}" id="ot2"
+                              actionListener="#{backingBeanScope.PaymentCertificateSearchBean.editDocument}"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.PcDate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.PcDate.label}"
+                       id="resId1c8">
+              <f:facet name="filter">
+                <af:inputDate value="#{vs.filterCriteria.PcDate}" id="id1"/>
+              </f:facet>
+              <af:outputText value="#{row.PcDate}" id="ot4">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.PcNum.label}"
+                       id="c2"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.PcNum.name}"
+                       filterable="true" sortable="true" width="150">
+              <af:commandLink text="#{row.PcNum}" id="cl10" rendered="#{false and row.PcStatus=='P'}">
+                <af:showPopupBehavior popupId=":::p3"/>
+              </af:commandLink>
+              <af:outputText value="#{row.PcNum}" id="ot10" rendered="#{true||row.PcStatus!='P'}"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransStatus.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.TransStatus.label}"
+                       id="resId1c7">
+              <af:outputText value="#{row.TransStatus}" id="ot3"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransPartyName.label}"
+                       id="c6"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransPartyName.name}"
+                       filterable="true" sortable="true" width="150">
+              <af:outputText value="#{row.TransPartyName}" id="ot14"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.BuName2.name}"
+                       filterable="true" sortable="true" width="200"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.BuName2.label}"
+                       id="c7">
+              <af:outputText value="#{row.BuName2}" id="ot15"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransDocumentType.name}"
+                       filterable="true" sortable="true" rendered="false"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.TransDocumentType.label}"
+                       id="resId1c4">
+              <af:outputText value="#{row.TransDocumentType}" id="ot5"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.PaymentCertSearchVO1.hints.Revision.name}"
+                       filterable="true" sortable="true" rendered="false"
+                       headerText="#{bindings.PaymentCertSearchVO1.hints.Revision.label}"
+                       id="resId1c6">
+              <af:outputText value="#{row.Revision}" id="ot7"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.Period.label}"
+                       id="c1"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.Period.name}"
+                       filterable="true" sortable="true" rendered="false">
+              <af:outputText value="#{row.Period}" id="ot9"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransProjectType.label}"
+                       id="c4"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransProjectType.name}"
+                       filterable="true" sortable="true" width="150"
+                       rendered="false">
+              <af:outputText value="#{row.TransProjectType}" id="ot12"/>
+            </af:column>
+            <af:column headerText="Customer Number" id="c5"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransPartyNum.name}"
+                       filterable="true" sortable="true" width="100"
+                       rendered="false">
+              <af:outputText value="#{row.TransPartyNum}" id="ot13"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransTotalContractVal.label}"
+                       id="c3"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransTotalContractVal.name}"
+                       filterable="true" sortable="true" rendered="false">
+              <af:outputText value="#{row.TransTotalContractVal}" id="ot11">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.PaymentCertSearchVO1.hints.TransTotalContractVal.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransPrevInvoicedAmt.label}"
+                       id="c12" align="right"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransPrevInvoicedAmt.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransPrevInvoicedAmt}" id="ot17">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.PaymentCertSearchVO1.hints.TransTotalContractVal.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransCurrentInvoicedAmt.label}"
+                       id="c13" align="right"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransCurrentInvoicedAmt.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransCurrentInvoicedAmt}" id="ot18">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.PaymentCertSearchVO1.hints.TransTotalContractVal.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.TransCummInvoicedAmt.label}"
+                       id="c14" align="right"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.TransCummInvoicedAmt.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransCummInvoicedAmt}" id="ot19">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.PaymentCertSearchVO1.hints.TransCummInvoicedAmt.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.ArFlag.label}"
+                       id="c11">
+              <af:outputText value="outputText3" id="ot24" rendered="false"/>
+              <af:selectBooleanCheckbox value="#{row.bindings.ArFlag.inputValue}"
+                                        label="#{row.bindings.ArFlag.label}" readOnly="true"
+                                        shortDesc="#{bindings.PaymentCertSearchVO1.hints.ArFlag.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.PcApprovedBy.label}"
+                       id="c9"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.PcApprovedBy.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.PcApprovedBy}" id="ot6"/>
+            </af:column>
+            <af:column headerText="#{bindings.PaymentCertSearchVO1.hints.PcApprovedDate.label}"
+                       id="c10"
+                       sortProperty="#{bindings.PaymentCertSearchVO1.hints.PcApprovedDate.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.PcApprovedDate}" id="ot8">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </f:facet>
+      <af:popup id="p1" contentDelivery="lazyUncached"
+                popupCanceledListener="#{backingBeanScope.PaymentCertificateSearchBean.cancelPopup}"
+                binding="#{backingBeanScope.PaymentCertificateSearchBean.createPopup}">
+        <af:dialog id="d1" title="Create Payment Certificate" resize="off"
+                   type="none" stretchChildren="none">
+          <af:panelFormLayout id="pfp1" styleClass="AFStretchWidth">
+            <af:inputComboboxListOfValues id="transBUNameId" autoSubmit="true"
+                                          popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                          value="#{bindings.TransBuName.inputValue}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.buNameVL}"
+                                          label="#{bindings.TransBuName.hints.label}"
+                                          model="#{bindings.TransBuName.listOfValuesModel}"
+                                          required="true"
+                                          columns="#{bindings.TransBuName.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransBuName.hints.tooltip}">
+              <f:validator binding="#{bindings.TransBuName.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transProjectNumberId"
+                                          autoSubmit="true" required="true"
+                                          binding="#{backingBeanScope.PaymentCertificateSearchBean.prjNumBindgs}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.prjNumVL}"
+                                          partialTriggers="transBUNameId" rendered="false"
+                                          disabled="#{bindings.TransBuName.inputValue==null}"
+                                          popupTitle="Search and Select: #{bindings.TransProjectNum.hints.label}"
+                                          value="#{bindings.TransProjectNum.inputValue}"
+                                          label="#{bindings.TransProjectNum.hints.label}"
+                                          model="#{bindings.TransProjectNum.listOfValuesModel}"
+                                          columns="#{bindings.TransProjectNum.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransProjectNum.hints.tooltip}">
+              <f:validator binding="#{bindings.TransProjectNum.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transContractNumberId" partialTriggers="transBUNameId" 
+                                          popupTitle="Search and Select: #{bindings.TransContractNumber.hints.label}"
+                                          value="#{bindings.TransContractNumber.inputValue}"
+                                            disabled="#{bindings.TransBuName.inputValue==null}"
+                                          label="#{bindings.TransContractNumber.hints.label}"
+                                          model="#{bindings.TransContractNumber.listOfValuesModel}"
+                                          autoSubmit="true" required="true"
+                                          columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransContractNumber.hints.tooltip}"
+                                          binding="#{backingBeanScope.PaymentCertificateSearchBean.contractNumBind}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.contractNumVL}">
+              <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+            </af:inputComboboxListOfValues>
+            <!--<af:inputText value="#{bindings.TransCustomerNumber.inputValue}" autoSubmit="true"
+                                  label="#{bindings.TransCustomerNumber.hints.label}"   
+                                  
+                                  valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.custNumVL}"
+                                  required="true"
+                                  columns="#{bindings.TransCustomerNumber.hints.displayWidth}"
+                                  maximumLength="#{bindings.TransCustomerNumber.hints.precision}"
+                                  shortDesc="#{bindings.TransCustomerNumber.hints.tooltip}"
+                                  id="it1">
+                      <f:validator binding="#{bindings.TransCustomerNumber.validator}"/>
+                    </af:inputText>-->
+            <af:inputComboboxListOfValues id="transDocType1Id"
+                                          popupTitle="Search and Select: #{bindings.TransDocType.hints.label}"
+                                          value="#{bindings.TransDocType.inputValue}"
+                                          label="#{bindings.TransDocType.hints.label}"
+                                          model="#{bindings.TransDocType.listOfValuesModel}"
+                                          required="true"  partialTriggers="transBUNameId transContractNumberId" 
+                                          columns="#{bindings.TransDocType.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransDocType.hints.tooltip}"
+                                          disabled="#{bindings.TransBuName.inputValue==null or bindings.TransContractNumber.inputValue ==null}"
+                                          binding="#{backingBeanScope.PaymentCertificateSearchBean.docTypeBindgs}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.docTypeVL}">
+              <f:validator binding="#{bindings.TransDocType.validator}"/>
+            </af:inputComboboxListOfValues>
+            <!--<af:inputText label="Code" value="#{bindings.TransDocCode.inputValue}" partialTriggers="transDocType1Id"/>-->
+            <!--<af:inputComboboxListOfValues id="documentTypeId" autoSubmit="true"
+                    disabled="#{bindings.TransBUName.inputValue==null or bindings.TransProjectNumber.inputValue ==null or
+                    bindings.TransCustomerNumber.inputValue ==null}"
+                                                  binding="#{backingBeanScope.PaymentCertificateSearchBean.docTypeBindgs}"
+                                                  valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.docTypeVL}"
+                                                  popupTitle="Search and Select: #{bindings.DocumentType.hints.label}"
+                                                  value="#{bindings.TransDocumentType.inputValue}"
+                                                  label="#{bindings.TransDocumentType.hints.label}"
+                                                  model="#{bindings.TransDocumentType.listOfValuesModel}"
+                                                  required="#{bindings.TransDocumentType.hints.mandatory}"
+                                                  columns="#{bindings.TransDocumentType.hints.displayWidth}"
+                                                  shortDesc="#{bindings.TransDocumentType.hints.tooltip}">
+                      <f:validator binding="#{bindings.TransDocumentType.validator}"/>
+                    </af:inputComboboxListOfValues>-->
+            <af:inputComboboxListOfValues id="transCertificateNumberId"
+                                          autoSubmit="true"
+                                          disabled="#{bindings.TransBuName.inputValue==null or bindings.TransContractNumber.inputValue ==null or
+                   bindings.TransDocCode.inputValue ==null or bindings.TransDocCode.inputValue =='ADV' or bindings.TransDocCode.inputValue =='RR' or bindings.TransDocCode.inputValue =='FRR'}"
+                                          binding="#{backingBeanScope.PaymentCertificateSearchBean.certNumBindgs}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.certNumVL}"
+                                          popupTitle="Search and Select: #{bindings.TransCertNum.hints.label}"
+                                          value="#{bindings.TransCertNum.inputValue}"
+                                          label="#{bindings.TransCertNum.hints.label}"
+                                          model="#{bindings.TransCertNum.listOfValuesModel}"
+                                          required="true"
+                                          columns="#{bindings.TransCertNum.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransCertNum.hints.tooltip}">
+              <f:validator binding="#{bindings.TransCertNum.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="periodId"
+                                          disabled="#{bindings.TransBuName.inputValue==null or bindings.TransContractNumber.inputValue ==null or
+                    bindings.TransDocCode.inputValue ==null or ( (bindings.TransDocCode.inputValue =='PB' or  bindings.TransDocCode.inputValue =='FPB' or bindings.TransDocCode.inputValue =='OB') )}"
+                                          valueChangeListener="#{backingBeanScope.PaymentCertificateSearchBean.peridVL}"
+                                          binding="#{backingBeanScope.PaymentCertificateSearchBean.perdBindgs}"
+                                          popupTitle="Search and Select: #{bindings.TransPeriod.hints.label}"
+                                          value="#{bindings.TransPeriod.inputValue}"
+                                          autoSubmit="true"
+                                          label="#{bindings.TransPeriod.hints.label}"
+                                          model="#{bindings.TransPeriod.listOfValuesModel}"
+                                          required="true" partialTriggers="transContractNumberId transBUNameId"
+                                          columns="#{bindings.TransPeriod.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransPeriod.hints.tooltip}">
+              <f:validator binding="#{bindings.TransPeriod.validator}"/>
+            </af:inputComboboxListOfValues>
+          </af:panelFormLayout>
+          <f:facet name="buttonBar">
+            <af:group id="g1">
+              <af:commandButton actionListener="#{backingBeanScope.PaymentCertificateSearchBean.createDocument}"
+                                text="Create" id="crCb"/>
+              <af:spacer width="5" id="s4"/>
+              <af:commandButton text="Cancel" id="canCb"
+                                actionListener="#{backingBeanScope.PaymentCertificateSearchBean.CancelPC}"
+                                immediate="true" partialSubmit="true"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p2">
+        <!--<af:dialog id="d2" type="yesNo"
+                     title="Confirmation"
+                     dialogListener="#{backingBeanScope.PaymentCertificateSearchBean.confirm**method}">
+            <af:outputText value="*****. Do you want to create a new agreement?"
+                           id="ot11"/>
+          </af:dialog>-->
+      </af:popup>
+      <af:popup id="p3">
+        <af:noteWindow id="nw1">
+          <af:panelList id="pl1">
+            <af:commandLink text="View / Edit Invoice" id="cl1"
+                            actionListener="#{backingBeanScope.PaymentCertificateSearchBean.editInvoiceAL}"/>
+          </af:panelList>
+        </af:noteWindow>
+      </af:popup>
+    </af:showDetailHeader>
+  </af:panelGroupLayout>
+</jsp:root>

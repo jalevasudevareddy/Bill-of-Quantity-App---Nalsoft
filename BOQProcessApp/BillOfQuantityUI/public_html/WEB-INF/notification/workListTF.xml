@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="workListTF">
+    <default-activity id="__13">setWorkListForEmployee</default-activity>
+    <transaction id="__29">
+      <requires-transaction/>
+    </transaction>
+    <managed-bean id="__10">
+      <managed-bean-name id="__9">WorkListBean</managed-bean-name>
+      <managed-bean-class id="__11">bean.notification.WorkListBean</managed-bean-class>
+      <managed-bean-scope id="__8">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="WorkList">
+      <page>/pagefragments/notifications/WorkList.jsff</page>
+    </view>
+    <task-flow-call id="NotificationTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/NotificationTF.xml</document>
+        <id>NotificationTF</id>
+      </task-flow-reference>
+      <input-parameter id="__20">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+      <input-parameter id="__21">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__22">
+        <name>currEmpId</name>
+        <value>#{pageFlowScope.currEmpId}</value>
+      </input-parameter>
+      <input-parameter id="__23">
+        <name>currEmpLevel</name>
+        <value>#{pageFlowScope.currEmpLevel}</value>
+      </input-parameter>
+      <input-parameter id="__24">
+        <name>docNum</name>
+        <value>#{pageFlowScope.docNum}</value>
+      </input-parameter>
+      <input-parameter id="__25">
+        <name>apprvCat</name>
+        <value>#{pageFlowScope.apprvCat}</value>
+      </input-parameter>
+      <input-parameter id="__26">
+        <name>apprvName</name>
+        <value>#{pageFlowScope.apprvName}</value>
+      </input-parameter>
+    </task-flow-call>
+    <task-flow-call id="ActionHistoryTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/ActionHistoryTF.xml</document>
+        <id>ActionHistoryTF</id>
+      </task-flow-reference>
+      <input-parameter id="__272">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__3228">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <method-call id="setWorkListForEmployee">
+      <method>#{bindings.setWorkListForEmployee.execute}</method>
+      <outcome id="__1">
+        <fixed-outcome>setWorkListForEmployee</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__2">
+      <from-activity-id id="__3">WorkList</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome id="__201">approvalNotification</from-outcome>
+        <to-activity-id id="__19">NotificationTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__211">
+        <from-outcome id="__213">actionHistory</from-outcome>
+        <to-activity-id id="__212">ActionHistoryTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__4">
+      <from-activity-id id="__5">setWorkListForEmployee</from-activity-id>
+      <control-flow-case id="__12">
+        <from-outcome id="__6">setWorkListForEmployee</from-outcome>
+        <to-activity-id id="__7">WorkList</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__14">
+      <from-activity-id id="__15">ActionHistoryTF</from-activity-id>
+      <control-flow-case id="__17">
+        <from-outcome id="__27">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__16">WorkList</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

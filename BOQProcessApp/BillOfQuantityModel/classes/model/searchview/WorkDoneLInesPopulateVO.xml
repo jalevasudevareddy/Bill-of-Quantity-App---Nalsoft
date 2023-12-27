@@ -1,0 +1,555 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="WorkDoneLInesPopulateVO"
+  Version="12.2.1.22.48"
+  InheritPersonalization="true"
+  OrderBy="LINE_ID"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  RowClass="model.searchview.WorkDoneLInesPopulateVORowImpl"
+  ComponentClass="model.searchview.WorkDoneLInesPopulateVOImpl">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_bu_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_project_id"
+    Kind="viewcriteria"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_wdhdr_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_prev_hdr_id"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <Variable
+    Name="p_boq_hdr_id"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <Variable
+    Name="p_doc_ver"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <Variable
+    Name="p_contract_id"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <SQLQuery><![CDATA[select  HEADER_ID,       
+   LINE_ID,       
+  BILL_PAGE_ITEM,       
+  selling_amount,       
+   master_boq_header_id,       
+   master_boq_line_id,       
+  boq_level,       
+  page_item,       
+  item,       
+  description,       
+  bill_qty,       
+  final_qty,       
+  uom,       
+  selling_rate,       
+  business_unit_id,       
+  project_id,       
+  work_done_qty,       
+  extended_flag,       
+  cumulative_bill_qty,       
+CUMMULATIVE_QTY_PERCT,       
+  PREVIOUS_RATE,       
+price_code,       
+LINE_TYPE,       
+base_line_boq_line_id       
+  from(       
+       
+SELECT bl.boq_header_id AS HEADER_ID,       
+  bl.boq_line_id        AS LINE_ID,       
+  bl.BILL_PAGE_ITEM as BILL_PAGE_ITEM,       
+  bl.selling_amount,       
+  bh.master_boq_header_id ,       
+  bl.master_boq_line_id,       
+  bl.boq_level,       
+  bl.page_item,       
+  bl.item,       
+  bl.description,       
+  bl.bill_qty,       
+  bl.final_qty,       
+  bl.uom,       
+  bl.base_line_boq_line_id,       
+  bl.selling_rate,       
+  bh.business_unit_id,       
+  bh.project_id,       
+  bl.work_done_qty,       
+ (select ( case when :p_doc_ver=0  then       
+  (select (case when count(1)>0 then 'Y' else 'N' end)  from XXBOQ_WORK_DONE_LINES_T where WD_HEADER_ID =:p_prev_hdr_id and MASTER_BOQ_LINE_ID =bl.master_boq_line_id)       
+  else       
+  (select l.extended_flag from XXBOQ_WORK_DONE_LINES_T l where l.WD_HEADER_ID =:p_prev_hdr_id and l.master_boq_line_id=bl.master_boq_line_id ) end)  from dual) extended_flag,       
+         
+       
+       
+  nvl((select wdl.WD_CUMMULATIVE_QTY from XXBOQ_WORK_DONE_LINES_T wdl  where         
+        
+  wdl.master_boq_line_id = bl.master_boq_line_id and       
+  wdl.wd_header_id =nvl(:p_prev_hdr_id,-1)       
+   ),0) cumulative_bill_qty,       
+       
+  nvl((select wdl.WD_CUMMULATIVE_QTY_PERCT from XXBOQ_WORK_DONE_LINES_T wdl  where         
+        
+  wdl.master_boq_line_id = bl.master_boq_line_id and       
+  wdl.wd_header_id =nvl(:p_prev_hdr_id,-1)       
+   ),0)       
+CUMMULATIVE_QTY_PERCT,       
+       
+  (SELECT WL.CURRENT_BOQ_RATE       
+  FROM XXBOQ_WORK_DONE_LINES_T WL       
+  WHERE WL.MASTER_BOQ_LINE_ID=BL.MASTER_BOQ_LINE_ID       
+  AND WL.WD_HEADER_ID =nvl(:p_prev_hdr_id,-1)       
+  ) AS PREVIOUS_RATE,       
+bl.price_code,       
+       
+(select meaning from xxboq_lookups_t where lookup_type = 'BOQ_LINE_TYPE' and lookup_code = bl.LINE_TYPE)LINE_TYPE       
+         
+FROM xxboq_bill_of_qty_lines_t bl,       
+  xxboq_bill_of_qty_hdr_t bh       
+WHERE bh.boq_header_id  =bl.boq_header_id       
+AND bh.business_unit_id =:p_bu_id       
+AND bh.contract_id       =:p_contract_id       
+AND bh.status           ='AC'       
+AND BH.BOQ_HEADER_ID =:p_boq_hdr_id        
+AND BH.CURRENT_FLAG='Y'       
+AND bl.estimated = 'N'       
+AND bl.bill_page_item      IS NOT NULL       
+AND bl.selling_amount <> 0       
+AND bl.line_category <> 'D'       
+AND bl.master_boq_line_id NOT IN       
+  (SELECT wl.master_boq_line_id       
+  FROM xxboq_work_done_lines_t wl       
+  WHERE wl.WD_HEADER_ID=:p_wdhdr_id       
+  ))]]></SQLQuery>
+  <ViewAttribute
+    Name="HeaderId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="HEADER_ID"
+    Expression="HEADER_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="LINE_ID"
+    Expression="LINE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BillPageItem"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="BILL_PAGE_ITEM"
+    Expression="BILL_PAGE_ITEM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BILLPAGEITEM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SellingAmount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="SELLING_AMOUNT"
+    Expression="SELLING_AMOUNT"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BILL_AMOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="MasterBoqHeaderId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MASTER_BOQ_HEADER_ID"
+    Expression="MASTER_BOQ_HEADER_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="MasterBoqLineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="MASTER_BOQ_LINE_ID"
+    Expression="MASTER_BOQ_LINE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BoqLevel"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="6"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="BOQ_LEVEL"
+    Expression="BOQ_LEVEL"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="6"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="LEVEL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PageItem"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PAGE_ITEM"
+    Expression="PAGE_ITEM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PAGEITEM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Item"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="20"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ITEM"
+    Expression="ITEM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Description"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="240"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DESCRIPTION"
+    Expression="DESCRIPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BillQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="BILL_QTY"
+    Expression="BILL_QTY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BILL_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="FinalQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="FINAL_QTY"
+    Expression="FINAL_QTY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="FINAL_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Uom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="UOM"
+    Expression="UOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="UOM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SellingRate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="SELLING_RATE"
+    Expression="SELLING_RATE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BILL_RATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BusinessUnitId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="BUSINESS_UNIT_ID"
+    Expression="BUSINESS_UNIT_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PROJECT_ID"
+    Expression="PROJECT_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="WorkDoneQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="WORK_DONE_QTY"
+    Expression="WORK_DONE_QTY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ExtendedFlag"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="10"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EXTENDED_FLAG"
+    Expression="EXTENDED_FLAG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="10"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CumulativeBillQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CUMULATIVE_BILL_QTY"
+    Expression="CUMULATIVE_BILL_QTY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CummulativeQtyPerct"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="CUMMULATIVE_QTY_PERCT"
+    Expression="CUMMULATIVE_QTY_PERCT"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PreviousRate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="PREVIOUS_RATE"
+    Expression="PREVIOUS_RATE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PriceCode"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PRICE_CODE"
+    Expression="PRICE_CODE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PRICE_CODE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LineType"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="80"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="LINE_TYPE"
+    Expression="LINE_TYPE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="80"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BaseLineBoqLineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="BASE_LINE_BOQ_LINE_ID"
+    Expression="BASE_LINE_BOQ_LINE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransFlag"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="HeaderId"/>
+    <Item Value="LineId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

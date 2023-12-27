@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BoqPcHdrviewToLinesViewVL"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  EntityAssociation="model.association.BoqPcHdrViewToLinesViewAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="BoqPcHdrViewVO"
+    Cardinality="1"
+    Owner="model.reportview.BoqPcHdrViewVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_entityAccessor" Value="true"/>
+      <Attr Name="_finderName" Value="BoqPcHdrViewVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.reportview.BoqPcHdrViewVO.ProjectId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="BoqPcLinesViewVO"
+    Cardinality="-1"
+    Owner="model.reportview.BoqPcLinesViewVO">
+    <DesignTime>
+      <Attr Name="_entityAccessor" Value="true"/>
+      <Attr Name="_finderName" Value="BoqPcLinesViewVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.reportview.BoqPcLinesViewVO.ProjectId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

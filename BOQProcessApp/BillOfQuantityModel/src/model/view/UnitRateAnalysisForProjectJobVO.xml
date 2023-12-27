@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="UnitRateAnalysisForProjectJobVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqJobItemAnalysisEO.ACTIVITY_ID, 
+       XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID, 
+       XxboqJobItemAnalysisEO.BUSINESS_UNIT_ID, 
+       XxboqJobItemAnalysisEO.JOB_CODE, 
+       XxboqJobItemAnalysisEO.QUANTITY, 
+       XxboqJobItemAnalysisEO.UOM, 
+       XxboqActivityDetailsEO.ACTIVITY_ID AS ACTIVITY_ID1, 
+       XxboqActivityDetailsEO.ACTIVITY_CODE, 
+       XxboqActivityDetailsEO.DESCRIPTION, 
+       nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='M' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0) AS VIEW_ATTR, 
+       nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,   xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,   xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='L' and    xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t        where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0) AS VIEW_ATTR, 
+       nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='S' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0) AS VIEW_ATTR, 
+       nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='E' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0) AS VIEW_ATTR, 
+       nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='G' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0) AS VIEW_ATTR"
+  FromList="XXBOQ_JOB_ITEM_ANALYSIS_T XxboqJobItemAnalysisEO, XXBOQ_ACTIVITY_DETAILS_T XxboqActivityDetailsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.UnitRateAnalysisForProjectJobVORowImpl"
+  ComponentClass="model.view.UnitRateAnalysisForProjectJobVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqJobItemAnalysisEO.ACTIVITY_ID = XxboqActivityDetailsEO.ACTIVITY_ID">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="model.view.UnitRateAnalysisForProjectJobVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage
+    Name="XxboqJobItemAnalysisEO"
+    Entity="model.entity.XxboqJobItemAnalysisEO"/>
+  <EntityUsage
+    Name="XxboqActivityDetailsEO"
+    Entity="model.entity.XxboqActivityDetailsEO"
+    SourceUsage="model.view.UnitRateAnalysisForProjectJobVO.XxboqJobItemAnalysisEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="ActivityId"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="ACTIVITY_ID"/>
+  <ViewAttribute
+    Name="JobItemAnalysisId"
+    PrecisionRule="true"
+    EntityAttrName="JobItemAnalysisId"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="JOB_ITEM_ANALYSIS_ID"/>
+  <ViewAttribute
+    Name="BusinessUnitId"
+    PrecisionRule="true"
+    EntityAttrName="BusinessUnitId"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="BUSINESS_UNIT_ID"/>
+  <ViewAttribute
+    Name="JobCode"
+    PrecisionRule="true"
+    EntityAttrName="JobCode"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="JOB_CODE"/>
+  <ViewAttribute
+    Name="Quantity"
+    PrecisionRule="true"
+    EntityAttrName="Quantity"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="QUANTITY"/>
+  <ViewAttribute
+    Name="Uom"
+    PrecisionRule="true"
+    EntityAttrName="Uom"
+    EntityUsage="XxboqJobItemAnalysisEO"
+    AliasName="UOM"/>
+  <ViewAttribute
+    Name="ActivityId1"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ActivityCode"
+    PrecisionRule="true"
+    EntityAttrName="ActivityCode"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_CODE"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="DESCRIPTION"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="TransMaterial"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='M' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="MATERIAL"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransManPower"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,   xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,   xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='L' and    xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t        where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="MAN_POWER"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransSubcontractor"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='S' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SUBCONTRACTOR"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransEquipment"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='E' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="EQUIPMENT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransGeneralExpences"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="nvl( (select nvl(total,0) / nvl(XxboqJobItemAnalysisEO.QUANTITY,1)  from        (select  sum((xxbjtr.quantity * xxbri.item_rate)+(xxbjtr.quantity * xxbri.item_rate)*(xxbjtr.spares_percentage+xxbjtr.maintenance_percentage+xxbjtr.wastage_percentage)/100)  total ,  xxbjtr.job_item_analysis_id  Act_Job_id from XXBOQ_JOB_ITEM_RESOURCE_T xxbjtr, xxboq_resource_master_group_t xxbrmg,  xxboq_resource_items_t xxbri   where xxbjtr.item_id = xxbri.item_id and xxbrmg.resource_type_code='G' and   xxbjtr.resource_group_id =  xxbrmg.resource_group_id group by  xxbjtr.job_item_analysis_id)t          where Act_Job_id=XxboqJobItemAnalysisEO.JOB_ITEM_ANALYSIS_ID),0)">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="GENERAL_EXPENCES"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransUnitRate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="UNIT_RATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="JobItemAnalysisId"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="BOQJobItemCostingVO"
+    ViewLink="model.viewlink.BOQJobItemCostingToUnitRateAnalysisForProjectJobVL"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

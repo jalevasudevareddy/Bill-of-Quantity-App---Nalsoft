@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73" id="HomePagePageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="AllPageCountVO1"
+              DataControl="CommonUtilsAMDataControl"
+              id="AllPageCountVO1Iterator" RangeSize="-1"/>
+    <iterator Binds="AllPageCountVO2" RangeSize="-1"
+              DataControl="CommonUtilsAMDataControl"
+              id="AllPageCountVO2Iterator"/>
+    <iterator Binds="BOQHomePageVO1" RangeSize="25"
+              DataControl="CommonUtilsAMDataControl"
+              id="BOQHomePageVO1Iterator"/>
+    <iterator Binds="WDHomePageVO1" RangeSize="25"
+              DataControl="CommonUtilsAMDataControl"
+              id="WDHomePageVO1Iterator"/>
+    <iterator Binds="AllPageCountVO3" RangeSize="-1"
+              DataControl="CommonUtilsAMDataControl"
+              id="AllPageCountVO3Iterator"/>
+    <iterator Binds="AllPageCountVO4" RangeSize="-1"
+              DataControl="CommonUtilsAMDataControl"
+              id="AllPageCountVO4Iterator"/>
+    <iterator Binds="AllPageCountVO5" RangeSize="-1"
+              DataControl="CommonUtilsAMDataControl"
+              id="AllPageCountVO5Iterator"/>
+    <iterator Binds="InvoiceHomePageVO1" RangeSize="25"
+              DataControl="CommonUtilsAMDataControl"
+              id="InvoiceHomePageVO1Iterator"/>
+    <iterator Binds="CertifiedHomePageVO1" RangeSize="25"
+              DataControl="CommonUtilsAMDataControl"
+              id="CertifiedHomePageVO1Iterator"/>
+    <iterator Binds="PCHomePageVO1" RangeSize="25"
+              DataControl="CommonUtilsAMDataControl"
+              id="PCHomePageVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="AllPageCountVO1Iterator" id="AllPageCountVO1">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO10">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="DocType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AllPageCountVO2Iterator" id="AllPageCountVO2">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO20">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="DocType" Binds="DocType1"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="BOQHomePageVO1Iterator" id="BOQHomePageVO1">
+      <nodeDefinition DefName="model.searchview.BOQHomePageVO"
+                      Name="BOQHomePageVO10">
+        <AttrNames>
+          <Item Value="BoqHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="Version"/>
+          <Item Value="Status"/>
+          <Item Value="BudgetType"/>
+          <Item Value="CustomerName"/>
+          <Item Value="BuName"/>
+          <Item Value="RevenueTotal"/>
+          <Item Value="CostTotal"/>
+          <Item Value="ProjectCurrencyCode"/>
+          <Item Value="BaseLine" Binds="BaseLine"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="RevisionDate"/>
+          <Item Value="ApprovedBy"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="ImportDate"/>
+          <Item Value="Precision"/>
+          <Item Value="ContractNumber"/>
+          <Item Value="ContractName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="BOQHomePageVO1Iterator" id="BaseLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BaseLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="WDHomePageVO1Iterator" id="WDHomePageVO1">
+      <nodeDefinition DefName="model.searchview.WDHomePageVO"
+                      Name="WDHomePageVO10">
+        <AttrNames>
+          <Item Value="WdHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="WdDocumentNum"/>
+          <Item Value="Version"/>
+          <Item Value="BoqVersion"/>
+          <Item Value="Status"/>
+          <Item Value="CustomerName"/>
+          <Item Value="BuName"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="PrevWdAmount"/>
+          <Item Value="CummWdTotal"/>
+          <Item Value="ProjectCurrencyCode"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="CreationDate"/>
+          <Item Value="WdApprovedBy"/>
+          <Item Value="WdApprovedDate"/>
+          <Item Value="TransCurrentWDAmount"/>
+          <Item Value="ContractName"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="WDHomePageVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="WDHomePageVO1Iterator" id="Precision">
+      <AttrNames>
+        <Item Value="Precision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WDHomePageVO1Iterator" id="WdHeaderId">
+      <AttrNames>
+        <Item Value="WdHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="AllPageCountVO2Iterator" id="DocType1">
+      <AttrNames>
+        <Item Value="DocType"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="AllPageCountVO1Iterator" id="AllPageCountVO11"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO11">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="TransColor"/>
+          <Item Value="DocType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AllPageCountVO2Iterator" id="AllPageCountVO21"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO21">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="TransColor"/>
+          <Item Value="DocType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="BOQHomePageVO1Iterator" id="Precision1">
+      <AttrNames>
+        <Item Value="Precision"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="homePageDoc"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="homePageDoc" IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.homePageDoc_CommonUtilsAMDataControl_dataProvider_homePageDoc_result"/>
+    <tree IterBinding="AllPageCountVO3Iterator" id="AllPageCountVO3"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO3">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="TransColor"/>
+          <Item Value="DocType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AllPageCountVO4Iterator" id="AllPageCountVO4"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO4">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="DocType"/>
+          <Item Value="TransColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AllPageCountVO5Iterator" id="AllPageCountVO5"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO5">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="DocType"/>
+          <Item Value="TransColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="InvoiceHomePageVO1Iterator" id="InvoiceHomePageVO1">
+      <nodeDefinition DefName="model.searchview.InvoiceHomePageVO"
+                      Name="InvoiceHomePageVO10">
+        <AttrNames>
+          <Item Value="InvoiceHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="InvoiceDocumentNum"/>
+          <Item Value="Version"/>
+          <Item Value="BoqVersion"/>
+          <Item Value="Status"/>
+          <Item Value="CustomerName"/>
+          <Item Value="BuName"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="PrevInvoiceAmount"/>
+          <Item Value="CummInvoiceTotal"/>
+          <Item Value="ProjectCurrencyCode"/>
+          <Item Value="CreationDate"/>
+          <Item Value="InvoiceApprovedBy"/>
+          <Item Value="InvoiceApprovedDate"/>
+          <Item Value="Precision"/>
+          <Item Value="TransCurrentInvoiceAmount"/>
+          <Item Value="InvCurrentFlag" Binds="InvCurrentFlag"/>
+          <Item Value="ContractName"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="InvoiceHomePageVO1Iterator" id="Precision2">
+      <AttrNames>
+        <Item Value="Precision"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CertifiedHomePageVO1Iterator" id="CertifiedHomePageVO1">
+      <nodeDefinition DefName="model.searchview.CertifiedHomePageVO"
+                      Name="CertifiedHomePageVO10">
+        <AttrNames>
+          <Item Value="CertifiedHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="CertifiedDocumentNum"/>
+          <Item Value="Version"/>
+          <Item Value="BoqVersion"/>
+          <Item Value="Status"/>
+          <Item Value="CustomerName"/>
+          <Item Value="BuName"/>
+          <Item Value="PeriodOfMeasure"/>
+          <Item Value="PrevCertifiedAmount"/>
+          <Item Value="CummCertifiedTotal"/>
+          <Item Value="ProjectCurrencyCode"/>
+          <Item Value="CreationDate"/>
+          <Item Value="CertifiedApprovedBy"/>
+          <Item Value="CertifiedApprovedDate"/>
+          <Item Value="Precision"/>
+          <Item Value="TransCurrentCertifiedAmount"/>
+          <Item Value="CerCurrentFlag" Binds="CerCurrentFlag"/>
+          <Item Value="ContractName"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="CertifiedHomePageVO1Iterator" id="Precision3">
+      <AttrNames>
+        <Item Value="Precision"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="InvoiceHomePageVO1Iterator" id="InvCurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="InvCurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <button IterBinding="CertifiedHomePageVO1Iterator" id="CerCurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CerCurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="PCHomePageVO1Iterator" id="PCHomePageVO1">
+      <nodeDefinition DefName="model.searchview.PCHomePageVO"
+                      Name="PCHomePageVO10">
+        <AttrNames>
+          <Item Value="PcHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="PcDocumentNum"/>
+          <Item Value="PcDate"/>
+          <Item Value="PcNum"/>
+          <Item Value="Status"/>
+          <Item Value="CustomerName"/>
+          <Item Value="BuName"/>
+          <Item Value="PrevPcAmount"/>
+          <Item Value="CummPcTotal"/>
+          <Item Value="ProjectCurrencyCode"/>
+          <Item Value="ArFlag" Binds="ArFlag"/>
+          <Item Value="PcApprovedBy"/>
+          <Item Value="PcApprovedDate"/>
+          <Item Value="Precision"/>
+          <Item Value="TransCurrPCAmount"/>
+          <Item Value="ContractName"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="PCHomePageVO1Iterator" id="Precision4">
+      <AttrNames>
+        <Item Value="Precision"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="PCHomePageVO1Iterator" id="ArFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="ArFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <tree IterBinding="AllPageCountVO4Iterator" id="AllPageCountVO41"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO41">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="TransColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="AllPageCountVO3Iterator" id="AllPageCountVO31"
+          ChangeEventPolicy="ppr">
+      <nodeDefinition DefName="model.searchview.AllPageCountVO"
+                      Name="AllPageCountVO31">
+        <AttrNames>
+          <Item Value="DocCount"/>
+          <Item Value="Meaning"/>
+          <Item Value="TransColor"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    
+  </bindings>
+</pageDefinition>

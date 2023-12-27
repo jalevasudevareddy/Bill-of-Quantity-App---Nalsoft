@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73"
+                id="WorkDoneQtyTF_WorkDoneQtyTF_makeAsCurrentWDdocPageDef"
+                Package="view.pageDefs" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="makeAsCurrentWDdoc" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="makeAsCurrentWDdoc"
+                  IsViewObjectMethod="false"
+                  DataControl="BillingDetailsAMDataControl"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.makeAsCurrentWDdoc_BillingDetailsAMDataControl_dataProvider_makeAsCurrentWDdoc_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

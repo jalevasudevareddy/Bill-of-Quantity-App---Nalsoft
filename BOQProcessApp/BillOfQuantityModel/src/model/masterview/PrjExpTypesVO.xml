@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PrjExpTypesVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  OrderBy="1"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <SQLQuery>
+    <![CDATA[SELECT e.expenditure_type_name,
+  e.description,
+  e.expenditure_type_id
+FROM XXPJ_EXPENDITURE_TYPES_T e 
+where SYSDATE BETWEEN NVL (e.start_date_active, SYSDATE) AND NVL (e.end_date_active, SYSDATE)
+AND EXISTS
+  (SELECT 'X'
+  FROM XXPJ_EXPEND_TYPE_SYS_LINKS_T l
+  WHERE l.expenditure_type_id   = e.expenditure_type_id
+  AND l.SYSTEN_LINKAGE_FUNCTION = 'VI'
+  AND SYSDATE BETWEEN NVL (l.start_date_active, SYSDATE) AND NVL (l.end_date_active, SYSDATE)
+  )]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="ExpenditureTypeName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="EXPENDITURE_TYPE_NAME"
+    Expression="EXPENDITURE_TYPE_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Description"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="2000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="DESCRIPTION"
+    Expression="DESCRIPTION"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="2000"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ExpenditureTypeId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="EXPENDITURE_TYPE_ID"
+    Expression="EXPENDITURE_TYPE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="PrjExpTypesVOCriteria"
+    ViewObjectName="model.masterview.PrjExpTypesVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow46"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="ExpenditureTypeName"
+        ViewAttribute="ExpenditureTypeName"
+        Operator="STARTSWITH"
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ExpenditureTypeName"/>
+  </AttrArray>
+</ViewObject>

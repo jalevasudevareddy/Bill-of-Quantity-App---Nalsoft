@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaxIANumberVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_bu_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <Variable
+    Name="p_prj_id"
+    Kind="where"
+    Type="java.lang.Long"/>
+  <SQLQuery>
+    <![CDATA[SELECT MAX(VERSION) AS VERSION
+FROM XXBOQ_PROJECT_JOB_HEADER_T
+WHERE BUSINESS_UNIT_ID=:p_bu_id
+AND PROJECT_ID        =:p_prj_id
+AND STATUS            ='Approved']]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="Version"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VERSION"
+    Expression="VERSION"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="Version"/>
+  </AttrArray>
+</ViewObject>

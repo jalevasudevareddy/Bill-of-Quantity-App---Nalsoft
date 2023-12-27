@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ApprovalDocPageDef"
+                Package="view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <taskFlow id="WorkDoneQtyTF1"
+              taskFlowId="/WEB-INF/WorkDoneQtyTF.xml#WorkDoneQtyTF"
+              activation="conditional"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{pageFlowScope.docTypeId=='2'}">
+      <parameters>
+        <parameter id="fromApplicationFlag"
+                   value="#{pageFlowScope.fromApplicationFlag}"/>
+        <parameter id="docTypeId" value="#{pageFlowScope.docTypeId}"/>
+        <parameter id="docId" value="#{pageFlowScope.docId}"/>
+        <parameter id="currEmpLevel" value="#{pageFlowScope.currEmpLevel}"/>
+        <parameter id="currEmpId" value="#{pageFlowScope.currEmpId}"/>
+        <parameter id="apprvName" value="#{pageFlowScope.apprvName}"/>
+        <parameter id="apprvCat" value="#{pageFlowScope.apprvCat}"/>
+        <parameter id="actionCode" value="#{pageFlowScope.actionCode}"/>
+        <parameter id="accessType" value="#{pageFlowScope.accessType}"/>
+        <parameter id="docNum" value="#{pageFlowScope.docNum}"/>
+        <parameter id="workListId" value="#{pageFlowScope.workListId}"/>
+      </parameters>
+    </taskFlow>
+    <taskFlow id="BOQUploadValidationTF1"
+              taskFlowId="/WEB-INF/BOQUploadValidationTF.xml#BOQUploadValidationTF"
+              activation="conditional"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{pageFlowScope.docTypeId=='1'}">
+      <parameters>
+        <parameter id="fromApplicationFlag"
+                   value="#{pageFlowScope.fromApplicationFlag}"/>
+        <parameter id="docTypeId" value="#{pageFlowScope.docTypeId}"/>
+        <parameter id="docId" value="#{pageFlowScope.docId}"/>
+        <parameter id="currEmpLevel" value="#{pageFlowScope.currEmpLevel}"/>
+        <parameter id="currEmpId" value="#{pageFlowScope.currEmpId}"/>
+        <parameter id="apprvName" value="#{pageFlowScope.apprvName}"/>
+        <parameter id="apprvCat" value="#{pageFlowScope.apprvCat}"/>
+        <parameter id="actionCode" value="#{pageFlowScope.actionCode}"/>
+        <parameter id="accessType" value="#{pageFlowScope.accessType}"/>
+        <parameter id="docNum" value="#{pageFlowScope.docNum}"/>
+        <parameter id="workListId" value="#{pageFlowScope.workListId}"/>
+      </parameters>
+    </taskFlow>
+    <taskFlow id="CertifiedQtyTF1"
+              taskFlowId="/WEB-INF/CertifiedQtyTF.xml#CertifiedQtyTF"
+              activation="conditional"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{pageFlowScope.docTypeId=='4'}">
+      <parameters>
+        <parameter id="fromApplicationFlag"
+                   value="#{pageFlowScope.fromApplicationFlag}"/>
+        <parameter id="docTypeId" value="#{pageFlowScope.docTypeId}"/>
+        <parameter id="docId" value="#{pageFlowScope.docId}"/>
+        <parameter id="currEmpLevel" value="#{pageFlowScope.currEmpLevel}"/>
+        <parameter id="currEmpId" value="#{pageFlowScope.currEmpId}"/>
+        <parameter id="apprvName" value="#{pageFlowScope.apprvName}"/>
+        <parameter id="apprvCat" value="#{pageFlowScope.apprvCat}"/>
+        <parameter id="actionCode" value="#{pageFlowScope.actionCode}"/>
+        <parameter id="accessType" value="#{pageFlowScope.accessType}"/>
+        <parameter id="docNum" value="#{pageFlowScope.docNum}"/>
+        <parameter id="workListId" value="#{pageFlowScope.workListId}"/>
+      </parameters>
+    </taskFlow>
+    <taskFlow id="InvoicedQtyTF1"
+              taskFlowId="/WEB-INF/InvoicedQtyTF.xml#InvoicedQtyTF"
+              activation="conditional"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{pageFlowScope.docTypeId=='3'}">
+      <parameters>
+        <parameter id="fromApplicationFlag"
+                   value="#{pageFlowScope.fromApplicationFlag}"/>
+        <parameter id="docTypeId" value="#{pageFlowScope.docTypeId}"/>
+        <parameter id="docId" value="#{pageFlowScope.docId}"/>
+        <parameter id="currEmpLevel" value="#{pageFlowScope.currEmpLevel}"/>
+        <parameter id="currEmpId" value="#{pageFlowScope.currEmpId}"/>
+        <parameter id="apprvName" value="#{pageFlowScope.apprvName}"/>
+        <parameter id="apprvCat" value="#{pageFlowScope.apprvCat}"/>
+        <parameter id="actionCode" value="#{pageFlowScope.actionCode}"/>
+        <parameter id="accessType" value="#{pageFlowScope.accessType}"/>
+        <parameter id="docNum" value="#{pageFlowScope.docNum}"/>
+        <parameter id="workListId" value="#{pageFlowScope.workListId}"/>
+      </parameters>
+    </taskFlow>
+    <taskFlow id="PaymentCertificateTF1"
+              taskFlowId="/WEB-INF/PaymentCertificateTF.xml#PaymentCertificateTF"
+              activation="conditional"
+              xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{pageFlowScope.docTypeId=='5'}">
+      <parameters>
+        <parameter id="fromApplicationFlag"
+                   value="#{pageFlowScope.fromApplicationFlag}"/>
+        <parameter id="docTypeId" value="#{pageFlowScope.docTypeId}"/>
+        <parameter id="docId" value="#{pageFlowScope.docId}"/>
+        <parameter id="currEmpLevel" value="#{pageFlowScope.currEmpLevel}"/>
+        <parameter id="currEmpId" value="#{pageFlowScope.currEmpId}"/>
+        <parameter id="apprvName" value="#{pageFlowScope.apprvName}"/>
+        <parameter id="apprvCat" value="#{pageFlowScope.apprvCat}"/>
+        <parameter id="actionCode" value="#{pageFlowScope.actionCode}"/>
+        <parameter id="accessType" value="#{pageFlowScope.accessType}"/>
+        <parameter id="docNum" value="#{pageFlowScope.docNum}"/>
+        <parameter id="workListId" value="#{pageFlowScope.workListId}"/>
+      </parameters>
+    </taskFlow>
+  </executables>
+  <bindings/>
+</pageDefinition>

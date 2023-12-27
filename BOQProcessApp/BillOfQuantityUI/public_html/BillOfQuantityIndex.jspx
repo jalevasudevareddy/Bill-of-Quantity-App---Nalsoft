@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="BOQ Management" id="d1">
+            <af:form id="f1" usesUpload="true">
+                <af:resource type="javascript">
+                  document.oncontextmenu = function () {
+                      return false;
+                  }
+                </af:resource>
+                <af:panelGroupLayout id="pgl1" layout="scroll"
+                                     inlineStyle='background-image:url("images/Background.png");'>
+                    <af:panelGroupLayout id="pgl3">
+                        <af:panelGroupLayout id="pgl7" inlineStyle="width:250.0px;background-color:White;">
+                            <af:panelGridLayout id="t1lActs">
+                                <af:gridRow id="r1l1Acts" height="70px">
+                                    <af:gridCell width="15%" id="gc21" valign="middle" halign="center">
+                                        <af:panelGroupLayout id="pgl8" layout="vertical">
+                                            <af:link icon="/images/Nalsoft.png" id="cil3"
+                                                     actionListener="#{viewScope.tabContext.closeAllTabs}"
+                                                     shortDesc="NALSOFT"/>
+                                            <!-- rendered="#{viewScope.tabContext.selectedTabIndex != -1}"-->
+                                        </af:panelGroupLayout>
+                                    </af:gridCell>
+                                    <af:gridCell width="70%" id="gc2" valign="middle" halign="center">
+                                        <af:panelGroupLayout id="pgl2" halign="center" layout="vertical">
+                                            <af:outputText value="BOQ Management" id="ot1"
+                                                           inlineStyle="font-family:calibri; font-size:1cm; font-weight:bolder; color:Black"/>
+                                        </af:panelGroupLayout>
+                                    </af:gridCell>
+                                    <af:gridCell id="gc1" width="4%" halign="center" valign="middle">
+                                        <af:panelGroupLayout id="pgl5" layout="horizontal">
+                                            <af:link icon="/images/new_home.png" id="l13"
+                                                     actionListener="#{viewScope.tabContext.closeAllTabs}"
+                                                     shortDesc="Home icon"/>
+                                        </af:panelGroupLayout>
+                                    </af:gridCell>
+                                    <af:gridCell id="gc4" width="6%" halign="start" valign="middle">
+                                        <af:panelGroupLayout id="pgl9" layout="vertical" halign="center"
+                                                             valign="middle">
+                                            <af:link icon="/images/new_bell.png" id="l2"
+                                                     actionListener="#{viewScope.DynamicBean.notificationsAL}"
+                                                     shortDesc="Notification icon"/>
+                                        </af:panelGroupLayout>
+                                    </af:gridCell>
+                                </af:gridRow>
+                            </af:panelGridLayout>
+                        </af:panelGroupLayout>
+                        <af:panelGroupLayout id="pgl6" halign="center" layout="vertical" styleClass="AFStretchWidth">
+                            <af:panelDrawer position="right" id="pd3" maximumWidth="300%" width="300" height="1000"
+                                            styleClass="AFStretchWidth">
+                                <af:showDetailItem id="sdi2" shortDesc="Page Links" icon="/images/panel_drawer.png"
+                                                   inlineStyle="background-color:White;"
+                                                   binding="#{viewScope.DynamicBean.showDetailItemBind}">
+                                    <af:outputLabel value="Administer" inlineStyle="font-weight:bold;" id="ol3"/>
+                                    <af:panelList id="pl1">
+                                        <af:link text="Manage Accounting Setup" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.bOQAccountsSetupTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_ACCOUNTING_PL_ROLE=='Y'}"
+                                                 id="cl19"/>
+                                        <af:link text="Manage Tax Setup"
+                                                 actionListener="#{viewScope.DynamicBean.projectLevelTaxTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_TAX_PL_ROLE=='Y'}"
+                                                 id="cl1" inlineStyle="font-size:110.0%;"/>
+                                    </af:panelList>
+                                    <af:outputLabel value="Bill of Quantities" inlineStyle="font-weight:bold;"
+                                                    id="o24"/>
+                                    <af:panelList id="p24">
+                                        <af:link text="Create Bill of Quantities" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.boqUploadValidationTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_UPLOAD_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_UPLOAD_PL_ROLE=='Y'}"
+                                                 id="cl16"/>
+                                        <af:link text="Manage Bill of Quantities" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.candyBOQDetailsTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_PL_ROLE=='Y'}"
+                                                 id="cl17"/>
+                                    </af:panelList>
+                                    <af:outputLabel value="Evaluation" inlineStyle="font-weight:bold;" id="ol1"/>
+                                    <af:panelList id="pl2">
+                                        <af:link text="Manage Work Done" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.workDoneSearchTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_EVAL_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_EVAL_PL_ROLE=='Y'}"
+                                                 id="cl7"/>
+                                    </af:panelList>
+                                    <af:outputLabel value="Billing" inlineStyle="font-weight:bold;" id="ol2"/>
+                                    <af:panelList id="pl3">
+                                        <af:link text="Manage Payment Application" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.invoicedSearchTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_INVOICE_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_INVOICE_PL_ROLE=='Y'}"
+                                                 id="cl13"/>
+                                        <af:link text="Manage Certified Details" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.certifiedSearchTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_WD_CERTIFIED_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_WD_CERTIFIED_PL_ROLE=='Y'}"
+                                                 id="cl14"/>
+                                        <af:link text="Manage Certificate" inlineStyle="font-size:110.0%;"
+                                                 actionListener="#{viewScope.DynamicBean.paymentCertificateTF}"
+                                                 rendered="#{sessionScope.userRoles.XXCUST_IT_ADMIN_ROLE=='Y' or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y' or sessionScope.userRoles.XXCUST_VBOQ_PC_PL_ROLE=='Y'}"
+                                                 id="cl15"/>
+                                    </af:panelList>
+                                </af:showDetailItem>
+                            </af:panelDrawer>
+                        </af:panelGroupLayout>
+                    </af:panelGroupLayout>
+                    <af:pageTemplate viewId="/oracle/ui/pattern/dynamicShell/dynamicTabShell.jspx"
+                                     value="#{bindings.pageTemplateBinding}" id="pt1">
+                        <f:facet name="welcome">
+                            <af:panelSplitter id="ps1" splitterPosition="10" inlineStyle="background-color:White;"
+                                              collapsed="true">
+                                <f:facet name="second">
+                                    <af:panelSplitter id="ps2" positionedFromEnd="true" splitterPosition="40">
+                                        <f:facet name="first">
+                                            <af:panelGroupLayout id="pgl4" layout="scroll">
+                                                <af:panelGroupLayout id="pgl10" layout="vertical"
+                                                                     inlineStyle="background-color:white;">
+                                                    <af:region value="#{bindings.dynamicRegion1.regionModel}" id="r1"
+                                                               binding="#{viewScope.DynamicBean.regionBinding}"
+                                                               inlineStyle="background-color:White;"/>
+                                                </af:panelGroupLayout>
+                                            </af:panelGroupLayout>
+                                        </f:facet>
+                                    </af:panelSplitter>
+                                </f:facet>
+                            </af:panelSplitter>
+                        </f:facet>
+                    </af:pageTemplate>
+                </af:panelGroupLayout>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>

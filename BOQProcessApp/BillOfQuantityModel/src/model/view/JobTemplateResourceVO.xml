@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="JobTemplateResourceVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqJobTemplateResourceEO.ACTIVITY_JOB_ID, 
+       XxboqJobTemplateResourceEO.CREATED_BY, 
+       XxboqJobTemplateResourceEO.CREATION_DATE, 
+       XxboqJobTemplateResourceEO.ITEM_ID, 
+       XxboqJobTemplateResourceEO.JOB_RESOURCE_ID, 
+       XxboqJobTemplateResourceEO.LAST_UPDATED_BY, 
+       XxboqJobTemplateResourceEO.LAST_UPDATED_DATE, 
+       XxboqJobTemplateResourceEO.MAINTENANCE_PERCENTAGE, 
+       XxboqJobTemplateResourceEO.QUANTITY, 
+       XxboqJobTemplateResourceEO.RESOURCE_GROUP_ID, 
+       XxboqJobTemplateResourceEO.RESOURCE_SUB_GROUP_ID, 
+       XxboqJobTemplateResourceEO.SPARES_PERCENTAGE, 
+       XxboqJobTemplateResourceEO.TEMPLATE_ID, 
+       XxboqJobTemplateResourceEO.WASTAGE_PERCENTAGE, 
+       XxboqResourceItemsEO.ITEM_ID AS ITEM_ID1, 
+       XxboqResourceItemsEO.ITEM_DESCRIPTION, 
+       XxboqResourceItemsEO.ITEM_CODE, 
+       XxboqResourceItemsEO.RESOURCE_GROUP_ID AS RESOURCE_GROUP_ID1, 
+       XxboqResourceItemsEO.RESOURCE_SUB_GROUP_ID AS RESOURCE_SUB_GROUP_ID1, 
+       XxboqResourceItemsEO.UOM, 
+       XxboqResourceMasterGroupEO.RESOURCE_GROUP_ID AS RESOURCE_GROUP_ID2, 
+       XxboqResourceMasterGroupEO.RESOURCE_GROUP, 
+       XxboqResourceSubGroupEO.RESOURCE_GROUP_ID AS RESOURCE_GROUP_ID3, 
+       XxboqResourceSubGroupEO.RESOURCE_SUB_GROUP_ID AS RESOURCE_SUB_GROUP_ID2, 
+       XxboqResourceSubGroupEO.RESOURCE_SUB_GROUP, 
+       XxboqResourceMasterGroupEO.RESOURCE_TYPE, 
+       XxboqResourceMasterGroupEO.RESOURCE_TYPE_CODE, 
+       XxboqResourceItemsEO.ITEM_RATE, 
+       XxboqJobTemplateResourceEO.UNIT_RATE"
+  FromList="XXBOQ_JOB_TEMPLATE_RESOURCE_T XxboqJobTemplateResourceEO, XXBOQ_RESOURCE_ITEMS_T XxboqResourceItemsEO, XXBOQ_RESOURCE_MASTER_GROUP_T XxboqResourceMasterGroupEO, XXBOQ_RESOURCE_SUB_GROUP_T XxboqResourceSubGroupEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.JobTemplateResourceVORowImpl"
+  ComponentClass="model.view.JobTemplateResourceVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqJobTemplateResourceEO.ITEM_ID  =  XxboqResourceItemsEO.ITEM_ID and  
+XxboqJobTemplateResourceEO.RESOURCE_GROUP_ID =  XxboqResourceMasterGroupEO.RESOURCE_GROUP_ID and  
+XxboqJobTemplateResourceEO.RESOURCE_SUB_GROUP_ID = XxboqResourceSubGroupEO.RESOURCE_SUB_GROUP_ID">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="TemplateJobResourcesVO1"
+    ViewObjectName="model.searchview.TemplateJobResourcesVO">
+    <ViewCriteriaUsage
+      Name="TemplateJobResourcesVOCriteria"
+      FullName="model.searchview.TemplateJobResourcesVO.TemplateJobResourcesVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_job_id">
+        <TransientExpression><![CDATA[ActivityJobId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransItemNumber"
+    ListVOName="TemplateJobResourcesVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransItemNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransItemNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ItemId"/>
+      <Item Value="ResourceGroupId"/>
+      <Item Value="ResourceSubGroupId"/>
+      <Item Value="TransGroup"/>
+      <Item Value="TransSubGroup"/>
+      <Item Value="TransUOM"/>
+      <Item Value="TransType"/>
+      <Item Value="TransItemDescription"/>
+      <Item Value="TransItemRate"/>
+      <Item Value="TransTypeCode"/>
+      <Item Value="UnitRate"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ItemCode"/>
+      <Item Value="ItemId"/>
+      <Item Value="ResourceGroupId"/>
+      <Item Value="ResourceSubGroupId"/>
+      <Item Value="ResourceGroup"/>
+      <Item Value="ResourceSubGroup"/>
+      <Item Value="Uom"/>
+      <Item Value="ResourceType"/>
+      <Item Value="ItemDescription"/>
+      <Item Value="ItemRate"/>
+      <Item Value="ResourceTypeCode"/>
+      <Item Value="ItemRate"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ItemCode"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="TemplateJobResourcesVOCriteria"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqJobTemplateResourceEO"
+    Entity="model.entity.XxboqJobTemplateResourceEO"/>
+  <EntityUsage
+    Name="XxboqResourceItemsEO"
+    Entity="model.entity.XxboqResourceItemsEO"
+    SourceUsage="model.view.JobTemplateResourceVO.XxboqJobTemplateResourceEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="XxboqResourceMasterGroupEO"
+    Entity="model.entity.XxboqResourceMasterGroupEO"
+    SourceUsage="model.view.JobTemplateResourceVO.XxboqResourceItemsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="XxboqResourceSubGroupEO"
+    Entity="model.entity.XxboqResourceSubGroupEO"
+    Association="model.association.XxboqResourceSubGroupToItemsAssc"
+    AssociationEnd="model.association.XxboqResourceSubGroupToItemsAssc.XxboqResourceSubGroupEO"
+    SourceUsage="model.view.JobTemplateResourceVO.XxboqResourceItemsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"
+    JoinType="LEFT OUTER JOIN">
+    <DesignTime>
+      <AttrArray Name="_srcAttributes">
+        <Item Value="model.entity.XxboqResourceItemsEO.ResourceSubGroupId"/>
+        <Item Value="model.entity.XxboqResourceItemsEO.ResourceGroupId"/>
+      </AttrArray>
+      <AttrArray Name="_dstAttributes">
+        <Item Value="model.entity.XxboqResourceSubGroupEO.ResourceSubGroupId"/>
+        <Item Value="model.entity.XxboqResourceSubGroupEO.ResourceGroupId"/>
+      </AttrArray>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="ActivityJobId"
+    PrecisionRule="true"
+    EntityAttrName="ActivityJobId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="ACTIVITY_JOB_ID"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="ItemId"
+    PrecisionRule="true"
+    EntityAttrName="ItemId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="ITEM_ID"/>
+  <ViewAttribute
+    Name="JobResourceId"
+    PrecisionRule="true"
+    EntityAttrName="JobResourceId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="JOB_RESOURCE_ID"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="MaintenancePercentage"
+    PrecisionRule="true"
+    EntityAttrName="MaintenancePercentage"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="MAINTENANCE_PERCENTAGE"/>
+  <ViewAttribute
+    Name="Quantity"
+    PrecisionRule="true"
+    EntityAttrName="Quantity"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="QUANTITY"/>
+  <ViewAttribute
+    Name="ResourceGroupId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="RESOURCE_GROUP_ID"/>
+  <ViewAttribute
+    Name="ResourceSubGroupId"
+    PrecisionRule="true"
+    EntityAttrName="ResourceSubGroupId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="RESOURCE_SUB_GROUP_ID"/>
+  <ViewAttribute
+    Name="SparesPercentage"
+    PrecisionRule="true"
+    EntityAttrName="SparesPercentage"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="SPARES_PERCENTAGE"/>
+  <ViewAttribute
+    Name="TemplateId"
+    PrecisionRule="true"
+    EntityAttrName="TemplateId"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="TEMPLATE_ID"/>
+  <ViewAttribute
+    Name="WastagePercentage"
+    PrecisionRule="true"
+    EntityAttrName="WastagePercentage"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="WASTAGE_PERCENTAGE"/>
+  <ViewAttribute
+    Name="ItemId1"
+    PrecisionRule="true"
+    EntityAttrName="ItemId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ItemDescription"
+    PrecisionRule="true"
+    EntityAttrName="ItemDescription"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_DESCRIPTION"/>
+  <ViewAttribute
+    Name="ItemCode"
+    PrecisionRule="true"
+    EntityAttrName="ItemCode"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_CODE"/>
+  <ViewAttribute
+    Name="ResourceGroupId1"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="RESOURCE_GROUP_ID1"/>
+  <ViewAttribute
+    Name="ResourceSubGroupId1"
+    PrecisionRule="true"
+    EntityAttrName="ResourceSubGroupId"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="RESOURCE_SUB_GROUP_ID1"/>
+  <ViewAttribute
+    Name="Uom"
+    PrecisionRule="true"
+    EntityAttrName="Uom"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="UOM"/>
+  <ViewAttribute
+    Name="ResourceGroupId2"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_GROUP_ID2"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ResourceGroup"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroup"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_GROUP"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ResourceGroupId3"
+    PrecisionRule="true"
+    EntityAttrName="ResourceGroupId"
+    EntityUsage="XxboqResourceSubGroupEO"
+    AliasName="RESOURCE_GROUP_ID3"/>
+  <ViewAttribute
+    Name="ResourceSubGroupId2"
+    PrecisionRule="true"
+    EntityAttrName="ResourceSubGroupId"
+    EntityUsage="XxboqResourceSubGroupEO"
+    AliasName="RESOURCE_SUB_GROUP_ID2"/>
+  <ViewAttribute
+    Name="ResourceSubGroup"
+    PrecisionRule="true"
+    EntityAttrName="ResourceSubGroup"
+    EntityUsage="XxboqResourceSubGroupEO"
+    AliasName="RESOURCE_SUB_GROUP"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SUB_GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ResourceType"
+    PrecisionRule="true"
+    EntityAttrName="ResourceType"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_TYPE"
+    IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RESOURCE_TYPE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ResourceTypeCode"
+    PrecisionRule="true"
+    EntityAttrName="ResourceTypeCode"
+    EntityUsage="XxboqResourceMasterGroupEO"
+    AliasName="RESOURCE_TYPE_CODE"/>
+  <ViewAttribute
+    Name="TransItemNumber"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransItemNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ITEM_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransGroup"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransSubGroup"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="SUB_GROUP"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransType"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="RESOURCE_TYPE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransUOM"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="UOM"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransItemDescription"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="DESCRIPTION"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ItemRate"
+    PrecisionRule="true"
+    EntityAttrName="ItemRate"
+    EntityUsage="XxboqResourceItemsEO"
+    AliasName="ITEM_RATE"/>
+  <ViewAttribute
+    Name="TransItemRate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ITEM_RATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransDeleteLineFlag"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Boolean"
+    ColumnType="BIT"
+    AliasName="VIEW_ATTR"
+    SQLType="BIT"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransAmount"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="AMOUNT"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransTypeCode"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="UnitRate"
+    PrecisionRule="true"
+    EntityAttrName="UnitRate"
+    EntityUsage="XxboqJobTemplateResourceEO"
+    AliasName="UNIT_RATE"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="JobResourceId"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="JobTemplateActivityVO"
+    ViewLink="model.viewlink.JobTemplateTemplateToJobTemplateRescVL"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

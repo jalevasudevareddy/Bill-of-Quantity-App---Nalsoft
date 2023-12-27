@@ -1,0 +1,509 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1"
+                       binding="#{backingBeanScope.CostingDetailsBean.jobItemCostingDetailsPageBindgs}">
+    <af:panelBox text="Costing Details" id="pb1">
+      <f:facet name="toolbar">
+        <af:panelGroupLayout id="pgl2" layout="horizontal">
+          <af:commandToolbarButton id="ctb1" text="Actions"
+                                   rendered="#{bindings.Status.inputValue!='Archived'}">
+            <f:facet name="popup">
+              <af:menu id="m1">
+                <af:commandMenuItem text="Approve"
+                                    rendered="#{bindings.Status.inputValue=='In Process' }"
+                                    id="cmi3">
+                  <af:showPopupBehavior popupId="p7"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Submit for Approval" id="cmi2"
+                                    rendered="#{ ( bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected')}">
+                  <af:showPopupBehavior popupId="p5"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="View Approval History" id="cmi4"
+                                    rendered="#{bindings.Status.inputValue!='Draft'}"
+                                    actionListener="#{backingBeanScope.CostingDetailsBean.viewActHistAL}"></af:commandMenuItem>
+                <af:commandMenuItem text="Revise" id="cmi1"
+                                    rendered="#{bindings.Status.inputValue=='Approved'}">
+                  <af:showPopupBehavior popupId="p6"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Update Document" id="cmi5" immediate="true"
+                                    rendered="#{bindings.Status.inputValue!='In Process'}">
+                  <af:showPopupBehavior popupId="p9"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem text="Create/Update Tasks" id="cmi6" immediate="true">
+                  <af:showPopupBehavior popupId="p2"/>
+                </af:commandMenuItem>
+              </af:menu>
+            </f:facet>
+          </af:commandToolbarButton>
+          <af:spacer width="2%" id="s11"/>
+          <af:commandButton text="Save" id="cb3" immediate="true"
+                            rendered="#{ bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}"
+                            actionListener="#{backingBeanScope.CostingDetailsBean.saveCostingDetailsAL}"/>
+          <af:spacer width="2%" id="s13"/>
+          <af:commandButton text="Save And Close" id="cb4" immediate="true"
+                            rendered="#{ bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}"
+                            actionListener="#{backingBeanScope.CostingDetailsBean.saveAndCloseCostingDetlsAL}"/>
+          <af:spacer width="2%" id="s12"/>
+          <af:commandButton text="Cancel" id="cb5" action="done"
+                            rendered="#{ bindings.Status.inputValue=='Draft' or  bindings.Status.inputValue=='Rejected'}"/>
+          <af:commandButton text="Done" id="cb14" action="done"
+                            rendered="#{ bindings.Status.inputValue!='Draft'}"/>
+        </af:panelGroupLayout>
+      </f:facet>
+      <af:panelFormLayout id="pfl1" fieldWidth="70%" labelWidth="30%" rows="3"
+                          maxColumns="3">
+        <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                 id="plam4">
+          <af:outputText value="#{bindings.BuName.inputValue}" id="ot5"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                                 id="plam6">
+          <af:outputText value="#{bindings.ProjectNumber.inputValue}" id="ot1"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.Description.hints.label}"
+                                 id="plam8">
+          <af:outputText value="#{bindings.Description.inputValue}" id="ot8"/>
+        </af:panelLabelAndMessage>
+        <af:spacer width="2%" id="s9"/>
+        <af:panelLabelAndMessage label="#{bindings.StartDate.hints.label}"
+                                 id="plam9">
+          <af:outputText value="#{bindings.StartDate.inputValue}" id="ot9">
+            <af:convertDateTime pattern="#{bindings.StartDate.format}"/>
+          </af:outputText>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.EndDate.hints.label}"
+                                 id="plam10">
+          <af:outputText value="#{bindings.EndDate.inputValue}" id="ot10">
+            <af:convertDateTime pattern="#{bindings.EndDate.format}"/>
+          </af:outputText>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.Version.hints.label}"
+                                 id="plam5">
+          <af:outputText value="#{bindings.Version.inputValue}" id="ot6">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.Version.format}"/>
+          </af:outputText>
+        </af:panelLabelAndMessage>
+        <af:spacer height="2%" id="s1"/>
+        <af:panelLabelAndMessage label="#{bindings.Status.hints.label}"
+                                 id="plam3">
+          <af:outputText value="#{bindings.Status.inputValue}" id="ot3"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.ApprovedBy.hints.label}"
+                                 id="plam2">
+          <af:outputText value="#{bindings.ApprovedBy.inputValue}" id="ot4"/>
+        </af:panelLabelAndMessage>
+        <af:panelLabelAndMessage label="#{bindings.ApprovedDate.hints.label}"
+                                 id="plam1">
+          <af:outputText value="#{bindings.ApprovedDate.inputValue}" id="ot2">
+            <af:convertDateTime pattern="#{bindings.ApprovedDate.format}"/>
+          </af:outputText>
+        </af:panelLabelAndMessage>
+      </af:panelFormLayout>
+    </af:panelBox>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+         
+          <af:commandButton text="Populate BOQ Lines" id="cb1"  rendered="#{ bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}"
+                            actionListener="#{backingBeanScope.CostingDetailsBean.populateBoqLinesAL}"/>
+          
+          <af:commandButton text="Delete BOQ" id="cb2" immediate="true" 
+           disabled="#{!bindings.Delete1.enabled}" 
+          rendered="#{ bindings.Status.inputValue=='Draft' or bindings.Status.inputValue=='Rejected'}">
+            <af:showPopupBehavior popupId="::p1"/>
+          </af:commandButton>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.BOQJobItemCostingVO1.collectionModel}"
+                immediate="true" var="row" styleClass="AFStretchWidth"
+                binding="#{backingBeanScope.CostingDetailsBean.jobItemCostingTblBindgs}"
+                rows="#{bindings.BOQJobItemCostingVO1.rangeSize}"
+                emptyText="#{bindings.BOQJobItemCostingVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.BOQJobItemCostingVO1.rangeSize}"
+                rowBandingInterval="0"
+                filterModel="#{bindings.BOQJobItemCostingVO1Query.queryDescriptor}"
+                queryListener="#{bindings.BOQJobItemCostingVO1Query.processQuery}"
+                filterVisible="false" varStatus="vs"
+                selectedRowKeys="#{bindings.BOQJobItemCostingVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.BOQJobItemCostingVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="t1" partialTriggers="::cb2">
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.BillNumber.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.BillNumber.label}"
+                   id="c7">
+          <af:outputText value="#{row.BillNumber}" id="ot13"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.PageNumber.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.PageNumber.label}"
+                   id="c5">
+          <af:outputText value="#{row.PageNumber}" id="ot15"/>
+        </af:column>
+        <af:column headerText="#{bindings.BOQJobItemCostingVO1.hints.ItemNumber.label}"
+                   sortProperty="#{bindings.BOQJobItemCostingVO1.hints.ItemNumber.name}"
+                   filterable="true" sortable="true" id="c9">
+          <af:outputText value="#{row.ItemNumber}" id="ot19"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.ItemDescription.name}"
+                   filterable="true" sortable="true" width="200%"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.ItemDescription.label}"
+                   id="c8">
+          <af:outputText value="#{row.ItemDescription}" id="ot17"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.BoqQuantity.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.BoqQuantity.label}"
+                   id="c6">
+          <af:outputText value="#{row.BoqQuantity}" id="ot14">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.BoqQuantity.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.Uom.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.Uom.label}"
+                   id="c2">
+          <af:outputText value="#{row.Uom}" id="ot12"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.BoqRate.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.BoqRate.label}"
+                   id="c3">
+          <af:outputText value="#{row.BoqRate}" id="ot18">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.BoqRate.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.BOQJobItemCostingVO1.hints.TransSellingAmount.label}"
+                   id="c20"
+                   sortProperty="#{bindings.BOQJobItemCostingVO1.hints.TransSellingAmount.name}"
+                   filterable="true" sortable="true" align="right">
+          <af:outputText value="#{row.TransSellingAmount}" id="ot41">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.TransSellingAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BOQJobItemCostingVO1.hints.EstimatedQuantity.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BOQJobItemCostingVO1.hints.EstimatedQuantity.label}"
+                   id="c1">
+          <af:outputText value="#{row.EstimatedQuantity}" id="ot11">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.EstimatedQuantity.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.BOQJobItemCostingVO1.hints.JobCode.label}"
+                   id="c18" showRequired="true"
+                   sortProperty="#{bindings.BOQJobItemCostingVO1.hints.JobCode.name}"
+                   filterable="true" sortable="true">
+          <af:inputComboboxListOfValues id="transJobCodeId" autoSubmit="true"
+          rendered="#{row.row.entities[0].entityState==0 or row.JobCode==null}"
+                                        readOnly="#{bindings.Status.inputValue!='Draft' and bindings.Status.inputValue!='Rejected'}"
+                                        popupTitle="Search and Select: #{bindings.BOQJobItemCostingVO1.hints.TransJobCode.label}"
+                                        value="#{row.bindings.TransJobCode.inputValue}"
+                                        model="#{row.bindings.TransJobCode.listOfValuesModel}"
+                                        required="true" showRequired="true"
+                                        columns="#{bindings.BOQJobItemCostingVO1.hints.TransJobCode.displayWidth}"
+                                        shortDesc="#{bindings.BOQJobItemCostingVO1.hints.TransJobCode.tooltip}">
+            <f:validator binding="#{row.bindings.TransJobCode.validator}"/>
+          </af:inputComboboxListOfValues>
+          <af:outputText value="#{row.JobCode}" id="ot16"
+                         rendered="#{row.row.entities[0].entityState!=0 and row.JobCode!=null}"/>
+        </af:column>
+        <af:column headerText="#{bindings.BOQJobItemCostingVO1.hints.TransCostingPrice.label}"
+                   align="right" id="c4"
+                   sortProperty="#{bindings.BOQJobItemCostingVO1.hints.TransCostingPrice.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.TransCostingPrice}" id="ot38">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.TransCostingPrice.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.BOQJobItemCostingVO1.hints.TransCostingAmount.label}"
+                   id="c19"
+                   sortProperty="#{bindings.BOQJobItemCostingVO1.hints.TransCostingAmount.name}"
+                   filterable="true" sortable="true" align="right">
+          <af:outputText value="#{row.TransCostingAmount}" id="ot40">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.BOQJobItemCostingVO1.hints.TransCostingAmount.format}"/>
+          </af:outputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:panelSplitter id="ps1" dimensionsFrom="children" splitterPosition="800">
+      <f:facet name="first">
+        <af:panelHeader text="Bill Details" id="pb2">
+          <f:facet name="toolbar"/>
+          <af:panelFormLayout id="pfl2" partialTriggers="pc1:t1" rows="3"
+                              maxColumns="3" labelWidth="50%" fieldWidth="20%">
+            <af:panelLabelAndMessage label="#{bindings.JobCode1.hints.label}"
+                                     id="plam13">
+              <af:outputText value="#{bindings.JobCode1.inputValue}" id="ot27"/>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s2"/>
+            <af:panelLabelAndMessage label="#{bindings.ActivityCode.hints.label}"
+                                     id="plam16">
+              <af:outputText value="#{bindings.ActivityCode.inputValue}"
+                             id="ot30"/>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s8"/>
+            <af:panelLabelAndMessage label="#{bindings.Description1.hints.label}"
+                                     id="plam15">
+              <af:outputText value="#{bindings.Description1.inputValue}"
+                             id="ot32"/>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s7"/>
+            <af:panelLabelAndMessage label="#{bindings.TransMaterial.hints.label}"
+                                     id="plam18">
+              <af:outputText value="#{bindings.TransMaterial.inputValue}"
+                             id="ot31">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransMaterial.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s6"/>
+            <af:panelLabelAndMessage label="#{bindings.TransManPower.hints.label}"
+                                     id="plam17">
+              <af:outputText value="#{bindings.TransManPower.inputValue}"
+                             id="ot29">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransManPower.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s5"/>
+            <af:panelLabelAndMessage label="#{bindings.TransSubcontractor.hints.label}"
+                                     id="plam12">
+              <af:outputText value="#{bindings.TransSubcontractor.inputValue}"
+                             id="ot34">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransSubcontractor.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s4"/>
+            <af:panelLabelAndMessage label="#{bindings.TransEquipment.hints.label}"
+                                     id="plam11">
+              <af:outputText value="#{bindings.TransEquipment.inputValue}"
+                             id="ot28">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransEquipment.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:spacer width="2%" id="s3"/>
+            <af:panelLabelAndMessage label="#{bindings.TransGeneralExpences.hints.label}"
+                                     id="plam14">
+              <af:outputText value="#{bindings.TransGeneralExpences.inputValue}"
+                             id="ot33">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransGeneralExpences.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.TransUnitRate.hints.label}"
+                                     id="plam22"
+                                     inlineStyle="font-weight:bolder;"
+                                     labelStyle="font-weight:bolder;">
+              <af:outputText value="#{bindings.TransUnitRate.inputValue}"
+                             id="ot39">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransUnitRate.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+          </af:panelFormLayout>
+        </af:panelHeader>
+      </f:facet>
+      <f:facet name="second">
+        <af:panelHeader text="Bill Status" id="ph1">
+          <f:facet name="context"/>
+          <f:facet name="menuBar"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="legend"/>
+          <f:facet name="info"/>
+          <af:panelFormLayout id="pfl3" partialTriggers="pc1:t1">
+            <af:panelLabelAndMessage label="#{bindings.TransIncome.hints.label}"
+                                     id="plam20">
+              <af:outputText value="#{bindings.TransIncome.inputValue}"
+                             id="ot37">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransIncome.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.TransTotalCostBudget.hints.label}"
+                                     id="plam19">
+              <af:outputText value="#{bindings.TransTotalCostBudget.inputValue}"
+                             id="ot36">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransTotalCostBudget.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.TransTotalIncome.hints.label}"
+                                     id="plam21">
+              <af:outputText value="#{bindings.TransTotalIncome.inputValue}"
+                             id="ot35">
+                <af:convertNumber groupingUsed="false" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.TransTotalIncome.format}"/>
+              </af:outputText>
+            </af:panelLabelAndMessage>
+          </af:panelFormLayout>
+        </af:panelHeader>
+      </f:facet>
+    </af:panelSplitter>
+    <af:popup id="p1">
+      <af:dialog id="d1" title="Delete BOQ" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.deletePopupDL}">
+        <af:outputText id="ot42"
+                       value="Are you sure. Do you want to delete the selected Boq?"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="p5"
+              binding="#{backingBeanScope.CostingDetailsBean.submitForApprPopupBindgs}">
+      <af:dialog id="d4" title="Submit for Approval Request" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.submitForApprPopupDL}">
+        <af:outputText id="ot46"
+                       value="Are you sure. Do you want to submit the  project costing details document for approval?"/>
+      </af:dialog>
+    </af:popup>
+        <af:popup id="p9"
+              binding="#{backingBeanScope.CostingDetailsBean.updatePopupBindgs}">
+      <af:dialog id="d9" title="Update Document" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.updatePopupDL}">
+        <af:outputText id="ot59"
+                       value="Are you sure. Do you want to update the  project costing details document for approval?"/>
+      </af:dialog>
+    </af:popup>
+      <af:popup id="p2"
+                binding="#{backingBeanScope.CostingDetailsBean.taskPopupBindings}">
+      <af:dialog id="d2" title="Update Document" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.taskPopupDL}">
+        <af:outputText id="ot7"
+                       value="Are you sure. Do you want to Interface Tasks?"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="p6"
+              binding="#{backingBeanScope.CostingDetailsBean.revisionPopupBindgs}">
+      <af:dialog id="d6" title="Create Revision" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.revisionPopupDL}">
+        <af:outputText id="ot49"
+                       value="Are you sure. Do you want to revise the current the  project costing details document?"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="p7"
+              binding="#{backingBeanScope.CostingDetailsBean.apprPopupBindgs}">
+      <af:dialog id="d7" title="Approve Document" type="okCancel"
+                 dialogListener="#{backingBeanScope.CostingDetailsBean.apprPopupDL}">
+        <af:outputText id="ot50"
+                       value="Are you sure. Do you want to approve the project costing details document?"/>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="p3" contentDelivery="lazyUncached"
+              popupCanceledListener="#{backingBeanScope.CostingDetailsBean.populateBoqLinesPopupCL}"
+              binding="#{backingBeanScope.CostingDetailsBean.populateBoqLinesPopupBindgs}">
+      <af:dialog id="d3" title="Populate BOQ Lines" resize="on" type="none"
+                 stretchChildren="none" inlineStyle="font-size:large;">
+        <af:panelCollection id="pc2" styleClass="AFstretchWidth">
+          <f:facet name="menus"/>
+          <f:facet name="toolbar"/>
+          <f:facet name="statusbar"/>
+          <af:table value="#{bindings.CostingDetailsBOQLinePopulateVO1.collectionModel}"
+                    styleClass="AFStretchWidth" var="row"
+                    binding="#{backingBeanScope.CostingDetailsBean.populateBoqLinesTblBindgs}"
+                    rows="#{bindings.CostingDetailsBOQLinePopulateVO1.rangeSize}"
+                    emptyText="#{bindings.CostingDetailsBOQLinePopulateVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.CostingDetailsBOQLinePopulateVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.CostingDetailsBOQLinePopulateVO1Query.queryDescriptor}"
+                    queryListener="#{bindings.CostingDetailsBOQLinePopulateVO1Query.processQuery}"
+                    filterVisible="false" varStatus="vs"
+                    selectedRowKeys="#{bindings.CostingDetailsBOQLinePopulateVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.CostingDetailsBOQLinePopulateVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="t3">
+            <af:column headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.TransSelectFlag.label}"
+                       id="c15">
+              <f:facet name="header">
+                <af:selectBooleanCheckbox simple="true" text="Select All"
+                                          autoSubmit="true"
+                                          binding="#{backingBeanScope.CostingDetailsBean.selectALLBindgs}"
+                                          valueChangeListener="#{backingBeanScope.CostingDetailsBean.selectAllVL}"
+                                          id="sbc3"/>
+              </f:facet>
+              <af:selectBooleanCheckbox value="#{row.bindings.TransSelectFlag.inputValue}"
+                                        autoSubmit="true"
+                                        valueChangeListener="#{backingBeanScope.CostingDetailsBean.itemSelectedFlagVL}"
+                                        label="#{row.bindings.TransSelectFlag.label}"
+                                        shortDesc="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.TransSelectFlag.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BillNumber.label}"
+                       id="c16"
+                       sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BillNumber.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.BillNumber}" id="ot25"/>
+            </af:column>
+            <af:column headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.PageNumber.label}"
+                       id="c17"
+                       sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.PageNumber.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.PageNumber}" id="ot26"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.ItemNumber.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.ItemNumber.label}"
+                       id="c11">
+              <af:outputText value="#{row.ItemNumber}" id="ot21"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.ItemDescription.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.ItemDescription.label}"
+                       id="c13">
+              <af:outputText value="#{row.ItemDescription}" id="ot20"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BoqQuantity.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BoqQuantity.label}"
+                       id="c14">
+              <af:outputText value="#{row.BoqQuantity}" id="ot24"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.Uom.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.Uom.label}"
+                       id="c10">
+              <af:outputText value="#{row.Uom}" id="ot23"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BoqRate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.CostingDetailsBOQLinePopulateVO1.hints.BoqRate.label}"
+                       id="c12">
+              <af:outputText value="#{row.BoqRate}" id="ot22"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+        <f:facet name="buttonBar">
+          <af:group id="g4">
+            <af:commandButton text="Populate"
+                              actionListener="#{backingBeanScope.CostingDetailsBean.populateBoqLinesPopupAL}"
+                              id="cb11"/>
+            <af:commandButton text="Cancel" id="cb10"/>
+          </af:group>
+        </f:facet>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

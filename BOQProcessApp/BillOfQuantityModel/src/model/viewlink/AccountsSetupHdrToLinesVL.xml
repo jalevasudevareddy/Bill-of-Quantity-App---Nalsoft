@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="AccountsSetupHdrToLinesVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="TransAccountsSetupHdrVO"
+    Cardinality="1"
+    Owner="model.searchview.TransAccountsSetupHdrVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_finderName" Value="TransAccountsSetupHdrVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.searchview.TransAccountsSetupHdrVO.BuId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="BOQAccountsSetupVO"
+    Cardinality="-1"
+    Owner="model.view.BOQAccountsSetupVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="BOQAccountsSetupVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BOQAccountsSetupVO.BuId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

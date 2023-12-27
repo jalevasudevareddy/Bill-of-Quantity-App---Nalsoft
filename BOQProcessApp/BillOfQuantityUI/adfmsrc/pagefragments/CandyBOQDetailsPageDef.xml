@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="CandyBOQDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CandyBOQHeaderVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="CandyBOQHeaderVO1Iterator"/>
+    <iterator Binds="CandyBOQLinesVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="CandyBOQLinesVO1Iterator"/>
+    <searchRegion Binds="CandyBOQLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CandyBOQLinesVO1Query"/>
+    <iterator Binds="CandyBOQCostCodesVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="CandyBOQCostCodesVO1Iterator"/>
+    <searchRegion Binds="CandyBOQCostCodesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CandyBOQCostCodesVO1Query"/>
+    <iterator Binds="CandyBOQResourcesVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="CandyBOQResourcesVO1Iterator"/>
+    <searchRegion Binds="CandyBOQResourcesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CandyBOQResourcesVO1Query"/>
+    <iterator Binds="AttachmentsVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="AttachmentsVO1Iterator"/>
+    <searchRegion Binds="AttachmentsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="AttachmentsVO1Query"/>
+    <iterator Binds="BoqBudgetLinesVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="BoqBudgetLinesVO1Iterator"/>
+    <searchRegion Binds="BoqBudgetLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BoqBudgetLinesVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="BudgetType">
+      <AttrNames>
+        <Item Value="BudgetType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="IbcNumber">
+      <AttrNames>
+        <Item Value="IbcNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="IbcReason">
+      <AttrNames>
+        <Item Value="IbcReason"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="RevisionDate">
+      <AttrNames>
+        <Item Value="RevisionDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ImportDate">
+      <AttrNames>
+        <Item Value="ImportDate"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="CandyBOQLinesVO1Iterator" id="CandyBOQLinesVO1">
+      <nodeDefinition DefName="model.view.CandyBOQLinesVO"
+                      Name="CandyBOQLinesVO10">
+        <AttrNames>
+          <Item Value="BoqLevel"/>
+          <Item Value="PageItem"/>
+          <Item Value="Item"/>
+          <Item Value="Description"/>
+          <Item Value="BillQty"/>
+          <Item Value="FinalQty"/>
+          <Item Value="Uom"/>
+          <Item Value="CandyNetRate"/>
+          <Item Value="SellingRate"/>
+          <Item Value="SellingAmount"/>
+          <Item Value="Trade"/>
+          <Item Value="PriceCode"/>
+          <Item Value="ActivityCode"/>
+          <Item Value="AbsoluteError"/>
+          <Item Value="ErrorDetails"/>
+          <Item Value="ErrorPercentage"/>
+          <Item Value="TransNetRate"/>
+          <Item Value="CandyNetFinalAmount"/>
+          <Item Value="NetFinalAmount"/>
+          <Item Value="TransAbsoluteErrorTotal"/>
+          <Item Value="TransCandyNetFinalAmntTotal"/>
+          <Item Value="TransNetFinalAmount"/>
+          <Item Value="TransNetFinalAmountTotal"/>
+          <Item Value="TransSellingAmountTotal"/>
+          <Item Value="TransAbsoluteError"/>
+          <Item Value="TransErrorPercentage"/>
+          <Item Value="TransLineType"/>
+          <Item Value="Approved" Binds="Approved"/>
+          <Item Value="Submitted" Binds="Submitted"/>
+          <Item Value="Estimated" Binds="Estimated"/>
+          <Item Value="TransCostBudgetTotal"/>
+          <Item Value="BoqLineId"/>
+          <Item Value="BoqLineRemarks"/>
+          <Item Value="TransVariationCategory"/>
+          <Item Value="VariationNumClient"/>
+          <Item Value="VariationNumInternal"/>
+          <Item Value="AnticipatedValue"/>
+          <Item Value="BillNumber"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="TransSellingAmountLedger"/>
+          <Item Value="TransContractLineNumber"/>
+          <Item Value="TransProjectNumber"/>
+          <Item Value="TransTaskNumber"/>
+          <Item Value="TransTaskName"/>
+          <Item Value="TransFinalAmount"/>
+          <Item Value="TransFinalAmountLedger"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CandyBOQCostCodesVO1Iterator" id="CandyBOQCostCodesVO1">
+      <nodeDefinition DefName="model.view.CandyBOQCostCodesVO"
+                      Name="CandyBOQCostCodesVO10">
+        <AttrNames>
+          <Item Value="CostCode"/>
+          <Item Value="CostCodeDesc"/>
+          <Item Value="Uom"/>
+          <Item Value="CostCodeQty"/>
+          <Item Value="CostCodeAmount"/>
+          <Item Value="ActivityCode"/>
+          <Item Value="TransCostCodeAmount"/>
+          <Item Value="TransCostCodeAmountTotal"/>
+          <Item Value="TransCostCodeAmount1"/>
+          <Item Value="CostCodeRate"/>
+          <Item Value="CostCodeId"/>
+          <Item Value="CostCodeRemarks"/>
+          <Item Value="AnticipatedValue"/>
+          <Item Value="TransResourceClass"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="CandyBOQResourcesVO1Iterator" id="CandyBOQResourcesVO1">
+      <nodeDefinition DefName="model.view.CandyBOQResourcesVO"
+                      Name="CandyBOQResourcesVO10">
+        <AttrNames>
+          <Item Value="ResourceCode"/>
+          <Item Value="ResourceDesc"/>
+          <Item Value="ResourceUom"/>
+          <Item Value="NetUseunit"/>
+          <Item Value="FinalRate"/>
+          <Item Value="ResourceValue"/>
+          <Item Value="TransResourceAmnt"/>
+          <Item Value="TransResourceAmountTotal"/>
+          <Item Value="ResourceId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransTotalCostBudgetCandy">
+      <AttrNames>
+        <Item Value="TransTotalCostBudgetCandy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransTotalCostBudget">
+      <AttrNames>
+        <Item Value="TransTotalCostBudget"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransAbsoluteError">
+      <AttrNames>
+        <Item Value="TransAbsoluteError"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="interfaceTasks"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="interfaceTasks" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.interfaceTasks_CandyBillofQuantityAMDataControl_dataProvider_interfaceTasks_result"/>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransBudgetType">
+      <AttrNames>
+        <Item Value="TransBudgetType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TotalNetFinalAmount">
+      <AttrNames>
+        <Item Value="TotalNetFinalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TotalCandyNetFinalAmount">
+      <AttrNames>
+        <Item Value="TotalCandyNetFinalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQCostCodesVO1Iterator"
+                     id="TransCostCodeAmountTotal">
+      <AttrNames>
+        <Item Value="TransCostCodeAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQResourcesVO1Iterator"
+                     id="TransResourceAmountTotal">
+      <AttrNames>
+        <Item Value="TransResourceAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ApprovedBy">
+      <AttrNames>
+        <Item Value="ApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="AttachmentsVO1Iterator" id="AttachmentsVO1">
+      <nodeDefinition DefName="model.view.AttachmentsVO" Name="AttachmentsVO10">
+        <AttrNames>
+          <Item Value="AttachmentCode"/>
+          <Item Value="AttachmentFile"/>
+          <Item Value="AttachmentId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="FileName"/>
+          <Item Value="FileType"/>
+          <Item Value="ReferenceId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="CandyBOQHeaderVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TotalCandySellingAmount">
+      <AttrNames>
+        <Item Value="TotalCandySellingAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransNetFinalAmountTotal">
+      <AttrNames>
+        <Item Value="TransNetFinalAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSellingAmountTotal">
+      <AttrNames>
+        <Item Value="TransSellingAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransCandyNetFinalAmntTotal">
+      <AttrNames>
+        <Item Value="TransCandyNetFinalAmntTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransAbsoluteErrorPercentage">
+      <AttrNames>
+        <Item Value="TransAbsoluteErrorPercentage"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="ProjectId">
+      <AttrNames>
+        <Item Value="ProjectId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="runBoqPcReport"
+                  InstanceName="ReportsAMDataControl.dataProvider"
+                  DataControl="ReportsAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="runBoqPcReport"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ReportsAMDataControl.methodResults.runBoqPcReport_ReportsAMDataControl_dataProvider_runBoqPcReport_result">
+      <NamedData NDName="prjId" NDValue="#{pageFlowScope.prjId}"
+                 NDType="java.lang.Number"/>
+    </methodAction>
+    <methodAction id="interfaceBudget"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="interfaceBudget" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.interfaceBudget_CandyBillofQuantityAMDataControl_dataProvider_interfaceBudget_result"/>
+    <methodAction id="runAndGetBoqAnalysisReportData"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="runAndGetBoqAnalysisReportData"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.runAndGetBoqAnalysisReportData_CandyBillofQuantityAMDataControl_dataProvider_runAndGetBoqAnalysisReportData_result"/>
+    <button IterBinding="CandyBOQLinesVO1Iterator" id="Approved"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Approved"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <button IterBinding="CandyBOQLinesVO1Iterator" id="Submitted"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Submitted"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <button IterBinding="CandyBOQLinesVO1Iterator" id="Estimated"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="Estimated"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="ReasonForVariation">
+      <AttrNames>
+        <Item Value="ReasonForVariation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransNumberofPcLines">
+      <AttrNames>
+        <Item Value="TransNumberofPcLines"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="TransFileName">
+      <AttrNames>
+        <Item Value="TransFileName"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="CandyBOQHeaderVO1Iterator" id="BaseLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BaseLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransAttachments">
+      <AttrNames>
+        <Item Value="TransAttachments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransUnapprovedAmount">
+      <AttrNames>
+        <Item Value="TransUnapprovedAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="ProjectCurrencyCode">
+      <AttrNames>
+        <Item Value="ProjectCurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSumofCostBudgetTotal">
+      <AttrNames>
+        <Item Value="TransSumofCostBudgetTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="BaseLineBoqHdrId">
+      <AttrNames>
+        <Item Value="BaseLineBoqHdrId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createBaseline"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBaseline" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.createBaseline_CandyBillofQuantityAMDataControl_dataProvider_createBaseline_result"/>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="BoqHeaderId">
+      <AttrNames>
+        <Item Value="BoqHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSumOfRevenueAmount">
+      <AttrNames>
+        <Item Value="TransSumOfRevenueAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createBudget"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBudget" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.createBudget_CandyBillofQuantityAMDataControl_dataProvider_createBudget_result"/>
+    <button IterBinding="CandyBOQHeaderVO1Iterator" id="BudgetFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BudgetFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransMainContractAmountTotal">
+      <AttrNames>
+        <Item Value="TransMainContractAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransApprovedVariationsAmountTotal">
+      <AttrNames>
+        <Item Value="TransApprovedVariationsAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="getUploadedBoqData"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getUploadedBoqData" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.getUploadedBoqData_CandyBillofQuantityAMDataControl_dataProvider_getUploadedBoqData_result"/>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransAnticipatedValueTotal">
+      <AttrNames>
+        <Item Value="TransAnticipatedValueTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransAnticipatedContractValueTotal">
+      <AttrNames>
+        <Item Value="TransAnticipatedContractValueTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="BillToAcctNumber">
+      <AttrNames>
+        <Item Value="BillToAcctNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="BillToSite">
+      <AttrNames>
+        <Item Value="BillToSite"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="Address">
+      <AttrNames>
+        <Item Value="Address"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransContractType">
+      <AttrNames>
+        <Item Value="TransContractType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="LedgerCurrencyConvDate">
+      <AttrNames>
+        <Item Value="LedgerCurrencyConvDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="LedgerCurrencyConvRate">
+      <AttrNames>
+        <Item Value="LedgerCurrencyConvRate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="CurrencyCode1">
+      <AttrNames>
+        <Item Value="CurrencyCode1"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransLedgerCurrencyConvRateType">
+      <AttrNames>
+        <Item Value="TransLedgerCurrencyConvRateType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransClaimsApprovedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsApprovedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransVariationSubmittedContractAmountTotal">
+      <AttrNames>
+        <Item Value="TransVariationSubmittedContractAmountTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransClaimsSubmittedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsSubmittedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransVariationEstimatedContractAmount">
+      <AttrNames>
+        <Item Value="TransVariationEstimatedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransClaimsEstimatedContractAmount">
+      <AttrNames>
+        <Item Value="TransClaimsEstimatedContractAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransLedgerPrecision">
+      <AttrNames>
+        <Item Value="TransLedgerPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSellingAmountTotalInLedgerCurrency">
+      <AttrNames>
+        <Item Value="TransSellingAmountTotalInLedgerCurrency"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransTotalFinalAmount">
+      <AttrNames>
+        <Item Value="TransTotalFinalAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransTotalFinalAmountInLedgerCurrency">
+      <AttrNames>
+        <Item Value="TransTotalFinalAmountInLedgerCurrency"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator" id="MajorVersion">
+      <AttrNames>
+        <Item Value="MajorVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="CandyBOQHeaderVO1Iterator" id="FinancialPlanFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="FinancialPlanFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="PlanVersionName">
+      <AttrNames>
+        <Item Value="PlanVersionName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="PlanVersionDescription">
+      <AttrNames>
+        <Item Value="PlanVersionDescription"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="CandyBOQHeaderVO1Iterator"
+                  Uses="LOV_Period" id="Period"/>
+    <listOfValues StaticList="false" IterBinding="CandyBOQHeaderVO1Iterator"
+                  Uses="LOV_TransFinancialPlanType"
+                  id="TransFinancialPlanType"/>
+    <attributeValues IterBinding="CandyBOQHeaderVO1Iterator"
+                     id="TransPreviousBudgetPeriod">
+      <AttrNames>
+        <Item Value="TransPreviousBudgetPeriod"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createBudgetLines"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBudgetLines" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.createBudgetLines_CandyBillofQuantityAMDataControl_dataProvider_createBudgetLines_result"/>
+    <methodAction id="createFinancialPlan"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createFinancialPlan" IsViewObjectMethod="false"
+                  ReturnName="data.CandyBillofQuantityAMDataControl.methodResults.createFinancialPlan_CandyBillofQuantityAMDataControl_dataProvider_createFinancialPlan_result"/>
+    <tree IterBinding="BoqBudgetLinesVO1Iterator" id="BoqBudgetLinesVO1">
+      <nodeDefinition DefName="model.view.BoqBudgetLinesVO"
+                      Name="BoqBudgetLinesVO10">
+        <AttrNames>
+          <Item Value="BudgetLineId"/>
+          <Item Value="TransProjectNumber"/>
+          <Item Value="TransProjectName"/>
+          <Item Value="TransTaskNumber"/>
+          <Item Value="TransTaskName"/>
+          <Item Value="CostCode"/>
+          <Item Value="CummulativeBudgetAmount"/>
+          <Item Value="PreviousBudgetAmount"/>
+          <Item Value="CurrentBudgetAmount"/>
+          <Item Value="BudgetQty"/>
+          <Item Value="CurrentBudgetQty"/>
+          <Item Value="PreviousBudgetQty"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <attributeValues IterBinding="BoqBudgetLinesVO1Iterator"
+                     id="TransTotalCumulativeBudgetAmount">
+      <AttrNames>
+        <Item Value="TransTotalCumulativeBudgetAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqBudgetLinesVO1Iterator"
+                     id="TransTotalPreviousBudgetAmount">
+      <AttrNames>
+        <Item Value="TransTotalPreviousBudgetAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqBudgetLinesVO1Iterator"
+                     id="TransTotalCurrentBudgetAmount">
+      <AttrNames>
+        <Item Value="TransTotalCurrentBudgetAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransGrossProfitAmount">
+      <AttrNames>
+        <Item Value="TransGrossProfitAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransGrossProfitPercent">
+      <AttrNames>
+        <Item Value="TransGrossProfitPercent"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSiteGrossProfitAmount">
+      <AttrNames>
+        <Item Value="TransSiteGrossProfitAmount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="CandyBOQLinesVO1Iterator"
+                     id="TransSiteGrossProfitPercent">
+      <AttrNames>
+        <Item Value="TransSiteGrossProfitPercent"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

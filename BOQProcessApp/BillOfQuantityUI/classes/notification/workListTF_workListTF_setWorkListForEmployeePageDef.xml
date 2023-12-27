@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="11.1.1.65.57" id="workListTF_workListTF_setWorkListForEmployeePageDef" Package="notification" SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <action id="setWorkListForEmployee" RequiresUpdateModel="true"
+            Action="invokeMethod" MethodName="setWorkListForEmployee"
+            IsViewObjectMethod="false" DataControl="ApprovalAMDataControl"
+            InstanceName="ApprovalAMDataControl.dataProvider"/>
+  </bindings>
+</pageDefinition>

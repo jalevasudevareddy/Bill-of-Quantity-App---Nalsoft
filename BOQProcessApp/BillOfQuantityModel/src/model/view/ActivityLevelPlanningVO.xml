@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ActivityLevelPlanningVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqActivityPlanningEO.ACTIVITY_ID, 
+       XxboqActivityPlanningEO.ACTIVITY_LEVEL_LINEID, 
+       XxboqActivityPlanningEO.ACTIVITY_STRUCTURE, 
+       XxboqActivityPlanningEO.BOQ_QUANTITY, 
+       XxboqActivityPlanningEO.BU_ID, 
+       XxboqActivityPlanningEO.CREATED_BY, 
+       XxboqActivityPlanningEO.CREATION_DATE, 
+       XxboqActivityPlanningEO.HEADER_ID, 
+       XxboqActivityPlanningEO.LAST_UPDATED_BY, 
+       XxboqActivityPlanningEO.LAST_UPDATED_DATE, 
+       XxboqActivityPlanningEO.PROJECT_ID, 
+       XxboqActivityPlanningEO.STRUCTURE_ID, 
+       XxboqActivityDetailsEO.UOM, 
+       XxboqActivityDetailsEO.ACTIVITY_ID AS ACTIVITY_ID1, 
+       XxboqActivityDetailsEO.DESCRIPTION, 
+       XxboqActivityDetailsEO.ACTIVITY_CODE"
+  FromList="XXBOQ_ACTIVITY_PLANNING_T XxboqActivityPlanningEO, XXBOQ_ACTIVITY_DETAILS_T XxboqActivityDetailsEO"
+  Where="XxboqActivityPlanningEO.ACTIVITY_ID=XxboqActivityDetailsEO.ACTIVITY_ID"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.ActivityLevelPlanningVORowImpl"
+  ComponentClass="model.view.ActivityLevelPlanningVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  OrderBy="XxboqActivityPlanningEO.ACTIVITY_LEVEL_LINEID">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="ActivityLineLevelPlanVO1"
+    ViewObjectName="model.view.ActivityLineLevelPlanVO">
+    <ParameterMap>
+      <PIMap Variable="p_line_id">
+        <TransientExpression><![CDATA[ActivityLevelLineid]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ActivityLineLevelPlanVO2"
+    ViewObjectName="model.view.ActivityLineLevelPlanVO">
+    <ParameterMap>
+      <PIMap Variable="p_line_id">
+        <TransientExpression><![CDATA[ActivityLevelLineid]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransFromMonth"
+    ListVOName="ActivityLineLevelPlanVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransFromMonth_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransFromMonth"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransFromLineLevelId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Period"/>
+      <Item Value="ActivityLineLevelId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Period"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ActivityLineLevelPlanVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransToMonth"
+    ListVOName="ActivityLineLevelPlanVO2"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransToMonth_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransToMonth"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransToLineLevelId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Period"/>
+      <Item Value="ActivityLineLevelId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Period"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ActivityLineLevelPlanVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqActivityPlanningEO"
+    Entity="model.entity.XxboqActivityPlanningEO"/>
+  <EntityUsage
+    Name="XxboqActivityDetailsEO"
+    Entity="model.entity.XxboqActivityDetailsEO"
+    SourceUsage="model.view.ActivityLevelPlanningVO.XxboqActivityPlanningEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="ActivityId"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="ACTIVITY_ID"/>
+  <ViewAttribute
+    Name="ActivityLevelLineid"
+    PrecisionRule="true"
+    EntityAttrName="ActivityLevelLineid"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="ACTIVITY_LEVEL_LINEID"/>
+  <ViewAttribute
+    Name="ActivityStructure"
+    PrecisionRule="true"
+    EntityAttrName="ActivityStructure"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="ACTIVITY_STRUCTURE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="ACTIVITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BoqQuantity"
+    PrecisionRule="true"
+    EntityAttrName="BoqQuantity"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="BOQ_QUANTITY">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BOQ_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="BU_ID"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="HeaderId"
+    PrecisionRule="true"
+    EntityAttrName="HeaderId"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="HEADER_ID"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="StructureId"
+    PrecisionRule="true"
+    EntityAttrName="StructureId"
+    EntityUsage="XxboqActivityPlanningEO"
+    AliasName="STRUCTURE_ID"/>
+  <ViewAttribute
+    Name="Uom"
+    PrecisionRule="true"
+    EntityAttrName="Uom"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="UOM"/>
+  <ViewAttribute
+    Name="ActivityId1"
+    PrecisionRule="true"
+    EntityAttrName="ActivityId"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="ActivityCode"
+    PrecisionRule="true"
+    EntityAttrName="ActivityCode"
+    EntityUsage="XxboqActivityDetailsEO"
+    AliasName="ACTIVITY_CODE"/>
+  <ViewAttribute
+    Name="TransBalQty"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BALANCE_QUANTITY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransFromMonth"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransFromMonth">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="FROM_DATE"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransToMonth"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransToMonth">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="TO_DATE"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransFromLineLevelId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransToLineLevelId"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Long"
+    ColumnType="NUMBER"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ActivityLevelLineid"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="PlanningScheduleHdrVO"
+    ViewLink="model.viewlink.PlanningScheduleToActivityVL"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="JobLevelPlanningVO"
+    ViewLink="model.viewlink.ActivityToJobPlanningVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ActivityLineLevelPlanVO"
+    ViewLink="model.viewlink.ActivityPlanToLinesVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

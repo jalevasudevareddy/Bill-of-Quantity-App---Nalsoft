@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="InvoicedQtyTF_InvoicedQtyTF_makeAsCurrentInvoiceHdrRowPageDef" Package="view.pageDefs"
+                SkipValidation="true">
+  <parameters/>
+  <executables/>
+  <bindings>
+    <methodAction id="makeAsCurrentInvoiceHdrRow" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentInvoiceHdrRow" IsViewObjectMethod="false"
+                  DataControl="BillingDetailsAMDataControl"
+                  InstanceName="bindings.makeAsCurrentInvoiceHdrRow.dataControl.dataProvider"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.makeAsCurrentInvoiceHdrRow_makeAsCurrentInvoiceHdrRow_dataControl_dataProvider_makeAsCurrentInvoiceHdrRow_result">
+      <NamedData NDName="invHeaderId" NDValue="#{pageFlowScope.docId}" NDType="java.math.BigDecimal"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>
+

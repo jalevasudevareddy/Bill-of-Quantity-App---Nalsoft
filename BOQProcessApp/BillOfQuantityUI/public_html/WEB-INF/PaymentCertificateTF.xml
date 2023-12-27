@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="PaymentCertificateTF">
+    <default-activity id="__10">routerApplication</default-activity>
+    <transaction id="__1">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__60">
+      <name id="__59">fromApplicationFlag</name>
+      <value>#{sessionScope.fromApplication}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__62">
+      <name id="__61">docTypeId</name>
+      <value>#{pageFlowScope.docTypeId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__63">
+      <name id="__64">docId</name>
+      <value>#{pageFlowScope.docId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__65">
+      <name id="__66">currEmpLevel</name>
+      <value>#{pageFlowScope.currEmpLevel}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__67">
+      <name id="__68">currEmpId</name>
+      <value>#{pageFlowScope.currEmpId}</value>
+      <class>java.lang.Long</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__70">
+      <name id="__69">apprvName</name>
+      <value>#{pageFlowScope.apprvName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__72">
+      <name id="__71">apprvCat</name>
+      <value>#{pageFlowScope.apprvCat}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__74">
+      <name id="__73">actionCode</name>
+      <value>#{pageFlowScope.actionCode}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__76">
+      <name id="__75">accessType</name>
+      <value>#{pageFlowScope.accessType}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__77">
+      <name id="__78">docNum</name>
+      <value>#{pageFlowScope.docNum}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__83">
+      <name id="__84">workListId</name>
+      <value>#{pageFlowScope.workListId}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__3">
+      <managed-bean-name id="__2">PaymentCertificateSearchBean</managed-bean-name>
+      <managed-bean-class id="__4">bean.PaymentCertificateSearchBean</managed-bean-class>
+      <managed-bean-scope id="__5">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__9">
+      <managed-bean-name id="__8">PaymentCertificateBean</managed-bean-name>
+      <managed-bean-class id="__6">bean.PaymentCertificateBean</managed-bean-class>
+      <managed-bean-scope id="__7">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__80">
+      <managed-bean-name id="__81">NotificationBean</managed-bean-name>
+      <managed-bean-class id="__82">bean.notification.NotificationBean</managed-bean-class>
+      <managed-bean-scope id="__79">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="PaymentCertSearch">
+      <page>/pagefragments/PaymentCertSearch.jsff</page>
+    </view>
+    <view id="PaymentCertificate">
+      <page>/pagefragments/PaymentCertificate.jsff</page>
+    </view>
+    <view id="PCDeductions">
+      <page>/pagefragments/PCDeductions.jsff</page>
+    </view>
+    <task-flow-call id="ActionHistoryTF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/ActionHistoryTF.xml</document>
+        <id>ActionHistoryTF</id>
+      </task-flow-reference>
+      <input-parameter id="__37">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__38">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+    </task-flow-call>
+    <router id="routerApplication">    <case>
+        <expression>#{pageFlowScope.accessType=='Doc'}</expression>
+        <outcome id="__99">setCurrentRow</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='Method'}</expression>
+        <outcome id="__54">setMethod</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.accessType=='SearchPage'}</expression>
+        <outcome id="__48">setSerachPage</outcome>
+      </case>
+      <default-outcome>setSerachPage</default-outcome></router>
+    <method-call id="SetCurrentRowWithKeyValue">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__44">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="SetCurrentRowWithKeyValue1">
+      <method>#{bindings.setCurrentRowWithKeyValue.execute}</method>
+      <outcome id="__45">
+        <fixed-outcome>setCurrentRowWithKeyValue</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="PaymentCertificateReject">
+      <page>/pagefragments/PaymentCertificateReject.jsff</page>
+    </view>
+    <control-flow-rule id="__11">
+      <from-activity-id id="__12">PaymentCertSearch</from-activity-id>
+      <control-flow-case id="__14">
+        <from-outcome id="__15">view</from-outcome>
+        <to-activity-id id="__13">PaymentCertificate</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__16">
+      <from-activity-id id="__17">PaymentCertificate</from-activity-id>
+      <control-flow-case id="__18">
+        <from-outcome id="__20">done</from-outcome>
+        <to-activity-id id="__19">PaymentCertSearch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__21">
+        <from-outcome id="__23">deductions</from-outcome>
+        <to-activity-id id="__22">PCDeductions</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__30">
+        <from-outcome id="__31">ActionHistory</from-outcome>
+        <to-activity-id id="__29">ActionHistoryTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__24">
+      <from-activity-id id="__25">PCDeductions</from-activity-id>
+      <control-flow-case id="__27">
+        <from-outcome id="__28">done</from-outcome>
+        <to-activity-id id="__26">PaymentCertificate</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__32">
+      <from-activity-id id="__33">ActionHistoryTF</from-activity-id>
+      <control-flow-case id="__35">
+        <from-outcome id="__34">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__36">PaymentCertificate</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__39">
+      <from-activity-id id="__40">routerApplication</from-activity-id>
+      <control-flow-case id="__41">
+        <from-outcome id="__42">setSerachPage</from-outcome>
+        <to-activity-id id="__43">PaymentCertSearch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__49">
+        <from-outcome id="__47">setCurrentRow</from-outcome>
+        <to-activity-id id="__46">SetCurrentRowWithKeyValue</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__52">
+        <from-outcome id="__50">setMethod</from-outcome>
+        <to-activity-id id="__51">SetCurrentRowWithKeyValue1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__53">
+      <from-activity-id id="__55">SetCurrentRowWithKeyValue</from-activity-id>
+      <control-flow-case id="__56">
+        <from-outcome id="__58">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__57">PaymentCertificate</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__100">
+      <from-activity-id id="__101">SetCurrentRowWithKeyValue1</from-activity-id>
+      <control-flow-case id="__102">
+        <from-outcome id="__103">setCurrentRowWithKeyValue</from-outcome>
+        <to-activity-id id="__104">PaymentCertificateReject</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

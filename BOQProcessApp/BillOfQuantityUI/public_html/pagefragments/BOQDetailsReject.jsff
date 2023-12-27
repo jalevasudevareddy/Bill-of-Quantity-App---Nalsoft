@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" >
+  <af:panelGroupLayout id="pgl1"
+                       binding="#{backingBeanScope.LiabilityBean.liabilityWF}">
+    <af:inputText label="Remarks" id="it37" columns="40" rows="2" rendered="#{pageFlowScope.actionCode=='Reject'}"
+                  value="#{pageFlowScope.APPROVAL_REMARKS}"/>
+    <af:commandButton text="Reject" id="cb4" actionListener="#{backingBeanScope.BOQDetailsBean.rejectDoc}"   rendered="#{pageFlowScope.actionCode=='Reject'}"   />          
+  </af:panelGroupLayout>
+</jsp:root>

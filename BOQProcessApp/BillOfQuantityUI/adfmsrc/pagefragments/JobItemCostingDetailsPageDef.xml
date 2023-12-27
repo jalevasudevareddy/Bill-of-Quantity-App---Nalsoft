@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="JobItemCostingDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BOQCostingDetailsHeaderVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="BOQCostingDetailsHeaderVO1Iterator"/>
+    <iterator Binds="BOQJobItemCostingVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="BOQJobItemCostingVO1Iterator"/>
+    <searchRegion Binds="BOQJobItemCostingVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BOQJobItemCostingVO1Query"/>
+    <iterator Binds="CostingDetailsBOQLinePopulateVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="CostingDetailsBOQLinePopulateVO1Iterator"/>
+    <searchRegion Binds="CostingDetailsBOQLinePopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="CostingDetailsBOQLinePopulateVO1Query"/>
+    <iterator Binds="UnitRateAnalysisForProjectJobVO1" RangeSize="25"
+              DataControl="CostingDetailsAMDataControl"
+              id="UnitRateAnalysisForProjectJobVO1Iterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="ApprovedBy">
+      <AttrNames>
+        <Item Value="ApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="StartDate">
+      <AttrNames>
+        <Item Value="StartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="EndDate">
+      <AttrNames>
+        <Item Value="EndDate"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="BOQJobItemCostingVO1Iterator" id="BOQJobItemCostingVO1">
+      <nodeDefinition DefName="model.view.BOQJobItemCostingVO"
+                      Name="BOQJobItemCostingVO10">
+        <AttrNames>
+          <Item Value="BillNumber"/>
+          <Item Value="PageNumber"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqRate"/>
+          <Item Value="EstimatedQuantity"/>
+          <Item Value="JobCode"/>
+          <Item Value="ItemNumber"/>
+          <Item Value="TransJobCode"/>
+          <Item Value="TransCostingPrice"/>
+          <Item Value="TransCostingAmount"/>
+          <Item Value="TransSellingAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="refreshBoqLinesPopulateVO"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshBoqLinesPopulateVO"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="CostingDetailsBOQLinePopulateVO1Iterator"
+          id="CostingDetailsBOQLinePopulateVO1">
+      <nodeDefinition DefName="model.searchview.CostingDetailsBOQLinePopulateVO"
+                      Name="CostingDetailsBOQLinePopulateVO10">
+        <AttrNames>
+          <Item Value="ItemNumber"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="BoqQuantity"/>
+          <Item Value="Uom"/>
+          <Item Value="BoqRate"/>
+          <Item Value="TransSelectFlag" Binds="TransSelectFlag"/>
+          <Item Value="BillNumber"/>
+          <Item Value="PageNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="CostingDetailsBOQLinePopulateVO1Iterator"
+            id="TransSelectFlag" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransSelectFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="refreshCostingDetailsHeaderVO"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshCostingDetailsHeaderVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshJobItemCostingsVO"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshJobItemCostingsVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="populateSelectedBoqLines"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateSelectedBoqLines"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.populateSelectedBoqLines_CostingDetailsAMDataControl_dataProvider_populateSelectedBoqLines_result">
+      <NamedData NDName="selectedBoqId" NDValue="#{pageFlowScope.selectedBoqId}"
+                 NDType="java.util.Set"/>
+    </methodAction>
+    <attributeValues IterBinding="CostingDetailsBOQLinePopulateVO1Iterator"
+                     id="LineId">
+      <AttrNames>
+        <Item Value="LineId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="marlAllPopulateBoqLinesAs"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="marlAllPopulateBoqLinesAs"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.marlAllPopulateBoqLinesAs_CostingDetailsAMDataControl_dataProvider_marlAllPopulateBoqLinesAs_result">
+      <NamedData NDName="markAs" NDValue="#{pageFlowScope.markAs}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="BOQJobItemCostingVO1Iterator" id="JobCode">
+      <AttrNames>
+        <Item Value="JobCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQJobItemCostingVO1Iterator"
+                     id="TransJobCode">
+      <AttrNames>
+        <Item Value="TransJobCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="JobCode1">
+      <AttrNames>
+        <Item Value="JobCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="ActivityCode">
+      <AttrNames>
+        <Item Value="ActivityCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="Description1">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransMaterial">
+      <AttrNames>
+        <Item Value="TransMaterial"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransManPower">
+      <AttrNames>
+        <Item Value="TransManPower"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransSubcontractor">
+      <AttrNames>
+        <Item Value="TransSubcontractor"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransEquipment">
+      <AttrNames>
+        <Item Value="TransEquipment"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransGeneralExpences">
+      <AttrNames>
+        <Item Value="TransGeneralExpences"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQJobItemCostingVO1Iterator"
+                     id="TransIncome">
+      <AttrNames>
+        <Item Value="TransIncome"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQJobItemCostingVO1Iterator"
+                     id="TransTotalCostBudget">
+      <AttrNames>
+        <Item Value="TransTotalCostBudget"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BOQJobItemCostingVO1Iterator"
+                     id="TransTotalIncome">
+      <AttrNames>
+        <Item Value="TransTotalIncome"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="UnitRateAnalysisForProjectJobVO1Iterator"
+                     id="TransUnitRate">
+      <AttrNames>
+        <Item Value="TransUnitRate"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="BOQJobItemCostingVO1Iterator" id="Delete"
+            InstanceName="CostingDetailsAMDataControl.BOQJobItemCostingVO1"
+            DataControl="CostingDetailsAMDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="updateCostingDetailsStatusWith"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateCostingDetailsStatusWith"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.updateCostingDetailsStatusWith_CostingDetailsAMDataControl_dataProvider_updateCostingDetailsStatusWith_result">
+      <NamedData NDName="newStatus" NDValue="#{pageFlowScope.newStatus}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="isPrjCostingDetValidForFurtherProcess"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isPrjCostingDetValidForFurtherProcess"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.isPrjCostingDetValidForFurtherProcess_CostingDetailsAMDataControl_dataProvider_isPrjCostingDetValidForFurtherProcess_result"/>
+    <methodAction id="makeAsCurrentCostingDetailsHdrForId"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentCostingDetailsHdrForId"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.makeAsCurrentCostingDetailsHdrForId_CostingDetailsAMDataControl_dataProvider_makeAsCurrentCostingDetailsHdrForId_result">
+      <NamedData NDName="costingDetailHdrId"
+                 NDValue="#{pageFlowScope.revisedCostingDocId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="updateCurrentPrjCostingDetailsDoc"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateCurrentPrjCostingDetailsDoc"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.updateCurrentPrjCostingDetailsDoc_CostingDetailsAMDataControl_dataProvider_updateCurrentPrjCostingDetailsDoc_result"/>
+    <methodAction id="reviseCurrentPrjCostingDetailsDoc"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="reviseCurrentPrjCostingDetailsDoc"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.reviseCurrentPrjCostingDetailsDoc_CostingDetailsAMDataControl_dataProvider_reviseCurrentPrjCostingDetailsDoc_result"/>
+    <methodAction id="makeRevisedCostingDocAsCurrentRow"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeRevisedCostingDocAsCurrentRow"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="revisedCostingDocId"
+                 NDValue="#{pageFlowScope.revisedCostingDocId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <action IterBinding="BOQJobItemCostingVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="BOQCostingDetailsHeaderVO1Iterator"
+                     id="CostingDetailsHeaderId">
+      <AttrNames>
+        <Item Value="CostingDetailsHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="interfaceTasks"
+                  InstanceName="CostingDetailsAMDataControl.dataProvider"
+                  DataControl="CostingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="interfaceTasks" IsViewObjectMethod="false"
+                  ReturnName="data.CostingDetailsAMDataControl.methodResults.interfaceTasks_CostingDetailsAMDataControl_dataProvider_interfaceTasks_result"/>
+  </bindings>
+</pageDefinition>

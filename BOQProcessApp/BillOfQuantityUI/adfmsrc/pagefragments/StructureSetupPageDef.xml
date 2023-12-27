@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="StructureSetupPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TransStructureSetupBUVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="TransStructureSetupBUVO1Iterator"/>
+    <iterator Binds="StructureSetupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="StructureSetupVO1Iterator"/>
+    <searchRegion Binds="StructureSetupVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="StructureSetupVO1Query"/>
+  </executables>
+  <bindings>
+    <listOfValues StaticList="false"
+                  IterBinding="TransStructureSetupBUVO1Iterator"
+                  Uses="LOV_ProjectNumber" id="ProjectNumber"/>
+    <list IterBinding="TransStructureSetupBUVO1Iterator" StaticList="false"
+          Uses="LOV_BuName" id="BuName" DTSupportsMRU="false"
+          SelectItemValueMode="ListObject"/>
+    <tree IterBinding="StructureSetupVO1Iterator" id="StructureSetupVO1">
+      <nodeDefinition DefName="model.view.StructureSetupVO"
+                      Name="StructureSetupVO10">
+        <AttrNames>
+          <Item Value="StructureCode"/>
+          <Item Value="Description"/>
+          <Item Value="TransDeleteCondition"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="StructureSetupVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="StructureSetupVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="createTransBuLine"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createTransBuLine"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="StructureSetupVO1Iterator"
+                     id="TransDeleteCondition">
+      <AttrNames>
+        <Item Value="TransDeleteCondition"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

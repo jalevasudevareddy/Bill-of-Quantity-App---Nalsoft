@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View3">
+      <property
+         name="activityId">WorkDoneSearch</property>
+      <property
+         name="page">/pagefragments/WorkDoneSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>WorkDoneSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">211.29883</property>
+      <property
+         name="pageFragment">true</property>
+      <property
+         name="x">269.0</property>
+   </View>
+   <TaskFlowCall
+      id="TaskFlowCall4">
+      <property
+         name="taskFlowId">WorkDoneQtyTF</property>
+      <property
+         name="activityId">WorkDoneQtyTF</property>
+      <property
+         name="documentReference">/WEB-INF/WorkDoneQtyTF.xml</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>WorkDoneQtyTF&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">208.5918</property>
+      <property
+         name="x">541.00586</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase6"
+      from="View3"
+      to="TaskFlowCall4">
+      <property
+         name="fromOutcome">view</property>
+      <property
+         name="sdm:polyPoints">R46,310.0,207.44824,499.956,204.74121,L46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase7"
+      from="TaskFlowCall4"
+      to="View3">
+      <property
+         name="fromOutcome">taskFlowReturn1</property>
+      <property
+         name="sdm:polyPoints">L54,500.00586,211.74121,310.04987,214.44824,R54</property>
+   </ControlFlowCase>
+</SDM>

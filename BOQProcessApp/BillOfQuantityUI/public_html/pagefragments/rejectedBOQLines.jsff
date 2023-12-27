@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="Import Rejected Lines" id="ph1">
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:commandButton text="Back" id="cb1" action="Back"/>
+        </af:toolbar>
+      </f:facet>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <af:table value="#{bindings.BoqValidationRejectionLinesVO1.collectionModel}"
+                  var="row"
+                  rows="#{bindings.BoqValidationRejectionLinesVO1.rangeSize}"
+                  emptyText="#{bindings.BoqValidationRejectionLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.BoqValidationRejectionLinesVO1.rangeSize}"
+                  rowBandingInterval="0"
+                  filterModel="#{bindings.BoqValidationRejectionLinesVO1Query.queryDescriptor}"
+                  queryListener="#{bindings.BoqValidationRejectionLinesVO1Query.processQuery}"
+                  filterVisible="false" varStatus="vs"
+                  selectedRowKeys="#{bindings.BoqValidationRejectionLinesVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.BoqValidationRejectionLinesVO1.collectionModel.makeCurrent}"
+                  rowSelection="single" id="t1">
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.ValidationRejectiondId.name}"
+                     filterable="true" sortable="true" rendered="false"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.ValidationRejectiondId.label}"
+                     id="c3">
+            <af:outputText value="#{row.ValidationRejectiondId}" id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.BoqLevel.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.BoqLevel.label}"
+                     id="c8">
+            <af:outputText value="#{row.BoqLevel}" id="ot8"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.LineType.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.LineType.label}"
+                     id="c11">
+            <af:outputText value="#{row.LineType}" id="ot5"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.PageItem.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.PageItem.label}"
+                     id="c12">
+            <af:outputText value="#{row.PageItem}" id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.Item.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.Item.label}"
+                     id="c10">
+            <af:outputText value="#{row.Item}" id="ot1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.BillDescription.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.BillDescription.label}"
+                     id="c7">
+            <af:outputText value="#{row.BillDescription}" id="ot11"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.BillQty.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.BillQty.label}"
+                     id="c9">
+            <af:outputText value="#{row.BillQty}" id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.FinalQty.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.FinalQty.label}"
+                     id="c5">
+            <af:outputText value="#{row.FinalQty}" id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.Unit.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.Unit.label}"
+                     id="c1">
+            <af:outputText value="#{row.Unit}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.SellingRate.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.SellingRate.label}"
+                     id="c4">
+            <af:outputText value="#{row.SellingRate}" id="ot10"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.Trade.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.Trade.label}"
+                     id="c6">
+            <af:outputText value="#{row.Trade}" id="ot12"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.BoqValidationRejectionLinesVO1.hints.PriceCode.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.PriceCode.label}"
+                     id="c2">
+            <af:outputText value="#{row.PriceCode}" id="ot9"/>
+          </af:column>
+          <af:column headerText="#{bindings.BoqValidationRejectionLinesVO1.hints.ErrorDetails.label}"
+                     id="c13" width="500">
+            <af:outputText value="#{row.ErrorDetails}" id="ot13"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="MaxWDBOQHdrIdScrVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="model.searchview.MaxWDBOQHdrIdScrVORowImpl"
+  ComponentClass="model.searchview.MaxWDBOQHdrIdScrVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_bu_id"
+    Kind="where"
+    Type="java.math.BigDecimal"/>
+  <Variable
+    Name="p_prj_id"
+    Kind="viewcriteria"
+    Type="java.math.BigDecimal"/>
+  <Variable
+    Name="p_contract_id"
+    Kind="where"
+    Type="oracle.jbo.domain.Number"/>
+  <SQLQuery>
+    <![CDATA[select max(wd_header_id) max_wd_hdr_id , count(1) row_count from XXBOQ_WORK_DONE_DETAILS_T where contract_id = :p_contract_id and
+business_unit_id =:p_bu_id  and wd_status!='CL'  group by contract_id,business_unit_id]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="MaxWdHdrId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="BIGINT"
+    AliasName="MAX_WD_HDR_ID"
+    Expression="MAX_WD_HDR_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="RowCount"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.math.BigDecimal"
+    ColumnType="NUMBER"
+    AliasName="ROW_COUNT"
+    Expression="ROW_COUNT"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+</ViewObject>

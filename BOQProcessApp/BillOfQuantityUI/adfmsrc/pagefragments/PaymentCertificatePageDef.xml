@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="PaymentCertificatePageDef"
+                Package="pagefragments">
+   <parameters/>
+   <executables>
+      <variableIterator id="variables"/>
+      <iterator Binds="PaymentCertHdrVO1" RangeSize="25"
+                DataControl="PaymentCertificateAMDataControl"
+                id="PaymentCertHdrVO1Iterator"/>
+      <iterator Binds="PaymentCertLinesVO1" RangeSize="25"
+                DataControl="PaymentCertificateAMDataControl"
+                id="PaymentCertLinesVO1Iterator"/>
+      <iterator Binds="AttachmentsVO1" RangeSize="25"
+                DataControl="PaymentCertificateAMDataControl"
+                id="AttachmentsVO1Iterator"/>
+      <searchRegion Binds="AttachmentsVO1Iterator" Criteria=""
+                    Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                    id="AttachmentsVO1Query"/>
+      <iterator Binds="TransReversePopVO1" RangeSize="25"
+                DataControl="PaymentCertificateAMDataControl"
+                id="TransReversePopVO1Iterator"/>
+   </executables>
+   <bindings>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="BuName">
+         <AttrNames>
+            <Item Value="BuName"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="ProjectNumber">
+         <AttrNames>
+            <Item Value="ProjectNumber"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="ProjectName">
+         <AttrNames>
+            <Item Value="ProjectName"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PcDate">
+         <AttrNames>
+            <Item Value="PcDate"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PcNum">
+         <AttrNames>
+            <Item Value="PcNum"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="Revision">
+         <AttrNames>
+            <Item Value="Revision"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="Remarks">
+         <AttrNames>
+            <Item Value="Remarks"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PcStatus">
+         <AttrNames>
+            <Item Value="PcStatus"/>
+         </AttrNames>
+      </attributeValues>
+      <listOfValues StaticList="false" IterBinding="PaymentCertHdrVO1Iterator"
+                    Uses="LOV_Period" id="Period"/>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="PcDocumentNum">
+         <AttrNames>
+            <Item Value="PcDocumentNum"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PrevPeriod">
+         <AttrNames>
+            <Item Value="PrevPeriod"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="PrevPcDocumentNum">
+         <AttrNames>
+            <Item Value="PrevPcDocumentNum"/>
+         </AttrNames>
+      </attributeValues>
+      <button IterBinding="PaymentCertHdrVO1Iterator" id="ArFlag"
+              DTSupportsMRU="false" StaticList="true">
+         <AttrNames>
+            <Item Value="ArFlag"/>
+         </AttrNames>
+         <ValueList>
+            <Item Value="Y"/>
+            <Item Value="N"/>
+         </ValueList>
+      </button>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PcHeaderId">
+         <AttrNames>
+            <Item Value="PcHeaderId"/>
+         </AttrNames>
+      </attributeValues>
+      <tree IterBinding="PaymentCertLinesVO1Iterator" id="PaymentCertLinesVO1">
+         <nodeDefinition DefName="model.view.PaymentCertLinesVO"
+                         Name="PaymentCertLinesVO10">
+            <AttrNames>
+               <Item Value="Particulars"/>
+               <Item Value="Cummulative"/>
+               <Item Value="Previous"/>
+               <Item Value="TransCurrent"/>
+               <Item Value="EnableFlag"/>
+               <Item Value="TransParticular"/>
+               <Item Value="TransAccountCombination"/>
+               <Item Value="LineComments"/>
+               <Item Value="TransAdvancePaidAmnt"/>
+               <Item Value="TransIsReadOnly"/>
+               <Item Value="TransVOWDAmnt"/>
+               <Item Value="TransCummulativePer"/>
+               <Item Value="TransPreviousPer"/>
+               <Item Value="TransCurrentPer"/>
+               <Item Value="VatTaxAmount"/>
+               <Item Value="TransCurrentAmountTax"/>
+            </AttrNames>
+         </nodeDefinition>
+      </tree>
+      <listOfValues StaticList="false" IterBinding="PaymentCertHdrVO1Iterator"
+                    Uses="LOV_PayTerms" id="PayTerms"/>
+      <methodAction id="deletePCLines"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="deletePCLines" IsViewObjectMethod="false"/>
+      <methodAction id="updatePCLines"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="updatePCLines" IsViewObjectMethod="false"/>
+      <methodAction id="updatePCLinesTotals"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="updatePCLinesTotals"
+                    IsViewObjectMethod="false"/>
+      <methodAction id="validatePCLines"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="validatePCLines" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.validatePCLines_PaymentCertificateAMDataControl_dataProvider_validatePCLines_result"/>
+      <methodAction id="validateCummulative"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="validateCummulative" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.validateCummulative_PaymentCertificateAMDataControl_dataProvider_validateCummulative_result"/>
+      <methodAction id="callpkgForAMEProcessSubmit"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="callpkgForAMEProcessSubmit"
+                    IsViewObjectMethod="false"/>
+      <methodAction id="processInterfaceDistribution"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="processInterfaceDistribution"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.processInterfaceDistribution_PaymentCertificateAMDataControl_dataProvider_processInterfaceDistribution_result"/>
+      <methodAction id="processInterfaceLine"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="processInterfaceLine" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.processInterfaceLine_PaymentCertificateAMDataControl_dataProvider_processInterfaceLine_result"/>
+      <methodAction id="validateAccounts"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="validateAccounts" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.validateAccounts_PaymentCertificateAMDataControl_dataProvider_validateAccounts_result"/>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="DocumentType">
+         <AttrNames>
+            <Item Value="DocumentType"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="TransStatus">
+         <AttrNames>
+            <Item Value="TransStatus"/>
+         </AttrNames>
+      </attributeValues>
+      <methodAction id="cancelPCDocRow"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="cancelPCDocRow" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.cancelPCDocRow_PaymentCertificateAMDataControl_dataProvider_cancelPCDocRow_result"/>
+      <methodAction id="deletePCDocRow"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="deletePCDocRow" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.deletePCDocRow_PaymentCertificateAMDataControl_dataProvider_deletePCDocRow_result"/>
+      <methodAction id="reversePCDocRow"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="reversePCDocRow" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.reversePCDocRow_PaymentCertificateAMDataControl_dataProvider_reversePCDocRow_result"/>
+      <methodAction id="getLines"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="getLines" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.getLines_PaymentCertificateAMDataControl_dataProvider_getLines_result"/>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransTotalPrevAmnt">
+         <AttrNames>
+            <Item Value="TransTotalPrevAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransTotalCumltAmnt">
+         <AttrNames>
+            <Item Value="TransTotalCumltAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransTotalPCAmnt">
+         <AttrNames>
+            <Item Value="TransTotalPCAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransDocumentType">
+         <AttrNames>
+            <Item Value="TransDocumentType"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="Particulars">
+         <AttrNames>
+            <Item Value="Particulars"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransAdvancePaidAmnt">
+         <AttrNames>
+            <Item Value="TransAdvancePaidAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <methodAction id="refreshHdrRow"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="refreshHdrRow" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.refreshHdrRow_PaymentCertificateAMDataControl_dataProvider_refreshHdrRow_result"/>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransContractValue">
+         <AttrNames>
+            <Item Value="TransContractValue"/>
+         </AttrNames>
+      </attributeValues>
+      <methodAction id="updatePcOtherDedAmnt"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="updatePcOtherDedAmnt" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.updatePcOtherDedAmnt_PaymentCertificateAMDataControl_dataProvider_updatePcOtherDedAmnt_result"/>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransProjectNumber">
+         <AttrNames>
+            <Item Value="TransProjectNumber"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransPartyName">
+         <AttrNames>
+            <Item Value="TransPartyName"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransProjectType">
+         <AttrNames>
+            <Item Value="TransProjectType"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransPartyNum">
+         <AttrNames>
+            <Item Value="TransPartyNum"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="DocumentType1">
+         <AttrNames>
+            <Item Value="DocumentType"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="Particulars1">
+         <AttrNames>
+            <Item Value="Particulars"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransVOWDAmnt">
+         <AttrNames>
+            <Item Value="TransVOWDAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransTotalPCAmnt1">
+         <AttrNames>
+            <Item Value="TransTotalPCAmnt"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransPrevisousDocumentType">
+         <AttrNames>
+            <Item Value="TransPrevisousDocumentType"/>
+         </AttrNames>
+      </attributeValues>
+      <methodAction id="callpkgForAMEPCDocSubmit"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="callpkgForAMEPCDocSubmit"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.callpkgForAMEPCDocSubmit_PaymentCertificateAMDataControl_dataProvider_callpkgForAMEPCDocSubmit_result"/>
+      <methodAction id="withdrawCertDocFromApproval"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="withdrawCertDocFromApproval"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.withdrawCertDocFromApproval_PaymentCertificateAMDataControl_dataProvider_withdrawCertDocFromApproval_result">
+         <NamedData NDName="remarks" NDValue="#{pageFlowScope.remarks}"
+                    NDType="java.lang.String"/>
+      </methodAction>
+      <methodAction id="callpkgForAMEProcess"
+                    InstanceName="ApprovalAMDataControl.dataProvider"
+                    DataControl="ApprovalAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="callpkgForAMEProcess" IsViewObjectMethod="false"
+                    ReturnName="data.ApprovalAMDataControl.methodResults.callpkgForAMEProcess_ApprovalAMDataControl_dataProvider_callpkgForAMEProcess_result">
+         <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMap}"
+                    NDType="java.util.Map"/>
+      </methodAction>
+      <methodAction id="isEmployeeAFinalApprover"
+                    InstanceName="ApprovalAMDataControl.dataProvider"
+                    DataControl="ApprovalAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="isEmployeeAFinalApprover"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.ApprovalAMDataControl.methodResults.isEmployeeAFinalApprover_ApprovalAMDataControl_dataProvider_isEmployeeAFinalApprover_result">
+         <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                    NDType="oracle.jbo.domain.Number"/>
+         <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                    NDType="oracle.jbo.domain.Number"/>
+         <NamedData NDName="currEmpId" NDValue="#{pageFlowScope.currEmpId}"
+                    NDType="oracle.jbo.domain.Number"/>
+      </methodAction>
+      <methodAction id="isDocEnabledforCurrentUser"
+                    InstanceName="ApprovalAMDataControl.dataProvider"
+                    DataControl="ApprovalAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="isDocEnabledforCurrentUser"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.ApprovalAMDataControl.methodResults.isDocEnabledforCurrentUser_ApprovalAMDataControl_dataProvider_isDocEnabledforCurrentUser_result">
+         <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                    NDType="java.lang.Long"/>
+         <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                    NDType="java.lang.Long"/>
+      </methodAction>
+      <methodAction id="updateDocStatusAndCurrFlag"
+                    InstanceName="CommonUtilsAMDataControl.dataProvider"
+                    DataControl="CommonUtilsAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="updateDocStatusAndCurrFlag"
+                    IsViewObjectMethod="false"
+                    ReturnName="data.CommonUtilsAMDataControl.methodResults.updateDocStatusAndCurrFlag_CommonUtilsAMDataControl_dataProvider_updateDocStatusAndCurrFlag_result">
+         <NamedData NDName="docType" NDValue="#{pageFlowScope.docType}"
+                    NDType="java.lang.String"/>
+         <NamedData NDName="docHdrId" NDValue="#{pageFlowScope.docHdrId}"
+                    NDType="java.math.BigDecimal"/>
+      </methodAction>
+      <methodAction id="postPCDocument"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="postPCDocument" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.postPCDocument_PaymentCertificateAMDataControl_dataProvider_postPCDocument_result"/>
+      <tree IterBinding="AttachmentsVO1Iterator" id="AttachmentsVO1">
+         <nodeDefinition DefName="model.view.AttachmentsVO"
+                         Name="AttachmentsVO10">
+            <AttrNames>
+               <Item Value="AttachmentCode"/>
+               <Item Value="AttachmentFile"/>
+               <Item Value="AttachmentId"/>
+               <Item Value="CreatedBy"/>
+               <Item Value="CreationDate"/>
+               <Item Value="FileName"/>
+               <Item Value="FileType"/>
+               <Item Value="ReferenceId"/>
+            </AttrNames>
+         </nodeDefinition>
+      </tree>
+      <action IterBinding="AttachmentsVO1Iterator" id="CreateInsert"
+              InstanceName="PaymentCertificateAMDataControl.AttachmentsVO1"
+              DataControl="PaymentCertificateAMDataControl"
+              RequiresUpdateModel="true" Action="createInsertRow"/>
+      <action IterBinding="AttachmentsVO1Iterator" id="Delete"
+              InstanceName="PaymentCertificateAMDataControl.AttachmentsVO1"
+              DataControl="PaymentCertificateAMDataControl"
+              RequiresUpdateModel="false" Action="removeCurrentRow"/>
+      <methodAction id="saveAttachedFile"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="saveAttachedFile" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.saveAttachedFile_PaymentCertificateAMDataControl_dataProvider_saveAttachedFile_result">
+         <NamedData NDName="attachedFile"
+                    NDValue="#{pageFlowScope.attachedFile}"
+                    NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+      </methodAction>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransCummulativePer">
+         <AttrNames>
+            <Item Value="TransCummulativePer"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransPreviousPer">
+         <AttrNames>
+            <Item Value="TransPreviousPer"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransCurrentPer">
+         <AttrNames>
+            <Item Value="TransCurrentPer"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransPrecision">
+         <AttrNames>
+            <Item Value="TransPrecision"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="AdvancePrct">
+         <AttrNames>
+            <Item Value="AdvancePrct"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="AdvanceRecoveryPrct">
+         <AttrNames>
+            <Item Value="AdvanceRecoveryPrct"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="RetentionPrct">
+         <AttrNames>
+            <Item Value="RetentionPrct"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransAttachments">
+         <AttrNames>
+            <Item Value="TransAttachments"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransBOQStatus">
+         <AttrNames>
+            <Item Value="TransBOQStatus"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransTotalPCAmountExcludingVAT">
+         <AttrNames>
+            <Item Value="TransTotalPCAmountExcludingVAT"/>
+         </AttrNames>
+      </attributeValues>
+      <methodAction id="getPCPrintReport"
+                    InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                    DataControl="PaymentCertificateAMDataControl"
+                    RequiresUpdateModel="true" Action="invokeMethod"
+                    MethodName="getPCPrintReport" IsViewObjectMethod="false"
+                    ReturnName="data.PaymentCertificateAMDataControl.methodResults.getPCPrintReport_PaymentCertificateAMDataControl_dataProvider_getPCPrintReport_result"/>
+      
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues><attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="GetLinesFlag">
+      <AttrNames>
+        <Item Value="GetLinesFlag"/>
+      </AttrNames>
+    </attributeValues>
+<attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="Cognomen">
+         <AttrNames>
+            <Item Value="Cognomen"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="CurrencyCode">
+         <AttrNames>
+            <Item Value="CurrencyCode"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransBillingAddress">
+         <AttrNames>
+            <Item Value="TransBillingAddress"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="InvoiceNum">
+         <AttrNames>
+            <Item Value="InvoiceNum"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="Address">
+         <AttrNames>
+            <Item Value="Address"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertLinesVO1Iterator"
+                       id="TransRetentionAmt">
+         <AttrNames>
+            <Item Value="TransRetentionAmt"/>
+         </AttrNames>
+      </attributeValues>
+      <list IterBinding="PaymentCertHdrVO1Iterator" StaticList="false"
+            Uses="LOV_InterfaceType" id="InterfaceType" DTSupportsMRU="true"
+            SelectItemValueMode="ListObject"/>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="CmNum">
+         <AttrNames>
+            <Item Value="CmNum"/>
+         </AttrNames>
+      </attributeValues>
+      <button IterBinding="PaymentCertHdrVO1Iterator" id="CmInterfaceFlag"
+              DTSupportsMRU="false" StaticList="true">
+         <AttrNames>
+            <Item Value="CmInterfaceFlag"/>
+         </AttrNames>
+         <ValueList>
+            <Item Value="Y"/>
+            <Item Value="N"/>
+         </ValueList>
+      </button>
+      <button IterBinding="PaymentCertHdrVO1Iterator" id="CmApplicationFlag"
+              DTSupportsMRU="false" StaticList="true">
+         <AttrNames>
+            <Item Value="CmApplicationFlag"/>
+         </AttrNames>
+         <ValueList>
+            <Item Value="Y"/>
+            <Item Value="N"/>
+         </ValueList>
+      </button>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="TransReverseFlag">
+         <AttrNames>
+            <Item Value="TransReverseFlag"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                       id="ReceiptAmount">
+         <AttrNames>
+            <Item Value="ReceiptAmount"/>
+         </AttrNames>
+      </attributeValues>
+      <attributeValues IterBinding="TransReversePopVO1Iterator"
+                       id="TransCMDate">
+         <AttrNames>
+            <Item Value="TransCMDate"/>
+         </AttrNames>
+      </attributeValues>
+      <action IterBinding="TransReversePopVO1Iterator" id="Execute"
+              InstanceName="PaymentCertificateAMDataControl.TransReversePopVO1"
+              DataControl="PaymentCertificateAMDataControl"
+              RequiresUpdateModel="true" Action="iteratorExecute"/>
+      <action IterBinding="TransReversePopVO1Iterator" id="CreateInsert1"
+              InstanceName="PaymentCertificateAMDataControl.TransReversePopVO1"
+              DataControl="PaymentCertificateAMDataControl"
+              RequiresUpdateModel="true" Action="createInsertRow"/>
+   </bindings>
+</pageDefinition>

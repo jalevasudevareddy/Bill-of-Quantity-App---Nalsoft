@@ -1,0 +1,513 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1">
+    <f:facet name="center">
+      <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelHeader text="Project Bill Details" id="ph1">
+          <f:facet name="toolbar">
+            <af:toolbar id="t5"> 
+             <af:commandButton text="Download Template" id="cb22">
+            <af:fileDownloadActionListener method="#{backingBeanScope.BOQDetailsBean.formatDownload}"
+                                           contentType="application/vnd.ms-excel"
+                                           filename="BOQLines.xlsx"/>
+              </af:commandButton>
+              <af:commandButton text="Upload BOQ" id="cb9" 
+                                actionListener="#{backingBeanScope.BOQDetailsBean.uploadFileBOQ}"
+                                />
+              <af:commandButton text="Save" id="cb5"
+                                actionListener="#{backingBeanScope.BOQDetailsBean.saveBOQ}"/>
+              <af:spacer width="4" id="s2"/>
+              <af:commandButton text="Save and Close" id="cb6"
+                                actionListener="#{backingBeanScope.BOQDetailsBean.SaveAndClose}"/>
+              <af:spacer width="4" id="s1"/>
+              <af:commandButton text="Cancel" id="cb7" action="Done"
+                                actionListener="#{backingBeanScope.BOQDetailsBean.cancelBOQ}"
+                                immediate="true"/>
+            </af:toolbar>
+          </f:facet>
+          <af:spacer width="10" height="10" id="s3"/>
+          <af:panelFormLayout id="pfl1" maxColumns="2" rows="2" fieldWidth="70%"
+                              labelWidth="30%">
+            <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                     id="plam3">
+              <af:outputText value="#{bindings.BuName.inputValue}" id="ot4"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                                     id="plam1">
+              <af:outputText value="#{bindings.ProjectNumber.inputValue}"
+                             id="ot2"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}"
+                                     id="plam4">
+              <af:outputText value="#{bindings.ProjectName.inputValue}"
+                             id="ot3"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.Description.hints.label}"
+                                     id="plam2">
+              <af:outputText value="#{bindings.Description.inputValue}"
+                             id="ot1"/>
+            </af:panelLabelAndMessage>
+          </af:panelFormLayout>
+          <af:spacer width="10" height="10" id="s4"/>
+          <af:showDetailHeader text="Bill Details" disclosed="true" id="sdh1">
+            <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+              <f:facet name="toolbar">
+                <af:toolbar id="t2">
+                  <af:commandButton text="Add" id="cb1"
+                                    actionListener="#{backingBeanScope.BOQDetailsBean.createBOQParantLine}"/>
+                  <af:commandButton actionListener="#{backingBeanScope.BOQDetailsBean.deleteBOQLine}"
+                                    text="Delete" immediate="true"
+                                    disabled="#{!bindings.Delete.enabled or bindings.SequenceNumner.inputValue!='0'}"
+                                    id="cb2"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.BOQLinesVO1.collectionModel}"
+                        var="row" rows="#{bindings.BOQLinesVO1.rangeSize}"
+                        emptyText="#{bindings.BOQLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.BOQLinesVO1.rangeSize}"
+                        rowBandingInterval="0"
+                        filterModel="#{bindings.BOQLinesVO1Query.queryDescriptor}"
+                        queryListener="#{bindings.BOQLinesVO1Query.processQuery}"
+                        filterVisible="false" varStatus="vs"
+                        binding="#{backingBeanScope.BOQDetailsBean.boqLinesTable}"
+                        selectedRowKeys="#{bindings.BOQLinesVO1.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.BOQLinesVO1.collectionModel.makeCurrent}"
+                        rowSelection="single" id="t1"
+                        styleClass="AFStretchWidth"
+                        partialTriggers="::cb1 ::cb2 :::pc2:cb4"
+                        columnStretching="column:c4">
+                <af:column id="c99" width="45" align="center" headerText="Sno ">
+                  <af:outputText value=" #{vs.index+1} " id="ot99"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.BillNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.BillNumber.label}"
+                           id="c5">
+                  <af:inputText value="#{row.bindings.BillNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO1.hints.BillNumber.label}"
+                                required="true" autoSubmit="true"
+                                readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                columns="#{bindings.BOQLinesVO1.hints.BillNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.BillNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.BillNumber.tooltip}"
+                                id="it2">
+                    <f:validator binding="#{row.bindings.BillNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.PageNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.PageNumber.label}"
+                           id="c6">
+                  <af:inputText value="#{row.bindings.PageNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO1.hints.PageNumber.label}"
+                                required="true" autoSubmit="true"
+                                readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                columns="#{bindings.BOQLinesVO1.hints.PageNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.PageNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.PageNumber.tooltip}"
+                                id="it1">
+                    <f:validator binding="#{row.bindings.PageNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.ItemNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.ItemNumber.label}"
+                           id="c1">
+                  <af:inputText value="#{row.bindings.ItemNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO1.hints.ItemNumber.label}"
+                                required="true" autoSubmit="true"
+                                readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                columns="#{bindings.BOQLinesVO1.hints.ItemNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.ItemNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.ItemNumber.tooltip}"
+                                id="it3">
+                    <f:validator binding="#{row.bindings.ItemNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.ItemDescription.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.ItemDescription.label}"
+                           id="c4">
+                  <af:inputText value="#{row.bindings.ItemDescription.inputValue}"
+                                autoSubmit="true"
+                                readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                label="#{bindings.BOQLinesVO1.hints.ItemDescription.label}"
+                                required="#{bindings.BOQLinesVO1.hints.ItemDescription.mandatory}"
+                                columns="#{bindings.BOQLinesVO1.hints.ItemDescription.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.ItemDescription.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.ItemDescription.tooltip}"
+                                id="it5">
+                    <f:validator binding="#{row.bindings.ItemDescription.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.BoqQuantity.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.BoqQuantity.label}"
+                           id="c3" align="right">
+                  <af:inputText value="#{row.bindings.BoqQuantity.inputValue}"
+                                autoSubmit="true"
+                                label="#{bindings.BOQLinesVO1.hints.BoqQuantity.label}"
+                                required="true"
+                                columns="#{bindings.BOQLinesVO1.hints.BoqQuantity.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.BoqQuantity.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.BoqQuantity.tooltip}"
+                                id="it6" 
+                                inlineStyle="text-align:right;">
+                    <f:validator binding="#{row.bindings.BoqQuantity.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.Uom.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.Uom.label}"
+                           id="c7">
+                  <af:inputComboboxListOfValues id="uomId"
+                                                popupTitle="Search and Select: #{bindings.BOQLinesVO1.hints.Uom.label}"
+                                                value="#{row.bindings.Uom.inputValue}"
+                                                model="#{row.bindings.Uom.listOfValuesModel}"
+                                                readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                                required="true"
+                                                columns="#{bindings.BOQLinesVO1.hints.Uom.displayWidth}"
+                                                shortDesc="#{bindings.BOQLinesVO1.hints.Uom.tooltip}">
+                    <f:validator binding="#{row.bindings.Uom.validator}"/>
+                  </af:inputComboboxListOfValues>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.BoqRate.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.BoqRate.label}"
+                           id="c8" align="right">
+                  <af:inputText value="#{row.bindings.BoqRate.inputValue}"
+                                autoSubmit="true"
+                                label="#{bindings.BOQLinesVO1.hints.BoqRate.label}"
+                                required="true"
+                                columns="#{bindings.BOQLinesVO1.hints.BoqRate.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.BoqRate.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.BoqRate.tooltip}"
+                                id="it7" 
+                                inlineStyle="text-align:right;">
+                    <f:validator binding="#{row.bindings.BoqRate.validator}"/>
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      pattern="#{bindings.BOQLinesVO1.hints.BoqRate.format}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.BOQLinesVO1.hints.TransTotalAmt.label}"
+                           id="c10" align="right" width="150">
+                  <af:inputText value="#{row.bindings.TransTotalAmt.inputValue}"
+                                partialTriggers="it7 it6" readOnly="true"
+                                label="#{bindings.BOQLinesVO1.hints.TransTotalAmt.label}"
+                                required="#{bindings.BOQLinesVO1.hints.TransTotalAmt.mandatory}"
+                                columns="#{bindings.BOQLinesVO1.hints.TransTotalAmt.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.TransTotalAmt.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.TransTotalAmt.tooltip}"
+                                id="it8" 
+                                inlineStyle="text-align:right;">
+                    <f:validator binding="#{row.bindings.TransTotalAmt.validator}"/>
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      pattern="#{bindings.BOQLinesVO1.hints.TransTotalAmt.format}"/>
+                  </af:inputText>
+                  <f:facet name="footer">
+                    <af:panelLabelAndMessage label="Net Value" id="plam5"
+                                             inlineStyle="text-align:right; font-weight:bold; color:Black;">
+                      <af:outputText value="#{bindings.TransGrandTotal.inputValue}"
+                                     id="ot7" partialTriggers="it8">
+                        <af:convertNumber groupingUsed="true" type="currency"
+                                          currencySymbol=" "
+                                          pattern="#{bindings.BOQLinesVO1.hints.TransGrandTotal.format}"/>
+                      </af:outputText>
+                    </af:panelLabelAndMessage>
+                  </f:facet>
+                </af:column>
+                <af:column headerText="#{bindings.BOQLinesVO1.hints.TransStructureCode.label}" showRequired="true"
+                           id="c23">
+                  <af:inputComboboxListOfValues id="inputComboboxListOfValues2" autoSubmit="true"
+                                                popupTitle="Search and Select: #{bindings.BOQLinesVO1.hints.TransStructureCode.label}"
+                                                value="#{row.bindings.TransStructureCode.inputValue}"
+                                                model="#{row.bindings.TransStructureCode.listOfValuesModel}"
+                                                rendered="#{row.row.entities[0].entityState==0}"
+                                                columns="#{bindings.BOQLinesVO1.hints.TransStructureCode.displayWidth}"
+                                                shortDesc="#{bindings.BOQLinesVO1.hints.TransStructureCode.tooltip}">
+                    <f:validator binding="#{row.bindings.TransStructureCode.validator}"/>
+                  </af:inputComboboxListOfValues>
+                  <af:outputText value="#{row.StructureCode}" id="ot5"
+                                 rendered="#{row.row.entities[0].entityState!=0}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.label}"
+                           id="c2">
+                  <af:inputText value="#{row.bindings.EstimatedQuantity.inputValue}"
+                                label="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.label}"
+                                required="true" autoSubmit="true"
+                                columns="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.precision}"
+                                shortDesc="#{bindings.BOQLinesVO1.hints.EstimatedQuantity.tooltip}"
+                                id="it4">
+                    <f:validator binding="#{row.bindings.EstimatedQuantity.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.BOQLinesVO1.hints.ContractType.label}"
+                           id="c9">
+                  <af:selectOneChoice value="#{row.bindings.ContractType.inputValue}"
+                                      label="#{row.bindings.ContractType.label}"
+                                      autoSubmit="true"
+                                      readOnly="#{row.bindings.SequenceNumner.inputValue!='0'}"
+                                      required="#{bindings.BOQLinesVO1.hints.ContractType.mandatory}"
+                                      shortDesc="#{bindings.BOQLinesVO1.hints.ContractType.tooltip}"
+                                      id="soc1">
+                    <f:selectItems value="#{row.bindings.ContractType.items}"
+                                   id="si1"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailHeader>
+          <af:showDetailHeader text="Sub Item Details" disclosed="true"
+                               id="sdh2">
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth">
+              <f:facet name="toolbar">
+                <af:toolbar id="t4">
+                  <af:commandButton text="Add" id="cb3" rendered="false"
+                                    actionListener="#{backingBeanScope.BOQDetailsBean.createBOQChildLine}"/>
+                  <af:commandButton text="Split BOQ Line" id="cb8"
+                                    actionListener="#{backingBeanScope.BOQDetailsBean.splitBOQLine}"/>
+                  <af:commandButton actionListener="#{backingBeanScope.BOQDetailsBean.deleteBOQChildLine}"
+                                    text="Delete" immediate="true"
+                                    disabled="#{!bindings.Delete1.enabled or bindings.TransDeleteFlag.inputValue=='Y'}"
+                                    id="cb4"/>
+                </af:toolbar>
+              </f:facet>
+              <af:table value="#{bindings.BOQLinesVO2.collectionModel}"
+                        var="row" rows="#{bindings.BOQLinesVO2.rangeSize}"
+                        emptyText="#{bindings.BOQLinesVO2.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        fetchSize="#{bindings.BOQLinesVO2.rangeSize}"
+                        rowBandingInterval="0"
+                        filterModel="#{bindings.BOQLinesVO2Query.queryDescriptor}"
+                        queryListener="#{bindings.BOQLinesVO2Query.processQuery}"
+                        filterVisible="false" varStatus="vs"
+                        selectedRowKeys="#{bindings.BOQLinesVO2.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.BOQLinesVO2.collectionModel.makeCurrent}"
+                        rowSelection="single" id="t3"
+                        styleClass="AFStretchWidth"
+                        columnStretching="column:c21"
+                        partialTriggers="::cb4 :::pc1:t1">
+                <af:column id="c22" width="45" align="center" headerText="Sno ">
+                  <af:outputText value=" #{vs.index+1} " id="ot6"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.BillNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.BillNumber.label}"
+                           id="c18">
+                  <af:inputText value="#{row.bindings.BillNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO2.hints.BillNumber.label}"
+                                required="true" readOnly="true"
+                                columns="#{bindings.BOQLinesVO2.hints.BillNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.BillNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.BillNumber.tooltip}"
+                                id="it13">
+                    <f:validator binding="#{row.bindings.BillNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.PageNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.PageNumber.label}"
+                           id="c17">
+                  <af:inputText value="#{row.bindings.PageNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO2.hints.PageNumber.label}"
+                                required="true" readOnly="true"
+                                columns="#{bindings.BOQLinesVO2.hints.PageNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.PageNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.PageNumber.tooltip}"
+                                id="it9">
+                    <f:validator binding="#{row.bindings.PageNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.ItemNumber.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.ItemNumber.label}"
+                           id="c11">
+                  <af:inputText value="#{row.bindings.ItemNumber.inputValue}"
+                                label="#{bindings.BOQLinesVO2.hints.ItemNumber.label}"
+                                required="true" readOnly="true"
+                                columns="#{bindings.BOQLinesVO2.hints.ItemNumber.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.ItemNumber.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.ItemNumber.tooltip}"
+                                id="it11">
+                    <f:validator binding="#{row.bindings.ItemNumber.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.ItemDescription.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.ItemDescription.label}"
+                           id="c21">
+                  <af:inputText value="#{row.bindings.ItemDescription.inputValue}"
+                                label="#{bindings.BOQLinesVO2.hints.ItemDescription.label}"
+                                required="#{bindings.BOQLinesVO2.hints.ItemDescription.mandatory}"
+                                columns="#{bindings.BOQLinesVO2.hints.ItemDescription.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.ItemDescription.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.ItemDescription.tooltip}"
+                                id="it15">
+                    <f:validator binding="#{row.bindings.ItemDescription.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.BoqQuantity.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.BoqQuantity.label}"
+                           id="c15">
+                  <af:inputText value="#{row.bindings.BoqQuantity.inputValue}"
+                                autoSubmit="true"
+                                label="#{bindings.BOQLinesVO2.hints.BoqQuantity.label}"
+                                required="true"
+                                columns="#{bindings.BOQLinesVO2.hints.BoqQuantity.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.BoqQuantity.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.BoqQuantity.tooltip}"
+                                id="it14">
+                    <f:validator binding="#{row.bindings.BoqQuantity.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.Uom.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.Uom.label}"
+                           id="c13">
+                  <af:inputComboboxListOfValues id="inputComboboxListOfValues1"
+                                                autoSubmit="true"
+                                                popupTitle="Search and Select: #{bindings.BOQLinesVO2.hints.Uom.label}"
+                                                value="#{row.bindings.Uom.inputValue}"
+                                                model="#{row.bindings.Uom.listOfValuesModel}"
+                                                required="true"
+                                                columns="#{bindings.BOQLinesVO2.hints.Uom.displayWidth}"
+                                                shortDesc="#{bindings.BOQLinesVO2.hints.Uom.tooltip}">
+                    <f:validator binding="#{row.bindings.Uom.validator}"/>
+                  </af:inputComboboxListOfValues>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.BoqRate.name}"
+                           showRequired="true" filterable="true" sortable="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.BoqRate.label}"
+                           id="c20">
+                  <af:inputText value="#{row.bindings.BoqRate.inputValue}"
+                                autoSubmit="true"
+                                label="#{bindings.BOQLinesVO2.hints.BoqRate.label}"
+                                required="true"
+                                columns="#{bindings.BOQLinesVO2.hints.BoqRate.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.BoqRate.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.BoqRate.tooltip}"
+                                id="it12">
+                    <f:validator binding="#{row.bindings.BoqRate.validator}"/>
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      pattern="#{bindings.BOQLinesVO2.hints.BoqRate.format}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.TransTotalAmt.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.TransTotalAmt.label}"
+                           id="c19" align="right" width="150">
+                  <af:inputText value="#{row.bindings.TransTotalAmt.inputValue}"
+                                partialTriggers="it12 it14" readOnly="true"
+                                label="#{bindings.BOQLinesVO2.hints.TransTotalAmt.label}"
+                                required="#{bindings.BOQLinesVO2.hints.TransTotalAmt.mandatory}"
+                                columns="#{bindings.BOQLinesVO2.hints.TransTotalAmt.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.TransTotalAmt.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.TransTotalAmt.tooltip}"
+                                id="it17" 
+                                inlineStyle="text-align:right;">
+                    <f:validator binding="#{row.bindings.TransTotalAmt.validator}"/>
+                    <af:convertNumber groupingUsed="true" type="currency"
+                                      currencySymbol=" "
+                                      pattern="#{bindings.BOQLinesVO2.hints.BoqRate.format}"/>
+                  </af:inputText>
+                  <f:facet name="footer">
+                    <af:group id="g1">
+                      <af:panelLabelAndMessage label="Total" id="plam6"
+                                               inlineStyle="font-weight:bold; color:Black;">
+                        <af:outputText value="#{bindings.TransGrandTotal1.inputValue}"
+                                       id="ot8" partialTriggers="it17">
+                          <af:convertNumber groupingUsed="true" type="currency"
+                                            currencySymbol=" "
+                                            pattern="#{bindings.BOQLinesVO2.hints.TransGrandTotal.format}"/>
+                        </af:outputText>
+                      </af:panelLabelAndMessage>
+                      <af:panelLabelAndMessage label="Balance" id="plam7"
+                                               inlineStyle="font-weight:bold;">
+                        <af:outputText value="#{bindings.TransBalance.inputValue}"
+                                       id="ot9"
+                                       inlineStyle="color:#{(bindings.TransBalance.inputValue ge 0)?'Blue':'Red'};"
+                                       partialTriggers="it17">
+                          <af:convertNumber groupingUsed="true" type="currency"
+                                            currencySymbol=" "
+                                            pattern="#{bindings.BOQLinesVO2.hints.TransBalance.format}"/>
+                        </af:outputText>
+                      </af:panelLabelAndMessage>
+                    </af:group>
+                  </f:facet>
+                </af:column>
+                <af:column headerText="#{bindings.BOQLinesVO2.hints.TransStructureCode.label}"
+                           showRequired="true" id="c12">
+                  <af:inputComboboxListOfValues id="transStructureCodeId"
+                                                autoSubmit="true"
+                                                popupTitle="Search and Select: #{bindings.BOQLinesVO2.hints.TransStructureCode.label}"
+                                                value="#{row.bindings.TransStructureCode.inputValue}"
+                                                rendered="#{row.row.entities[0].entityState==0}"
+                                                model="#{row.bindings.TransStructureCode.listOfValuesModel}"
+                                                required="#{bindings.BOQLinesVO2.hints.TransStructureCode.mandatory}"
+                                                columns="#{bindings.BOQLinesVO2.hints.TransStructureCode.displayWidth}"
+                                                shortDesc="#{bindings.BOQLinesVO2.hints.TransStructureCode.tooltip}">
+                    <f:validator binding="#{row.bindings.TransStructureCode.validator}"/>
+                  </af:inputComboboxListOfValues>
+                  <af:outputText value="#{row.StructureCode}" id="ot10"
+                                 rendered="#{row.row.entities[0].entityState!=0}"/>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.name}"
+                           filterable="true" sortable="true" showRequired="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.label}"
+                           id="c16">
+                  <af:inputText value="#{row.bindings.EstimatedQuantity.inputValue}"
+                                label="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.label}"
+                                required="true"
+                                columns="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.displayWidth}"
+                                maximumLength="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.precision}"
+                                shortDesc="#{bindings.BOQLinesVO2.hints.EstimatedQuantity.tooltip}"
+                                id="it10">
+                    <f:validator binding="#{row.bindings.EstimatedQuantity.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column sortProperty="#{bindings.BOQLinesVO2.hints.ContractType.name}"
+                           filterable="true" sortable="true"
+                           headerText="#{bindings.BOQLinesVO2.hints.ContractType.label}"
+                           id="c14">
+                  <af:selectOneChoice value="#{row.bindings.ContractType.inputValue}"
+                                      label="#{row.bindings.ContractType.label}"
+                                      required="#{bindings.BOQLinesVO2.hints.ContractType.mandatory}"
+                                      shortDesc="#{bindings.BOQLinesVO2.hints.ContractType.tooltip}"
+                                      id="soc2">
+                    <f:selectItems value="#{row.bindings.ContractType.items}"
+                                   id="si2"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailHeader>
+          <af:popup id="p1"
+                    binding="#{backingBeanScope.BOQDetailsBean.uploadBOQPopUp}">
+            <af:dialog id="d1" title="Upload BOQ Lines" >
+            <af:inputFile label="Select File to Upload : " id="if1"
+                          autoSubmit="true"
+                          valueChangeListener="#{backingBeanScope.BOQDetailsBean.fileXLUploaded}"/>
+            </af:dialog>
+                       
+          </af:popup>
+           <af:popup id="p2"
+                    binding="#{backingBeanScope.BOQDetailsBean.validateBOQPopUp}">
+            <af:dialog id="d2" title="Validate BOQ Lines" type="okCancel"
+                       dialogListener="#{backingBeanScope.BOQDetailsBean.uploadBOQDialog}">
+              <af:outputText value="Given File details are obtained successfully. Do you want to continue to upload BOQ Lines?" id="ot11"/>
+            </af:dialog>
+                       
+          </af:popup>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

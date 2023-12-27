@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="RevenueRecognitionHdrVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqRevenueRecogHdrEO.BU_ID, 
+       XxboqRevenueRecogHdrEO.CREATED_BY, 
+       XxboqRevenueRecogHdrEO.CREATION_DATE, 
+       XxboqRevenueRecogHdrEO.GL_ERRORS, 
+       XxboqRevenueRecogHdrEO.LAST_UPDATED_BY, 
+       XxboqRevenueRecogHdrEO.LAST_UPDATED_DATE, 
+       XxboqRevenueRecogHdrEO.PERIOD, 
+       XxboqRevenueRecogHdrEO.REV_HEADER_ID, 
+       XxinvBusinessUnitsEO.BU_NAME, 
+       XxinvBusinessUnitsEO.BU_ID AS BU_ID1, 
+       XxinvBusinessUnitsEO.LEDGER_ID, 
+       XxinvBusinessUnitsEO.CURRENCY_CODE"
+  FromList="XXBOQ_REVENUE_RECOG_HDR_T XxboqRevenueRecogHdrEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqRevenueRecogHdrEO.BU_ID=XxinvBusinessUnitsEO.BU_ID"
+  RowClass="model.view.RevenueRecognitionHdrVORowImpl"
+  ComponentClass="model.view.RevenueRecognitionHdrVOImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="AgreementMonthsVO1"
+    ViewObjectName="model.progview.AgreementMonthsVO">
+    <ParameterMap>
+      <PIMap Variable="p_agr_endDate">
+        <TransientExpression><![CDATA[TransEndDate]]></TransientExpression>
+      </PIMap>
+      <PIMap Variable="p_agr_startDate">
+        <TransientExpression><![CDATA[TransStartDate]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_BuId"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Period"
+    ListVOName="AgreementMonthsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Period_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Period"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="TransAgreementMonth"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="AgreementMonthsVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqRevenueRecogHdrEO"
+    Entity="model.entity.XxboqRevenueRecogHdrEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.view.RevenueRecognitionHdrVO.XxboqRevenueRecogHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false">
+    <DesignTime>
+      <Attr Name="_customjoin" Value="true"/>
+    </DesignTime>
+  </EntityUsage>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="BU_ID"
+    LOVName="LOV_BuId">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+        <DISPLAYWIDTH
+          Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="GlErrors"
+    PrecisionRule="true"
+    EntityAttrName="GlErrors"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="GL_ERRORS">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="GL_ERRORS"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="Period"
+    PrecisionRule="true"
+    EntityAttrName="Period"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="PERIOD"
+    LOVName="LOV_Period">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PERIOD"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="RevHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="RevHeaderId"
+    EntityUsage="XxboqRevenueRecogHdrEO"
+    AliasName="REV_HEADER_ID"/>
+  <ViewAttribute
+    Name="BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME"/>
+  <ViewAttribute
+    Name="BuId1"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="TransStartDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransEndDate"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="BIGINT"
+    AliasName="VIEW_ATTR"
+    SQLType="NUMERIC"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="TransgetLinesValidFlag"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"/>
+  <ViewAttribute
+    Name="LedgerId"
+    PrecisionRule="true"
+    EntityAttrName="LedgerId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="LEDGER_ID"/>
+  <ViewAttribute
+    Name="CurrencyCode"
+    PrecisionRule="true"
+    EntityAttrName="CurrencyCode"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="CURRENCY_CODE"/>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="RevHeaderId"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="RevenueRecognitionLinesVO"
+    ViewLink="model.viewlink.RevenueRecognitionHdrToLinesVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

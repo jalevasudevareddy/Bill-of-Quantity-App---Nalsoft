@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73" id="TaxSetupLinesPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProjectTaxLinesVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="ProjectTaxLinesVO1Iterator"/>
+    <searchRegion Binds="ProjectTaxLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ProjectTaxLinesVO1Query"/>
+    <iterator Binds="ProjectTaxHeaderVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="ProjectTaxHeaderVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectTaxLinesVO1Iterator" id="ProjectTaxLinesVO1">
+      <nodeDefinition DefName="model.view.ProjectTaxLinesVO"
+                      Name="ProjectTaxLinesVO10">
+        <AttrNames>
+          <Item Value="LineId"/>
+          <Item Value="HeaderId"/>
+          <Item Value="Particulars"/>
+          <Item Value="TaxCode"/>
+          <Item Value="TaxRate"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+          <Item Value="TransBillCategory"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ProjectTaxLinesVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <methodAction id="saveLines"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.saveLines_BillofQuantityAMDataControl_dataProvider_saveLines_result"/>
+    <listOfValues StaticList="false" IterBinding="ProjectTaxHeaderVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false" IterBinding="ProjectTaxHeaderVO1Iterator"
+                  Uses="LOV_TransProjectName" id="TransProjectName"/>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator" id="HeaderId">
+      <AttrNames>
+        <Item Value="HeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="TransProjectNumber">
+      <AttrNames>
+        <Item Value="TransProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="ProjectTaxHeaderVO1Iterator"
+                  Uses="LOV_TransCustomerName" id="TransCustomerName"/>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator" id="CreatedBy">
+      <AttrNames>
+        <Item Value="CreatedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="CreationDate">
+      <AttrNames>
+        <Item Value="CreationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ProjectTaxLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="TransPCExistsFlag">
+      <AttrNames>
+        <Item Value="TransPCExistsFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="refreshTaxHeaderAndLines"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshTaxHeaderAndLines"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.refreshTaxHeaderAndLines_BillofQuantityAMDataControl_dataProvider_refreshTaxHeaderAndLines_result">
+      <NamedData NDName="HeaderId" NDValue="" NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="TransCognomen">
+      <AttrNames>
+        <Item Value="TransCognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="TransContractNumber">
+      <AttrNames>
+        <Item Value="TransContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

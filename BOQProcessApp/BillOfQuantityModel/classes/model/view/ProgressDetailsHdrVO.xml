@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProgressDetailsHdrVO"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  SelectList="XxboqProgressDetailsHdrEO.APPROVED_BY, 
+       XxboqProgressDetailsHdrEO.APPROVED_DATE, 
+       XxboqProgressDetailsHdrEO.AS_ON_DATE, 
+       XxboqProgressDetailsHdrEO.BUSINESS_UNIT_ID, 
+       XxboqProgressDetailsHdrEO.CREATED_BY, 
+       XxboqProgressDetailsHdrEO.CREATION_DATE, 
+       XxboqProgressDetailsHdrEO.DOC_HEADER_ID, 
+       XxboqProgressDetailsHdrEO.LAST_UPDATED_BY, 
+       XxboqProgressDetailsHdrEO.LAST_UPDATED_DATE, 
+       XxboqProgressDetailsHdrEO.PROJECT_ID, 
+       XxboqProgressDetailsHdrEO.STATUS, 
+       XxinvBusinessUnitsEO.BU_NAME, 
+       XxinvBusinessUnitsEO.BU_ID, 
+       XxpjProjectsEO.PROJECT_NUMBER, 
+       XxpjProjectsEO.PROJECT_ID AS PROJECT_ID1, 
+       XxpjProjectsEO.PROJECT_NAME, 
+       XxboqProgressDetailsHdrEO.BUSINESS_UNIT_ID AS BUSINESS_UNIT_ID1, 
+       XxpjProjectsEO.PROJECT_NUMBER AS PROJECT_NUMBER1"
+  FromList="XXBOQ_PROGRESS_DETAILS_HDR_T XxboqProgressDetailsHdrEO, XXINV_BUSINESS_UNITS_T XxinvBusinessUnitsEO, XXPJ_PROJECTS_T XxpjProjectsEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.ProgressDetailsHdrVORowImpl"
+  ComponentClass="model.view.ProgressDetailsHdrVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqProgressDetailsHdrEO.BUSINESS_UNIT_ID=XxinvBusinessUnitsEO.bu_id
+and
+XxboqProgressDetailsHdrEO.PROJECT_ID=XxpjProjectsEO.project_id">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="UserBusinessUnitsVO1"
+    ViewObjectName="model.masterview.UserBusinessUnitsVO">
+    <ViewCriteriaUsage
+      Name="UserBusinessUnitsVOCriteria"
+      FullName="model.masterview.UserBusinessUnitsVO.UserBusinessUnitsVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PrjProjectsVO1"
+    ViewObjectName="model.masterview.PrjProjectsVO">
+    <ViewCriteriaUsage
+      Name="PrjProjectsVOCriteria"
+      FullName="model.masterview.PrjProjectsVO.PrjProjectsVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_org_id">
+        <TransientExpression><![CDATA[BusinessUnitId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="UserBusinessUnitsVO2"
+    ViewObjectName="model.masterview.UserBusinessUnitsVO">
+    <ViewCriteriaUsage
+      Name="UserBusinessUnitsVOCriteria"
+      FullName="model.masterview.UserBusinessUnitsVO.UserBusinessUnitsVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="PrjProjectsVO2"
+    ViewObjectName="model.masterview.PrjProjectsVO">
+    <ViewCriteriaUsage
+      Name="PrjProjectsVOCriteria"
+      FullName="model.masterview.PrjProjectsVO.PrjProjectsVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_org_id">
+        <TransientExpression><![CDATA[BusinessUnitId1]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransBuName"
+    ListVOName="UserBusinessUnitsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransBuName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransBuName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="BusinessUnitId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuName"/>
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="UserBusinessUnitsVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="UserBusinessUnitsVOCriteria"
+      FullName="model.masterview.UserBusinessUnitsVO.UserBusinessUnitsVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransProjectNumber"
+    ListVOName="PrjProjectsVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransProjectNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="ProjectId"/>
+      <Item Value="TransProjectName"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectId"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PrjProjectsVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="PrjProjectsVOCriteria"
+      FullName="model.masterview.PrjProjectsVO.PrjProjectsVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_BusinessUnitId1"
+    ListVOName="UserBusinessUnitsVO2"
+    ListRangeSize="-1"
+    NullValueFlag="start"
+    NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="BusinessUnitId1"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_ProjectNumber1"
+    ListVOName="PrjProjectsVO2"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_ProjectNumber1_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="ProjectNumber1"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="PrjProjectsVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="PrjProjectsVOCriteria"
+      FullName="model.masterview.PrjProjectsVO.PrjProjectsVOCriteria"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqProgressDetailsHdrEO"
+    Entity="model.entity.XxboqProgressDetailsHdrEO"/>
+  <EntityUsage
+    Name="XxinvBusinessUnitsEO"
+    Entity="model.masterentity.XxinvBusinessUnitsEO"
+    SourceUsage="model.view.ProgressDetailsHdrVO.XxboqProgressDetailsHdrEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <EntityUsage
+    Name="XxpjProjectsEO"
+    Entity="model.masterentity.XxpjProjectsEO"
+    SourceUsage="model.view.ProgressDetailsHdrVO.XxinvBusinessUnitsEO"
+    ReadOnly="true"
+    Reference="true"
+    DeleteParticipant="false"/>
+  <ViewAttribute
+    Name="ApprovedBy"
+    PrecisionRule="true"
+    EntityAttrName="ApprovedBy"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="APPROVED_BY">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="APPROVED_BY"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ApprovedDate"
+    PrecisionRule="true"
+    EntityAttrName="ApprovedDate"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="APPROVED_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="APPROVED_DATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AsOnDate"
+    PrecisionRule="true"
+    EntityAttrName="AsOnDate"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="AS_ON_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="AS_ON_DATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BusinessUnitId"
+    PrecisionRule="true"
+    EntityAttrName="BusinessUnitId"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="BUSINESS_UNIT_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="CREATION_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CREATION_DATE"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DocHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="DocHeaderId"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="DOC_HEADER_ID"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="Status"
+    PrecisionRule="true"
+    EntityAttrName="Status"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="STATUS"/>
+  <ViewAttribute
+    Name="BuName"
+    PrecisionRule="true"
+    EntityAttrName="BuName"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_NAME"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxinvBusinessUnitsEO"
+    AliasName="BU_ID"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ProjectNumber"
+    PrecisionRule="true"
+    EntityAttrName="ProjectNumber"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NUMBER"/>
+  <ViewAttribute
+    Name="ProjectId1"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_ID1"
+    IsUpdateable="false"/>
+  <ViewAttribute
+    Name="ProjectName"
+    PrecisionRule="true"
+    EntityAttrName="ProjectName"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NAME"/>
+  <ViewAttribute
+    Name="TransBuName"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransBuName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectNumber"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    LOVName="LOV_TransProjectNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectName"
+    IsSelected="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NAME"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BusinessUnitId1"
+    PrecisionRule="true"
+    EntityAttrName="BusinessUnitId"
+    EntityUsage="XxboqProgressDetailsHdrEO"
+    AliasName="BUSINESS_UNIT_ID1"
+    LOVName="LOV_BusinessUnitId1">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="choice"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ProjectNumber1"
+    PrecisionRule="true"
+    EntityAttrName="ProjectNumber"
+    EntityUsage="XxpjProjectsEO"
+    AliasName="PROJECT_NUMBER1"
+    LOVName="LOV_ProjectNumber1">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="ProgressDetailsSearch"
+    ViewObjectName="model.view.ProgressDetailsHdrVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow69"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="BusinessUnitId1"
+        ViewAttribute="BusinessUnitId1"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ProjectNumber1"
+        ViewAttribute="ProjectNumber1"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="DocHeaderId"/>
+  </AttrArray>
+  <ViewLinkAccessor
+    Name="ProgressDetailsLinesVO"
+    ViewLink="model.viewlink.ProgressDetailsHdrToLinesVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

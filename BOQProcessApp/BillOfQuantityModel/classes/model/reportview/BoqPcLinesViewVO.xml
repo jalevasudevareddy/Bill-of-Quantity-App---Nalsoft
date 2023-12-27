@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BoqPcLinesViewVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  SelectList="XxboqPcLinesVEO.AMOUNT, 
+       XxboqPcLinesVEO.DESCRIPTION, 
+       XxboqPcLinesVEO.MONTH, 
+       XxboqPcLinesVEO.PC_DOCUMENT_NUM, 
+       XxboqPcLinesVEO.PC_HEADER_ID, 
+       XxboqPcLinesVEO.PERIOD, 
+       XxboqPcLinesVEO.PROJECT_ID, 
+       XxboqPcLinesVEO.REMARKS"
+  FromList="XXBOQ_PC_LINES_V XxboqPcLinesVEO"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.reportview.BoqPcLinesViewVORowImpl"
+  ComponentClass="model.reportview.BoqPcLinesViewVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <EntityUsage
+    Name="XxboqPcLinesVEO"
+    Entity="model.viewentity.XxboqPcLinesVEO"/>
+  <ViewAttribute
+    Name="Amount"
+    PrecisionRule="true"
+    EntityAttrName="Amount"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="AMOUNT"/>
+  <ViewAttribute
+    Name="Description"
+    PrecisionRule="true"
+    EntityAttrName="Description"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="DESCRIPTION"/>
+  <ViewAttribute
+    Name="Month"
+    PrecisionRule="true"
+    EntityAttrName="Month"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="MONTH"/>
+  <ViewAttribute
+    Name="PcDocumentNum"
+    PrecisionRule="true"
+    EntityAttrName="PcDocumentNum"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="PC_DOCUMENT_NUM"/>
+  <ViewAttribute
+    Name="PcHeaderId"
+    PrecisionRule="true"
+    EntityAttrName="PcHeaderId"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="PC_HEADER_ID"/>
+  <ViewAttribute
+    Name="Period"
+    PrecisionRule="true"
+    EntityAttrName="Period"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="PERIOD"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="Remarks"
+    PrecisionRule="true"
+    EntityAttrName="Remarks"
+    EntityUsage="XxboqPcLinesVEO"
+    AliasName="REMARKS"/>
+  <ViewLinkAccessor
+    Name="BoqPcHdrViewVO"
+    ViewLink="model.viewlink.BoqPcHdrviewToLinesViewVL"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+</ViewObject>

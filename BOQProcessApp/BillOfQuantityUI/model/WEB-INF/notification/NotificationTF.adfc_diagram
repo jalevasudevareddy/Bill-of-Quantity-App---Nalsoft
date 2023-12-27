@@ -1,0 +1,77 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1">
+      <property
+         name="y">431.55176</property>
+      <property
+         name="x">91.5</property>
+   </OverallProperties>
+   <TaskFlowReturn
+      id="TaskFlowReturn2">
+      <property
+         name="activityId">taskFlowReturn1</property>
+      <property
+         name="finish">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>taskFlowReturn1&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Return&lt;/p>&lt;p>Outcome:  taskFlowReturn1&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">486.83887</property>
+      <property
+         name="x">700.24414</property>
+   </TaskFlowReturn>
+   <Router
+      id="Router6">
+      <property
+         name="activityId">router1</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>router1&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  Router&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">492.74707</property>
+      <property
+         name="x">89.5</property>
+   </Router>
+   <TaskFlowCall
+      id="TaskFlowCall7">
+      <property
+         name="taskFlowId">Workdone_Notification_TF</property>
+      <property
+         name="activityId">Workdone_Notification_TF</property>
+      <property
+         name="documentReference">/WEB-INF/notification/Workdone_Notification_TF.xml</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>Workdone_Notification_TF&lt;/b>&lt;/p>&lt;p>Activity Type:  Task Flow Call&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">474.28125</property>
+      <property
+         name="x">369.03027</property>
+   </TaskFlowCall>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase8"
+      from="Router6"
+      to="TaskFlowCall7">
+      <property
+         name="fromOutcome">Workdone</property>
+      <property
+         name="sdm:polyPoints">R50,130.5,492.39648,328.03027,473.93066,L50</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase9"
+      from="TaskFlowCall7"
+      to="TaskFlowReturn2">
+      <property
+         name="fromOutcome">taskFlowReturn1</property>
+      <property
+         name="sdm:polyPoints">R50,410.03027,473.93066,659.24414,486.48828,L50</property>
+   </ControlFlowCase>
+</SDM>

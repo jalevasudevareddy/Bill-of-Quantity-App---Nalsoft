@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:decorativeBox id="db1">
+    <f:facet name="center">
+      <af:panelStretchLayout id="psl">
+        <f:facet name="center">
+          <af:panelGroupLayout layout="scroll" id="pgl1">
+            <af:panelHeader text="Revenue Recognition" id="ph1">
+              <af:query id="qryId1" headerText="Search" disclosed="true"
+                        value="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.queryDescriptor}"
+                        model="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.queryModel}"
+                        queryListener="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.processQuery}"
+                        queryOperationListener="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.processQueryOperation}"
+                        resultComponentId="::pc1:resId1"/>
+            </af:panelHeader>
+            <af:showDetailHeader text="Search Results" disclosed="true"
+                                 id="sdh1">
+              <f:facet name="legend">
+                <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+                  <f:facet name="toolbar">
+                    <af:toolbar id="t1">
+                      <af:commandButton text="Create" id="cb2"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionSearchBean.createHeaderRow}"/>
+                      <af:commandButton actionListener="#{backingBeanScope.RevenueRecognitionSearchBean.editDocument}"
+                                        text="Edit" id="cb1"/>
+                    </af:toolbar>
+                  </f:facet>
+                  <af:table value="#{bindings.RevenueRecognitionSearchVO1.collectionModel}"
+                            var="row"
+                            binding="#{backingBeanScope.RevenueRecognitionSearchBean.searchTable}"
+                            rows="#{bindings.RevenueRecognitionSearchVO1.rangeSize}"
+                            emptyText="#{bindings.RevenueRecognitionSearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                            fetchSize="#{bindings.RevenueRecognitionSearchVO1.rangeSize}"
+                            rowBandingInterval="0"
+                            columnStretching="column:resId1c1"
+                            filterModel="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.queryDescriptor}"
+                            queryListener="#{bindings.RevenueRecognitionSearchVOCriteriaQuery.processQuery}"
+                            varStatus="vs"
+                            selectedRowKeys="#{bindings.RevenueRecognitionSearchVO1.collectionModel.selectedRow}"
+                            selectionListener="#{bindings.RevenueRecognitionSearchVO1.collectionModel.makeCurrent}"
+                            rowSelection="single" id="resId1">
+                    <af:column rowHeader="true" width="5" id="rowHdr"
+                               headerText=" ">
+                      <af:outputText value=" " id="otrowHdr"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.RevenueRecognitionSearchVO1.hints.BuName.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.RevenueRecognitionSearchVO1.hints.BuName.label}"
+                               id="resId1c1">
+                      <af:outputText value="#{row.BuName}" id="ot3"/>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.RevenueRecognitionSearchVO1.hints.Period.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.RevenueRecognitionSearchVO1.hints.Period.label}"
+                               id="resId1c2">
+                      <af:commandLink id="cl1"
+                                      actionListener="#{backingBeanScope.RevenueRecognitionSearchBean.editDocument}">
+                        <af:outputText value="#{row.Period}" id="ot2"/>
+                      </af:commandLink>
+                    </af:column>
+                    <af:column sortProperty="#{bindings.RevenueRecognitionSearchVO1.hints.GlErrors.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.RevenueRecognitionSearchVO1.hints.GlErrors.label}"
+                               id="resId1c3">
+                      <af:outputText value="#{row.GlErrors}" id="ot1"/>
+                    </af:column>
+                  </af:table>
+                </af:panelCollection>
+              </f:facet>
+              <af:popup id="p1" contentDelivery="lazyUncached"
+                        popupCanceledListener="#{backingBeanScope.RevenueRecognitionSearchBean.cancelPopup}"
+                        binding="#{backingBeanScope.RevenueRecognitionSearchBean.createPopup}">
+                <af:dialog id="d1" title="Create Revenue Recognition"
+                           resize="off" type="none" stretchChildren="none">
+                  <af:panelFormLayout id="pfp1" styleClass="AFStretchWidth">
+                    <af:selectOneChoice value="#{bindings.BuId.inputValue}"
+                                        label="#{bindings.BuId.label}"
+                                        autoSubmit="true"
+                                        required="#{bindings.BuId.hints.mandatory}"
+                                        shortDesc="#{bindings.BuId.hints.tooltip}"
+                                        id="soc1">
+                      <f:selectItems value="#{bindings.BuId.items}" id="si1"/>
+                    </af:selectOneChoice>
+                    <af:spacer width="10" height="5" id="s1"/>
+                    <af:inputComboboxListOfValues id="periodId"
+                                                  autoSubmit="true"
+                                                  popupTitle="Search and Select: #{bindings.Period.hints.label}"
+                                                  value="#{bindings.Period.inputValue}"
+                                                  label="#{bindings.Period.hints.label}"
+                                                  model="#{bindings.Period.listOfValuesModel}"
+                                                  required="#{bindings.Period.hints.mandatory}"
+                                                  columns="#{bindings.Period.hints.displayWidth}"
+                                                  shortDesc="#{bindings.Period.hints.tooltip}">
+                      <f:validator binding="#{bindings.Period.validator}"/>
+                    </af:inputComboboxListOfValues>
+                    <af:spacer width="10" height="5" id="s2"/>
+                  </af:panelFormLayout>
+                  <f:facet name="buttonBar">
+                    <af:group id="g1">
+                      <af:commandButton actionListener="#{backingBeanScope.RevenueRecognitionSearchBean.createDocument}"
+                                        text="Create" id="crCb"
+                                        partialSubmit="true"/>
+                      <af:spacer width="5" id="s4"/>
+                      <af:commandButton text="Cancel" id="canCb"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionSearchBean.cancelDoc}"
+                                        immediate="true" partialSubmit="true"/>
+                    </af:group>
+                  </f:facet>
+                </af:dialog>
+              </af:popup>
+            </af:showDetailHeader>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:decorativeBox>
+</jsp:root>
+				
+ 

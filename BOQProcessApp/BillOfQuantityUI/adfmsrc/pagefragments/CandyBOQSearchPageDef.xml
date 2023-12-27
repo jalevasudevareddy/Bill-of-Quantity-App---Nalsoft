@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="CandyBOQSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="CandyBOQSearchVO1" RangeSize="25"
+              DataControl="CandyBillofQuantityAMDataControl"
+              id="CandyBOQSearchVO1Iterator"/>
+    <searchRegion Criteria="CandyBOQSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="CandyBOQSearchVO1Iterator"
+                  id="CandyBOQSearchVOCriteriaQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="CandyBOQSearchVO1Iterator" id="CandyBOQSearchVO1">
+      <nodeDefinition DefName="model.view.CandyBOQSearchVO"
+                      Name="CandyBOQSearchVO10">
+        <AttrNames>
+          <Item Value="ProjectName"/>
+          <Item Value="IbcNumber"/>
+          <Item Value="ImportDate"/>
+          <Item Value="Version"/>
+          <Item Value="Status"/>
+          <Item Value="TransStatus"/>
+          <Item Value="TotalCandyNetFinalAmount"/>
+          <Item Value="TotalNetFinalAmount"/>
+          <Item Value="TransAbsoluteError"/>
+          <Item Value="TransErrorPercentage"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="TransCandyNetFinalAmountTotal"/>
+          <Item Value="TransNetFinalAmountTotal"/>
+          <Item Value="BuName1"/>
+          <Item Value="ProjectNumber1"/>
+          <Item Value="TransBudgetType1"/>
+          <Item Value="TransPrecision"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="TransTotalRevenue"/>
+          <Item Value="TransTotalCostBudget"/>
+          <Item Value="BaseLine" Binds="BaseLine"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="ApprovedBy"/>
+          <Item Value="RevisionDate"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="TransFileName"/>
+          <Item Value="Cognomen"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="CandyBOQSearchVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="editDocument"
+                  InstanceName="CandyBillofQuantityAMDataControl.dataProvider"
+                  DataControl="CandyBillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editDocument" IsViewObjectMethod="false"/>
+    <button IterBinding="CandyBOQSearchVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="CandyBOQSearchVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="CandyBOQSearchVO1Iterator" id="BaseLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BaseLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+  </bindings>
+</pageDefinition>

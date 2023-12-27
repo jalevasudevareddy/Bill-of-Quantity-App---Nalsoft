@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">ResourceMasterSearch</property>
+      <property
+         name="page">/pagefragments/ResourceMasterSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ResourceMasterSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">252.84473</property>
+      <property
+         name="x">316.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <View
+      id="View3">
+      <property
+         name="activityId">ResourceMaster</property>
+      <property
+         name="page">/pagefragments/ResourceMaster.jsff</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>ResourceMaster&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">254.14355</property>
+      <property
+         name="x">630.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View2"
+      to="View3">
+      <property
+         name="fromOutcome">Create</property>
+      <property
+         name="sdm:polyPoints">R46,357.0196,248.99414,589.0,250.29297,L46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View3"
+      to="View2">
+      <property
+         name="fromOutcome">Done</property>
+      <property
+         name="sdm:polyPoints">L54,588.9804,257.29297,357.0,255.99414,R54</property>
+   </ControlFlowCase>
+</SDM>

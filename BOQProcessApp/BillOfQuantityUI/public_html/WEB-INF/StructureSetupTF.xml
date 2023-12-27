@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="StructureSetupTF">
+    <default-activity id="__7">StructureSetup</default-activity>
+    <transaction id="__1">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope id="__2">
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__6">
+      <managed-bean-name id="__4">StructureSetupBean</managed-bean-name>
+      <managed-bean-class id="__5">bean.StructureSetupBean</managed-bean-class>
+      <managed-bean-scope id="__3">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="StructureSetup">
+      <page>/pagefragments/StructureSetup.jsff</page>
+    </view>
+    <task-flow-call id="HomePageTF">
+      <task-flow-reference>
+        <document>/WEB-INF/HomePageTF.xml</document>
+        <id>HomePageTF</id>
+      </task-flow-reference>
+    </task-flow-call>
+    <control-flow-rule id="__8">
+      <from-activity-id id="__9">StructureSetup</from-activity-id>
+      <control-flow-case id="__10">
+        <from-outcome id="__12">Done</from-outcome>
+        <to-activity-id id="__11">HomePageTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

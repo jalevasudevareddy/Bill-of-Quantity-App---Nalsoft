@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="BOQLinesPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BOQSearchVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="BOQSearchVO1Iterator"/>
+    <searchRegion Criteria="BOQSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="BOQSearchVO1Iterator" id="BOQSearchVOCriteriaQuery"/>
+    <iterator Binds="BOQHeaderVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="BOQHeaderVO1Iterator"/>
+  </executables>
+  <bindings>
+    <methodAction id="downloadExcelSheet"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="downloadExcelSheet" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.downloadExcelSheet_BillofQuantityAMDataControl_dataProvider_downloadExcelSheet_result"/>
+    <tree IterBinding="BOQSearchVO1Iterator" id="BOQSearchVO1">
+      <nodeDefinition DefName="model.view.BOQSearchVO" Name="BOQSearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ProjectNumber"/>
+          <Item Value="ProjectName"/>
+          <Item Value="CreationDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="BOQHeaderVO1Iterator" StaticList="false" Uses="LOV_BuId"
+          id="BuId" DTSupportsMRU="true" SelectItemValueMode="ListObject"/>
+    <listOfValues StaticList="false" IterBinding="BOQHeaderVO1Iterator"
+                  Uses="LOV_TransProjectNumber" id="TransProjectNumber"/>
+    <methodAction id="cancelDocument"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createDocument"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createHeaderRow"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="editDocument"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editDocument" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="BOQSearchVO1Iterator" id="HeaderId">
+      <AttrNames>
+        <Item Value="HeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="validateProject"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateProject" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.validateProject_BillofQuantityAMDataControl_dataProvider_validateProject_result"/>
+  </bindings>
+</pageDefinition>

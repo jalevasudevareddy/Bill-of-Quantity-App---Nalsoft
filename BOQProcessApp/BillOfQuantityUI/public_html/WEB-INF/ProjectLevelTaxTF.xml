@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="ProjectLevelTaxTF">
+    <default-activity id="__1">TaxSetupHeaderSearch</default-activity>
+    <transaction id="__16">
+      <requires-transaction/>
+    </transaction>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <managed-bean id="__14">
+      <managed-bean-name id="__12">ProjectLevelTaxBean</managed-bean-name>
+      <managed-bean-class id="__15">bean.ProjectLevelTaxBean</managed-bean-class>
+      <managed-bean-scope id="__13">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="TaxSetupHeaderSearch">
+      <page>/pagefragments/TaxSetupHeaderSearch.jsff</page>
+    </view>
+    <view id="TaxSetupLines">
+      <page>/pagefragments/TaxSetupLines.jsff</page>
+    </view>
+    <control-flow-rule id="__2">
+      <from-activity-id id="__3">TaxSetupHeaderSearch</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome id="__6">Edit</from-outcome>
+        <to-activity-id id="__4">TaxSetupLines</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id id="__8">TaxSetupLines</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome id="__11">Done</from-outcome>
+        <to-activity-id id="__10">TaxSetupHeaderSearch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="JWTValidationTF">
+    <default-activity id="__18">loadJWTData</default-activity>
+    <input-parameter-definition id="__3">
+      <name id="__4">jwt</name>
+      <value>#{pageFlowScope.jwt}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__6">
+      <managed-bean-name id="__8">JWTConfigBean</managed-bean-name>
+      <managed-bean-class id="__5">bean.JWTConfigBean</managed-bean-class>
+      <managed-bean-scope id="__7">session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__43">
+      <managed-bean-name id="__46">TLDynamicBean</managed-bean-name>
+      <managed-bean-class id="__45">bean.TLDynamicBean</managed-bean-class>
+      <managed-bean-scope id="__44">view</managed-bean-scope>
+    </managed-bean>
+    <method-call id="loadJWTInfo">
+      <method>#{JWTConfigBean.loadJWTInfo}</method>
+      <outcome id="__42">
+        <to-string/>
+      </outcome>
+    </method-call>
+    <view id="Error">
+      <page>/pagefragments/Error.jsff</page>
+    </view>
+    <method-call id="loadUserInfo">
+      <method>#{sessionScope.JWTConfigBean.loadUserInfo}</method>
+      <outcome id="__41">
+        <fixed-outcome>Loaded</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="loadJWTData">
+      <method>#{bindings.loadJWTData.execute}</method>
+      <return-value id="__19">#{pageFlowScope.JwtData}</return-value>
+      <outcome id="__1">
+        <fixed-outcome>loadJWTData</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="getCurrentUserRoles">
+      <method>#{bindings.getCurrentUserRoles.execute}</method>
+      <outcome id="__14">
+        <fixed-outcome>getCurrentUserRoles</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-call id="HomePageTF">
+      <task-flow-reference>
+        <document>/WEB-INF/HomePageTF.xml</document>
+        <id>HomePageTF</id>
+      </task-flow-reference>
+    </task-flow-call>
+    <method-call id="refreshNotificationCount">
+      <method>#{sessionScope.JWTConfigBean.refreshNotificationCount}</method>
+      <outcome id="__60">
+        <to-string/>
+      </outcome>
+    </method-call>
+    <method-call id="findSelfUserDetails">
+      <method>#{JWTConfigBean.findSelfUserDetails}</method>
+      <outcome id="__66">
+        <to-string/>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__20">
+      <from-activity-id id="__21">loadJWTInfo</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome id="__24">InvalidJwt</from-outcome>
+        <to-activity-id id="__22">Error</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__25">
+        <from-outcome id="__27">Loaded</from-outcome>
+        <to-activity-id id="__26">findSelfUserDetails</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__2">
+      <from-activity-id id="__13">loadJWTData</from-activity-id>
+      <control-flow-case id="__17">
+        <from-outcome id="__15">loadJWTData</from-outcome>
+        <to-activity-id id="__16">loadJWTInfo</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__36">
+      <from-activity-id id="__37">loadUserInfo</from-activity-id>
+      <control-flow-case id="__39">
+        <from-outcome id="__49">Loaded</from-outcome>
+        <to-activity-id id="__38">getCurrentUserRoles</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__50">
+      <from-activity-id id="__51">getCurrentUserRoles</from-activity-id>
+      <control-flow-case id="__53">
+        <from-outcome id="__54">getCurrentUserRoles</from-outcome>
+        <to-activity-id id="__52">refreshNotificationCount</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__55">
+      <from-activity-id id="__56">refreshNotificationCount</from-activity-id>
+      <control-flow-case id="__57">
+        <from-outcome id="__59">Success</from-outcome>
+        <to-activity-id id="__58">HomePageTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__40">
+      <from-activity-id id="__47">findSelfUserDetails</from-activity-id>
+      <control-flow-case id="__48">
+        <from-outcome id="__61">Error</from-outcome>
+        <to-activity-id id="__62">Error</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__63">
+        <from-outcome id="__64">Success</from-outcome>
+        <to-activity-id id="__65">loadUserInfo</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

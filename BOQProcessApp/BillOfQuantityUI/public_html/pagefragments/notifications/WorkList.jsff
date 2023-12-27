@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelHeader text="Work List" id="ph1"
+                  binding="#{backingBeanScope.WorkListBean.panelHdrBind}">
+    <f:facet name="context"/>
+    <f:facet name="menuBar"/>
+    <f:facet name="toolbar"/>
+    <f:facet name="legend">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="menus"/>
+        <f:facet name="toolbar">
+        <af:toolbar id="t3">
+            <af:poll id="p1" interval="30000"
+                     pollListener="#{backingBeanScope.WorkListBean.refreshWorkList}"/>
+        <af:commandButton text="Show History" rendered="false" 
+                            actionListener="#{backingBeanScope.WorkListBean.showActionHistory}"
+                            id="cb2"></af:commandButton>
+          <af:commandButton text="Refresh"
+                            actionListener="#{backingBeanScope.WorkListBean.refreshWorkList}"
+                            id="cb3"/>
+          <af:commandButton text="Closed Notifications" id="cb1"
+                                actionListener="#{backingBeanScope.WorkListBean.viewClosedNotifications}"/>
+        </af:toolbar>
+        </f:facet>
+        <f:facet name="statusbar"/>
+        <af:table value="#{bindings.WorkListVO1.collectionModel}" var="row"
+                  rows="#{bindings.WorkListVO1.rangeSize}"
+                  emptyText="#{bindings.WorkListVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.WorkListVO1.rangeSize}"
+                  rowBandingInterval="0" partialTriggers="::p1"
+                  filterModel="#{bindings.WorkListVO1Query.queryDescriptor}"
+                  queryListener="#{bindings.WorkListVO1Query.processQuery}"
+                  varStatus="vs"
+                  binding="#{backingBeanScope.WorkListBean.workListTable}"
+                  selectedRowKeys="#{bindings.WorkListVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.WorkListVO1.collectionModel.makeCurrent}"
+                  rowSelection="single" id="t1">
+                  <af:column rowHeader="true" width="5" id="r1" headerText=" ">
+                    <af:outputText value=" " id="ol1"/>
+                 </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.Subject.name}"
+                     filterable="true" sortable="true" width="200"
+                     headerText="#{bindings.WorkListVO1.hints.Subject.label}"
+                     id="c4">
+            <af:commandLink text="#{row.Subject}" id="cl1" actionListener="#{backingBeanScope.WorkListBean.workListNotification}"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.ApproverLevel.name}"
+                     filterable="true" sortable="true"
+                     headerText="Approver Level"
+                     id="c7">
+            <af:outputText value="#{row.ApproverLevel}" id="ot1">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.WorkListVO1.hints.ApproverLevel.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.FromEmployee.name}"
+                     filterable="true" sortable="true"
+                     headerText="From Level"
+                     id="c1">
+            <af:outputText value="#{row.FromEmployee}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.ToEmployee.name}"
+                     filterable="true" sortable="true"
+                     headerText="To Employee"
+                     id="c2">
+            <af:outputText value="#{row.ToEmployee}" id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.Status.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.WorkListVO1.hints.Status.label}"
+                     id="c6">
+            <af:outputText value="#{row.Status}" id="ot7"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.RequestDate.name}"
+                     filterable="true" sortable="true"
+                     headerText="Request Date"
+                     id="c5">
+            <f:facet name="filter">
+              <af:inputDate value="#{vs.filterCriteria.RequestDate}" id="id1"/>
+            </f:facet>
+            <af:outputText value="#{row.RequestDate}" id="ot5">
+                    <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.WorkListVO1.hints.DocumentType.name}"
+                     filterable="true" sortable="true"
+                     headerText="Document"
+                     id="c3">
+            <af:outputText value="#{row.DocumentType}" id="ot6"/>
+          </af:column>
+          <af:column headerText="Notification Type"
+                     sortProperty="#{bindings.WorkListVO1.hints.ApprovalCategory.name}"
+                     filterable="true" sortable="true"
+                     id="c8">
+            <af:outputText value="#{row.ApprovalCategory}" id="ot3"/>
+          </af:column>
+           <af:column headerText="Action History"
+                     id="c9">
+            <af:commandLink text="Show History" id="cl2" actionListener="#{backingBeanScope.WorkListBean.showActionHistory}"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </f:facet>
+    <f:facet name="info"/>
+  </af:panelHeader>
+</jsp:root>

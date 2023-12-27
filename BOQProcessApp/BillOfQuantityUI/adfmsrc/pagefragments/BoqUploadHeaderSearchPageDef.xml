@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="BoqUploadHeaderSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="BoqValidationHeaderSearchVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="BoqValidationHeaderSearchVO1Iterator"/>
+    <searchRegion Criteria="BoqValidationHeaderSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="BoqValidationHeaderSearchVO1Iterator"
+                  id="BoqValidationHeaderSearchVOCriteriaQuery"/>
+    <iterator Binds="TransBoqUploadvalidationVO1" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="TransBoqUploadvalidationVO1Iterator"/>
+    <iterator Binds="TransBoqUploadvalidationVO2" RangeSize="25"
+              DataControl="BoqUploadValidationAMDataControl"
+              id="TransBoqUploadvalidationVO2Iterator"/>
+    <searchRegion Criteria="BoqValidationHeaderSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="BoqValidationHeaderSearchVO1Iterator"
+                  id="BoqValidationHeaderSearchVOCriteriaQuery1"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="BoqValidationHeaderSearchVO1Iterator"
+          id="BoqValidationHeaderSearchVO1">
+      <nodeDefinition DefName="model.view.BoqValidationHeaderSearchVO"
+                      Name="BoqValidationHeaderSearchVO10">
+        <AttrNames>
+          <Item Value="ValidationHeaderId" Binds="ValidationHeaderId"/>
+          <Item Value="ProjectName"/>
+          <Item Value="Version"/>
+          <Item Value="Status"/>
+          <Item Value="BudgetType"/>
+          <Item Value="IbcNumber"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="ApprovedBy"/>
+          <Item Value="ApprovedDate"/>
+          <Item Value="TransStatus"/>
+          <Item Value="TransTotalAbsoluteError"/>
+          <Item Value="TransTotalErrorPercentage"/>
+          <Item Value="CurrentFlag" Binds="CurrentFlag"/>
+          <Item Value="TransCandyNetFinalAmountTotal"/>
+          <Item Value="TransNetFinalAmountTotal"/>
+          <Item Value="BuName1"/>
+          <Item Value="ProjectNumber1"/>
+          <Item Value="TransBudgetType1"/>
+          <Item Value="RevisionDate"/>
+          <Item Value="ImportDate"/>
+          <Item Value="FileName"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="TransTotalRevenue"/>
+          <Item Value="BaseLine" Binds="BaseLine"/>
+          <Item Value="TransTotalCostBudget"/>
+          <Item Value="CreationDate"/>
+          <Item Value="ProjectId"/>
+          <Item Value="Cognomen"/>
+          <Item Value="ContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO1Iterator"
+                  Uses="LOV_TransPrjNum" id="TransPrjNum"/>
+    <attributeValues IterBinding="TransBoqUploadvalidationVO1Iterator"
+                     id="TransIbcNumber">
+      <AttrNames>
+        <Item Value="TransIbcNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="initTransBoqUploadValVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initTransBoqUploadValVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createBoqUploadValidationHdrRow"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBoqUploadValidationHdrRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.createBoqUploadValidationHdrRow_BoqUploadValidationAMDataControl_dataProvider_createBoqUploadValidationHdrRow_result"/>
+    <methodAction id="makeAsCurrentBoqValHdrRow"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentBoqValHdrRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.makeAsCurrentBoqValHdrRow_BoqUploadValidationAMDataControl_dataProvider_makeAsCurrentBoqValHdrRow_result">
+      <NamedData NDName="boqValHdrId" NDValue="#{pageFlowScope.boqValHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="refreshBoqValidateHdrVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshBoqValidateHdrVO"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="TransBoqUploadvalidationVO1Iterator"
+                     id="TransVersion">
+      <AttrNames>
+        <Item Value="TransVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="isBoqDocExistsForProject"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isBoqDocExistsForProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isBoqDocExistsForProject_BoqUploadValidationAMDataControl_dataProvider_isBoqDocExistsForProject_result"/>
+    <methodAction id="isPrevBoqValidationDocApproved"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isPrevBoqValidationDocApproved"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isPrevBoqValidationDocApproved_BoqUploadValidationAMDataControl_dataProvider_isPrevBoqValidationDocApproved_result">
+      <NamedData NDName="prjBoqValId" NDValue="#{pageFlowScope.prjBoqValId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO2Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName1"/>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO2Iterator"
+                  Uses="LOV_TransPrjNum" id="TransPrjNum1"/>
+    <attributeValues IterBinding="TransBoqUploadvalidationVO2Iterator"
+                     id="TransBudgetType">
+      <AttrNames>
+        <Item Value="TransBudgetType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TransBoqUploadvalidationVO2Iterator"
+                     id="TransIbcNumber1">
+      <AttrNames>
+        <Item Value="TransIbcNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="initTransBoqUploadRevisionVO"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initTransBoqUploadRevisionVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createBoqRevisedValidationHdrRow"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBoqRevisedValidationHdrRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.createBoqRevisedValidationHdrRow_BoqUploadValidationAMDataControl_dataProvider_createBoqRevisedValidationHdrRow_result"/>
+    <methodAction id="getPrjBoqMaxValidationDocHdrIdFromUploadTbl"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="getPrjBoqMaxValidationDocHdrIdFromUploadTbl"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.getPrjBoqMaxValidationDocHdrIdFromUploadTbl_BoqUploadValidationAMDataControl_dataProvider_getPrjBoqMaxValidationDocHdrIdFromUploadTbl_result"/>
+    <methodAction id="isBoqDocExistsForProjectInUpldTbl"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isBoqDocExistsForProjectInUpldTbl"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.isBoqDocExistsForProjectInUpldTbl_BoqUploadValidationAMDataControl_dataProvider_isBoqDocExistsForProjectInUpldTbl_result"/>
+    <methodAction id="overrideExistingUploadDocWith"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="overrideExistingUploadDocWith"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.overrideExistingUploadDocWith_BoqUploadValidationAMDataControl_dataProvider_overrideExistingUploadDocWith_result">
+      <NamedData NDName="validationHdrId"
+                 NDValue="#{pageFlowScope.validationHdrId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="overrideWith" NDValue="#{pageFlowScope.overrideWith}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="BoqValidationHeaderSearchVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO1Iterator"
+                  Uses="LOV_TransBudgetType" id="TransBudgetType1"/>
+    <methodAction id="createUploadBOQDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createUploadBOQDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.createUploadBOQDoc_BoqUploadValidationAMDataControl_dataProvider_createUploadBOQDoc_result"/>
+    <button IterBinding="BoqValidationHeaderSearchVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="BoqValidationHeaderSearchVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="BoqValidationHeaderSearchVO1Iterator"
+                     id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="deleteUploadedBOQDoc"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteUploadedBOQDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.deleteUploadedBOQDoc_BoqUploadValidationAMDataControl_dataProvider_deleteUploadedBOQDoc_result"/>
+    <button IterBinding="BoqValidationHeaderSearchVO1Iterator" id="BaseLine"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="BaseLine"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <attributeValues IterBinding="BoqValidationHeaderSearchVO1Iterator"
+                     id="ValidationHeaderId">
+      <AttrNames>
+        <Item Value="ValidationHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createBOQProjectNumberVL"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBOQProjectNumberVL"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.createBOQProjectNumberVL_BoqUploadValidationAMDataControl_dataProvider_createBOQProjectNumberVL_result"/>
+    <attributeValues IterBinding="BoqValidationHeaderSearchVO1Iterator"
+                     id="ProjectId">
+      <AttrNames>
+        <Item Value="ProjectId"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false"
+                  IterBinding="TransBoqUploadvalidationVO1Iterator"
+                  Uses="LOV_TransContractNumber" id="TransContractNumber"/>
+    <methodAction id="createBOQContractNumberVL"
+                  InstanceName="BoqUploadValidationAMDataControl.dataProvider"
+                  DataControl="BoqUploadValidationAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createBOQContractNumberVL"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BoqUploadValidationAMDataControl.methodResults.createBOQContractNumberVL_BoqUploadValidationAMDataControl_dataProvider_createBOQContractNumberVL_result"/>
+  </bindings>
+</pageDefinition>

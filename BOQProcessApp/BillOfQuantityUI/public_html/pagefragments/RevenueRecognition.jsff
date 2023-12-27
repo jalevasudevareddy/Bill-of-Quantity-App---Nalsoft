@@ -1,0 +1,214 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelStretchLayout id="psl1">
+    <f:facet name="center">
+      <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelHeader text="Revenue Recognition" id="ph1">
+          <f:facet name="toolbar">
+            <af:panelGroupLayout id="pgl2" layout="horizontal"
+                                 binding="#{backingBeanScope.RevenueRecognitionBean.buttonBindings}">
+              <af:commandToolbarButton text="Actions" id="ctb1">
+                <f:facet name="popup">
+                  <af:menu id="m1">
+                    <af:commandMenuItem text="Get Details" id="cmi3" visible="#{bindings.TransgetLinesValidFlag.inputValue=='N'}"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionBean.insertRevenueRecogLines}"/>
+                    <af:commandMenuItem text="Refresh" id="cmi4" visible="#{bindings.TransgetLinesValidFlag.inputValue=='Y'}"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionBean.refreshRevRecogLines}"/>
+                    <af:commandMenuItem text="Submit"
+                                        id="cmi2"/>
+                    <af:commandMenuItem text="Approve" visible="#{bindings.TransgetLinesValidFlag.inputValue=='Y'}"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionBean.ApproveDoc}"
+                                        id="cmi1"/>
+                    <af:commandMenuItem text="Reject" visible="#{bindings.TransgetLinesValidFlag.inputValue=='Y'}"
+                                        actionListener="#{backingBeanScope.RevenueRecognitionBean.rejectDoc}"
+                                        id="cmi5"/>
+                  </af:menu>
+                </f:facet>
+              </af:commandToolbarButton>
+              <af:spacer width="3" id="s12"/>
+              <af:commandButton text="Save" id="cb3"
+                                actionListener="#{backingBeanScope.RevenueRecognitionBean.saveRR}"/>
+              <af:spacer width="3" id="s14"/>
+              <af:commandButton text="Save and Close" id="cb4" action="Done"
+                                actionListener="#{backingBeanScope.RevenueRecognitionBean.saveRR}"/>
+              <af:spacer width="3" id="s15"/>
+              <af:commandButton text="Cancel" id="cb5" action="Done"
+                                actionListener="#{backingBeanScope.RevenueRecognitionBean.CancelRR}"
+                                immediate="true"/>
+            </af:panelGroupLayout>
+          </f:facet>
+          <af:spacer width="10" height="10" id="s1"/>
+          <af:separator id="s3"/>
+          <af:spacer width="10" height="10" id="s4"/>
+          <af:panelFormLayout id="pfl1" rows="1" maxColumns="3" fieldWidth="70%"
+                              labelWidth="30%">
+            <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                                     id="plam3">
+              <af:outputText value="#{bindings.BuName.inputValue}" id="ot3"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.Period.hints.label}"
+                                     id="plam1">
+              <af:outputText value="#{bindings.Period.inputValue}" id="ot1"/>
+            </af:panelLabelAndMessage>
+            <af:panelLabelAndMessage label="#{bindings.GlErrors.hints.label}"
+                                     id="plam2">
+              <af:outputText value="#{bindings.GlErrors.inputValue}" id="ot2"/>
+            </af:panelLabelAndMessage>
+          </af:panelFormLayout>
+          <af:spacer width="10" height="10" id="s2"/>
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <af:table value="#{bindings.RevenueRecognitionLinesVO1.collectionModel}"
+                      var="row" styleClass="AFStretchWidth"
+                      rows="#{bindings.RevenueRecognitionLinesVO1.rangeSize}"
+                      emptyText="#{bindings.RevenueRecognitionLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.RevenueRecognitionLinesVO1.rangeSize}"
+                      rowBandingInterval="0"
+                      binding="#{backingBeanScope.RevenueRecognitionBean.tableBindings}"
+                      filterModel="#{bindings.RevenueRecognitionLinesVO1Query.queryDescriptor}"
+                      queryListener="#{bindings.RevenueRecognitionLinesVO1Query.processQuery}"
+                      varStatus="vs"
+                      selectedRowKeys="#{bindings.RevenueRecognitionLinesVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.RevenueRecognitionLinesVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t1">
+              <af:column headerText=" " id="c14" width="20">
+                <af:selectBooleanCheckbox value="#{row.bindings.TransSelectFlag.inputValue}" autoSubmit="true"
+                                          label="#{row.bindings.TransSelectFlag.label}" simple="true"
+                                          shortDesc="#{bindings.RevenueRecognitionLinesVO1.hints.TransSelectFlag.tooltip}"
+                                          id="sbc1"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.DocumentNumber.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.DocumentNumber.label}"
+                         id="c9" width="105" frozen="true">
+                <af:outputText value="#{row.DocumentNumber}" id="ot5"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.DocumentDate.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.DocumentDate.label}"
+                         id="c6" width="105">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.DocumentDate}"
+                                id="id1"/>
+                </f:facet>
+                <af:outputText value="#{row.DocumentDate}" id="ot11">
+                  <af:convertDateTime pattern="#{bindings.RevenueRecognitionLinesVO1.hints.DocumentDate.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.ProjectNumber.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.ProjectNumber.label}"
+                         id="c5" width="106">
+                <af:outputText value="#{row.ProjectNumber}" id="ot15"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.ProjectName.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.ProjectName.label}"
+                         id="c3" width="104">
+                <af:outputText value="#{row.ProjectName}" id="ot4"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.ItdActualCost.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.ItdActualCost.label}"
+                         id="c11" width="105">
+                <af:outputText value="#{row.ItdActualCost}" id="ot12">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.ItdActualCost.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.ContractValue.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.ContractValue.label}"
+                         id="c1" width="85">
+                <af:outputText value="#{row.ContractValue}" id="ot8">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.ContractValue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.CostBudgetValue.name}"
+                         filterable="true" sortable="true" frozen="true"
+                         align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.CostBudgetValue.label}"
+                         id="c10">
+                <af:outputText value="#{row.CostBudgetValue}" id="ot9">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.CostBudgetValue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.PocPer.name}"
+                         filterable="true" sortable="true" align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.PocPer.label}"
+                         id="c12">
+                <af:outputText value="#{row.PocPer}" id="ot13"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.CummulativeRevenue.name}"
+                         filterable="true" sortable="true" align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.CummulativeRevenue.label}"
+                         id="c4">
+                <af:outputText value="#{row.CummulativeRevenue}" id="ot14">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.CummulativeRevenue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.BookedRevenue.name}"
+                         filterable="true" sortable="true" align="right"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.BookedRevenue.label}"
+                         id="c2">
+                <af:outputText value="#{row.BookedRevenue}" id="ot10">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.BookedRevenue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column headerText="#{bindings.RevenueRecognitionLinesVO1.hints.TransCurrentPeriodRevenue.label}"
+                         align="right" id="c8">
+                <af:outputText value="#{row.TransCurrentPeriodRevenue}"
+                               id="ot7">
+                  <af:convertNumber groupingUsed="true" type="currency"
+                                    currencySymbol=" "
+                                    pattern="#{bindings.RevenueRecognitionLinesVO1.hints.TransCurrentPeriodRevenue.format}"/>
+                </af:outputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.Status.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.Status.label}"
+                         id="c7">
+                <af:outputText value="#{row.Status}" id="ot6"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.label}"
+                         id="c13">
+                <af:inputText value="#{row.bindings.Remarks.inputValue}"
+                              autoSubmit="true"
+                              label="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.label}"
+                              required="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.mandatory}"
+                              columns="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.displayWidth}"
+                              maximumLength="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.precision}"
+                              shortDesc="#{bindings.RevenueRecognitionLinesVO1.hints.Remarks.tooltip}"
+                              id="it1">
+                  <f:validator binding="#{row.bindings.Remarks.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.RevenueRecognitionLinesVO1.hints.GlFlag.label}"
+                         id="c15">
+                <af:selectBooleanCheckbox value="#{row.bindings.GlFlag.inputValue}"
+                                          disabled="true"
+                                          label="#{row.bindings.GlFlag.label}"
+                                          shortDesc="#{bindings.RevenueRecognitionLinesVO1.hints.GlFlag.tooltip}"
+                                          id="sbc2"/>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

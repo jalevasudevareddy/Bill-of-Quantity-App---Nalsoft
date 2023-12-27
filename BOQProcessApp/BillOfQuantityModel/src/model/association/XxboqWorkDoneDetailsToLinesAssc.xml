@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="XxboqWorkDoneDetailsToLinesAssc"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="XxboqWorkDoneDetailsEO"
+    Cardinality="1"
+    Source="true"
+    Owner="model.entity.XxboqWorkDoneDetailsEO"
+    DeleteContainee="true"
+    LockLevel="NONE">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqWorkDoneDetailsEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqWorkDoneDetailsEO.WdHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="XxboqWorkDoneLinesEO"
+    Cardinality="-1"
+    Owner="model.entity.XxboqWorkDoneLinesEO"
+    HasOwner="true">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="XxboqWorkDoneLinesEO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.entity.XxboqWorkDoneLinesEO.WdHeaderId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

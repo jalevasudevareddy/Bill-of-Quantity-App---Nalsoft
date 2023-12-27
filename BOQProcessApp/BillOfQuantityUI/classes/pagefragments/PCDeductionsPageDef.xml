@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="PCDeductionsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="PaymentCertHdrVO1" RangeSize="25"
+              DataControl="PaymentCertificateAMDataControl"
+              id="PaymentCertHdrVO1Iterator"/>
+    <iterator Binds="OtherDeductionsVO1" RangeSize="25"
+              DataControl="PaymentCertificateAMDataControl"
+              id="OtherDeductionsVO1Iterator"/>
+    <searchRegion Binds="OtherDeductionsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="OtherDeductionsVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="PcStatus">
+      <AttrNames>
+        <Item Value="PcStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="OtherDeductionsVO1Iterator" id="OtherDeductionsVO1">
+      <nodeDefinition DefName="model.view.OtherDeductionsVO"
+                      Name="OtherDeductionsVO10">
+        <AttrNames>
+          <Item Value="DeductionType"/>
+          <Item Value="Description"/>
+          <Item Value="Amount"/>
+          <Item Value="TaskNumber"/>
+          <Item Value="TaskName"/>
+          <Item Value="CostCode"/>
+          <Item Value="CcDesc"/>
+          <Item Value="TransTotal"/>
+          <Item Value="Remarks"/>
+          <Item Value="TransOrgName"/>
+          <Item Value="TransDedProjectName"/>
+          <Item Value="TransAccount"/>
+          <Item Value="TaxCode"/>
+          <Item Value="PercentageRate"/>
+          <Item Value="TransTaxAmount"/>
+          <Item Value="TaxAmount"/>
+          <Item Value="ResourceName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="OtherDeductionsVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="addPCDeductionsRow"
+                  InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                  DataControl="PaymentCertificateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="addPCDeductionsRow" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="OtherDeductionsVO1Iterator" id="TransTotal">
+      <AttrNames>
+        <Item Value="TransTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updateOtherDeductions"
+                  InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                  DataControl="PaymentCertificateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateOtherDeductions"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updatePcOtherDedAmnt"
+                  InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                  DataControl="PaymentCertificateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updatePcOtherDedAmnt" IsViewObjectMethod="false"
+                  ReturnName="data.PaymentCertificateAMDataControl.methodResults.updatePcOtherDedAmnt_PaymentCertificateAMDataControl_dataProvider_updatePcOtherDedAmnt_result"/>
+    <methodAction id="refreshHdrRow"
+                  InstanceName="PaymentCertificateAMDataControl.dataProvider"
+                  DataControl="PaymentCertificateAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshHdrRow" IsViewObjectMethod="false"
+                  ReturnName="data.PaymentCertificateAMDataControl.methodResults.refreshHdrRow_PaymentCertificateAMDataControl_dataProvider_refreshHdrRow_result"/>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator" id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="PaymentCertHdrVO1Iterator"
+                     id="TransODTaxEnable">
+      <AttrNames>
+        <Item Value="TransODTaxEnable"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="OtherDeductionsVO1Iterator"
+                     id="TransTaxTotal">
+      <AttrNames>
+        <Item Value="TransTaxTotal"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

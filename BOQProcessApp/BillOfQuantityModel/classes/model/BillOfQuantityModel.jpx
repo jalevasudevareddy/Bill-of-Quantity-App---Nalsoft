@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='windows-1252' ?>
+<!DOCTYPE JboProject SYSTEM "jbo_03_01.dtd">
+<!---->
+
+
+<JboProject
+   xmlns="http://xmlns.oracle.com/bc4j"
+   Name="BillOfQuantityModel"
+   Version="12.2.1.22.48"
+   SeparateXMLFiles="true"
+   PackageName="model" >
+   <DesignTime>
+      <Attr Name="_appModuleNames11" Value="model.applicationmodule.CandyBillofQuantityAM" />
+      <Attr Name="_appModuleNames10" Value="model.applicationmodule.BoqUploadValidationAM" />
+      <Attr Name="_NamedConnection" Value="DBCon" />
+      <Attr Name="_appModuleNames7" Value="model.applicationmodule.CostingDetailsAM" />
+      <Attr Name="_appModuleNames6" Value="model.applicationmodule.JobTemplateAM" />
+      <Attr Name="_appModuleNames9" Value="model.applicationmodule.PaymentCertificateAM" />
+      <Attr Name="_appModuleNames8" Value="model.applicationmodule.ProjectJobItemAnalysisAM" />
+      <Attr Name="_appModuleNames3" Value="model.applicationmodule.BOQUploadsAM" />
+      <Attr Name="_jprName" Value="../../BillOfQuantityModel.jpr" />
+      <Attr Name="_appModuleNames2" Value="model.applicationmodule.BillofQuantityAM" />
+      <Attr Name="_appModuleNames5" Value="model.applicationmodule.BillingDetailsAM" />
+      <Attr Name="_appModuleNames4" Value="model.applicationmodule.PlanningScheduleAM" />
+      <Attr Name="_appModuleNames1" Value="model.applicationmodule.BOQSetupAM" />
+      <Attr Name="_appModuleNames0" Value="model.applicationmodule.CommonUtilsAM" />
+      <Attr Name="_jbo.TypeMapEntries" Value="Java" />
+      <Attr Name="_appModuleNames12"
+         Value="model.applicationmodule.RevenueRecognitionAM"/>
+      <Attr Name="_appModuleNames13"
+         Value="model.applicationmodule.ApprovalAM"/>
+      <Attr Name="_appModuleNames14" Value="model.applicationmodule.ReportsAM"/>
+   </DesignTime>
+   <Containee
+      Name="applicationmodule"
+      ObjectType="JboPackage"
+      PackageName="model.applicationmodule" >
+      <DesignTime>
+         <Attr Name="_AM" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="approvalview"
+      PackageName="model.approvalview"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="association"
+      ObjectType="JboPackage"
+      PackageName="model.association" >
+      <DesignTime>
+         <Attr Name="_AS" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="entity"
+      ObjectType="JboPackage"
+      PackageName="model.entity" >
+      <DesignTime>
+         <Attr Name="_EO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="masterentity"
+      ObjectType="JboPackage"
+      PackageName="model.masterentity" >
+      <DesignTime>
+         <Attr Name="_EO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="masterview"
+      ObjectType="JboPackage"
+      PackageName="model.masterview" >
+      <DesignTime>
+         <Attr Name="_VO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="progview"
+      ObjectType="JboPackage"
+      PackageName="model.progview" >
+      <DesignTime>
+         <Attr Name="_VO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="reportview"
+      PackageName="model.reportview"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="searchview"
+      ObjectType="JboPackage"
+      PackageName="model.searchview" >
+      <DesignTime>
+         <Attr Name="_VO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="transview"
+      PackageName="model.transview"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_VO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="view"
+      ObjectType="JboPackage"
+      PackageName="model.view" >
+      <DesignTime>
+         <Attr Name="_VO" Value="true" />
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="viewentity"
+      PackageName="model.viewentity"
+      ObjectType="JboPackage">
+      <DesignTime>
+         <Attr Name="_EO" Value="true"/>
+      </DesignTime>
+   </Containee>
+   <Containee
+      Name="viewlink"
+      ObjectType="JboPackage"
+      PackageName="model.viewlink" >
+      <DesignTime>
+         <Attr Name="_VL" Value="true" />
+      </DesignTime>
+   </Containee>
+</JboProject>

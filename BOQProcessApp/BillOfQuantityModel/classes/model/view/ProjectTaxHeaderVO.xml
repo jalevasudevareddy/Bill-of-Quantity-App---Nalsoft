@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ProjectTaxHeaderVO"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge"
+  SelectList="XxboqProjTaxHdrT.BU_ID, 
+       XxboqProjTaxHdrT.CUSTOMER_ID, 
+       XxboqProjTaxHdrT.HEADER_ID, 
+       XxboqProjTaxHdrT.PROJECT_ID, 
+       (select bu.bu_name from xxinv_business_units_t bu where rownum =1 and bu.bu_id = XxboqProjTaxHdrT.BU_ID) AS VIEW_ATTR, 
+       (select pj.project_name from xxpj_projects_t pj where rownum =1 and pj.project_id = XxboqProjTaxHdrT.PROJECT_ID) AS VIEW_ATTR, 
+       (select pj.project_number from xxpj_projects_t pj where rownum =1 and pj.project_id = XxboqProjTaxHdrT.PROJECT_ID) AS VIEW_ATTR, 
+       (select okc.contract_number from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id) AS VIEW_ATTR, 
+       (select okc.cognomen from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id) AS VIEW_ATTR, 
+       (select okc.customer_name from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id) AS VIEW_ATTR, 
+       XxboqProjTaxHdrT.CREATED_BY, 
+       XxboqProjTaxHdrT.CREATION_DATE, 
+       XxboqProjTaxHdrT.LAST_UPDATED_BY, 
+       XxboqProjTaxHdrT.LAST_UPDATED_DATE, 
+       (SELECT case when count(1)>0 then 'Y' else 'N' end FROM XXBOQ_PC_HDR_T pch where pch.contract_id =XxboqProjTaxHdrT.CONTRACT_ID) AS VIEW_ATTR, 
+       XxboqProjTaxHdrT.CONTRACT_ID"
+  FromList="XXBOQ_PROJ_TAX_HDR_T XxboqProjTaxHdrT"
+  OrderBy="XxboqProjTaxHdrT.HEADER_ID DESC"
+  BindingStyle="OracleName"
+  CustomQuery="false"
+  RowClass="model.view.ProjectTaxHeaderVORowImpl"
+  ComponentClass="model.view.ProjectTaxHeaderVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  Where="XxboqProjTaxHdrT.HEADER_ID=nvl(:p_hdr_id,XxboqProjTaxHdrT.HEADER_ID)
+and XXPJ_ACCESS_FUN(XxboqProjTaxHdrT.PROJECT_ID,:p_user_id)='Y'">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="p_hdr_id"
+    Kind="where"
+    Type="java.math.BigDecimal">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Variable>
+  <Variable
+    Name="p_user_id"
+    Kind="where"
+    Type="java.math.BigDecimal">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYHINT
+          Value="Hide"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+  </Variable>
+  <ViewAccessor
+    Name="UserBUSearchVO1"
+    ViewObjectName="model.masterview.UserBUSearchVO">
+    <ViewCriteriaUsage
+      Name="UserBUSearchVOCriteria"
+      FullName="model.masterview.UserBUSearchVO.UserBUSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_user_id">
+        <TransientExpression><![CDATA[adf.context.current.sessionScope.get('userMap').get('UserId')]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectSearchVO1"
+    ViewObjectName="model.searchview.ProjectSearchVO">
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectSearchVO2"
+    ViewObjectName="model.searchview.ProjectSearchVO">
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ProjectCustomerLOVVO1"
+    ViewObjectName="model.searchview.ProjectCustomerLOVVO"
+    RowLevelBinds="true">
+    <ViewCriteriaUsage
+      Name="ProjectCustomerLOVVOCriteria"
+      FullName="model.searchview.ProjectCustomerLOVVO.ProjectCustomerLOVVOCriteria"/>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ContractHeadersVO1"
+    ViewObjectName="model.searchview.ContractHeadersVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ViewAccessor
+    Name="ContractHeadersVO2"
+    ViewObjectName="model.searchview.ContractHeadersVO">
+    <ParameterMap>
+      <PIMap Variable="p_bu_id">
+        <TransientExpression><![CDATA[BuId]]></TransientExpression>
+      </PIMap>
+    </ParameterMap>
+  </ViewAccessor>
+  <ListBinding
+    Name="LOV_TransBuName"
+    ListVOName="UserBUSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransBuName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransBuName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="BuName"/>
+      <Item Value="BuId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="BuName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="UserBUSearchVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="UserBUSearchVOCriteria"
+      FullName="model.masterview.UserBUSearchVO.UserBUSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransProjectName"
+    ListVOName="ProjectSearchVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransProjectName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransProjectName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectName"/>
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectName"/>
+      <Item Value="ProjectNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectSearchVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransCustomerName"
+    ListVOName="ProjectCustomerLOVVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransCustomerName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransCustomerName"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="PartyName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="PartyName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectCustomerLOVVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectCustomerLOVVOCriteria"
+      FullName="model.searchview.ProjectCustomerLOVVO.ProjectCustomerLOVVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransProjectNumber"
+    ListVOName="ProjectSearchVO2"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransProjectNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransProjectNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransProjectName"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ProjectNumber"/>
+      <Item Value="ProjectName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ProjectSearchVOCriteria"/>
+    <ViewCriteriaUsage
+      Name="ProjectSearchVOCriteria"
+      FullName="model.searchview.ProjectSearchVO.ProjectSearchVOCriteria"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransContractNumber"
+    ListVOName="ContractHeadersVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransContractNumber_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransContractNumber"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransCognomen"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="Cognomen"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="ContractNumber"/>
+      <Item Value="Cognomen"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ContractHeadersVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_TransCognomen"
+    ListVOName="ContractHeadersVO2"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_TransCognomen_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="TransCognomen"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="TransContractNumber"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="Cognomen"/>
+      <Item Value="ContractNumber"/>
+      <Item Value="ContractId"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="Cognomen"/>
+      <Item Value="ContractNumber"/>
+    </AttrArray>
+    <DisplayCriteria
+      Name="ContractHeadersVOCriteria"
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage
+    Name="XxboqProjTaxHdrT"
+    Entity="model.entity.XxboqProjTaxHdrT"/>
+  <ViewAttribute
+    Name="BuId"
+    PrecisionRule="true"
+    EntityAttrName="BuId"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="BU_ID"/>
+  <ViewAttribute
+    Name="CustomerId"
+    PrecisionRule="true"
+    EntityAttrName="CustomerId"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="CUSTOMER_ID"/>
+  <ViewAttribute
+    Name="HeaderId"
+    PrecisionRule="true"
+    EntityAttrName="HeaderId"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="HEADER_ID"/>
+  <ViewAttribute
+    Name="ProjectId"
+    PrecisionRule="true"
+    EntityAttrName="ProjectId"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="PROJECT_ID"/>
+  <ViewAttribute
+    Name="TransBuName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select bu.bu_name from xxinv_business_units_t bu where rownum =1 and bu.bu_id = XxboqProjTaxHdrT.BU_ID)"
+    LOVName="LOV_TransBuName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="BUSINESS_UNIT"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select pj.project_name from xxpj_projects_t pj where rownum =1 and pj.project_id = XxboqProjTaxHdrT.PROJECT_ID)"
+    LOVName="LOV_TransProjectName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NAME"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransProjectNumber"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select pj.project_number from xxpj_projects_t pj where rownum =1 and pj.project_id = XxboqProjTaxHdrT.PROJECT_ID)"
+    LOVName="LOV_TransProjectNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="PROJECT_NUMBER"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransContractNumber"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select okc.contract_number from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id)"
+    LOVName="LOV_TransContractNumber">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_NUMBER"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCognomen"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select okc.cognomen from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id)"
+    LOVName="LOV_TransCognomen">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CONTRACT_NAME"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <AUTOSUBMIT
+          Value="true"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TransCustomerName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(select okc.customer_name from okc_k_headers_vl okc where okc.contract_id=XxboqProjTaxHdrT.contract_id)"
+    LOVName="LOV_TransCustomerName">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CUSTOMER_NAME"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="CREATED_BY">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CREATED_BY"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreationDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="CREATION_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="CREATION_DATE"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="LastUpdatedDate"
+    IsUpdateable="false"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedDate"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="LAST_UPDATED_DATE"/>
+  <ViewAttribute
+    Name="TransPCExistsFlag"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.String"
+    ColumnType="CHAR"
+    AliasName="VIEW_ATTR"
+    SQLType="VARCHAR"
+    Passivate="true"
+    Expression="(SELECT case when count(1)>0 then 'Y' else 'N' end FROM XXBOQ_PC_HDR_T pch where pch.contract_id =XxboqProjTaxHdrT.CONTRACT_ID)"/>
+  <ViewAttribute
+    Name="ContractId"
+    PrecisionRule="true"
+    EntityAttrName="ContractId"
+    EntityUsage="XxboqProjTaxHdrT"
+    AliasName="CONTRACT_ID"/>
+  <ViewCriteria
+    Name="ProjectTaxHeaderVOCriteria"
+    ViewObjectName="model.view.ProjectTaxHeaderVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow227"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="ProjectTaxHeaderVOCriteria_vcrow227_BuId"
+        ViewAttribute="BuId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="ProjectId"
+        ViewAttribute="ProjectId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransBuName"
+        ViewAttribute="TransBuName"
+        Operator="="
+        Conjunction="AND"
+        Required="Required"
+        GenerateIsNullClauseForBindVars="false"/>
+      <ViewCriteriaItem
+        Name="TransProjectName"
+        ViewAttribute="TransProjectName"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransProjectNumber"
+        ViewAttribute="TransProjectNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+      <ViewCriteriaItem
+        Name="TransContractNumber"
+        ViewAttribute="TransContractNumber"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="TransCognomen"
+        ViewAttribute="TransCognomen"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="TransCustomerName"
+        ViewAttribute="TransCustomerName"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="ProjectTaxHeaderVOCriteria_vcrow227_ContractId"
+        ViewAttribute="ContractId"
+        Operator="="
+        Conjunction="AND"
+        Required="Optional">
+        <Properties>
+          <CustomProperties>
+            <Property
+              Name="renderedMode"
+              Value="Never"/>
+          </CustomProperties>
+        </Properties>
+      </ViewCriteriaItem>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewLinkAccessor
+    Name="ProjectTaxLinesVO"
+    ViewLink="model.viewlink.ProjectTaxHeaderToLinesVL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.BillOfQuantityModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

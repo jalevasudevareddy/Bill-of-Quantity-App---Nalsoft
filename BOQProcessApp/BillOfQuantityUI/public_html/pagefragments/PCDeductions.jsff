@@ -1,0 +1,337 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="PC Other Deductions" id="ph1">
+      <f:facet name="toolbar">
+        <af:group id="g1">
+          <af:commandButton text="Save" id="cb3"
+                            rendered="#{(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') and sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"
+                            actionListener="#{backingBeanScope.PaymentCertificateBean.SaveDed}"/>
+          <af:spacer width="3" id="s14"/>
+          <af:commandButton text="Save and Close" id="cb4" action="PC"
+                            rendered="#{(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') and sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"
+                            actionListener="#{backingBeanScope.PaymentCertificateBean.saveAndCloseAL}"/>
+          <af:spacer width="3" id="s13"/>
+          <af:commandButton text="Cancel" id="cb1" action="done"
+                            immediate="true"
+                            rendered="#{(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') and sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"/>
+          <af:spacer width="3" id="s25"/>
+          <af:commandButton text="Done" id="cb7"
+                            actionListener="#{backingBeanScope.PaymentCertificateBean.updatePcDedAmntAL}"
+                            rendered="#{(bindings.PcStatus.inputValue!='D' and bindings.PcStatus.inputValue!='R' and bindings.PcStatus.inputValue!='W') or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y'}"/>
+        </af:group>
+      </f:facet>
+    </af:panelHeader>
+    <af:spacer width="10" height="10" id="s1"/>
+    <af:panelFormLayout id="pfl1" maxColumns="2" rows="2" fieldWidth="70%"
+                        labelWidth="30%">
+      <af:panelLabelAndMessage label="#{bindings.BuName.hints.label}"
+                               id="plam3">
+        <af:outputText value="#{bindings.BuName.inputValue}" id="ot2"/>
+      </af:panelLabelAndMessage>
+      <af:panelLabelAndMessage label="#{bindings.ProjectNumber.hints.label}"
+                               id="plam2" rendered="false">
+        <af:outputText value="#{bindings.ProjectNumber.inputValue}" id="ot3"/>
+      </af:panelLabelAndMessage>
+      <af:panelLabelAndMessage label="#{bindings.ProjectName.hints.label}"
+                               id="plam1" rendered="false">
+        <af:outputText value="#{bindings.ProjectName.inputValue}" id="ot1"/>
+      </af:panelLabelAndMessage>
+         <af:spacer height="4" id="s8"/>
+        <af:panelLabelAndMessage label="#{bindings.ContractNumber.hints.label}"
+                               id="plam5">
+        <af:outputText value="#{bindings.ContractNumber.inputValue}" id="ot7"/>
+      </af:panelLabelAndMessage>
+      <af:spacer height="4" id="s7"/>
+      <af:panelLabelAndMessage label="#{bindings.Cognomen.hints.label}"
+                               id="plam7">
+        <af:outputText value="#{bindings.Cognomen.inputValue}" id="ot8"/>
+      </af:panelLabelAndMessage>
+      <af:spacer height="4" id="s5"/>
+      <af:panelLabelAndMessage label="#{bindings.TransStatus.hints.label}"
+                               id="plam4">
+        <af:outputText value="#{bindings.TransStatus.inputValue}" id="ot4"/>
+      </af:panelLabelAndMessage>
+      <af:spacer height="4" id="s4"/>
+    </af:panelFormLayout>
+    <af:spacer height="14" id="s3"/>
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:commandButton text="Add" id="cb2"
+                            disabled="#{bindings.PcStatus.inputValue!='D' and bindings.PcStatus.inputValue!='R' and bindings.PcStatus.inputValue!='W'}"
+                            rendered="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"
+                            actionListener="#{backingBeanScope.PaymentCertificateBean.addPCDeductionsRow}"/>
+          <af:commandButton actionListener="#{bindings.Delete.execute}"
+                            text="Delete" immediate="true"
+                            disabled="#{bindings.PcStatus.inputValue!='D' and bindings.PcStatus.inputValue!='R' and bindings.PcStatus.inputValue!='W'}"
+                            rendered="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE=='Y'}"
+                            id="cb5"/>
+        </af:toolbar>
+      </f:facet>
+      <af:table value="#{bindings.OtherDeductionsVO1.collectionModel}" var="row"
+                rows="#{bindings.OtherDeductionsVO1.rangeSize}"
+                emptyText="#{bindings.OtherDeductionsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.OtherDeductionsVO1.rangeSize}"
+                rowBandingInterval="0"
+                filterModel="#{bindings.OtherDeductionsVO1Query.queryDescriptor}"
+                queryListener="#{bindings.OtherDeductionsVO1Query.processQuery}"
+                varStatus="vs"
+                selectedRowKeys="#{bindings.OtherDeductionsVO1.collectionModel.selectedRow}"
+                selectionListener="#{bindings.OtherDeductionsVO1.collectionModel.makeCurrent}"
+                rowSelection="single" id="t1" styleClass="AFStretchWidth"
+                partialTriggers="::cb5"
+                binding="#{backingBeanScope.PaymentCertificateBean.otherDeductionTableBind}">
+       <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.DeductionType.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.DeductionType.label}"
+                   id="c3">
+          <af:selectOneChoice value="#{row.bindings.DeductionType.inputValue}"  required="true"
+                              label="#{row.bindings.DeductionType.label}"
+                              readOnly="#{row.row.entities[0].entityState!=0 or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y'}"
+                              shortDesc="#{bindings.OtherDeductionsVO1.hints.DeductionType.tooltip}"
+                              id="soc1">
+            <f:selectItems value="#{row.bindings.DeductionType.items}"
+                           id="si1"/>
+          </af:selectOneChoice>
+        </af:column>        
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.Description.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.Description.label}"
+                   id="c5">
+          <af:inputText value="#{row.bindings.Description.inputValue}"
+                        readOnly="#{row.row.entities[0].entityState!=0 or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y'}"
+                        label="#{bindings.OtherDeductionsVO1.hints.Description.label}"
+                        required="#{bindings.OtherDeductionsVO1.hints.Description.mandatory}"
+                        columns="#{bindings.OtherDeductionsVO1.hints.Description.displayWidth}"
+                        maximumLength="#{bindings.OtherDeductionsVO1.hints.Description.precision}"
+                        shortDesc="#{bindings.OtherDeductionsVO1.hints.Description.tooltip}"
+                        id="it2">
+            <f:validator binding="#{row.bindings.Description.validator}"/>
+          </af:inputText>
+          <f:facet name="footer">
+            <af:panelGroupLayout id="pgl0" layout="horizontal">
+              <af:outputText value="Sub Total" id="ot15"></af:outputText>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:column>
+        
+        <af:column headerText="Type" rendered="false"
+                   id="c9">
+          <af:outputText value="#{(row.Amount lt &quot;0&quot;?'Addition':'Deduction')}"
+                         id="ot6"/>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TransDedProjectName.label}"
+                   id="c11" showRequired="true" width="200">
+          <af:inputComboboxListOfValues id="transDedProjectNameId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.TransDedProjectName.label}"
+                                        value="#{row.bindings.TransDedProjectName.inputValue}"
+                                        model="#{row.bindings.TransDedProjectName.listOfValuesModel}"
+                                        required="#{bindings.OtherDeductionsVO1.hints.TransDedProjectName.mandatory || true}"
+                                          readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') || (row.Amount lt &quot;0&quot;?true:false)}"
+                                        columns="#{bindings.OtherDeductionsVO1.hints.TransDedProjectName.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.TransDedProjectName.tooltip}">
+            <f:validator binding="#{row.bindings.TransDedProjectName.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.TaskNumber.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.TaskNumber.label}"
+                   id="c2">
+          <af:inputComboboxListOfValues id="taskNumberId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.TaskNumber.label}"
+                                        value="#{row.bindings.TaskNumber.inputValue}"
+                                        model="#{row.bindings.TaskNumber.listOfValuesModel}"
+                                        readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') || (row.Amount lt &quot;0&quot;?true:false)}"
+                                        required="#{(row.Amount lt &quot;0&quot;?false:true)}"
+                                        disabled="#{row.bindings.TransDedProjectName.inputValue == null}" 
+                                        columns="#{bindings.OtherDeductionsVO1.hints.TaskNumber.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.TaskNumber.tooltip}"
+                                        partialTriggers="it6 transDedProjectNameId"
+                                        binding="#{backingBeanScope.PaymentCertificateBean.deductionTaskNumberBind}">
+            <f:validator binding="#{row.bindings.TaskNumber.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.TaskName.name}"
+                   filterable="true" sortable="true" width="150"
+                   showRequired="true"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.TaskName.label}"
+                   id="c1">
+          <af:inputText value="#{row.bindings.TaskName.inputValue}"
+                        readOnly="true" partialTriggers="taskNumberId"
+                        label="#{bindings.OtherDeductionsVO1.hints.TaskName.label}"
+                        required="true"
+                        columns="#{bindings.OtherDeductionsVO1.hints.TaskName.displayWidth}"
+                        maximumLength="#{bindings.OtherDeductionsVO1.hints.TaskName.precision}"
+                        shortDesc="#{bindings.OtherDeductionsVO1.hints.TaskName.tooltip}"
+                        id="it5">
+            <f:validator binding="#{row.bindings.TaskName.validator}"/>
+          </af:inputText>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TransOrgName.label}"
+                   id="c10" showRequired="true" >
+          <af:inputComboboxListOfValues id="transOrgNameId"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.TransOrgName.label}"
+                                        value="#{row.bindings.TransOrgName.inputValue}"
+                                        model="#{row.bindings.TransOrgName.listOfValuesModel}"
+                                         readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') || (row.Amount lt &quot;0&quot;?true:false)}"
+                                        required="#{bindings.OtherDeductionsVO1.hints.TransOrgName.mandatory || true}"
+                                        columns="#{bindings.OtherDeductionsVO1.hints.TransOrgName.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.TransOrgName.tooltip}">
+            <f:validator binding="#{row.bindings.TransOrgName.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.CostCode.name}"
+                   filterable="true" sortable="true" showRequired="true"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.CostCode.label}"
+                   id="c6">
+          <af:inputComboboxListOfValues id="costCodeId" autoSubmit="true"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.CostCode.label}"
+                                        value="#{row.bindings.CostCode.inputValue}"
+                                        model="#{row.bindings.CostCode.listOfValuesModel}"
+                                        readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W') || (row.Amount lt &quot;0&quot;?true:false)}"
+                                        required="#{(row.Amount lt &quot;0&quot;?false:true)}"
+                                        columns="#{bindings.OtherDeductionsVO1.hints.CostCode.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.CostCode.tooltip}"
+                                        partialTriggers="it6"
+                                        binding="#{backingBeanScope.PaymentCertificateBean.deductionCostCodeBind}">
+            <f:validator binding="#{row.bindings.CostCode.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.CcDesc.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.CcDesc.label}"
+                   id="c7">
+          <af:inputText value="#{row.bindings.CcDesc.inputValue}"
+                        readOnly="true" partialTriggers="costCodeId"
+                        label="#{bindings.OtherDeductionsVO1.hints.CcDesc.label}"
+                        required="true"
+                        columns="#{bindings.OtherDeductionsVO1.hints.CcDesc.displayWidth}"
+                        maximumLength="#{bindings.OtherDeductionsVO1.hints.CcDesc.precision}"
+                        shortDesc="#{bindings.OtherDeductionsVO1.hints.CcDesc.tooltip}"
+                        id="it4">
+            <f:validator binding="#{row.bindings.CcDesc.validator}"/>
+          </af:inputText>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.ResourceName.label}"
+                   id="c17" filterable="true" sortable="true" width="150"
+                   showRequired="true">
+          <af:inputComboboxListOfValues id="resourceNameId"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.ResourceName.label}"
+                                        value="#{row.bindings.ResourceName.inputValue}"
+                                        model="#{row.bindings.ResourceName.listOfValuesModel}"
+                                        autoSubmit="true" 
+                                        readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W')}"                      
+                                        required="true"
+                                        columns="#{bindings.OtherDeductionsVO1.hints.ResourceName.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.ResourceName.tooltip}">
+            <f:validator binding="#{row.bindings.ResourceName.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.Amount.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.Amount.label}(#{bindings.CurrencyCode.inputValue})"
+                   id="c4" align="right">
+          <af:inputText value="#{row.bindings.Amount.inputValue}"
+                        autoSubmit="true"
+                        label="#{bindings.OtherDeductionsVO1.hints.Amount.label}"
+                        required="true" contentStyle="text-align:right;"
+                        readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W')}"
+                        columns="#{bindings.OtherDeductionsVO1.hints.Amount.displayWidth}"
+                        maximumLength="#{bindings.OtherDeductionsVO1.hints.Amount.precision}"
+                        shortDesc="#{bindings.OtherDeductionsVO1.hints.Amount.tooltip}"
+                        id="it6" inlineStyle="text-align:right;"
+                        valueChangeListener="#{backingBeanScope.PaymentCertificateBean.deductionAmountVL}"
+                        binding="#{backingBeanScope.PaymentCertificateBean.deductionAmountBind}">
+            <f:validator binding="#{row.bindings.Amount.validator}"/>
+            <af:convertNumber groupingUsed="true" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.OtherDeductionsVO1.hints.Amount.format}"/>
+          </af:inputText>
+          <f:facet name="footer">
+            <af:panelGroupLayout id="pgl2" layout="horizontal" halign="right">
+              <af:outputText value="#{bindings.TransTotal.inputValue}" id="ot5"
+                             partialTriggers="it6">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.OtherDeductionsVO1.hints.TransTotal.format}"/>
+              </af:outputText>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TaxCode.label}"
+                   id="c13" showRequired="#{bindings.TransODTaxEnable.inputValue != 'N'}">
+          <af:inputComboboxListOfValues id="taxCodeId"
+                                        popupTitle="Search and Select: #{bindings.OtherDeductionsVO1.hints.TaxCode.label}"
+                                        value="#{row.bindings.TaxCode.inputValue}"
+                                        model="#{row.bindings.TaxCode.listOfValuesModel}"
+                                        autoSubmit="true" 
+                                        disabled="#{bindings.TransODTaxEnable.inputValue == 'N'}"
+                                        readOnly="#{sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y' or !(bindings.PcStatus.inputValue=='D' or bindings.PcStatus.inputValue=='R' or bindings.PcStatus.inputValue=='W')}"                      
+                                        required="#{bindings.TransODTaxEnable.inputValue != 'N'}"
+                                        columns="#{bindings.OtherDeductionsVO1.hints.TaxCode.displayWidth}"
+                                        shortDesc="#{bindings.OtherDeductionsVO1.hints.TaxCode.tooltip}">
+            <f:validator binding="#{row.bindings.TaxCode.validator}"/>
+          </af:inputComboboxListOfValues>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.PercentageRate.label}"
+                   id="c14" align="right"> 
+          <af:outputText value="#{row.PercentageRate}" id="ot10" partialTriggers="taxCodeId">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.OtherDeductionsVO1.hints.PercentageRate.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TaxAmount.label}"
+                   id="c16" rendered="false">
+          <af:outputText value="#{row.TaxAmount}" id="ot13">
+            <af:convertNumber groupingUsed="false"
+                              pattern="#{bindings.OtherDeductionsVO1.hints.TaxAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TransTaxAmount.label}"
+                   id="c15" align="right">
+          <af:outputText value="#{row.TransTaxAmount}" id="ot11" partialTriggers="it6 taxCodeId taxCodeId">
+            <af:convertNumber groupingUsed="true" type="currency"
+                              currencySymbol=" "
+                              pattern="#{bindings.OtherDeductionsVO1.hints.TransTaxAmount.format}"/>
+          </af:outputText>
+        <f:facet name="footer">
+            <af:panelGroupLayout id="pgl3" layout="horizontal" halign="right">
+              <af:outputText value="#{bindings.TransTaxTotal.inputValue}" id="ot12"
+                  partialTriggers="ot11" >
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.OtherDeductionsVO1.hints.TransTaxTotal.format}"/>
+             </af:outputText>
+                                  
+            </af:panelGroupLayout>
+          </f:facet>
+        
+       
+          </af:column>
+          
+        <af:column headerText="#{bindings.OtherDeductionsVO1.hints.TransAccount.label}"
+                   id="c12" width="200">
+          <af:outputText value="#{row.TransAccount}" id="ot9"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.OtherDeductionsVO1.hints.Remarks.name}"
+                   filterable="true" sortable="true" width="200"
+                   headerText="#{bindings.OtherDeductionsVO1.hints.Remarks.label}"
+                   id="c8">
+          <af:inputText value="#{row.bindings.Remarks.inputValue}"
+                        label="#{bindings.OtherDeductionsVO1.hints.Remarks.label}"
+                        readOnly="#{row.row.entities[0].entityState!=0 or sessionScope.userRoles.XXCUST_BOQ_PC_PL_ROLE!='Y'}"
+                        required="#{bindings.OtherDeductionsVO1.hints.Remarks.mandatory}"
+                        columns="#{bindings.OtherDeductionsVO1.hints.Remarks.displayWidth}"
+                        maximumLength="#{bindings.OtherDeductionsVO1.hints.Remarks.precision}"
+                        shortDesc="#{bindings.OtherDeductionsVO1.hints.Remarks.tooltip}"
+                        id="it3">
+            <f:validator binding="#{row.bindings.Remarks.validator}"/>
+          </af:inputText>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:panelGroupLayout>
+</jsp:root>

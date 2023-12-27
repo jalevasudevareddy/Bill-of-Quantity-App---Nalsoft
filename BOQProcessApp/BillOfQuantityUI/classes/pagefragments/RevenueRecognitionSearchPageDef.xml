@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="RevenueRecognitionSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="RevenueRecognitionSearchVO1" RangeSize="25"
+              DataControl="RevenueRecognitionAMDataControl"
+              id="RevenueRecognitionSearchVO1Iterator"/>
+    <searchRegion Criteria="RevenueRecognitionSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="RevenueRecognitionSearchVO1Iterator"
+                  id="RevenueRecognitionSearchVOCriteriaQuery"/>
+    <iterator Binds="RevenueRecognitionHdrVO1" RangeSize="25"
+              DataControl="RevenueRecognitionAMDataControl"
+              id="RevenueRecognitionHdrVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="RevenueRecognitionSearchVO1Iterator"
+          id="RevenueRecognitionSearchVO1">
+      <nodeDefinition DefName="model.view.RevenueRecognitionSearchVO"
+                      Name="RevenueRecognitionSearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="Period"/>
+          <Item Value="GlErrors"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="RevenueRecognitionHdrVO1Iterator" StaticList="false"
+          Uses="LOV_BuId" id="BuId" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <listOfValues StaticList="false"
+                  IterBinding="RevenueRecognitionHdrVO1Iterator"
+                  Uses="LOV_Period" id="Period"/>
+    <methodAction id="cancelDocument"
+                  InstanceName="RevenueRecognitionAMDataControl.dataProvider"
+                  DataControl="RevenueRecognitionAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createDocument"
+                  InstanceName="RevenueRecognitionAMDataControl.dataProvider"
+                  DataControl="RevenueRecognitionAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createDocument" IsViewObjectMethod="false"/>
+    <methodAction id="createHeaderRow"
+                  InstanceName="RevenueRecognitionAMDataControl.dataProvider"
+                  DataControl="RevenueRecognitionAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createHeaderRow" IsViewObjectMethod="false"/>
+    <methodAction id="editDocument"
+                  InstanceName="RevenueRecognitionAMDataControl.dataProvider"
+                  DataControl="RevenueRecognitionAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="editDocument" IsViewObjectMethod="false"/>
+  </bindings>
+</pageDefinition>

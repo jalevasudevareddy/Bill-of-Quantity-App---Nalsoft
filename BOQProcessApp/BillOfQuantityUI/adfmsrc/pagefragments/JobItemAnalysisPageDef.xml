@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="JobItemAnalysisPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProjectJobHeaderVO1" RangeSize="-1"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="ProjectJobHeaderVO1Iterator"/>
+    <iterator Binds="JobItemAnalysisVO1" RangeSize="-1"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="JobItemAnalysisVO1Iterator"/>
+    <searchRegion Binds="JobItemAnalysisVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobItemAnalysisVO1Query"/>
+    <iterator Binds="JobItemResourceVO1" RangeSize="-1"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="JobItemResourceVO1Iterator"/>
+    <searchRegion Binds="JobItemResourceVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobItemResourceVO1Query"/>
+    <iterator Binds="JobItemAnalysisRescPopulateVO1" RangeSize="25"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="JobItemAnalysisRescPopulateVO1Iterator"/>
+    <searchRegion Binds="JobItemAnalysisRescPopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="JobItemAnalysisRescPopulateVO1Query"/>
+    <iterator Binds="ProjectUsedResourcesVO1" RangeSize="-1"
+              DataControl="ProjectJobItemAnalysisAMDataControl"
+              id="ProjectUsedResourcesVO1Iterator"/>
+    <searchRegion Binds="ProjectUsedResourcesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ProjectUsedResourcesVO1Query"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="StartDate">
+      <AttrNames>
+        <Item Value="StartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="EndDate">
+      <AttrNames>
+        <Item Value="EndDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="Status">
+      <AttrNames>
+        <Item Value="Status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator"
+                     id="ApprovedDate">
+      <AttrNames>
+        <Item Value="ApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator" id="ApprovedBy">
+      <AttrNames>
+        <Item Value="ApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="JobItemAnalysisVO1Iterator" id="JobItemAnalysisVO1">
+      <nodeDefinition DefName="model.view.JobItemAnalysisVO"
+                      Name="JobItemAnalysisVO10">
+        <AttrNames>
+          <Item Value="TransActivityCode"/>
+          <Item Value="JobCode"/>
+          <Item Value="Uom"/>
+          <Item Value="ActivityCode"/>
+          <Item Value="TransDescription"/>
+          <Item Value="Description"/>
+          <Item Value="Quantity"/>
+          <Item Value="TransUnitRate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="isJobItemAnalysisCreatedForProject"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="isJobItemAnalysisCreatedForProject"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.isJobItemAnalysisCreatedForProject_ProjectJobItemAnalysisAMDataControl_dataProvider_isJobItemAnalysisCreatedForProject_result"/>
+    <action IterBinding="JobItemAnalysisVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <methodAction id="refreshProjectJobHeaderVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshProjectJobHeaderVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshProjectJobResourceVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshProjectJobResourceVO"
+                  IsViewObjectMethod="false"/>
+    <action IterBinding="JobItemAnalysisVO1Iterator" id="Delete"
+            InstanceName="ProjectJobItemAnalysisAMDataControl.JobItemAnalysisVO1"
+            DataControl="ProjectJobItemAnalysisAMDataControl"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="ProjectJobHeaderVO1Iterator"
+                     id="ProjectJobHeaderId">
+      <AttrNames>
+        <Item Value="ProjectJobHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="JobItemResourceVO1Iterator" id="JobItemResourceVO1">
+      <nodeDefinition DefName="model.view.JobItemResourceVO"
+                      Name="JobItemResourceVO10">
+        <AttrNames>
+          <Item Value="Quantity"/>
+          <Item Value="WastagePercentage"/>
+          <Item Value="SparesPercentage"/>
+          <Item Value="MaintenancePercentage"/>
+          <Item Value="TransItemNumber"/>
+          <Item Value="ItemCode"/>
+          <Item Value="TransItemDescription"/>
+          <Item Value="TransGroup"/>
+          <Item Value="TransSubGroup"/>
+          <Item Value="TransType"/>
+          <Item Value="TransUOM"/>
+          <Item Value="TransItemRate"/>
+          <Item Value="TransAmount"/>
+          <Item Value="TransDeleteLineFlag"/>
+          <Item Value="TransTypeCode"/>
+          <Item Value="UnitRate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="initProjectJobResourceRow"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="initProjectJobResourceRow"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator" id="JobCode">
+      <AttrNames>
+        <Item Value="JobCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator" id="Quantity">
+      <AttrNames>
+        <Item Value="Quantity"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator" id="Uom">
+      <AttrNames>
+        <Item Value="Uom"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransManPower">
+      <AttrNames>
+        <Item Value="TransManPower"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator" id="ActivityCode">
+      <AttrNames>
+        <Item Value="ActivityCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator" id="Description1">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransMaterial">
+      <AttrNames>
+        <Item Value="TransMaterial"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransSubcontractor">
+      <AttrNames>
+        <Item Value="TransSubcontractor"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransEquipment">
+      <AttrNames>
+        <Item Value="TransEquipment"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransGenaralExpences">
+      <AttrNames>
+        <Item Value="TransGenaralExpences"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="TransUnitRate">
+      <AttrNames>
+        <Item Value="TransUnitRate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="refreshItemJobAnalysisVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshItemJobAnalysisVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="deleteJobItemAnalysisResources"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteJobItemAnalysisResources"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.deleteJobItemAnalysisResources_ProjectJobItemAnalysisAMDataControl_dataProvider_deleteJobItemAnalysisResources_result"/>
+    <attributeValues IterBinding="JobItemAnalysisVO1Iterator"
+                     id="JobItemAnalysisId">
+      <AttrNames>
+        <Item Value="JobItemAnalysisId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="makeAsCurrentProjectJobActivity"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeAsCurrentProjectJobActivity"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.makeAsCurrentProjectJobActivity_ProjectJobItemAnalysisAMDataControl_dataProvider_makeAsCurrentProjectJobActivity_result">
+      <NamedData NDName="prjJobActId" NDValue="#{pageFlowScope.prjJobActId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <tree IterBinding="JobItemAnalysisRescPopulateVO1Iterator"
+          id="JobItemAnalysisRescPopulateVO1">
+      <nodeDefinition DefName="model.view.JobItemAnalysisRescPopulateVO"
+                      Name="JobItemAnalysisRescPopulateVO10">
+        <AttrNames>
+          <Item Value="ResourceTypeCode"/>
+          <Item Value="ItemCode"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="ItemRate"/>
+          <Item Value="Uom"/>
+          <Item Value="ExpenditureType"/>
+          <Item Value="ResourceType"/>
+          <Item Value="ResourceGroup"/>
+          <Item Value="ResourceSubGroup"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+          <Item Value="TransSelectFlag" Binds="TransSelectFlag"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="JobItemAnalysisRescPopulateVO1Iterator"
+            id="TransSelectFlag" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransSelectFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="refreshPopulateJobRescVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshPopulateJobRescVO"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="refreshProjectUsedResourcesVO"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshProjectUsedResourcesVO"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="ProjectUsedResourcesVO1Iterator"
+          id="ProjectUsedResourcesVO1">
+      <nodeDefinition DefName="model.view.ProjectUsedResourcesVO"
+                      Name="ProjectUsedResourcesVO10">
+        <AttrNames>
+          <Item Value="ItemCode"/>
+          <Item Value="ActualUnitRate"/>
+          <Item Value="TransUnitRate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="updateProjectResourcesRates"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateProjectResourcesRates"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.updateProjectResourcesRates_ProjectJobItemAnalysisAMDataControl_dataProvider_updateProjectResourcesRates_result"/>
+    <methodAction id="updateProjectResourcesRate"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateProjectResourcesRate"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.updateProjectResourcesRate_ProjectJobItemAnalysisAMDataControl_dataProvider_updateProjectResourcesRate_result"/>
+    <attributeValues IterBinding="JobItemAnalysisRescPopulateVO1Iterator"
+                     id="ItemId">
+      <AttrNames>
+        <Item Value="ItemId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="populateSelectedResources"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateSelectedResources"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="selectedItems" NDValue="#{pageFlowScope.selectedItems}"
+                 NDType="java.util.Set"/>
+    </methodAction>
+    <methodAction id="calculateAndUpdatePrjItemUnitRate"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculateAndUpdatePrjItemUnitRate"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="updateItemAnyStatusWith"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateItemAnyStatusWith"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.updateItemAnyStatusWith_ProjectJobItemAnalysisAMDataControl_dataProvider_updateItemAnyStatusWith_result">
+      <NamedData NDName="newStatus" NDValue="#{pageFlowScope.newStatus}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="reviseCurrentPrjJobItemAnalysis"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="reviseCurrentPrjJobItemAnalysis"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.reviseCurrentPrjJobItemAnalysis_ProjectJobItemAnalysisAMDataControl_dataProvider_reviseCurrentPrjJobItemAnalysis_result"/>
+    <methodAction id="makeRevicesItemAnalysisAsCurrentRow"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="makeRevicesItemAnalysisAsCurrentRow"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="revisedItemAnyId"
+                 NDValue="#{pageFlowScope.revisedItemAnyId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <action IterBinding="JobItemAnalysisVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="copyPrjJobItemAnalysis"
+                  InstanceName="ProjectJobItemAnalysisAMDataControl.dataProvider"
+                  DataControl="ProjectJobItemAnalysisAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="copyPrjJobItemAnalysis" IsViewObjectMethod="false"
+                  ReturnName="data.ProjectJobItemAnalysisAMDataControl.methodResults.copyPrjJobItemAnalysis_ProjectJobItemAnalysisAMDataControl_dataProvider_copyPrjJobItemAnalysis_result"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+        <af:panelGroupLayout id="pgl1" layout="scroll">
+        <af:panelHeader text="Manage Accounting Setup" id="ph1"
+                        binding="#{backingBeanScope.BOQAccounntsSetupBean.pageBindings}">
+          <f:facet name="toolbar">
+            <af:group id="g1">
+              <af:commandButton text="Save" id="cb1"
+                                actionListener="#{backingBeanScope.BOQAccounntsSetupBean.saveAcc}"/>
+              <af:spacer width="4" id="s2"/>
+              <af:commandButton text="Cancel" id="cb2" action="done"
+                                immediate="true"
+                                actionListener="#{backingBeanScope.BOQAccounntsSetupBean.cancelAL}"/>
+            </af:group>
+          </f:facet>
+          <af:panelFormLayout id="pfl0" fieldWidth="70%" labelWidth="30%">
+            <af:inputComboboxListOfValues id="buNameId" autoSubmit="true"
+                                          popupTitle="Search and Select: #{bindings.BuName.hints.label}"
+                                          value="#{bindings.BuName.inputValue}"
+                                          label="#{bindings.BuName.hints.label}"
+                                          model="#{bindings.BuName.listOfValuesModel}"
+                                          required="#{bindings.BuName.hints.mandatory}"
+                                          columns="#{bindings.BuName.hints.displayWidth}"
+                                          shortDesc="#{bindings.BuName.hints.tooltip}">
+              <f:validator binding="#{bindings.BuName.validator}"/>
+            </af:inputComboboxListOfValues>
+          </af:panelFormLayout>
+          <af:spacer width="10" height="15" id="s1"/>
+          <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+            <f:facet name="toolbar">
+              <af:toolbar id="t2">
+                <af:commandButton text="Add" id="cb3"
+                                  disabled="#{bindings.BuName.inputValue==null}"
+                                  partialTriggers="::buNameId"
+                                  actionListener="#{backingBeanScope.BOQAccounntsSetupBean.addAccount}"/>
+                <!--<af:commandButton actionListener="#{bindings.Delete.execute}"
+                                  text="Delete"
+                                  disabled="#{!bindings.Delete.enabled}"
+                                  id="cb4"/>-->
+              </af:toolbar>
+            </f:facet>
+            <af:table value="#{bindings.BOQAccountsSetupVO1.collectionModel}"
+                      var="row" rows="#{bindings.BOQAccountsSetupVO1.rangeSize}"
+                      emptyText="#{bindings.BOQAccountsSetupVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      fetchSize="#{bindings.BOQAccountsSetupVO1.rangeSize}"
+                      rowBandingInterval="0" styleClass="AFStretchWidth"
+                      filterModel="#{bindings.BOQAccountsSetupVO1Query.queryDescriptor}"
+                      queryListener="#{bindings.BOQAccountsSetupVO1Query.processQuery}"
+                      varStatus="vs" immediate="true"
+                      binding="#{backingBeanScope.BOQAccounntsSetupBean.tableBindings}"
+                      selectedRowKeys="#{bindings.BOQAccountsSetupVO1.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.BOQAccountsSetupVO1.collectionModel.makeCurrent}"
+                      rowSelection="single" id="t1"
+                      partialTriggers=":::buNameId">
+              <af:column rowHeader="true" width="5" id="rowHdr" headerText=" ">
+                <af:outputText value=" " id="otrowHdr"/>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.Destination.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.Destination.label}"
+                         id="c3" width="200">
+                <af:inputComboboxListOfValues id="destinationId"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.Destination.label}"
+                                              value="#{row.bindings.Destination.inputValue}"
+                                              valueChangeListener="#{backingBeanScope.BOQAccounntsSetupBean.destAL}"
+                                              model="#{row.bindings.Destination.listOfValuesModel}"
+                                              required="true"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.Destination.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.Destination.tooltip}">
+                  <f:validator binding="#{row.bindings.Destination.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.ArType.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.ArType.label}"
+                         id="c13" width="200">
+                <af:inputComboboxListOfValues id="arTypeId"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.ArType.label}"
+                                              value="#{row.bindings.ArType.inputValue}"
+                                              model="#{row.bindings.ArType.listOfValuesModel}"
+                                              required="true"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.ArType.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.ArType.tooltip}">
+                  <f:validator binding="#{row.bindings.ArType.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.label}"
+                         id="c5">
+                <af:inputText value="#{row.bindings.CustomerType.inputValue}"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              disabled="#{row.bindings.Destination.inputValue == null}"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.label}"
+                              autoSubmit="true"
+                              binding="#{backingBeanScope.BOQAccounntsSetupBean.custTypeBindgs}"
+                              valueChangeListener="#{backingBeanScope.BOQAccounntsSetupBean.custTypeVL}"
+                              columns="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.displayWidth}"
+                              maximumLength="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.precision}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.CustomerType.tooltip}"
+                              id="it5">
+                  <f:validator binding="#{row.bindings.CustomerType.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.ArContext.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.ArContext.label}"
+                         id="c10" width="200">
+                <af:inputText value="#{row.bindings.ArContext.inputValue}"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.ArContext.label}"
+                              required="true" autoSubmit="true"
+                              valueChangeListener="#{backingBeanScope.BOQAccounntsSetupBean.arCntxtVL}"
+                              binding="#{backingBeanScope.BOQAccounntsSetupBean.arContBindgs}"
+                              columns="#{bindings.BOQAccountsSetupVO1.hints.ArContext.displayWidth}"
+                              maximumLength="#{bindings.BOQAccountsSetupVO1.hints.ArContext.precision}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.ArContext.tooltip}"
+                              id="it2">
+                  <f:validator binding="#{row.bindings.ArContext.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.ArTrxType.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.ArTrxType.label}"
+                         id="c11" width="200">
+                <af:inputComboboxListOfValues id="arTrxTypeId"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.ArTrxType.label}"
+                                              value="#{row.bindings.ArTrxType.inputValue}"
+                                              model="#{row.bindings.ArTrxType.listOfValuesModel}"
+                                             required="true"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.ArTrxType.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.ArTrxType.tooltip}">
+                  <f:validator binding="#{row.bindings.ArTrxType.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.ArSource.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.ArSource.label}"
+                         id="c12" width="200">
+                <af:inputComboboxListOfValues id="arSourceId"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.ArSource.label}"
+                                              value="#{row.bindings.ArSource.inputValue}"
+                                              model="#{row.bindings.ArSource.listOfValuesModel}"
+                                            required="true"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.ArSource.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.ArSource.tooltip}">
+                  <f:validator binding="#{row.bindings.ArSource.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.GlSource.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.GlSource.label}"
+                         id="c4">
+                <af:inputText value="#{row.bindings.GlSource.inputValue}"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.GlSource.label}"
+                              columns="#{bindings.BOQAccountsSetupVO1.hints.GlSource.displayWidth}"
+                              maximumLength="#{bindings.BOQAccountsSetupVO1.hints.GlSource.precision}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.GlSource.tooltip}"
+                              id="it1">
+                  <f:validator binding="#{row.bindings.GlSource.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.label}"
+                         id="c6">
+                <af:inputText value="#{row.bindings.GlCategory.inputValue}"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.label}"
+                              columns="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.displayWidth}"
+                              maximumLength="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.precision}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.GlCategory.tooltip}"
+                              id="it3">
+                  <f:validator binding="#{row.bindings.GlCategory.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.BillCategory.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.BillCategory.label}"
+                         id="c7" width="200">
+                <af:inputComboboxListOfValues id="billCategoryId"
+                                              autoSubmit="true"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              binding="#{backingBeanScope.BOQAccounntsSetupBean.billCatgryBindgs}"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.BillCategory.label}"
+                                              value="#{row.bindings.BillCategory.inputValue}"
+                                              model="#{row.bindings.BillCategory.listOfValuesModel}"
+                                              valueChangeListener="#{backingBeanScope.BOQAccounntsSetupBean.validateBillCategory}"
+                                              required="true"
+                                              disabled="#{row.bindings.Destination.inputValue == null}"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.BillCategory.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.BillCategory.tooltip}">
+                  <f:validator binding="#{row.bindings.BillCategory.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.NaturalAccount.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.NaturalAccount.label}"
+                         id="c1" width="150">
+                <af:inputComboboxListOfValues id="naturalAccountId"
+                                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                                              popupTitle="Search and Select: #{bindings.BOQAccountsSetupVO1.hints.NaturalAccount.label}"
+                                              value="#{row.bindings.NaturalAccount.inputValue}"
+                                              model="#{row.bindings.NaturalAccount.listOfValuesModel}"
+                                         required="true"
+                                              columns="#{bindings.BOQAccountsSetupVO1.hints.NaturalAccount.displayWidth}"
+                                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.NaturalAccount.tooltip}">
+                  <f:validator binding="#{row.bindings.NaturalAccount.validator}"/>
+                </af:inputComboboxListOfValues>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.name}"
+                         filterable="true" sortable="true" rendered="false"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.label}"
+                         id="c2">
+                <af:inputText value="#{row.bindings.SubAccount.inputValue}"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.label}"
+                              columns="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.displayWidth}"
+                              maximumLength="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.precision}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.SubAccount.tooltip}"
+                              id="it4">
+                  <f:validator binding="#{row.bindings.SubAccount.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.StartDate.name}"
+                         filterable="true" sortable="true" showRequired="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.StartDate.label}"
+                         id="c9">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.StartDate}"
+                                id="id4"/>
+                </f:facet>
+                <af:inputDate value="#{row.bindings.StartDate.inputValue}"
+                              autoSubmit="true"
+                              readOnly="#{row.row.entities[0].entityState!=0 }"
+                              disabled="#{row.bindings.BillCategory.inputValue==null}"
+                              binding="#{backingBeanScope.BOQAccounntsSetupBean.startDateBindgs}"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.StartDate.label}"
+                              valueChangeListener="#{backingBeanScope.BOQAccounntsSetupBean.validateBillCategory}"
+                              required="true"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.StartDate.tooltip}"
+                              id="id3">
+                  <f:validator binding="#{row.bindings.StartDate.validator}"/>
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:inputDate>
+              </af:column>
+              <af:column sortProperty="#{bindings.BOQAccountsSetupVO1.hints.EndDate.name}"
+                         filterable="true" sortable="true"
+                         headerText="#{bindings.BOQAccountsSetupVO1.hints.EndDate.label}"
+                         id="c8">
+                <f:facet name="filter">
+                  <af:inputDate value="#{vs.filterCriteria.EndDate}" id="id1"/>
+                </f:facet>
+                <af:inputDate value="#{row.bindings.EndDate.inputValue}"
+                              autoSubmit="true"
+                              binding="#{backingBeanScope.BOQAccounntsSetupBean.endDateBindgs}"
+                              readOnly="#{((row.bindings.EndDate.inputValue!=null and row.row.entities[0].entityState==1) and row.row.entities[0].entityState!=0) or row.bindings.EndDate.inputValue!=null}"
+                              minValue="#{backingBeanScope.BOQAccounntsSetupBean.minEndDate}"
+                              disabled="#{row.bindings.StartDate.inputValue==null}"
+                              label="#{bindings.BOQAccountsSetupVO1.hints.EndDate.label}"
+                              shortDesc="#{bindings.BOQAccountsSetupVO1.hints.EndDate.tooltip}"
+                              id="id2">
+                  <f:validator binding="#{row.bindings.EndDate.validator}"/>
+                  <af:convertDateTime pattern="dd-MMM-yyyy"/>
+                </af:inputDate>
+              </af:column>
+            </af:table>
+          </af:panelCollection>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+</jsp:root>

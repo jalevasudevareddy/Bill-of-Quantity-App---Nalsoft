@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelBox text="Validation Remarks" id="pb1">
+    <f:facet name="toolbar">
+      <af:commandButton text="Done" action="done" id="cb1"/>
+    </f:facet>
+    <af:panelCollection id="pc1">
+      <f:facet name="menus"/>
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:commandButton text="Download Errors" id="cb13">
+            <af:fileDownloadActionListener contentType="application/vnd.ms-csv"
+                                           filename="Upload Boq .csv"
+                                           method="#{backingBeanScope.BoqUploadLinesBean.downloadUploladErrrors}"/>
+          </af:commandButton>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="statusbar"/>
+      <af:table value="#{bindings.BoqUploadErrorsVO1.collectionModel}" var="row"
+                styleClass="AFStretchWidth"
+                rows="#{bindings.BoqUploadErrorsVO1.rangeSize}"
+                emptyText="#{bindings.BoqUploadErrorsVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                fetchSize="#{bindings.BoqUploadErrorsVO1.rangeSize}"
+                rowBandingInterval="0"
+                filterModel="#{bindings.BoqUploadErrorsVO1Query.queryDescriptor}"
+                queryListener="#{bindings.BoqUploadErrorsVO1Query.processQuery}"
+                filterVisible="false" varStatus="vs" id="t1">
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.BoqLevel.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.BoqLevel.label}"
+                   id="c7">
+          <af:outputText value="#{row.BoqLevel}" id="ot9"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.PageItem.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.PageItem.label}"
+                   id="c5">
+          <af:outputText value="#{row.PageItem}" id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.Item.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.Item.label}"
+                   id="c12">
+          <af:outputText value="#{row.Item}" id="ot16"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.BillDescription.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.BillDescription.label}"
+                   id="c11">
+          <af:outputText value="#{row.BillDescription}" id="ot4"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.BillQuantity.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.BillQuantity.label}"
+                   id="c16">
+          <af:outputText value="#{row.BillQuantity}" id="ot7">
+            <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.BillQuantity.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.FinalQuantity.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.FinalQuantity.label}"
+                   id="c2">
+          <af:outputText value="#{row.FinalQuantity}" id="ot3">
+           <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.FinalQuantity.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.Uom.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.Uom.label}"
+                   id="c13">
+          <af:outputText value="#{row.Uom}" id="ot12"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.CandyNetRate.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.CandyNetRate.label}"
+                   id="c9">
+          <af:outputText value="#{row.CandyNetRate}" id="ot13">
+           <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.CandyNetRate.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.SellingRate.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.SellingRate.label}"
+                   id="c14">
+          <af:outputText value="#{row.SellingRate}" id="ot5">
+          <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.SellingRate.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.CandyNetFinalAmount.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.CandyNetFinalAmount.label}"
+                   id="c6">
+          <af:outputText value="#{row.CandyNetFinalAmount}" id="ot8"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.SellingAmount.name}"
+                   filterable="true" sortable="true" align="right"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.SellingAmount.label}"
+                   id="c15">
+          <af:outputText value="#{row.SellingAmount}" id="ot10">
+          <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.SellingAmount.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.Trade.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.Trade.label}"
+                   id="c8">
+          <af:outputText value="#{row.Trade}" id="ot11"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.PriceCode.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.PriceCode.label}"
+                   id="c4">
+          <af:outputText value="#{row.PriceCode}" id="ot6"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.CostCode.label}"
+                   id="c17" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.CostCode.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.CostCode}" id="ot17"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.CostCodeDescription.label}"
+                   id="c18" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.CostCodeDescription.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.CostCodeDescription}" id="ot18"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.ResourceCode.label}"
+                   id="c19" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.ResourceCode.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.ResourceCode}" id="ot19"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.ResourceDescription.label}"
+                   id="c20" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.ResourceDescription.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.ResourceDescription}" id="ot20"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.Uom1.label}"
+                   id="c21" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.Uom1.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.Uom1}" id="ot21"/>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.NetUseUnit.label}" align="right"
+                   id="c22" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.NetUseUnit.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.NetUseUnit}" id="ot22">
+           <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.NetUseUnit.format}"/>
+          </af:outputText>
+        </af:column>
+        <af:column headerText="#{bindings.BoqUploadErrorsVO1.hints.FinalRate.label}" align="right"
+                   id="c23" sortProperty="#{bindings.BoqUploadErrorsVO1.hints.FinalRate.name}"
+                   filterable="true" sortable="true">
+          <af:outputText value="#{row.FinalRate}" id="ot23">
+           <af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#row.BillQuantity.FinalRate}"/>
+          </af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.ColumnName.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.ColumnName.label}"
+                   id="c1">
+          <af:outputText value="#{row.ColumnName}" id="ot14"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.LineNumber.name}"
+                   filterable="true" sortable="true" 
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.LineNumber.label}"
+                   id="c3">
+          <af:outputText value="#{row.LineNumber}" id="ot15">
+           <!--<af:convertNumber groupingUsed="false" type="currency"
+                              currencySymbol=" "
+                              pattern="#{row.LineNumber}"/>--></af:outputText>
+        </af:column>
+        <af:column sortProperty="#{bindings.BoqUploadErrorsVO1.hints.Remarks.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqUploadErrorsVO1.hints.Remarks.label}"
+                   id="c10">
+          <af:outputText value="#{row.Remarks}" id="ot1"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+  </af:panelBox>
+</jsp:root>

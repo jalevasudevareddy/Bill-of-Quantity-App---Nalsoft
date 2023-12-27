@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl1">
+    <af:panelHeader text="Manage Bill of Quantities" id="ph1">
+      <af:query id="qryId1" headerText="Search" disclosed="true"
+                value="#{bindings.CandyBOQSearchVOCriteriaQuery.queryDescriptor}"
+                model="#{bindings.CandyBOQSearchVOCriteriaQuery.queryModel}"
+                queryListener="#{bindings.CandyBOQSearchVOCriteriaQuery.processQuery}"
+                queryOperationListener="#{bindings.CandyBOQSearchVOCriteriaQuery.processQueryOperation}"
+                resultComponentId="::pc1:resId1" maxColumns="2" fieldWidth="70%"
+                rows="1" saveQueryMode="hidden"/>
+    </af:panelHeader>
+    <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="toolbar">
+          <af:toolbar id="t1">
+            <af:commandButton actionListener="#{backingBeanScope.CandyBOQSearchBean.editDocument}"
+                              disabled="#{!bindings.Delete.enabled}" text="Edit" rendered="false"
+                              id="cb1"/>
+            <af:commandImageLink id="cb2" icon="/images/edit.png"
+                                   disabledIcon="/images/edit_disable.png" partialTriggers="resId1 ::qryId1"
+                                   disabled="#{!bindings.Delete.enabled}" 
+                                   actionListener="#{backingBeanScope.CandyBOQSearchBean.editDocument}"
+                                   hoverIcon="/images/edit_active.png"
+                                 shortDesc="Edit"/>
+              <af:commandButton actionListener="#{bindings.Delete.execute}"
+                              text="Delete" rendered="false"
+                              disabled="#{!bindings.Delete.enabled}" id="cb3"/>
+        <af:commandButton text="Export to Excel" partialTriggers="resId1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Manage BOQ Details.xls"
+                                                         exportedId="resId1"/>
+            </af:commandButton>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.CandyBOQSearchVO1.collectionModel}"
+                  var="row" styleClass="AFStretchWidth"
+                  rows="#{bindings.CandyBOQSearchVO1.rangeSize}"
+                  emptyText="#{bindings.CandyBOQSearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.CandyBOQSearchVO1.rangeSize}"
+                  rowBandingInterval="0"
+                  filterModel="#{bindings.CandyBOQSearchVOCriteriaQuery.queryDescriptor}"
+                  queryListener="#{bindings.CandyBOQSearchVOCriteriaQuery.processQuery}"
+                  filterVisible="false" varStatus="vs"
+                  selectedRowKeys="#{bindings.CandyBOQSearchVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.CandyBOQSearchVO1.collectionModel.makeCurrent}"
+                  rowSelection="single" id="resId1"
+                  partialTriggers="::cb3">
+          <af:column rowHeader="true" width="5" id="rowHdr" headerText=" ">
+            <af:outputText value=" " id="otrowHdr"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.ProjectName.name}"
+                     filterable="true" sortable="true" width="200" frozen="true" rendered="false"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.ProjectName.label}"
+                     id="resId1c3">
+            <af:outputText value="#{row.ProjectName}" id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.ProjectNumber1.name}"
+                     filterable="true" sortable="true" width="100" frozen="true" rendered="false"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.ProjectNumber1.label}"
+                     id="c8">
+            <af:commandLink actionListener="#{backingBeanScope.CandyBOQSearchBean.editDocument}"
+                            text="#{row.ProjectNumber1}" id="cl1"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.Cognomen.name}"
+                     filterable="true" sortable="true" width="200" frozen="true"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.Cognomen.label}"
+                     id="c17">
+            <af:outputText value="#{row.Cognomen}" id="ot18"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.ContractNumber.name}"
+                     filterable="true" sortable="true" width="100" frozen="true"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.ContractNumber.label}"
+                     id="c18">
+            <af:commandLink actionListener="#{backingBeanScope.CandyBOQSearchBean.editDocument}"
+                            text="#{row.ContractNumber}" id="cl2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.Version.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.Version.label}"
+                     id="resId1c6">
+            <af:outputText value="#{row.Version}" id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransStatus.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.TransStatus.label}"
+                     id="resId1c7">
+            <af:outputText value="#{row.TransStatus}" id="ot5"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransBudgetType1.label}"
+                     id="c9"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransBudgetType1.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransBudgetType1}" id="ot14"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransCustomerName.label}"
+                     id="c1" filterable="true" sortable="true" width="200"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransCustomerName.name}">
+            <af:outputText value="#{row.TransCustomerName}" id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.BuName1.name}"
+                     filterable="true" sortable="true" width="200"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.BuName1.label}"
+                     id="c7">
+            <af:outputText value="#{row.BuName1}" id="ot12"/>
+          </af:column>
+          <!--<af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TotalCandyNetFinalAmount.label}"
+                               id="c2" align="right" width="150"
+                               sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransCandyNetFinalAmountTotal.name}"
+                               filterable="true" sortable="true">
+                      <af:outputText value="#{row.TransCandyNetFinalAmountTotal}"
+                                     id="ot2">
+                                       <af:convertNumber groupingUsed="true" type="currency"
+                                          currencySymbol=" " minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                          pattern="#{bindings.CandyBOQSearchVO1.hints.TransCandyNetFinalAmountTotal.format}"/>
+                                     </af:outputText>
+                    </af:column>-->
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransTotalRevenue.label}"
+                     id="c2" align="right" sortable="true" filterable="true"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransTotalRevenue.name}">
+            <af:outputText value="#{row.TransTotalRevenue}" id="ot4">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CandyBOQSearchVO1.hints.TransTotalRevenue.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransTotalCostBudget.label}"
+                     id="c10" align="right" sortable="true" filterable="true"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransTotalCostBudget.name}">
+            <af:outputText value="#{row.TransTotalCostBudget}" id="ot7">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CandyBOQSearchVO1.hints.TransTotalCostBudget.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="Current Flag" id="c6" rendered="false">
+            <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                      label="#{row.bindings.CurrentFlag.label}"
+                                      readOnly="true" rendered="false"
+                                      shortDesc="#{bindings.CandyBOQSearchVO1.hints.CurrentFlag.tooltip}"
+                                      id="sbc1"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.BaseLine.label}"
+                     id="c11">
+            <af:selectBooleanCheckbox value="#{row.bindings.BaseLine.inputValue}"
+                                      label="#{row.bindings.BaseLine.label}" readOnly="true"
+                                      shortDesc="#{bindings.CandyBOQSearchVO1.hints.BaseLine.tooltip}"
+                                      id="sbc2"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.CreatedBy.label}"
+                     id="c12">
+            <af:outputText value="#{row.CreatedBy}" id="ot8"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.RevisionDate.label}"
+                     id="c14">
+            <af:outputText value="#{row.RevisionDate}" id="ot15">
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.ApprovedBy.label}"
+                     id="c13">
+            <af:outputText value="#{row.ApprovedBy}" id="ot13"/>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.ApprovedDate.label}"
+                     id="c15">
+            <af:outputText value="#{row.ApprovedDate}" id="ot16">
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TotalNetFinalAmount.label}"
+                     id="c3" align="right" width="150" rendered="false"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransNetFinalAmountTotal.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransNetFinalAmountTotal}" id="ot9">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CandyBOQSearchVO1.hints.TransNetFinalAmountTotal.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransAbsoluteError.label}"
+                     id="c4" align="right" rendered="false"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransAbsoluteError.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransAbsoluteError}" id="ot10">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                pattern="#{bindings.CandyBOQSearchVO1.hints.TransAbsoluteError.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column headerText="#{bindings.CandyBOQSearchVO1.hints.TransErrorPercentage.label}"
+                     id="c5" align="right" rendered="false"
+                     sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransErrorPercentage.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransErrorPercentage}" id="ot11">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "
+                                pattern="#{bindings.CandyBOQSearchVO1.hints.TransErrorPercentage.format}"/>
+            </af:outputText>
+          </af:column>
+          <!--<af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.IbcNumber.name}"
+                               filterable="true" sortable="true"
+                               headerText="#{bindings.CandyBOQSearchVO1.hints.IbcNumber.label}"
+                               id="resId1c4">
+                      <af:outputText value="#{row.IbcNumber}" id="ot2"/>
+                    </af:column>-->
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.ImportDate.name}"
+                     filterable="true" sortable="true"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.ImportDate.label}"
+                     id="resId1c5">
+            <f:facet name="filter">
+              <af:inputDate value="#{vs.filterCriteria.ImportDate}" id="id1"/>
+            </f:facet>
+            <af:outputText value="#{row.ImportDate}" id="ot1">
+              <af:convertDateTime pattern="#{bindings.CandyBOQSearchVO1.hints.ImportDate.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.CandyBOQSearchVO1.hints.TransFileName.name}"
+                     filterable="true" sortable="true" width="150"
+                     headerText="#{bindings.CandyBOQSearchVO1.hints.TransFileName.label}"
+                     id="c16">
+            <af:outputText value="#{row.TransFileName}" id="ot17"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:showDetailHeader>
+  </af:panelGroupLayout>
+</jsp:root>

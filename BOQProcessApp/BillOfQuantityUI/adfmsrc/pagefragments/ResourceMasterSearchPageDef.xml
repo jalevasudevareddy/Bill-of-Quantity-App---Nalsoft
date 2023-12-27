@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="ResourceMasterSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ResourceMasterSearchVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ResourceMasterSearchVO1Iterator"/>
+    <searchRegion Criteria="ResourceMasterSearchVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ResourceMasterSearchVO1Iterator"
+                  id="ResourceMasterSearchVOCriteriaQuery"/>
+    <iterator Binds="ResourceMasterGroupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="ResourceMasterGroupVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ResourceMasterSearchVO1Iterator"
+          id="ResourceMasterSearchVO1">
+      <nodeDefinition DefName="model.view.ResourceMasterSearchVO"
+                      Name="ResourceMasterSearchVO10">
+        <AttrNames>
+          <Item Value="BuName"/>
+          <Item Value="ResourceType"/>
+          <Item Value="ResourceGroup"/>
+          <Item Value="GroupDescription"/>
+          <Item Value="ExpenditureGroup"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <list IterBinding="ResourceMasterGroupVO1Iterator" StaticList="false"
+          Uses="LOV_BuId" id="BuId" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <list IterBinding="ResourceMasterGroupVO1Iterator" StaticList="false"
+          Uses="LOV_ResourceType" id="ResourceType" DTSupportsMRU="true"
+          SelectItemValueMode="ListObject"/>
+    <attributeValues IterBinding="ResourceMasterGroupVO1Iterator"
+                     id="ResourceGroup">
+      <AttrNames>
+        <Item Value="ResourceGroup"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelDocument"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="cancelDocument"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createDocument"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createDocument"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createResourceMasterGroupRow"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod"
+                  MethodName="createResourceMasterGroupRow"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="editDocument"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="editDocument"
+                  IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="ResourceMasterSearchVO1Iterator"
+                     id="ResourceGroupId">
+      <AttrNames>
+        <Item Value="ResourceGroupId"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

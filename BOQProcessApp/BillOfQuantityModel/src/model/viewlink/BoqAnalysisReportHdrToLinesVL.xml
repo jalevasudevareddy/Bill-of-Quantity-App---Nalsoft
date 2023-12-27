@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="BoqAnalysisReportHdrToLinesVL"
+  Version="11.1.1.66.73"
+  InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="BoqAnalysisReportHdrViewVO"
+    Cardinality="1"
+    Owner="model.view.BoqAnalysisReportHdrViewVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="BoqAnalysisReportHdrViewVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BoqAnalysisReportHdrViewVO.ProjectId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="BoqAnalysisReportLinesViewVO"
+    Cardinality="-1"
+    Owner="model.view.BoqAnalysisReportLinesViewVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="BoqAnalysisReportLinesViewVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.BoqAnalysisReportLinesViewVO.ProjectId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

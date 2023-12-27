@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="NotificationTF">
+    <default-activity id="__1">router1</default-activity>
+    <input-parameter-definition id="__11">
+      <name id="__10">docTypeId</name>
+      <value>#{pageFlowScope.docTypeId}</value>
+      <class>oracle.jbo.domain.Number</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__12">
+      <name id="__13">docId</name>
+      <value>#{pageFlowScope.docId}</value>
+      <class>oracle.jbo.domain.Number</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">currEmpId</name>
+      <value>#{pageFlowScope.currEmpId}</value>
+      <class>oracle.jbo.domain.Number</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__17">
+      <name id="__16">currEmpLevel</name>
+      <value>#{pageFlowScope.currEmpLevel}</value>
+      <class>oracle.jbo.domain.Number</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__59">
+      <name id="__58">docNum</name>
+      <value>#{pageFlowScope.docNum}</value>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__61">
+      <name id="__60">apprvCat</name>
+      <value>#{pageFlowScope.apprvCat}</value>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__63">
+      <name id="__64">apprvName</name>
+      <value>#{pageFlowScope.apprvName}</value>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__18">
+      <managed-bean-name id="__36">NotificationBean</managed-bean-name>
+      <managed-bean-class id="__37">bean.notification.NotificationBean</managed-bean-class>
+      <managed-bean-scope id="__35">backingBean</managed-bean-scope>
+    </managed-bean>
+    <router id="router1">
+      <case>
+        <expression>#{pageFlowScope.docTypeId==8}</expression>
+        <outcome id="__33">BOQNotification</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.docTypeId==10}</expression>
+        <outcome id="__34">Workdone</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.docTypeId==11}</expression>
+        <outcome id="__43">PlanningSchedule</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.docTypeId==12}</expression>
+        <outcome id="__49">InvoicedDetails</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.docTypeId==13}</expression>
+        <outcome id="__50">CertifiedDetails</outcome>
+      </case>
+      <case>
+        <expression>#{pageFlowScope.docTypeId==14}</expression>
+        <outcome id="__84">BOQPaymentCert</outcome>
+      </case>
+      <default-outcome>BOQNotification</default-outcome>
+    </router>
+    <task-flow-return id="taskFlowReturn1">
+      <outcome id="__9">
+        <name>taskFlowReturn1</name>
+      </outcome>
+    </task-flow-return>
+    <task-flow-call id="Workdone_Notification_TF">
+      <task-flow-reference>
+        <document>/WEB-INF/notification/Workdone_Notification_TF.xml</document>
+        <id>Workdone_Notification_TF</id>
+      </task-flow-reference>
+      <input-parameter id="__41">
+        <name>docId</name>
+        <value>#{pageFlowScope.docId}</value>
+      </input-parameter>
+      <input-parameter id="__42">
+        <name>docTypeId</name>
+        <value>#{pageFlowScope.docTypeId}</value>
+      </input-parameter>
+      <input-parameter id="__166">
+        <name>currEmpId</name>
+        <value>#{pageFlowScope.currEmpId}</value>
+      </input-parameter>
+      <input-parameter id="__167">
+        <name>currEmpLevel</name>
+        <value>#{pageFlowScope.currEmpLevel}</value>
+      </input-parameter>
+      <input-parameter id="__168">
+        <name>docNum</name>
+        <value>#{pageFlowScope.docNum}</value>
+      </input-parameter>
+      <input-parameter id="__169">
+        <name>apprvCat</name>
+        <value>#{pageFlowScope.apprvCat}</value>
+      </input-parameter>
+      <input-parameter id="__170">
+        <name>apprvName</name>
+        <value>#{pageFlowScope.apprvName}</value>
+      </input-parameter>
+    </task-flow-call>
+    <control-flow-rule id="__22">
+      <from-activity-id id="__23">router1</from-activity-id>
+      <control-flow-case id="__25">
+        <from-outcome id="__24">Workdone</from-outcome>
+        <to-activity-id id="__26">Workdone_Notification_TF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__27">
+      <from-activity-id id="__28">Workdone_Notification_TF</from-activity-id>
+      <control-flow-case id="__29">
+        <from-outcome id="__31">taskFlowReturn1</from-outcome>
+        <to-activity-id id="__30">taskFlowReturn1</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

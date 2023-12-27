@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="BOQAccounntsSetupPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="TransAccountsSetupHdrVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="TransAccountsSetupHdrVO1Iterator"/>
+    <iterator Binds="BOQAccountsSetupVO1" RangeSize="25"
+              DataControl="BOQSetupAMDataControl"
+              id="BOQAccountsSetupVO1Iterator"/>
+    <searchRegion Binds="BOQAccountsSetupVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="BOQAccountsSetupVO1Query"/>
+  </executables>
+  <bindings>
+    <listOfValues StaticList="false"
+                  IterBinding="TransAccountsSetupHdrVO1Iterator"
+                  Uses="LOV_BuName" id="BuName"/>
+    <methodAction id="crateTransAccountsRow"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="crateTransAccountsRow"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createAccountsSetupRow"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createAccountsSetupRow"
+                  IsViewObjectMethod="false"/>
+    <tree IterBinding="BOQAccountsSetupVO1Iterator" id="BOQAccountsSetupVO1">
+      <nodeDefinition DefName="model.view.BOQAccountsSetupVO"
+                      Name="BOQAccountsSetupVO10">
+        <AttrNames>
+          <Item Value="Destination"/>
+          <Item Value="ArType"/>
+          <Item Value="CustomerType"/>
+          <Item Value="ArContext"/>
+          <Item Value="ArTrxType"/>
+          <Item Value="ArSource"/>
+          <Item Value="GlSource"/>
+          <Item Value="GlCategory"/>
+          <Item Value="BillCategory"/>
+          <Item Value="NaturalAccount"/>
+          <Item Value="SubAccount"/>
+          <Item Value="StartDate"/>
+          <Item Value="EndDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="BOQAccountsSetupVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="validateBillCategory"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="validateBillCategory"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BOQSetupAMDataControl.methodResults.validateBillCategory_BOQSetupAMDataControl_dataProvider_validateBillCategory_result"/>
+    <methodAction id="createGLAccountCombination"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createGLAccountCombination"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BOQSetupAMDataControl.methodResults.createGLAccountCombination_BOQSetupAMDataControl_dataProvider_createGLAccountCombination_result"/>
+    <methodAction id="validateAccountingRow"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="validateAccountingRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BOQSetupAMDataControl.methodResults.validateAccountingRow_BOQSetupAMDataControl_dataProvider_validateAccountingRow_result"/>
+    <attributeValues IterBinding="BOQAccountsSetupVO1Iterator"
+                     id="TransMaxStartDate">
+      <AttrNames>
+        <Item Value="TransMaxStartDate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="refreshBOQAccntSetupRow"
+                  InstanceName="BOQSetupAMDataControl.dataProvider"
+                  DataControl="BOQSetupAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="refreshBOQAccntSetupRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BOQSetupAMDataControl.methodResults.refreshBOQAccntSetupRow_BOQSetupAMDataControl_dataProvider_refreshBOQAccntSetupRow_result">
+      <NamedData NDName="attributesMap" NDValue="#{pageFlowScope.attributesMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

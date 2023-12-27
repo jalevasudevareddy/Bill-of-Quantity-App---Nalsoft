@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="PCHdrToDeductionsVL"
+  Version="11.1.1.65.57"
+  InheritPersonalization="true"
+  EntityAssociation="model.association.XxBoqPCHdrToDeductionsAssc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="PaymentCertHdrVO"
+    Cardinality="1"
+    Owner="model.view.PaymentCertHdrVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_accessor" Value="true"/>
+      <Attr Name="_finderName" Value="PaymentCertHdrVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.PaymentCertHdrVO.PcHeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="OtherDeductionsVO"
+    Cardinality="-1"
+    Owner="model.view.OtherDeductionsVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="OtherDeductionsVO"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="model.view.OtherDeductionsVO.PcHeaderId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

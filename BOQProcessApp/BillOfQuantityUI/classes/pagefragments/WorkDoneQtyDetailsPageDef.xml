@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.65.57" id="WorkDoneQtyDetailsPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="WorkDoneQtyDetailsVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="WorkDoneQtyDetailsVO1Iterator"/>
+    <iterator Binds="WorkDoneLInesPopulateVO1" RangeSize="-1"
+              DataControl="BillingDetailsAMDataControl"
+              id="WorkDoneLInesPopulateVO1Iterator"/>
+    <searchRegion Binds="WorkDoneLInesPopulateVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="WorkDoneLInesPopulateVO1Query"/>
+    <iterator Binds="WorkDoneQtyLinesVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="WorkDoneQtyLinesVO1Iterator"/>
+    <searchRegion Binds="WorkDoneQtyLinesVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="WorkDoneQtyLinesVO1Query"/>
+    <iterator Binds="AttachmentsVO1" RangeSize="25"
+              DataControl="BillingDetailsAMDataControl"
+              id="AttachmentsVO1Iterator"/>
+    <searchRegion Binds="AttachmentsVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="AttachmentsVO1Query"/>
+    <iterator Binds="WorkDoneQtyLineDetailsVO1" RangeSize="25" DataControl="BillingDetailsAMDataControl"
+              id="WorkDoneQtyLineDetailsVO1Iterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="PeriodOfMeasure">
+      <AttrNames>
+        <Item Value="PeriodOfMeasure"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdDocumentNum">
+      <AttrNames>
+        <Item Value="WdDocumentNum"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdDocumentDate">
+      <AttrNames>
+        <Item Value="WdDocumentDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator" id="WdStatus">
+      <AttrNames>
+        <Item Value="WdStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdApprovedDate">
+      <AttrNames>
+        <Item Value="WdApprovedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator" id="BuName">
+      <AttrNames>
+        <Item Value="BuName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="ProjectNumber">
+      <AttrNames>
+        <Item Value="ProjectNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="Description">
+      <AttrNames>
+        <Item Value="Description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="TransGrandTotal">
+      <AttrNames>
+        <Item Value="TransGrandTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="WorkDoneLInesPopulateVO1Iterator"
+          id="WorkDoneLInesPopulateVO1">
+      <nodeDefinition DefName="model.searchview.WorkDoneLInesPopulateVO"
+                      Name="WorkDoneLInesPopulateVO10">
+        <AttrNames>
+          <Item Value="Uom"/>
+          <Item Value="TransFlag"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="BusinessUnitId"/>
+          <Item Value="Description"/>
+          <Item Value="FinalQty"/>
+          <Item Value="HeaderId"/>
+          <Item Value="Item"/>
+          <Item Value="LineId"/>
+          <Item Value="PageItem"/>
+          <Item Value="ProjectId"/>
+          <Item Value="SellingRate"/>
+          <Item Value="WorkDoneQty"/>
+          <Item Value="PriceCode"/>
+          <Item Value="LineType"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="SellingAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button IterBinding="WorkDoneLInesPopulateVO1Iterator" id="TransFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="TransFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="executeWdLinesQuery"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executeWdLinesQuery" IsViewObjectMethod="false"/>
+    <methodAction id="populateWdLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="populateWdLines" IsViewObjectMethod="false"/>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdApprovedBy">
+      <AttrNames>
+        <Item Value="WdApprovedBy"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdHeaderId">
+      <AttrNames>
+        <Item Value="WdHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="ReviseWorkDoneDoc"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="ReviseWorkDoneDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.ReviseWorkDoneDoc_BillingDetailsAMDataControl_dataProvider_ReviseWorkDoneDoc_result"/>
+    <methodAction id="callpkgForAMEProcessSubmit"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="callpkgForAMEProcessSubmit"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="validateLineQuantities"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateLineQuantities" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateLineQuantities_BillingDetailsAMDataControl_dataProvider_validateLineQuantities_result"/>
+    <methodAction id="validateWDLines"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLines" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLines_BillingDetailsAMDataControl_dataProvider_validateWDLines_result"/>
+    <methodAction id="downloadWorkDoneDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="downloadWorkDoneDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.downloadWorkDoneDetails_BillingDetailsAMDataControl_dataProvider_downloadWorkDoneDetails_result"/>
+    <methodAction id="uploadWDXLFile"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="uploadWDXLFile" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.uploadWDXLFile_BillingDetailsAMDataControl_dataProvider_uploadWDXLFile_result">
+      <NamedData NDName="uploadedFile"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <methodAction id="validateWDUploadDetails"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDUploadDetails"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDUploadDetails_BillingDetailsAMDataControl_dataProvider_validateWDUploadDetails_result"/>
+    <methodAction id="isDocEnabledforCurrentUser"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isDocEnabledforCurrentUser"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isDocEnabledforCurrentUser_ApprovalAMDataControl_dataProvider_isDocEnabledforCurrentUser_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="updateDocStatus"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="updateDocStatus"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.updateDocStatus_ApprovalAMDataControl_dataProvider_updateDocStatus_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMa}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="isEmployeeAFinalApprover"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="isEmployeeAFinalApprover"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.isEmployeeAFinalApprover_ApprovalAMDataControl_dataProvider_isEmployeeAFinalApprover_result">
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="oracle.jbo.domain.Number"/>
+      <NamedData NDName="currEmpId" NDValue="#{pageFlowScope.currEmpId}"
+                 NDType="oracle.jbo.domain.Number"/>
+    </methodAction>
+    <methodAction id="callpkgForAMEProcess"
+                  InstanceName="ApprovalAMDataControl.dataProvider"
+                  DataControl="ApprovalAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="callpkgForAMEProcess"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ApprovalAMDataControl.methodResults.callpkgForAMEProcess_ApprovalAMDataControl_dataProvider_callpkgForAMEProcess_result">
+      <NamedData NDName="paramsMap" NDValue="#{pageFlowScope.paramsMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator" id="Version">
+      <AttrNames>
+        <Item Value="Version"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="markAllWdLinesAs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="markAllWdLinesAs" IsViewObjectMethod="false">
+      <NamedData NDName="markAs" NDValue="#{pageFlowScope.markAs}"
+                 NDType="java.lang.Boolean"/>
+    </methodAction>
+    <methodAction id="deleteWRKDoneRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteWRKDoneRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.deleteWRKDoneRow_BillingDetailsAMDataControl_dataProvider_deleteWRKDoneRow_result"/>
+    <methodAction id="cancelWDDocument"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelWDDocument" IsViewObjectMethod="false"/>
+    <methodAction id="updateBoqQuantities"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateBoqQuantities" IsViewObjectMethod="false">
+      <NamedData NDName="from" NDValue="#{pageFlowScope.from}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="cancelWRKDoneRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelWRKDoneRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.cancelWRKDoneRow_BillingDetailsAMDataControl_dataProvider_cancelWRKDoneRow_result"/>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator" id="BillQty">
+      <AttrNames>
+        <Item Value="BillQty"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransStatus">
+      <AttrNames>
+        <Item Value="TransStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="updateBoqQuantities1"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateBoqQuantities" IsViewObjectMethod="false">
+      <NamedData NDName="from" NDValue="#{pageFlowScope.from}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="ExtendedFlag">
+      <AttrNames>
+        <Item Value="ExtendedFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="executePopulateLinesVO"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="executePopulateLinesVO" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.executePopulateLinesVO_BillingDetailsAMDataControl_dataProvider_executePopulateLinesVO_result"/>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransIsLatestDoc">
+      <AttrNames>
+        <Item Value="TransIsLatestDoc"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransIsLatestDoc1">
+      <AttrNames>
+        <Item Value="TransIsLatestDoc"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="cancelCertDocRow"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="cancelCertDocRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.cancelCertDocRow_BillingDetailsAMDataControl_dataProvider_cancelCertDocRow_result"/>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="TransActualTotal">
+      <AttrNames>
+        <Item Value="TransActualTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="TransCurrentTotal">
+      <AttrNames>
+        <Item Value="TransCurrentTotal"/>
+      </AttrNames>
+    </attributeValues>
+<methodAction id="archivePrevWDDoc"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="archivePrevWDDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.archivePrevWDDoc_BillingDetailsAMDataControl_dataProvider_archivePrevWDDoc_result"/>
+    <methodAction id="withdrawFromApproval"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="withdrawFromApproval" IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.withdrawFromApproval_CommonUtilsAMDataControl_dataProvider_withdrawFromApproval_result">
+      <NamedData NDName="remarks" NDValue="#{pageFlowScope.WITHDRAWL_REASON}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.lang.Long"/>
+      <NamedData NDName="docTypeId" NDValue="#{pageFlowScope.docTypeId}"
+                 NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id="updateDocStatusAndCurrFlag"
+                  InstanceName="CommonUtilsAMDataControl.dataProvider"
+                  DataControl="CommonUtilsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateDocStatusAndCurrFlag"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.CommonUtilsAMDataControl.methodResults.updateDocStatusAndCurrFlag_CommonUtilsAMDataControl_dataProvider_updateDocStatusAndCurrFlag_result">
+      <NamedData NDName="docType" NDValue="#{pageFlowScope.docType}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="docHdrId" NDValue="#{pageFlowScope.docId}"
+                 NDType="java.math.BigDecimal"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="InvExistsFlag">
+      <AttrNames>
+        <Item Value="InvExistsFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <button IterBinding="WorkDoneQtyDetailsVO1Iterator" id="CurrentFlag"
+            DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="CurrentFlag"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="Y"/>
+        <Item Value="N"/>
+      </ValueList>
+    </button>
+    <methodAction id="refreshWDLineAttrs"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshWDLineAttrs" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.refreshWDLineAttrs_BillingDetailsAMDataControl_dataProvider_refreshWDLineAttrs_result">
+      <NamedData NDName="attributesMap" NDValue="#{pageFlowScope.attributesMap}"
+                 NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="validateWDLineActQty"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLineActQty" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLineActQty_BillingDetailsAMDataControl_dataProvider_validateWDLineActQty_result"/>
+    <methodAction id="validateWDLineCumltQty"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLineCumltQty" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLineCumltQty_BillingDetailsAMDataControl_dataProvider_validateWDLineCumltQty_result"/>
+    <methodAction id="validateWDLineActQtyPercnt"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLineActQtyPercnt"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLineActQtyPercnt_BillingDetailsAMDataControl_dataProvider_validateWDLineActQtyPercnt_result"/>
+    <methodAction id="validateWDLineCumltQtyPercnt"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLineCumltQtyPercnt"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLineCumltQtyPercnt_BillingDetailsAMDataControl_dataProvider_validateWDLineCumltQtyPercnt_result"/>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransContractValue">
+      <AttrNames>
+        <Item Value="TransContractValue"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="calculateWorkdoneLineValues"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="calculateWorkdoneLineValues"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.calculateWorkdoneLineValues_BillingDetailsAMDataControl_dataProvider_calculateWorkdoneLineValues_result"/>
+    <tree IterBinding="WorkDoneQtyLinesVO1Iterator" id="WorkDoneQtyLinesVO1">
+      <nodeDefinition DefName="model.view.WorkDoneQtyLinesVO"
+                      Name="WorkDoneQtyLinesVO10">
+        <AttrNames>
+          <Item Value="BoqLineId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="LastUpdatedBy"/>
+          <Item Value="LastUpdatedDate"/>
+          <Item Value="RowID"/>
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="WdHeaderId"/>
+          <Item Value="WdLineId"/>
+          <Item Value="BoqHeaderId"/>
+          <Item Value="TransAmount"/>
+          <Item Value="TransWorkDonePeriod"/>
+          <Item Value="TransRemainingQty"/>
+          <Item Value="TransGrandTotal"/>
+          <Item Value="PreviousCummulativeQty"/>
+          <Item Value="BoqLevel"/>
+          <Item Value="BoqHeaderId1"/>
+          <Item Value="BillQty"/>
+          <Item Value="BoqLineId1"/>
+          <Item Value="FinalQty"/>
+          <Item Value="Item"/>
+          <Item Value="PageItem"/>
+          <Item Value="SellingRate"/>
+          <Item Value="Uom"/>
+          <Item Value="Description"/>
+          <Item Value="PreviousBoqRate"/>
+          <Item Value="CurrentBoqRate"/>
+          <Item Value="ActualWdQty"/>
+          <Item Value="TransActualWdAmt"/>
+          <Item Value="Remarks"/>
+          <Item Value="ErrorMsg"/>
+          <Item Value="ExtendedFlag"/>
+          <Item Value="MasterWdLineId"/>
+          <Item Value="MasterBoqHeaderId"/>
+          <Item Value="MasterBoqLineId"/>
+          <Item Value="TransCurrentWDAmnt"/>
+          <Item Value="TransCumltWDAmnt"/>
+          <Item Value="TransActualTotal"/>
+          <Item Value="TransCurrentTotal"/>
+          <Item Value="ActualWdQtyPerct"/>
+          <Item Value="WdCummulativeQtyPerct"/>
+          <Item Value="TransPreviousAmnt"/>
+          <Item Value="TransPreviousAmntTotal"/>
+          <Item Value="TransCummulltQtyPercnt"/>
+          <Item Value="PriceCode"/>
+          <Item Value="TransLineType"/>
+          <Item Value="BillPageItem"/>
+          <Item Value="SellingAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="WorkDoneQtyLinesVO1Iterator" id="Delete"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransPrecision">
+      <AttrNames>
+        <Item Value="TransPrecision"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="WdHeaderId1">
+      <AttrNames>
+        <Item Value="WdHeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="runWorkDoneDetailsReport"
+                  InstanceName="ReportsAMDataControl.dataProvider"
+                  DataControl="ReportsAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="runWorkDoneDetailsReport"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.ReportsAMDataControl.methodResults.runWorkDoneDetailsReport_ReportsAMDataControl_dataProvider_runWorkDoneDetailsReport_result">
+      <NamedData NDName="wdHdrId" NDValue="#{pageFlowScope.wdHdrId}"
+                 NDType="java.lang.Number"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransBoqMasterVersion">
+      <AttrNames>
+        <Item Value="TransBoqMasterVersion"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="TransPreviousAmntTotal">
+      <AttrNames>
+        <Item Value="TransPreviousAmntTotal"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="ProjectName">
+      <AttrNames>
+        <Item Value="ProjectName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyLinesVO1Iterator"
+                     id="CurrentBoqRate">
+      <AttrNames>
+        <Item Value="CurrentBoqRate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="validateWDLineCumltAmt"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="validateWDLineCumltAmt" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.validateWDLineCumltAmt_BillingDetailsAMDataControl_dataProvider_validateWDLineCumltAmt_result"/>
+    <tree IterBinding="AttachmentsVO1Iterator" id="AttachmentsVO1">
+      <nodeDefinition DefName="model.view.AttachmentsVO" Name="AttachmentsVO10">
+        <AttrNames>
+          <Item Value="AttachmentFile"/>
+          <Item Value="AttachmentId"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="FileName"/>
+          <Item Value="FileType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="AttachmentsVO1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="AttachmentsVO1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <methodAction id="saveAttachedFile"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="saveAttachedFile" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.saveAttachedFile_BillingDetailsAMDataControl_dataProvider_saveAttachedFile_result">
+      <NamedData NDName="attachedFile" NDValue="#{pageFlowScope.attachedFile}"
+                 NDType="org.apache.myfaces.trinidad.model.UploadedFile"/>
+    </methodAction>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransAttachments">
+      <AttrNames>
+        <Item Value="TransAttachments"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator" id="FileName">
+      <AttrNames>
+        <Item Value="FileName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="workDoneLinesDeleteAll"
+                  InstanceName="BillingDetailsAMDataControl.dataProvider"
+                  DataControl="BillingDetailsAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="workDoneLinesDeleteAll" IsViewObjectMethod="false"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.workDoneLinesDeleteAll_BillingDetailsAMDataControl_dataProvider_workDoneLinesDeleteAll_result"/>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransBOQStatus">
+      <AttrNames>
+        <Item Value="TransBOQStatus"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="ContractNumber">
+      <AttrNames>
+        <Item Value="ContractNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="ValuationDate">
+      <AttrNames>
+        <Item Value="ValuationDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="CurrencyCode">
+      <AttrNames>
+        <Item Value="CurrencyCode"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="TransFinalAmt">
+      <AttrNames>
+        <Item Value="TransFinalAmt"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator" id="Cognomen">
+      <AttrNames>
+        <Item Value="Cognomen"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="WorkDoneQtyDetailsVO1Iterator"
+                     id="ContractType">
+      <AttrNames>
+        <Item Value="ContractType"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="WorkDoneQtyLineDetailsVO1Iterator" id="WorkDoneQtyLineDetailsVO1">
+      <nodeDefinition DefName="model.view.WorkDoneQtyLineDetailsVO" Name="WorkDoneQtyLineDetailsVO10">
+        <AttrNames>
+          <Item Value="LineNumber"/>
+          <Item Value="TransLineCategory"/>
+          <Item Value="TransLineType"/>
+          <Item Value="Description"/>
+          <Item Value="TransLowestTask"/>
+          <Item Value="Uom"/>
+          <Item Value="BillQty"/>
+          <Item Value="CostRate"/>
+          <Item Value="CandyNetFinalAmount"/>
+          <Item Value="PrevCummulativeQty"/>
+          <Item Value="WdCummulativeQty"/>
+          <Item Value="TransCumulativeAmount"/>
+          <Item Value="TransWdPgsCurQty"/>
+          <Item Value="TransProRate"/>
+          <Item Value="WdCummulativeAmount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="deleteWdLineWithDetails" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteWdLineWithDetails" IsViewObjectMethod="false"
+                  DataControl="BillingDetailsAMDataControl"
+                  InstanceName="bindings.deleteWdLineWithDetails.dataControl.dataProvider"
+                  ReturnName="data.BillingDetailsAMDataControl.methodResults.deleteWdLineWithDetails_deleteWdLineWithDetails_dataControl_dataProvider_deleteWdLineWithDetails_result"/>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout id="pgl1" layout="scroll">
+    <af:panelHeader text="Create Tax Setup" id="ph1">
+      <f:facet name="toolbar">
+        <af:toolbar id="t2">
+          <af:commandButton text="Save" id="cb1"
+                            actionListener="#{backingBeanScope.ProjectLevelTaxBean.saveLines}"/>
+          <af:commandButton text="Save and Close" id="cb2"
+                            actionListener="#{backingBeanScope.ProjectLevelTaxBean.saveAndCloseLines}"/>
+          <af:commandButton text="Cancel" id="cb3" immediate="true"
+                            actionListener="#{backingBeanScope.ProjectLevelTaxBean.cancelLines}"/>
+          <af:commandButton text="Done" id="cb4" action="Done"
+                            rendered="false"/>
+        </af:toolbar>
+      </f:facet>
+      <af:panelFormLayout id="pfl1" rows="3" maxColumns="2" fieldWidth="70%"
+                          labelWidth="30%">
+        <af:inputText value="#{bindings.HeaderId.inputValue}" rendered="false"
+                      required="#{bindings.HeaderId.hints.mandatory}"
+                      columns="#{bindings.HeaderId.hints.displayWidth}"
+                      maximumLength="#{bindings.HeaderId.hints.precision}"
+                      shortDesc="#{bindings.HeaderId.hints.tooltip}" id="it5">
+          <f:validator binding="#{bindings.HeaderId.validator}"/>
+        </af:inputText>
+        <af:inputComboboxListOfValues id="transBuNameId"
+                                      popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                      value="#{bindings.TransBuName.inputValue}"
+                                      label="#{bindings.TransBuName.hints.label}"
+                                      readOnly="true"
+                                      model="#{bindings.TransBuName.listOfValuesModel}"
+                                      required="#{bindings.TransBuName.hints.mandatory}"
+                                      columns="#{bindings.TransBuName.hints.displayWidth}"
+                                      shortDesc="#{bindings.TransBuName.hints.tooltip}"
+                                      autoSubmit="true">
+          <f:validator binding="#{bindings.TransBuName.validator}"/>
+        </af:inputComboboxListOfValues>
+        <af:inputComboboxListOfValues id="transProjectNameId"
+                                      popupTitle="Search and Select: #{bindings.TransProjectName.hints.label}"
+                                      value="#{bindings.TransProjectName.inputValue}"
+                                      label="#{bindings.TransProjectName.hints.label}"
+                                      readOnly="true" rendered="false"
+                                      model="#{bindings.TransProjectName.listOfValuesModel}"
+                                      required="#{bindings.TransProjectName.hints.mandatory}"
+                                      columns="#{bindings.TransProjectName.hints.displayWidth}"
+                                      shortDesc="#{bindings.TransProjectName.hints.tooltip}"
+                                      autoSubmit="true">
+          <f:validator binding="#{bindings.TransProjectName.validator}"/>
+        </af:inputComboboxListOfValues>
+        <af:inputText value="#{bindings.TransProjectNumber.inputValue}"
+                      label="#{bindings.TransProjectNumber.hints.label}"
+                      readOnly="true" rendered="false"
+                      required="#{bindings.TransProjectNumber.hints.mandatory}"
+                      columns="#{bindings.TransProjectNumber.hints.displayWidth}"
+                      maximumLength="#{bindings.TransProjectNumber.hints.precision}"
+                      shortDesc="#{bindings.TransProjectNumber.hints.tooltip}"
+                      partialTriggers="transProjectNameId" id="it7">
+          <f:validator binding="#{bindings.TransProjectNumber.validator}"/>
+        </af:inputText>
+        <af:inputComboboxListOfValues id="transCognomenId"
+                                      popupTitle="Search and Select: #{bindings.TransCognomen.hints.label}"
+                                      value="#{bindings.TransCognomen.inputValue}"
+                                      label="#{bindings.TransCognomen.hints.label}"
+                                      readOnly="true" 
+                                      model="#{bindings.TransCognomen.listOfValuesModel}"
+                                      required="#{bindings.TransCognomen.hints.mandatory}"
+                                      columns="#{bindings.TransCognomen.hints.displayWidth}"
+                                      shortDesc="#{bindings.TransCognomen.hints.tooltip}"
+                                      autoSubmit="true">
+          <f:validator binding="#{bindings.TransProjectName.validator}"/>
+        </af:inputComboboxListOfValues>
+        <af:inputText value="#{bindings.TransContractNumber.inputValue}"
+                      label="#{bindings.TransContractNumber.hints.label}"
+                      readOnly="true" 
+                      required="#{bindings.TransContractNumber.hints.mandatory}"
+                      columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                      maximumLength="#{bindings.TransContractNumber.hints.precision}"
+                      shortDesc="#{bindings.TransContractNumber.hints.tooltip}"
+                      partialTriggers="transCognomenId" id="it8">
+          <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+        </af:inputText>     
+        <af:inputComboboxListOfValues id="transCustomerNameId"
+                                      popupTitle="Search and Select: #{bindings.TransCustomerName.hints.label}"
+                                      value="#{bindings.TransCustomerName.inputValue}"
+                                      readOnly="true"
+                                      label="#{bindings.TransCustomerName.hints.label}"
+                                      model="#{bindings.TransCustomerName.listOfValuesModel}"
+                                      required="#{bindings.TransCustomerName.hints.mandatory}"
+                                      columns="#{bindings.TransCustomerName.hints.displayWidth}"
+                                      shortDesc="#{bindings.TransCustomerName.hints.tooltip}">
+          <f:validator binding="#{bindings.TransCustomerName.validator}"/>
+        </af:inputComboboxListOfValues>
+        <af:inputText value="#{bindings.CreatedBy.inputValue}"
+                      label="#{bindings.CreatedBy.hints.label}"
+                      required="#{bindings.CreatedBy.hints.mandatory}"
+                      readOnly="true"
+                      columns="#{bindings.CreatedBy.hints.displayWidth}"
+                      maximumLength="#{bindings.CreatedBy.hints.precision}"
+                      shortDesc="#{bindings.CreatedBy.hints.tooltip}" id="it6">
+          <f:validator binding="#{bindings.CreatedBy.validator}"/>
+        </af:inputText>
+        <af:inputDate value="#{bindings.CreationDate.inputValue}"
+                      label="#{bindings.CreationDate.hints.label}"
+                      readOnly="true"
+                      required="#{bindings.CreationDate.hints.mandatory}"
+                      shortDesc="#{bindings.CreationDate.hints.tooltip}"
+                      id="id3">
+          <f:validator binding="#{bindings.CreationDate.validator}"/>
+          <af:convertDateTime pattern="dd-MMM-yyyy"/>
+        </af:inputDate>
+      </af:panelFormLayout>
+      <af:spacer width="10" height="10" id="s1"/>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <f:facet name="toolbar">
+          <af:toolbar id="t3">
+            <af:commandImageLink id="cb5" icon="/images/create_1.png"
+                                 hoverIcon="/images/create_active.png"
+                                 actionListener="#{bindings.CreateInsert.execute}"
+                                 disabledIcon="/images/create_disable.png"
+                                 shortDesc="Create"/>
+            <af:commandImageLink id="cb6" icon="/images/delete.png"
+                                 hoverIcon="/images/delete_active.png" immediate="true"
+                                 disabled="#{bindings.TransPCExistsFlag.inputValue=='Y'}"
+                                 disabledIcon="/images/delete_disable.png"
+                                 shortDesc="Delete"
+                                 actionListener="#{bindings.Delete.execute}"></af:commandImageLink>
+          </af:toolbar>
+        </f:facet>
+        <af:table value="#{bindings.ProjectTaxLinesVO1.collectionModel}"
+                  var="row" rows="#{bindings.ProjectTaxLinesVO1.rangeSize}"
+                  emptyText="#{bindings.ProjectTaxLinesVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.ProjectTaxLinesVO1.rangeSize}"
+                  rowBandingInterval="0"
+                  filterModel="#{bindings.ProjectTaxLinesVO1Query.queryDescriptor}"
+                  queryListener="#{bindings.ProjectTaxLinesVO1Query.processQuery}"
+                  filterVisible="false" varStatus="vs"
+                  selectedRowKeys="#{bindings.ProjectTaxLinesVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ProjectTaxLinesVO1.collectionModel.makeCurrent}"
+                  rowSelection="single" id="t1" partialTriggers="::cb5 ::cb6">
+          <af:column id="c9" width="10" rowHeader="true"/>
+          <af:column sortProperty="#{bindings.ProjectTaxLinesVO1.hints.LineId.name}"
+                     filterable="true" sortable="true" rendered="false"
+                     headerText="#{bindings.ProjectTaxLinesVO1.hints.LineId.label}"
+                     id="c3">
+            <af:inputText value="#{row.bindings.LineId.inputValue}"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.LineId.label}"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.LineId.mandatory}"
+                          columns="#{bindings.ProjectTaxLinesVO1.hints.LineId.displayWidth}"
+                          maximumLength="#{bindings.ProjectTaxLinesVO1.hints.LineId.precision}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.LineId.tooltip}"
+                          id="it1">
+              <f:validator binding="#{row.bindings.LineId.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.name}"
+                     filterable="true" sortable="true" rendered="false"
+                     headerText="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.label}"
+                     id="c2">
+            <af:inputText value="#{row.bindings.HeaderId.inputValue}"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.label}"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.mandatory}"
+                          columns="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.displayWidth}"
+                          maximumLength="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.precision}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.HeaderId.tooltip}"
+                          id="it3">
+              <f:validator binding="#{row.bindings.HeaderId.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ProjectTaxLinesVO1.hints.Particulars.name}"
+                     filterable="true" sortable="true" rendered="false"
+                     headerText="#{bindings.ProjectTaxLinesVO1.hints.Particulars.label}"
+                     id="c5">
+            <af:inputText value="#{row.bindings.Particulars.inputValue}"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.Particulars.label}"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.Particulars.mandatory}"
+                          columns="#{bindings.ProjectTaxLinesVO1.hints.Particulars.displayWidth}"
+                          maximumLength="#{bindings.ProjectTaxLinesVO1.hints.Particulars.precision}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.Particulars.tooltip}"
+                          id="it2">
+              <f:validator binding="#{row.bindings.Particulars.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column headerText="#{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.label}"
+                     id="c8" showRequired="true" width="150"
+                     sortProperty="#{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.name}"
+                     filterable="true" sortable="true">
+            <af:inputComboboxListOfValues id="transBillCategoryId"
+                                          popupTitle="Search and Select: #{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.label}"
+                                          value="#{row.bindings.TransBillCategory.inputValue}"
+                                          readOnly="#{row.row.entities[0].entityState!=0}"
+                                          model="#{row.bindings.TransBillCategory.listOfValuesModel}"
+                                          required="#{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.mandatory||true}"
+                                          columns="#{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.displayWidth}"
+                                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.TransBillCategory.tooltip}"
+                                          autoSubmit="true">
+              <f:validator binding="#{row.bindings.TransBillCategory.validator}"/>
+            </af:inputComboboxListOfValues>
+          </af:column>
+          <af:column sortProperty="#{bindings.ProjectTaxLinesVO1.hints.TaxCode.name}"
+                     filterable="true" sortable="true" showRequired="true"
+                     width="150"
+                     headerText="#{bindings.ProjectTaxLinesVO1.hints.TaxCode.label}"
+                     id="c4">
+            <af:inputComboboxListOfValues id="taxCodeId"
+                                          popupTitle="Search and Select: #{bindings.ProjectTaxLinesVO1.hints.TaxCode.label}"
+                                          value="#{row.bindings.TaxCode.inputValue}"
+                                          autoSubmit="true"
+                                          readOnly="#{row.row.entities[0].entityState!=0}"
+                                          model="#{row.bindings.TaxCode.listOfValuesModel}"
+                                          required="#{bindings.ProjectTaxLinesVO1.hints.TaxCode.mandatory||true}"
+                                          columns="#{bindings.ProjectTaxLinesVO1.hints.TaxCode.displayWidth}"
+                                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.TaxCode.tooltip}">
+              <f:validator binding="#{row.bindings.TaxCode.validator}"/>
+            </af:inputComboboxListOfValues>
+          </af:column>
+          <af:column sortProperty="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.name}"
+                     filterable="true" sortable="true"
+                     headerText="Tax Rate" id="c1">
+            <af:inputText value="#{row.bindings.TaxRate.inputValue}"
+                          readOnly="true"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.label}"
+                          partialTriggers="taxCodeId"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.mandatory}"
+                          columns="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.displayWidth}"
+                          maximumLength="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.precision}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.TaxRate.tooltip}"
+                          id="it4">
+              <f:validator binding="#{row.bindings.TaxRate.validator}"/>
+            </af:inputText>
+          </af:column>
+          <af:column headerText="#{bindings.ProjectTaxLinesVO1.hints.StartDate.label}"
+                     id="c6" showRequired="true" width="150"
+                     sortProperty="#{bindings.ProjectTaxLinesVO1.hints.StartDate.name}"
+                     filterable="true" sortable="true">
+            <af:inputDate value="#{row.bindings.StartDate.inputValue}"
+                          readOnly="#{row.row.entities[0].entityState!=0}"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.StartDate.label}"
+                          autoSubmit="true"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.StartDate.mandatory||true}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.StartDate.tooltip}"
+                          id="id1">
+              <f:validator binding="#{row.bindings.StartDate.validator}"/>
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:inputDate>
+          </af:column>
+          <af:column headerText="#{bindings.ProjectTaxLinesVO1.hints.EndDate.label}"
+                     id="c7" width="150"
+                     sortProperty="#{bindings.ProjectTaxLinesVO1.hints.EndDate.name}"
+                     filterable="true" sortable="true">
+            <af:inputDate value="#{row.bindings.EndDate.inputValue}"
+                          autoSubmit="true"
+                          label="#{bindings.ProjectTaxLinesVO1.hints.EndDate.label}"
+                          required="#{bindings.ProjectTaxLinesVO1.hints.EndDate.mandatory}"
+                          shortDesc="#{bindings.ProjectTaxLinesVO1.hints.EndDate.tooltip}"
+                          id="id2"
+                          readOnly="#{row.EndDate!=null and row.row.entities[0].entityState==1}"
+                          binding="#{backingBeanScope.ProjectLevelTaxBean.linesEndDateBind}"
+                          valueChangeListener="#{backingBeanScope.ProjectLevelTaxBean.linesEndDateVL}">
+              <f:validator binding="#{row.bindings.EndDate.validator}"/>
+              <af:convertDateTime pattern="dd-MMM-yyyy"/>
+            </af:inputDate>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+    </af:panelHeader>
+  </af:panelGroupLayout>
+</jsp:root>

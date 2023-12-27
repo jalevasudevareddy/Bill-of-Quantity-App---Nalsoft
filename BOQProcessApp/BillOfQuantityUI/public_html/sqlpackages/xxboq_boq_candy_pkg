@@ -1,0 +1,2392 @@
+create or replace PACKAGE xxboq_boq_candy_pkg 
+IS 
+/********************************************************************************+/ 
+/ +-----------------------------------------------------------------------------+ / 
+# Script: 
+# Author: SRINADH.CH, SYAM.A, PRADEEP .N 
+# System: BOQ Validations 
+# Date: 16-MAR-17 
+# Version: 1.0 
+# Description: 
+/ +-----------------------------------------------------------------------------+/ 
+/********************************************************************************/ 
+  /*-----------******************************************************-------------+/ 
+  Copyright © 2017 Nalsoft 
+  /*******************************************************************************+/ 
+  # Change Log: 
+  / +-----------------------------------------------------------------------------+/ 
+  # Modified Date: 
+  # Module: 
+  # Reason: 
+  # Modified By: 
+  ---------------------------------------------------------------------------------- 
+  # Modified Date: 
+  # Module: 
+  # Reason: 
+  # Modified By: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  gv_system_message   VARCHAR2(4000); 
+  gv_reference_number VARCHAR2(30); 
+  PROCEDURE update_pc_cummulative_value ( 
+    p_cumm      VARCHAR2, 
+    p_user_name VARCHAR2, 
+    p_hdr_id    NUMBER, 
+    p_line_id   NUMBER ); 
+  PROCEDURE update_pc_previous_value ( 
+    p_prev      VARCHAR2, 
+    p_user_name VARCHAR2, 
+    p_hdr_id    NUMBER, 
+    p_line_id   NUMBER ); 
+  PROCEDURE set_pc_line_total_values ( 
+    p_user_name VARCHAR2, 
+    p_hdr_id    NUMBER ); 
+  PROCEDURE set_pc_line_values ( 
+    p_hdr_id    NUMBER, 
+    p_prj_id    NUMBER, 
+    p_user_name VARCHAR2 ); 
+  FUNCTION Is_cost_code_exists ( 
+    p_validation_line_id NUMBER ) 
+  RETURN NUMBER; 
+  FUNCTION Is_cost_code_exists ( 
+    p_cost_code VARCHAR2 ) 
+  RETURN NUMBER; 
+  FUNCTION Is_uom_valid ( 
+    p_uom_name VARCHAR2 ) 
+  RETURN NUMBER; 
+  PROCEDURE split_boqs ( 
+    p_header_id NUMBER, 
+    --p_upload_id NUMBER, 
+    p_user_name VARCHAR2, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE validate_boqs ( 
+    p_header_id NUMBER, 
+    p_user_name VARCHAR2, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE load_boqs ( 
+    p_header_id NUMBER, 
+    p_user_name VARCHAR2, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE clear_validation_data ( 
+    p_header_id NUMBER, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE clear_uploaded_data ( 
+    p_header_id NUMBER, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE update_boq_qty_hdr_status ( 
+    p_hdr_id NUMBER, 
+    p_from   VARCHAR2 ); 
+  FUNCTION Get_max_line_seq ( 
+    p_header_id NUMBER ) 
+  RETURN NUMBER; 
+  FUNCTION Get_boq_line_net_final_amount ( 
+    p_validation_line_id IN NUMBER ) 
+  RETURN NUMBER; 
+  PROCEDURE update_boqs ( 
+    p_header_id NUMBER, 
+    p_user_name VARCHAR2, 
+    p_message   OUT VARCHAR2 ); 
+  PROCEDURE append_boqs ( 
+    p_header_id NUMBER, 
+    p_user_name VARCHAR2, 
+    p_message   OUT VARCHAR2 ); 
+END xxboq_boq_candy_pkg;
+
+
+---------------------------------------------
+
+create or replace PACKAGE BODY xxboq_boq_candy_pkg 
+IS 
+/********************************************************************************+/ 
+ / +-----------------------------------------------------------------------------+ / 
+ # Script: 
+ # Author: SRINADH.CH, SYAM.A, PRADEEP .N 
+ # System: BOQ Validations 
+ # Date: 16-MAR-17 
+ # Version: 1.0 
+ # Description: 
+ / +-----------------------------------------------------------------------------+/ 
+ /********************************************************************************/ 
+  /*-----------******************************************************-------------+/ 
+  Copyright © 2017 Nalsoft 
+  /*******************************************************************************+/ 
+  # Change Log: 
+  / +-----------------------------------------------------------------------------+/ 
+  # Modified Date: 
+  # Module: 
+  # Reason: 
+  # Modified By: 
+  ---------------------------------------------------------------------------------- 
+  # Modified Date: 
+  # Module: 
+  # Reason: 
+  # Modified By: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Update_pc_cummulative_value (p_cumm      VARCHAR2, 
+                                         p_user_name VARCHAR2, 
+                                         p_hdr_id    NUMBER, 
+                                         p_line_id   NUMBER) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_pc_lines_t 
+      SET    cummulative = p_cumm, 
+             last_updated_by = p_user_name, 
+             last_updated_date = SYSDATE 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id = p_line_id; 
+
+      COMMIT; 
+  END update_pc_cummulative_value; 
+  PROCEDURE Update_pc_previous_value(p_prev      VARCHAR2, 
+                                     p_user_name VARCHAR2, 
+                                     p_hdr_id    NUMBER, 
+                                     p_line_id   NUMBER) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_pc_lines_t 
+      SET    previous = p_prev, 
+             last_updated_by = p_user_name, 
+             last_updated_date = SYSDATE 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id = p_line_id; 
+
+      COMMIT; 
+  END update_pc_previous_value; 
+  PROCEDURE Set_pc_line_total_values(p_user_name VARCHAR2, 
+                                     p_hdr_id    NUMBER) 
+  IS 
+    l_cum      NUMBER := 0; 
+    l_prev     NUMBER := 0; 
+    l_cum2     NUMBER := 0; 
+    l_prev2    NUMBER := 0; 
+    l_doc_type VARCHAR2(60); 
+    l_prj_id   NUMBER; 
+  BEGIN 
+      SELECT document_type, 
+             project_id 
+      INTO   l_doc_type, l_prj_id 
+      FROM   xxboq_pc_hdr_t 
+      WHERE  pc_header_id = p_hdr_id; 
+
+      IF 'Advance' = l_doc_type THEN 
+        SELECT cummulative 
+        INTO   l_cum 
+        FROM   xxboq_pc_lines_t 
+        WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                               FROM   xxboq_pc_hdr_t 
+                               WHERE  project_id = l_prj_id 
+                                      AND pc_status = 'Approved' 
+                                      AND document_type = 'Advance') 
+               AND pc_line_id = '4'; 
+
+        Update_pc_previous_value(l_cum, p_user_name, p_hdr_id, 4); 
+      END IF; 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum, l_prev 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 1, 2 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(l_cum, p_user_name, p_hdr_id, 3); 
+
+      Update_pc_previous_value(l_prev, p_user_name, p_hdr_id, 3); 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum, l_prev 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 1, 2, 4 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(l_cum, p_user_name, p_hdr_id, 5); 
+
+      Update_pc_previous_value(l_prev, p_user_name, p_hdr_id, 5); 
+
+      SELECT SUM(Nvl(cummulative, 0)), 
+             SUM(Nvl(previous, 0)) 
+      INTO   l_cum2, l_prev2 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = p_hdr_id 
+             AND pc_line_id IN ( 6, 7, 8 ) 
+      GROUP  BY pc_header_id; 
+
+      Update_pc_cummulative_value(( l_cum - l_cum2 ), p_user_name, p_hdr_id, 9); 
+
+      Update_pc_previous_value(( l_prev - l_prev2 ), p_user_name, p_hdr_id, 9); 
+  END set_pc_line_total_values; 
+  PROCEDURE Set_pc_line_values(p_hdr_id    NUMBER, 
+                               p_prj_id    NUMBER, 
+                               p_user_name VARCHAR2) 
+  IS 
+    l_period VARCHAR2(30); 
+    CURSOR prev_c IS 
+      SELECT * 
+      FROM   xxboq_pc_lines_t 
+      WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                             FROM   xxboq_pc_hdr_t 
+                             WHERE  project_id = p_prj_id 
+                                    AND pc_status = 'Approved' 
+                                    AND document_type IN ( 'Progress Billing', 
+                                        'Final Progress Billing' 
+                                                         )); 
+    l_cumm   NUMBER; 
+    l_i      NUMBER := 0; 
+    prev_r   xxboq_pc_lines_t%ROWTYPE; 
+  BEGIN 
+      BEGIN 
+          SELECT period 
+          INTO   l_period 
+          FROM   xxboq_pc_hdr_t 
+          WHERE  pc_header_id = p_hdr_id; 
+      END; 
+
+      --Advance Paid 
+      BEGIN 
+          SELECT cummulative 
+          INTO   l_cumm 
+          FROM   xxboq_pc_lines_t 
+          WHERE  pc_header_id = (SELECT Max(pc_header_id) 
+                                 FROM   xxboq_pc_hdr_t 
+                                 WHERE  project_id = p_prj_id 
+                                        AND pc_status = 'Approved' 
+                                        AND document_type = 'Advance') 
+                 AND pc_line_id = '4'; 
+
+          Update_pc_cummulative_value(l_cumm, p_user_name, p_hdr_id, 4); 
+
+          Update_pc_previous_value(l_cumm, p_user_name, p_hdr_id, 4); 
+      EXCEPTION 
+          WHEN no_data_found THEN 
+            l_cumm := 0; 
+      END; 
+
+      --Previous Column 
+      BEGIN 
+          FOR prev_r IN prev_c LOOP 
+              l_i := l_i + 1; 
+
+              IF prev_r.cummulative IS NOT NULL THEN 
+                Update_pc_previous_value( 
+                prev_r.cummulative, p_user_name, p_hdr_id, l_i); 
+              ELSIF prev_r.cummulative IS NULL 
+                    AND l_i = 4 
+                    AND l_cumm <> 0 THEN 
+                Update_pc_previous_value(l_cumm, p_user_name, p_hdr_id, l_i); 
+              END IF; 
+          END LOOP; 
+      END; 
+
+      --VOWD 
+      BEGIN 
+          SELECT SUM(Nvl(CL.certified_cummulative_qty, 0) * 
+                     Nvl(bl.selling_rate, 0)) 
+          INTO   l_cumm 
+          FROM   xxboq_certified_details_t CD, 
+                 xxboq_certified_lines_t CL, 
+                 xxboq_bill_of_qty_lines_t BL 
+          WHERE  CD.certified_header_id = CL.certified_header_id 
+                 AND CD.period_of_measure = l_period 
+                 AND CD.certified_status = 'Approved' 
+                 AND CL.boq_header_id = bl.boq_header_id 
+                 AND CL.boq_line_id = bl.boq_line_id 
+                 AND CD.project_id = p_prj_id 
+          GROUP  BY CD.certified_header_id; 
+
+          Update_pc_cummulative_value(l_cumm, p_user_name, p_hdr_id, 1); 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            l_cumm := 0; 
+      END; 
+
+      -- Material at Site 
+      --  BEGIN 
+      --    SELECT SUM(NVL(ML.QUANTITY,0)*NVL(RI.ITEM_RATE,0)) 
+      --    INTO l_cumm 
+      --    FROM XXBOQ_MATERIAL_AT_SITE_HDR_T MH, 
+      --      XXBOQ_MATERIAL_AT_SITE_LINES_T ML, 
+      --      XXBOQ_RESOURCE_ITEMS_T RI 
+      --    WHERE MH.DOC_HEADER_ID  =ML.DOC_HEADER_ID 
+      --    AND ML.RESOURCE_ITEM_ID =RI.ITEM_ID 
+      --    AND MH.STATUS           ='Completed' 
+      --    AND MH.PERIOD_OF_MEASURE=l_period 
+      --    GROUP BY MH.DOC_HEADER_ID; 
+      --    update_pc_cummulative_value(l_cumm,p_user_name,p_hdr_id,2); 
+      --  EXCEPTION 
+      --  WHEN OTHERS THEN 
+      --    l_cumm:=0; 
+      --  END; 
+      BEGIN 
+          UPDATE xxboq_pc_lines_t 
+          SET    enable_flag = 'Y' 
+          WHERE  pc_header_id = p_hdr_id 
+                 AND pc_line_id IN ( 6, 7, 8 ); 
+
+          Set_pc_line_total_values(p_user_name, p_hdr_id); 
+      END; 
+
+      BEGIN 
+          UPDATE xxboq_pc_hdr_t 
+          SET    contract_value = (SELECT SUM(L.selling_amount) 
+                                   FROM   xxboq_bill_of_qty_hdr_t H, 
+                                          xxboq_bill_of_qty_lines_t L 
+                                   WHERE  H.boq_header_id = L.boq_header_id 
+                                          AND H.project_id = p_prj_id) 
+          WHERE  pc_header_id = p_hdr_id; 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            l_cumm := 0; 
+      END; 
+
+      COMMIT; 
+  END set_pc_line_values; 
+  PROCEDURE Update_validation_hdr_status(p_header_id NUMBER, 
+                                         p_status    VARCHAR2) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_validation_header_t 
+      SET    is_document_valid = p_status 
+      WHERE  validation_header_id = p_header_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               gv_system_message := 'Error while updating document status'; 
+  END update_validation_hdr_status; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: get_boq_line_id 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Get_boq_line_id(p_header_id   NUMBER,
+                           p_line_number NUMBER) 
+  -- p_boq_level VARCHAR2, 
+  --p_page_item VARCHAR2, 
+  --p_item      VARCHAR2) 
+  RETURN NUMBER 
+  IS 
+    lv_boq_line_id NUMBER; 
+  BEGIN 
+      SELECT validation_line_id 
+      INTO   lv_boq_line_id 
+      FROM   xxboq_validation_lines_t l 
+      WHERE  validation_header_id = p_header_id 
+             AND line_sequence = p_line_number; 
+
+      /*WHERE (NVL(boq_level,-99)=p_boq_level 
+      OR price_code            =p_boq_level) 
+      AND page_item            =p_page_item 
+      AND NVL(item,-99)        =NVL(p_item,-99) 
+      AND validation_header_id = p_header_id;*/ 
+      RETURN lv_boq_line_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN -9999; 
+  END get_boq_line_id; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: get_ibc_number 
+  # Author:  PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Get_ibc_number(p_header_id NUMBER) 
+  RETURN NUMBER 
+  IS 
+    lv_ibc_number VARCHAR2(30); 
+  BEGIN 
+      SELECT ibc_number 
+      INTO   lv_ibc_number 
+      FROM   xxboq_validation_header_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      RETURN lv_ibc_number; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN NULL; 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: get_cost_code_id 
+  # Author: SRINADH.CH 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: to get cost code id 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Get_cost_code_id(p_boq_line_id NUMBER, 
+                            p_header_id   NUMBER, 
+                            p_cost_code   VARCHAR2) 
+  RETURN NUMBER 
+  IS 
+    lv_cost_code_id NUMBER;
+  BEGIN 
+      SELECT validation_cost_code_id 
+      INTO   lv_cost_code_id 
+      FROM   xxboq_validation_cost_code_t l 
+      WHERE  validation_line_id = p_boq_line_id 
+             AND l.cost_code = p_cost_code 
+             AND validation_header_id = p_header_id; 
+
+      RETURN lv_cost_code_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN -9999; 
+  END get_cost_code_id; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: get_cost_code_id 
+  # Author: PRADEEp .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: to get resource code id 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Get_resource_code_id(p_boq_line_id   NUMBER, 
+                                p_cost_code_id  NUMBER, 
+                                p_resource_code VARCHAR2) 
+  RETURN NUMBER 
+  IS 
+    lv_resource_id NUMBER; 
+  BEGIN 
+      SELECT validation_resource_id 
+      INTO   lv_resource_id 
+      FROM   xxboq_validation_resource_t l 
+      WHERE  validation_line_id = p_boq_line_id 
+             AND resource_code = p_resource_code 
+             AND validation_cost_code_id = p_cost_code_id; 
+
+      RETURN lv_resource_id; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN -9999; 
+  END get_resource_code_id; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: is_cost_code_exists 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Is_cost_code_exists(p_validation_line_id NUMBER) 
+  RETURN NUMBER 
+  IS 
+    lv_flag NUMBER; 
+  BEGIN 
+      SELECT 1 
+      INTO   lv_flag 
+      FROM   xxboq_validation_cost_code_t xvcct 
+      WHERE  xvcct.validation_line_id = p_validation_line_id 
+             AND ROWNUM = 1; 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 0; 
+  END is_cost_code_exists; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: is_cost_code_exists 
+  # Author: SRINADH.CH 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Is_cost_code_exists(p_cost_code VARCHAR2) 
+  RETURN NUMBER 
+  IS 
+    lv_flag NUMBER; 
+  BEGIN 
+      SELECT 1 
+      INTO   lv_flag 
+      FROM   xxboq_resource_items_t 
+      WHERE  expenditure_type = p_cost_code; 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 0; 
+  END is_cost_code_exists; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: is_uom_valid 
+  # Author: SRINADH.CH 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Is_uom_valid(p_uom_name VARCHAR2) 
+  RETURN NUMBER 
+  IS 
+    lv_flag NUMBER; 
+  BEGIN 
+      SELECT 1 
+      INTO   lv_flag 
+      FROM   xxinv_uom_conversions_t 
+      WHERE  from_uom_name = to_uom_name 
+             AND from_uom_name = Upper(p_uom_name); 
+
+      RETURN lv_flag; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               RETURN 0; 
+  END is_uom_valid; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: split_boqs 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE split_boqs(
+    p_header_id NUMBER,
+    --p_upload_id NUMBER,
+    p_user_name VARCHAR2,
+    p_message OUT VARCHAR2)
+IS
+L_FILE_NAME         VARCHAR2(200);
+L_BUDGET_TYPE       VARCHAR2(10);
+L_MASTER_HDR_ID     NUMBER;
+L_MASTER_LINE_ID    NUMBER;
+
+  CURSOR boq_c
+  IS
+    SELECT boq_level,
+      page_item,
+      item,
+      bill_description,
+      bill_quantity,
+      final_quantity,
+      uom,
+      candy_net_rate,
+      selling_rate,
+      candy_net_final_amount,
+      selling_amount,
+      trade,
+      price_code,
+      cost_code,
+      cost_code_description,
+      resource_code,
+      resource_description,
+      resource_uom,
+      net_use_unit,
+      final_rate,
+      line_sequence
+    FROM xxboq_upload_t
+    WHERE validation_header_id                                                                                                                                                                                                                                                                              =p_header_id
+    AND upper(NVL(boq_level,-9999))                                                                                                                                                                                                                                                                        <>'C'
+    AND COALESCE(boq_level, page_item, item, bill_description, bill_quantity, final_quantity, uom, candy_net_rate, selling_rate, candy_net_final_amount, selling_amount, trade, price_code, cost_code, cost_code_description, resource_code, resource_description, resource_uom, net_use_unit, final_rate) IS NOT NULL
+    ORDER BY line_sequence;
+  lv_boq_line_id  NUMBER := -9999;
+  lv_cost_code_id NUMBER := -9999;
+  lv_resource_id  NUMBER := -9999;
+BEGIN
+
+    BEGIN
+        SELECT FILE_NAME INTO L_FILE_NAME FROM XXBOQ_UPLOAD_T WHERE validation_header_id = p_header_id AND FILE_NAME IS NOT NULL AND ROWNUM=1;
+        SELECT BUDGET_TYPE, MASTER_VALIDATION_HEADER_ID  INTO L_BUDGET_TYPE,  L_MASTER_HDR_ID FROM XXBOQ_VALIDATION_HEADER_T WHERE VALIDATION_HEADER_ID = P_HEADER_ID ;
+         
+        EXCEPTION WHEN OTHERS THEN
+            p_message :='Exception Raised while retriving file name/budget type.'||sqlerrm;
+    END;
+  FOR boq_r IN boq_c
+  LOOP
+  
+  BEGIN
+
+--       
+      SELECT
+      LL.MASTER_VALIDATION_LINE_ID INTO L_MASTER_LINE_ID FROM XXBOQ_VALIDATION_LINES_T  LL WHERE  VALIDATION_HEADER_ID = L_MASTER_HDR_ID AND
+      TRIM(UPPER(LL.ITEM)) = TRIM(UPPER(BOQ_R.ITEM)) AND TRIM(UPPER(LL.PAGE_ITEM))=TRIM(UPPER(BOQ_R.PAGE_ITEM))
+       AND TRIM(UPPER(LL.BILL_DESCRIPTION)) = TRIM(UPPER(BOQ_R.BILL_DESCRIPTION));
+       
+       
+       
+  EXCEPTION WHEN OTHERS THEN
+  L_MASTER_LINE_ID:=NULL;
+  END;
+  
+  
+    IF boq_r.page_item IS NOT NULL THEN
+     lv_boq_line_id := xxboq_validation_lines_s.nextval;
+   L_MASTER_LINE_ID :=
+        CASE WHEN L_BUDGET_TYPE='M' THEN
+        lv_boq_line_id 
+        ELSE 
+        L_MASTER_LINE_ID END;
+  
+      BEGIN
+        --delete from xxboq_validation_lines_t where validation_header_id=p_header_id and line_sequence=boq_r.line_sequence;
+       
+        INSERT
+        INTO xxboq_validation_lines_t
+          (
+            validation_line_id,
+            validation_header_id,
+            boq_level,
+            page_item,
+            item,
+            bill_description,
+            bill_quantity,
+            final_quantity,
+            uom,
+            candy_net_rate,
+            selling_rate,
+            candy_net_final_amount,
+            selling_amount,
+            trade,
+            price_code,
+            absolute_error,
+            error_details,
+            creation_date,
+            created_by,
+            last_updated_date,
+            last_updated_by,
+            error_percentage,
+            line_sequence,
+            MASTER_VALIDATION_LINE_ID
+          )
+        SELECT lv_boq_line_id,
+          p_header_id,--
+          boq_r.boq_level,
+          boq_r.page_item,
+          boq_r.item,
+          boq_r.bill_description,
+          boq_r.bill_quantity,
+          boq_r.final_quantity,
+          boq_r.uom,
+          boq_r.candy_net_rate,
+          boq_r.selling_rate,
+          boq_r.candy_net_final_amount,
+          boq_r.selling_amount,
+          boq_r.trade,
+          boq_r.price_code,
+          NULL,
+          CASE
+            WHEN upper(boq_r.bill_quantity
+              || boq_r.final_quantity
+              ||boq_r.candy_net_rate
+              || boq_r.selling_rate
+              || boq_r.candy_net_final_amount
+              || boq_r.selling_amount
+              ||boq_r.net_use_unit
+              || boq_r.final_rate) <> lower(boq_r.bill_quantity
+              || boq_r.final_quantity
+              ||boq_r.candy_net_rate
+              || boq_r.selling_rate
+              || boq_r.candy_net_final_amount
+              || boq_r.selling_amount
+              ||boq_r.net_use_unit
+              || boq_r.final_rate)
+            THEN 'Data type mismatch'
+          END,
+          sysdate,
+          p_user_name,
+          sysdate,
+          p_user_name,
+          NULL,
+          boq_r.line_sequence,
+         L_MASTER_LINE_ID
+        FROM dual; --Insert BOQ Line into boq_lines interface table
+      EXCEPTION
+      WHEN OTHERS THEN
+        gv_system_message:='Error while inserting BOQ items.'||chr(10)||SQLERRM;
+      END;
+    END IF;
+    lv_cost_code_id    := get_cost_code_id ( xxboq_validation_lines_s.currval,p_header_id,boq_r.cost_code );
+    IF boq_r.cost_code IS NOT NULL AND lv_cost_code_id=-9999 THEN
+      BEGIN
+        lv_cost_code_id:= xxboq_validation_cost_code_s.nextval;
+        INSERT
+        INTO xxboq_validation_cost_code_t
+          (
+            validation_line_id,
+            validation_header_id,
+            validation_cost_code_id,
+            cost_code_description,
+            error_details,
+            creation_date,
+            created_by,
+            last_updated_date,
+            last_updated_by,
+            cost_code,
+            line_sequence
+          )
+          VALUES
+          (
+            lv_boq_line_id,
+            p_header_id,
+            lv_cost_code_id,
+            boq_r.cost_code_description,
+            CASE
+              WHEN upper(boq_r.bill_quantity
+                || boq_r.final_quantity
+                ||boq_r.candy_net_rate
+                || boq_r.selling_rate
+                || boq_r.candy_net_final_amount
+                || boq_r.selling_amount
+                ||boq_r.net_use_unit
+                || boq_r.final_rate) <> lower(boq_r.bill_quantity
+                || boq_r.final_quantity
+                ||boq_r.candy_net_rate
+                || boq_r.selling_rate
+                || boq_r.candy_net_final_amount
+                || boq_r.selling_amount
+                ||boq_r.net_use_unit
+                || boq_r.final_rate)
+              THEN 'Data type mismatch'
+            END,
+            sysdate,
+            p_user_name,
+            sysdate,
+            p_user_name,
+            boq_r.cost_code,
+            boq_r.line_sequence
+          );
+      EXCEPTION
+      WHEN OTHERS THEN
+        gv_system_message:='Error while inserting Cost code details.'||CHR(10)||SQLERRM;
+      END;
+    END IF;
+    IF lv_boq_line_id <> -9999 AND lv_cost_code_id <> -9999 AND
+    boq_r.resource_code IS NOT NULL AND get_resource_code_id( lv_boq_line_id , lv_cost_code_id , boq_r.resource_code) = -9999 THEN
+      BEGIN
+        lv_resource_id := xxboq_validation_resource_s.nextval;
+        INSERT
+        INTO xxboq_validation_resource_t
+          (
+            validation_line_id,
+            validation_header_id,
+            validation_cost_code_id,
+            validation_resource_id,
+            resource_code,
+            resource_description,
+            uom,
+            net_use_unit,
+            final_rate,
+            error_details,
+            creation_date,
+            created_by,
+            last_updated_date,
+            last_updated_by,
+            line_sequence
+          )
+          VALUES
+          (
+            lv_boq_line_id,
+            p_header_id,
+            lv_cost_code_id,
+            lv_resource_id,
+            boq_r.resource_code,
+            boq_r.resource_description,
+            boq_r.resource_uom,
+           nvl( boq_r.net_use_unit,0),
+           nvl( boq_r.final_rate,0),
+            CASE
+              WHEN upper(boq_r.bill_quantity
+                || boq_r.final_quantity
+                ||boq_r.candy_net_rate
+                || boq_r.selling_rate
+                || boq_r.candy_net_final_amount
+                || boq_r.selling_amount
+                ||boq_r.net_use_unit
+                || boq_r.final_rate) <> lower(boq_r.bill_quantity
+                || boq_r.final_quantity
+                ||boq_r.candy_net_rate
+                || boq_r.selling_rate
+                || boq_r.candy_net_final_amount
+                || boq_r.selling_amount
+                ||boq_r.net_use_unit
+                || boq_r.final_rate)
+              THEN 'Data type mismatch'
+            END,
+            sysdate,
+            p_user_name,
+            sysdate,
+            p_user_name,
+            boq_r.line_sequence
+          );
+      EXCEPTION
+      WHEN OTHERS THEN
+        gv_system_message:='Error while inserting Resource details'||chr(10)||SQLERRM;
+      END;
+    ELSIF lv_boq_line_id <> -9999 AND lv_cost_code_id <> -9999 AND 
+    boq_r.resource_code IS NOT NULL AND get_resource_code_id( lv_boq_line_id , lv_cost_code_id , boq_r.resource_code) <> -9999 THEN
+      UPDATE xxboq_validation_resource_t
+      SET net_use_unit            =NVL(net_use_unit,0)+NVL(boq_r.net_use_unit,0),
+        final_rate                =NVL(final_rate,0)  +NVL(boq_r.final_rate,0)
+      WHERE validation_resource_id=lv_resource_id;
+    END IF;
+  END LOOP;
+  
+  update XXBOQ_VALIDATION_HEADER_T set File_name=l_file_name where validation_header_id = p_header_id;
+  IF gv_system_message IS NULL THEN
+    p_message          := 'Success';
+--    COMMIT;
+  ELSE
+    p_message := gv_system_message;
+    ROLLBACK;
+  END IF;
+  EXCEPTION WHEN OTHERS THEN
+  P_MESSAGE :='Exception raised while splitting BOQ lines. '||SQLERRM;
+END split_boqs;
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: get_boq_line_net_final_amount 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  FUNCTION Get_boq_line_net_final_amount(p_validation_line_id IN NUMBER) 
+  RETURN NUMBER 
+  IS 
+    l_final_amount NUMBER := 0; 
+    l_resc_amount  NUMBER; 
+    CURSOR rescs_c IS 
+      SELECT net_use_unit, 
+             final_rate 
+      FROM   xxboq_validation_resource_t 
+      WHERE  validation_line_id = p_validation_line_id; 
+  BEGIN 
+      FOR rescs IN rescs_c LOOP 
+          BEGIN 
+              l_resc_amount := Nvl(rescs.net_use_unit, 0) * 
+                               Nvl(rescs.final_rate, 0); 
+          EXCEPTION 
+              WHEN OTHERS THEN 
+                l_resc_amount := 0; 
+          END; 
+
+          l_final_amount := l_final_amount + Nvl(l_resc_amount, 0); 
+      END LOOP; 
+
+      RETURN l_final_amount; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               l_final_amount := 0; 
+
+               RETURN l_final_amount; 
+  END get_boq_line_net_final_amount; 
+  
+  
+  PROCEDURE validate_boq_line_qty_wd(p_prj_id IN NUMBER,
+                                     p_item   IN VARCHAR2)
+    IS
+        BEGIN
+            NULL;
+    END ;
+  
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: validate_boq_lines 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  
+  PROCEDURE validate_boq_quantities_lines(p_header_id IN NUMBER,
+                                            p_message OUT VARCHAR2)
+    IS  
+    L_MASTER_HEADER_ID NUMBER;
+    
+    BEGIN
+    
+    
+    NULL;
+    END validate_boq_quantities_lines;
+  
+  PROCEDURE validate_boq_lines(
+    p_header_id NUMBER,
+    p_user_name VARCHAR2)
+IS
+
+L_NUM_FORMAT VARCHAR2(100):='99999999999999999999999999999.9999999';
+
+CURSOR boq_lines_c is
+SELECT *  FROM xxboq_validation_lines_t xvlt
+    WHERE
+      boq_level is  null and
+      XVLT.validation_header_id=p_header_id FOR UPDATE OF error_details,
+      XVLT.last_updated_date,
+      XVLT.last_updated_by ,
+      XVLT.NET_FINAL_AMOUNT; 
+      
+ CURSOR boq_levels_c is 
+  SELECT *  FROM xxboq_validation_lines_t xvlt
+    WHERE
+      boq_level is not null and
+      validation_header_id=p_header_id FOR UPDATE OF error_details,
+      last_updated_date,
+      last_updated_by ; 
+      
+L_ERROR_MESSAGE VARCHAR2(4000);
+--L_NET_FINAL_AMOUNT         NUMBER:=0;
+--L_TOT_FINAL_AMOUNT         NUMBER:=0;
+L_CANDY_FINAL_AMOUNT       NUMBER:=0;
+--L_TOT_CANDY_NET_FINAL_AMNT NUMBER:=0;
+--L_TOT_CANDY_SELLING_AMOUNT NUMBER:=0;
+
+
+L_BILL_QUANTITY_NUM          NUMBER;
+L_FINAL_QUANTITY_NUM         NUMBER;
+L_CANDY_NET_RATE_NUM         NUMBER;
+L_SELLING_RATE_NUM           NUMBER;
+L_CANDY_NET_FINAL_AMOUNT_NUM NUMBER;
+L_SELLING_AMOUNT_NUM         NUMBER;
+
+
+L_ERR_PERCNT                NUMBER;
+L_DIFF_AMOUNT               NUMBER;
+BEGIN
+
+UPDATE xxboq_validation_lines_t SET ERROR_DETAILS=NULL;
+
+FOR BOQ_LINE IN boq_lines_c LOOP
+
+  BEGIN
+   L_ERR_PERCNT:=NULL;
+    L_DIFF_AMOUNT:=NULL;
+  L_ERROR_MESSAGE:=NULL;
+  
+  L_BILL_QUANTITY_NUM         :=null;
+L_FINAL_QUANTITY_NUM         :=null;
+L_CANDY_NET_RATE_NUM         :=null;
+L_SELLING_RATE_NUM           :=null;
+L_CANDY_NET_FINAL_AMOUNT_NUM :=null;
+L_SELLING_AMOUNT_NUM         :=null;
+
+  IF (COALESCE(BOQ_LINE.boq_level,BOQ_LINE.price_code) IS NULL) THEN
+    L_ERROR_MESSAGE := 'Either BOQ level or Price Code are required, ';
+  END IF;
+  
+  IF BOQ_LINE.bill_description IS NULL THEN
+    L_ERROR_MESSAGE := ' Bill description is required, ' ;
+  END IF;
+  
+  BEGIN
+    IF (NVL(TO_NUMBER(TRIM(BOQ_LINE.bill_quantity),L_NUM_FORMAT),0)>0) THEN
+        L_BILL_QUANTITY_NUM:=TO_NUMBER(TRIM(BOQ_LINE.bill_quantity),L_NUM_FORMAT);
+    ELSE
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,' ')|| ' BOQ Quantity Should not be Less than Zero, ';
+    END IF;
+    EXCEPTION WHEN OTHERS THEN 
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| 'Exception:-  Invalid Bill Quantity, ' ;
+  END;
+  
+  BEGIN
+  IF ( NVL(TO_NUMBER(TRIM(BOQ_LINE.final_quantity),L_NUM_FORMAT),0) > 0) THEN
+    L_FINAL_QUANTITY_NUM:=TO_NUMBER(TRIM(BOQ_LINE.final_quantity),L_NUM_FORMAT);
+  ELSE
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| ' Final Quantity Should not be Less than Zero, ';
+  END IF;
+  EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| ' Exception:-   Invalid Final Quantity, ';
+  END;
+   
+   
+   BEGIN
+   IF (NVL(TO_NUMBER(TRIM(BOQ_LINE.candy_net_rate),L_NUM_FORMAT),0) > 0) THEN
+    L_CANDY_NET_RATE_NUM:=TO_NUMBER(TRIM(BOQ_LINE.candy_net_rate),L_NUM_FORMAT);
+   ELSE
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| ' Candy Net Rate Should not be Less than Zero,';
+   END IF;
+   EXCEPTION WHEN OTHERS THEN
+   L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| 'Exception:-  Invalid Net Candy Rate, ';
+   END;
+   
+   BEGIN
+   IF (xxboq_boq_candy_pkg.is_cost_code_exists(BOQ_LINE.validation_line_id) =0
+              AND BOQ_LINE.price_code                                                IS NOT NULL
+              AND NVL(TO_NUMBER(BOQ_LINE.bill_quantity,L_NUM_FORMAT),0) +NVL(TO_NUMBER(BOQ_LINE.final_quantity,L_NUM_FORMAT),0) +NVL(TO_NUMBER(BOQ_LINE.candy_net_rate,L_NUM_FORMAT),0) +
+              NVL(TO_NUMBER(BOQ_LINE.selling_rate,L_NUM_FORMAT),0) +
+              NVL(TO_NUMBER(BOQ_LINE.candy_net_final_amount,L_NUM_FORMAT),0) +NVL(TO_NUMBER(BOQ_LINE.selling_amount,L_NUM_FORMAT),0)>=1) THEN
+       L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| ' Quantities and Amounts are valid when cost code exists,';
+   END IF;          
+   EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| 'Exception:- Invalid Cost Code , ';
+   END;
+   
+    BEGIN
+   IF (NVL(TO_NUMBER(TRIM(BOQ_LINE.selling_rate),L_NUM_FORMAT),0) > 0) THEN
+        L_SELLING_RATE_NUM:=TO_NUMBER(TRIM(BOQ_LINE.selling_rate),L_NUM_FORMAT);
+         BEGIN
+            IF (L_SELLING_RATE_NUM <= 0
+                      AND BOQ_LINE.price_code  IS NOT NULL
+                      AND xxboq_boq_candy_pkg.is_cost_code_exists(BOQ_LINE.validation_line_id)=1) THEN
+              L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Selling Rate Should not be Less than Zero,';
+            END IF;
+       EXCEPTION WHEN OTHERS THEN
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| ' Exception:-  Invalid Selling Rate or Price Code is null or No Cost Code Found. ';
+       END;       
+    END IF;
+    EXCEPTION WHEN OTHERS THEN
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Invalid Selling Rate ';
+   END;
+  
+    BEGIN
+   IF (NVL(TO_NUMBER(TRIM(BOQ_LINE.candy_net_final_amount),L_NUM_FORMAT),0) > 0) THEN
+        L_CANDY_NET_FINAL_AMOUNT_NUM:=TO_NUMBER(TRIM(BOQ_LINE.candy_net_final_amount),L_NUM_FORMAT);
+         
+           IF (L_CANDY_NET_FINAL_AMOUNT_NUM<= 0
+                      AND BOQ_LINE.price_code IS NOT NULL
+                      AND xxboq_boq_candy_pkg.is_cost_code_exists(BOQ_LINE.validation_line_id)=1) THEN
+              L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')|| 'Candy Net Final Amount Should not be Less than Zero ,';
+            END IF;
+          
+    END IF;
+    EXCEPTION WHEN OTHERS THEN
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Candy Net Final Amount, ';
+   END;
+   
+  BEGIN
+   IF (NVL(TO_NUMBER(TRIM(BOQ_LINE.selling_amount),L_NUM_FORMAT),0) > 0) THEN
+    L_SELLING_AMOUNT_NUM:=TO_NUMBER(TRIM(BOQ_LINE.selling_amount),L_NUM_FORMAT);
+        IF (L_SELLING_AMOUNT_NUM <= 0
+              AND BOQ_LINE.price_code IS NOT NULL
+              AND xxboq_boq_candy_pkg.is_cost_code_exists(BOQ_LINE.validation_line_id)=1) THEN
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||'Candy Selling Amount Should not be Less than Zero,';     
+      END IF;
+    END IF;
+    EXCEPTION WHEN OTHERS THEN
+      L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Invalid Selling Amount ';
+   END;
+   
+   BEGIN
+   IF (xxboq_boq_candy_pkg.is_uom_valid(BOQ_LINE.uom)=0) THEN
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||'Invalid UOM, UOM Not Found, ';   
+   END IF;
+   EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Invalid UOM, ';
+   END;
+
+   
+   BEGIN
+    SELECT NVL(L_ERROR_MESSAGE,'')|| (CASE 
+              WHEN (SELECT COUNT(1) TOTAL FROM xxboq_validation_cost_code_t WHERE ERROR_DETAILS IS NOT NULL AND  VALIDATION_LINE_ID = BOQ_LINE.VALIDATION_LINE_ID)>0  THEN
+              ' Errors In Cost Codes. '
+                  ELSE
+                  ''
+               END) INTO L_ERROR_MESSAGE  FROM DUAL;
+              
+    EXCEPTION WHEN OTHERS THEN 
+      L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  ,Invalid Cost Codes. ';
+   END;
+
+
+--BEGIN
+--        L_TOT_CANDY_NET_FINAL_AMNT := L_TOT_CANDY_NET_FINAL_AMNT+NVL(BOQ_LINE.CANDY_NET_FINAL_AMOUNT,0);
+-- EXCEPTION WHEN OTHERS THEN 
+--      L_TOT_CANDY_NET_FINAL_AMNT :=L_TOT_CANDY_NET_FINAL_AMNT;
+--      L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Error In Net Final Amount. ';
+--END;
+
+-- BEGIN
+--    L_TOT_CANDY_SELLING_AMOUNT:=L_TOT_CANDY_SELLING_AMOUNT+NVL(BOQ_LINE.SELLING_AMOUNT,0);
+-- EXCEPTION WHEN OTHERS THEN
+--    L_TOT_CANDY_SELLING_AMOUNT:=L_TOT_CANDY_SELLING_AMOUNT;
+--     L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Error In Selling Amount. ';
+-- END;
+
+--  L_NET_FINAL_AMOUNT:=get_boq_line_net_final_amount(BOQ_LINE.validation_line_id );
+--  L_TOT_FINAL_AMOUNT :=L_TOT_FINAL_AMOUNT+NVL(L_NET_FINAL_AMOUNT,0);
+--  
+
+
+ 
+
+    UPDATE xxboq_validation_lines_t SET error_details=L_ERROR_MESSAGE, 
+    last_updated_date=sysdate, last_updated_by  =p_user_name ,
+    BILL_QUANTITY_NUM        =L_BILL_QUANTITY_NUM           ,   
+    FINAL_QUANTITY_NUM        =L_FINAL_QUANTITY_NUM           ,   
+    CANDY_NET_RATE_NUM       =L_CANDY_NET_RATE_NUM          ,   
+    SELLING_RATE_NUM         =L_SELLING_RATE_NUM            ,  
+    CANDY_NET_FINAL_AMOUNT_NUM  =L_CANDY_NET_FINAL_AMOUNT_NUM        ,   
+    SELLING_AMOUNT_NUM     =L_SELLING_AMOUNT_NUM            ,   
+--  NET_FINAL_AMOUNT=L_NET_FINAL_AMOUNT,
+    
+    ERROR_PERCENTAGE =L_ERR_PERCNT
+    WHERE CURRENT OF boq_lines_c;
+  
+     EXCEPTION WHEN OTHERS THEN
+      L_ERROR_MESSAGE:=SQLERRM;
+      UPDATE xxboq_validation_lines_t
+    SET error_details=L_ERROR_MESSAGE WHERE CURRENT OF  boq_lines_c;
+  END;
+    --delete from xx_upload_errors_t where upload_id=p_header_id and line_number=boq_lines_r.line_sequence;
+    /*
+    INSERT
+    INTO xx_upload_errors_t
+      (
+        table_code,
+        upload_id,
+        reference_number,
+        line_number,
+        column_name,
+        remarks,
+        creation_date,
+        created_by,
+        last_updated_date,
+        last_updated_by,
+        reference_id
+      )
+    SELECT 'BOQ_LINES',
+      p_header_id,
+      gv_reference_number,
+      boq_lines_r.line_sequence,
+      NULL,
+      boq_lines_r.inv_boq
+      ||boq_lines_r.iv_bill_description
+      ||boq_lines_r.iv_bill_qty
+      ||boq_lines_r.iv_final_qty
+      ||boq_lines_r.iv_candy_net_rate
+      ||boq_lines_r.iv_values
+      ||boq_lines_r.iv_selling_rate
+      ||boq_lines_r.iv_candy_net_final_amount
+      ||boq_lines_r.iv_selling_amount
+      ||boq_lines_r.iv_uom,
+      sysdate,
+      p_user_name,
+      sysdate,
+      p_user_name,
+      boq_lines_r.validation_line_id
+    FROM dual
+    WHERE boq_lines_r.inv_boq
+      ||boq_lines_r.iv_bill_description
+      ||boq_lines_r.iv_bill_qty
+      ||boq_lines_r.iv_final_qty
+      ||boq_lines_r.iv_candy_net_rate
+      ||boq_lines_r.iv_values
+      ||boq_lines_r.iv_selling_rate
+      ||boq_lines_r.iv_candy_net_final_amount
+      ||boq_lines_r.iv_selling_amount
+      ||boq_lines_r.iv_uom IS NOT NULL;*/
+ 
+  END LOOP;
+
+FOR  boq_level IN boq_levels_c LOOP
+L_ERROR_MESSAGE:=NULL;
+L_BILL_QUANTITY_NUM          :=null;
+L_FINAL_QUANTITY_NUM         :=null;
+L_CANDY_NET_RATE_NUM         :=null;
+L_SELLING_RATE_NUM           :=null;
+L_CANDY_NET_FINAL_AMOUNT_NUM :=null;
+L_SELLING_AMOUNT_NUM         :=null;
+BEGIN
+ BEGIN
+   IF (boq_level.candy_net_final_amount IS NULL  ) THEN
+    L_ERROR_MESSAGE :='Invalid Candy Net Final Amount ';
+   END IF;
+  EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE:='Exception:- Invalid Candy Net Final Amount ';
+ END;
+   BEGIN
+   IF (NVL(TO_NUMBER(TRIM(boq_level.candy_net_final_amount),L_NUM_FORMAT),0) > 0) THEN
+        L_CANDY_NET_FINAL_AMOUNT_NUM:=TO_NUMBER(TRIM(boq_level.candy_net_final_amount),L_NUM_FORMAT);
+    END IF;
+    EXCEPTION WHEN OTHERS THEN
+        L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Invalid Selling Amount ';
+   END;
+  BEGIN
+   IF (NVL(TO_NUMBER(TRIM(boq_level.selling_amount),L_NUM_FORMAT),0) > 0) THEN
+    L_SELLING_AMOUNT_NUM:=TO_NUMBER(TRIM(boq_level.selling_amount),L_NUM_FORMAT);
+    END IF;
+    EXCEPTION WHEN OTHERS THEN
+      L_ERROR_MESSAGE :=NVL(L_ERROR_MESSAGE,'')||' Exception:-  Invalid Selling Amount ';
+   END;
+ 
+ BEGIN
+   IF (boq_level.selling_amount IS NULL  ) THEN
+    L_ERROR_MESSAGE :='Invalid Selling Amount ';
+   END IF;
+  EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE:='Exception:- Invalid Selling Amount ';
+ END;
+ 
+ 
+ 
+  UPDATE xxboq_validation_lines_t SET error_details=L_ERROR_MESSAGE,
+       CANDY_NET_FINAL_AMOUNT_NUM  =L_CANDY_NET_FINAL_AMOUNT_NUM        ,   
+    SELLING_AMOUNT_NUM     =L_SELLING_AMOUNT_NUM            ,   
+   
+    last_updated_date=sysdate, 
+    last_updated_by  =p_user_name WHERE CURRENT OF boq_levels_c;
+   
+  EXCEPTION WHEN OTHERS THEN
+    L_ERROR_MESSAGE:=' Exception:-  Exception Raised While Validating Line.'||SQLERRM;
+    UPDATE xxboq_validation_lines_t SET error_details=L_ERROR_MESSAGE, last_updated_date=sysdate, 
+    last_updated_by  =p_user_name WHERE CURRENT OF boq_levels_c;
+    END;
+END LOOP;
+
+--UPDATE XXBOQ_VALIDATION_HEADER_T SET TOTAL_NET_FINAL_AMOUNT = L_TOT_FINAL_AMOUNT
+--TOTAL_CANDY_NET_FINAL_AMOUNT =L_TOT_CANDY_NET_FINAL_AMNT,
+--TOTAL_CANDY_SELLING_AMOUNT=L_TOT_CANDY_SELLING_AMOUNT
+--WHERE VALIDATION_HEADER_ID = p_header_id;
+
+EXCEPTION
+WHEN OTHERS THEN
+  gv_system_message:=gv_system_message||'Error while validating BOQ Lines'||CHR(10)||SQLERRM;
+END validate_boq_lines;
+/********************************************************************************+/
+/ +-----------------------------------------------------------------------------+ /
+# Name: validate_cost_codes
+# Author: PRADEEP .N
+# Creation Date: 16-Mar-2017
+# Modified By:
+# Reason:
+# Modified On:
+# Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources
+/ +-----------------------------------------------------------------------------+/
+/********************************************************************************/
+PROCEDURE validate_cost_codes(
+    p_header_id NUMBER,
+    p_user_name VARCHAR2)
+IS
+
+  CURSOR cost_codes_c
+  IS
+    SELECT 
+     * FROM xxboq_validation_cost_code_t WHERE (upper(trim(cost_code)))<>'NOCODE' and
+     validation_header_id=p_header_id FOR UPDATE OF error_details,
+      last_updated_date,
+      last_updated_by;
+      
+  L_ERROR_MESSAGE VARCHAR2(4000);
+  
+BEGIN
+UPDATE xxboq_validation_cost_code_t SET ERROR_DETAILS=NULL;
+ 
+   FOR cost_codes_r IN cost_codes_c  LOOP
+    L_ERROR_MESSAGE := NULL;
+    
+--    BEGIN
+--      IF ( xxboq_boq_candy_pkg.is_cost_code_exists(cost_codes_r.cost_code)=0 ) THEN
+--        L_ERROR_MESSAGE:=' Cost Code mismatch,';
+--      END IF;
+--      EXCEPTION WHEN OTHERS THEN
+--        L_ERROR_MESSAGE:='Exception, Invalid Cost Code ,';
+--    END;
+--    
+    BEGIN
+        
+        SELECT NVL(L_ERROR_MESSAGE,'')||(CASE WHEN (SELECT COUNT(1) FROM XXBOQ_VALIDATION_RESOURCE_T WHERE VALIDATION_COST_CODE_ID  = cost_codes_r.VALIDATION_COST_CODE_ID AND 
+        ERROR_DETAILS IS NOT NULL)>0 THEN
+        'Errors In Resources.'
+        ELSE '' END) INTO  L_ERROR_MESSAGE FROM DUAL;
+        
+     EXCEPTION WHEN OTHERS THEN
+      L_ERROR_MESSAGE:='Exception:- Invalid Resources ,'||SQLERRM;
+    END;
+    
+    UPDATE xxboq_validation_cost_code_t  SET error_details  =L_ERROR_MESSAGE ,  last_updated_date=sysdate,
+    last_updated_by  =p_user_name
+    WHERE CURRENT OF cost_codes_c;
+  END LOOP;
+  
+ 
+   
+    --delete from xx_upload_errors_t where upload_id=p_header_id and line_number=cost_codes_r.line_sequence;
+   /*
+    IF NOT is_error_exists(cost_codes_r.validation_line_id,p_header_id) THEN
+      INSERT
+      INTO xx_upload_errors_t
+        (
+          table_code,
+          upload_id,
+          reference_number,
+          line_number,
+          column_name,
+          remarks,
+          creation_date,
+          created_by,
+          last_updated_date,
+          last_updated_by,
+          reference_id
+        )
+      SELECT 'BOQ_COST_CODES',
+        p_header_id,
+        gv_reference_number,
+        cost_codes_r.line_sequence,
+        NULL,
+        cost_codes_r.iv_cost_code,
+        sysdate,
+        p_user_name,
+        sysdate,
+        p_user_name,
+        cost_codes_r.validation_cost_code_id
+      FROM dual
+      WHERE cost_codes_r.iv_cost_code IS NOT NULL;
+    END IF;*/
+
+
+
+
+
+EXCEPTION
+WHEN OTHERS THEN
+  gv_system_message:=gv_system_message||' Error while validating cost codes,'||CHR(10)||SQLERRM;
+END validate_cost_codes;
+/********************************************************************************+/
+/ +-----------------------------------------------------------------------------+ /
+# Name: validate_resource_codes
+# Author: PRADEEP .N
+# Creation Date: 16-Mar-2017
+# Modified By:
+# Reason:
+# Modified On:
+# Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources
+/ +-----------------------------------------------------------------------------+/
+/********************************************************************************/
+PROCEDURE validate_resource_codes(
+    p_header_id NUMBER,
+    p_user_name VARCHAR2)
+IS
+
+L_NET_USE_UNIT NUMBER;
+L_FINAL_RATE   NUMBER;
+L_NUM_FORMAT   VARCHAR2(200):='99999999999999999999999999999.999999';
+  CURSOR cost_codes_c
+  IS
+    SELECT 
+     cc.validation_cost_code_id,cc.cost_code,cc.cost_code_quantity,line.BILL_QUANTITY  FROM xxboq_validation_cost_code_t cc ,
+     xxboq_validation_lines_t line 
+     WHERE line.validation_header_id = cc.validation_header_id and
+     cc.validation_header_id=p_header_id FOR UPDATE OF COST_CODE_AMOUNT;
+     
+
+  CURSOR resource_codes_c(p_validation_cost_code_id NUMBER)
+  IS
+    SELECT * 
+    FROM xxboq_validation_resource_t xvrt where 
+    (upper(trim(resource_code)))<>'NOCODE' and
+    XVRT.VALIDATION_HEADER_ID = P_HEADER_ID AND
+    VALIDATION_COST_CODE_ID = p_validation_cost_code_id for update of error_details ;
+   
+   L_ERROR_MESSAGE      VARCHAR2(4000);
+   L_RESC_AMOUNT        NUMBER :=0;
+--   L_COST_CODE_AMOUNT   NUMBER :=0;
+   
+
+   L_COST_CODE_QTY      NUMBER:=0;
+
+BEGIN
+
+UPDATE xxboq_validation_resource_t SET error_details=NULL;
+
+FOR COST_CODE IN COST_CODES_C LOOP
+--    L_COST_CODE_AMOUNT:=0;
+    L_COST_CODE_QTY:=0;
+    FOR resource_code IN resource_codes_c(COST_CODE.VALIDATION_COST_CODE_ID) LOOP
+    L_ERROR_MESSAGE :=NULL;
+    L_RESC_AMOUNT:=0;
+    L_NET_USE_UNIT :=NULL;
+    L_FINAL_RATE   :=NULL;
+      BEGIN
+      
+      
+        BEGIN
+          IF (TO_NUMBER(TRIM(RESOURCE_CODE.FINAL_RATE),L_NUM_FORMAT)>0) THEN
+                L_FINAL_RATE:=TO_NUMBER(TRIM(RESOURCE_CODE.FINAL_RATE),L_NUM_FORMAT);
+         END IF;
+           EXCEPTION WHEN OTHERS THEN
+             L_ERROR_MESSAGE:= 'Exception:- Invalid Final Rate,';
+       END; 
+     
+         BEGIN
+          IF (TO_NUMBER(TRIM(RESOURCE_CODE.NET_USE_UNIT),L_NUM_FORMAT)>0) THEN
+                L_NET_USE_UNIT:=TO_NUMBER(TRIM(RESOURCE_CODE.NET_USE_UNIT),L_NUM_FORMAT);
+          END IF;
+           EXCEPTION WHEN OTHERS THEN
+             L_ERROR_MESSAGE:= 'Exception:- Invalid Net Use Unit,';
+       END; 
+   
+      
+      BEGIN
+        IF ((RESOURCE_CODE.FINAL_RATE IS NULL AND TRIM(UPPER(COST_CODE.COST_CODE))<>'NOCODE') OR TO_NUMBER(TRIM(RESOURCE_CODE.FINAL_RATE),L_NUM_FORMAT)<0) OR TO_NUMBER(TRIM(RESOURCE_CODE.FINAL_RATE),L_NUM_FORMAT)<0 THEN 
+            L_ERROR_MESSAGE:= 'Invalid Final Rate, ';
+        END IF;
+      EXCEPTION WHEN OTHERS THEN
+         L_ERROR_MESSAGE:= 'Exception:- Invalid Final Rate,';
+       END; 
+       
+       
+       BEGIN
+        IF COST_CODE.BILL_QUANTITY IS NOT NULL  AND (RESOURCE_CODE.FINAL_RATE  IS NULL OR TO_NUMBER(TRIM(RESOURCE_CODE.FINAL_RATE),L_NUM_FORMAT) <0) THEN
+                L_ERROR_MESSAGE:='Invalid Final Rate, Resource Final Rate cannot be less than 0 as Bill Quantity is not null. ';
+        END IF;
+       EXCEPTION WHEN OTHERS THEN
+                L_ERROR_MESSAGE:='Exception:- Invalid Final Rate, Resource Final Rate cannot be less than 0 as Bill Quantity is not null. ';
+       
+       END;
+      
+      BEGIN
+        IF ((RESOURCE_CODE.NET_USE_UNIT IS NULL AND TRIM(UPPER(COST_CODE.COST_CODE))<>'NOCODE') OR TO_NUMBER(TRIM(RESOURCE_CODE.NET_USE_UNIT),L_NUM_FORMAT)<0) OR TO_NUMBER(TRIM(RESOURCE_CODE.NET_USE_UNIT),L_NUM_FORMAT)<0 THEN 
+         L_ERROR_MESSAGE:=NVL(L_ERROR_MESSAGE,'') || ' Invalid Net Use Unit,';
+        END IF;
+      EXCEPTION WHEN OTHERS THEN
+         L_ERROR_MESSAGE:= 'Exception:- Invalid Net Use Unit ,';
+      END; 
+   
+   
+--   BEGIN
+--      L_RESC_AMOUNT :=L_RESC_AMOUNT+( NVL(RESOURCE_CODE.NET_USE_UNIT,0)*NVL(resource_code.FINAL_RATE,0));
+--      L_COST_CODE_AMOUNT :=L_COST_CODE_AMOUNT + NVL(L_RESC_AMOUNT,0);
+--    EXCEPTION WHEN OTHERS THEN
+--      L_RESC_AMOUNT:=0.0;
+--        DBMS_OUTPUT.PUT_LINE('Excep L_RESC_AMOUNT === '||L_RESC_AMOUNT);
+--   END;
+--   
+   
+--    BEGIN
+--      L_COST_CODE_QTY    := L_COST_CODE_QTY+ NVL(resource_code.NET_USE_UNIT,0);  
+--    EXCEPTION WHEN OTHERS THEN
+--      
+--       L_COST_CODE_QTY:=L_COST_CODE_QTY;
+--   END;
+   
+
+      UPDATE xxboq_validation_resource_t SET 
+      error_details = L_ERROR_MESSAGE ,
+      FINAL_RATE_NUM =L_FINAL_RATE,
+      NET_USE_UNIT_NUM=L_NET_USE_UNIT,
+      last_updated_by =p_user_name,
+      last_updated_date =sysdate
+      WHERE CURRENT OF resource_codes_c;
+ 
+      EXCEPTION WHEN OTHERS THEN
+      L_ERROR_MESSAGE:=NVL(L_ERROR_MESSAGE,'') ||SQLERRM;
+       UPDATE xxboq_validation_resource_t SET error_details = L_ERROR_MESSAGE ,
+        last_updated_by =p_user_name,
+        last_updated_date =sysdate
+        WHERE CURRENT OF resource_codes_c;
+      END;
+END LOOP;
+ 
+ 
+-- UPDATE XXBOQ_VALIDATION_COST_CODE_T SET COST_CODE_AMOUNT = L_COST_CODE_AMOUNT,COST_CODE_QUANTITY= L_COST_CODE_QTY WHERE CURRENT OF COST_CODES_C;
+ 
+END LOOP;
+    --delete from xx_upload_errors_t where upload_id=p_header_id and line_number=resource_codes_r.line_sequence;
+    /*
+    IF NOT is_error_exists(resource_codes_r.validation_cost_code_id,p_header_id) THEN
+      INSERT
+      INTO xx_upload_errors_t
+        (
+          table_code,
+          upload_id,
+          reference_number,
+          line_number,
+          column_name,
+          remarks,
+          creation_date,
+          created_by,
+          last_updated_date,
+          last_updated_by
+        )
+      SELECT 'BOQ_RESOURCE_CODES',
+        p_header_id,
+        gv_reference_number,
+        resource_codes_r.line_sequence,
+        NULL,
+        resource_codes_r.no_boq_cost_code_map,
+        sysdate,
+        p_user_name,
+        sysdate,
+        p_user_name
+      FROM dual
+      WHERE resource_codes_r.no_boq_cost_code_map IS NOT NULL;
+    END IF;
+    */
+ 
+EXCEPTION
+WHEN OTHERS THEN
+  gv_system_message:=gv_system_message||'Error while validating resource codes';
+  dbms_output.put_line('Error while validating resource codes'||SQLERRM);
+END validate_resource_codes;
+/* 
+FUNCTION is_error_exists( 
+p_header_id NUMBER) 
+RETURN BOOLEAN 
+IS 
+lv_count NUMBER; 
+BEGIN 
+SELECT COUNT(1) 
+INTO lv_count 
+FROM xx_upload_errors_t 
+WHERE upload_id=p_header_id 
+AND table_code ='BOQ_LINES'; 
+IF lv_count    > 0 THEN 
+RETURN true; 
+ELSE 
+RETURN false; 
+END IF; 
+END;*/ 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: validate_boqs 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Validate_boqs(p_header_id NUMBER, 
+                          p_user_name VARCHAR2, 
+                          p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      /* 
+        gv_reference_number := get_ibc_number(p_header_id); 
+        DELETE 
+        FROM xx_upload_errors_t 
+        WHERE upload_id=p_header_id 
+        AND table_code IN ('BOQ_LINES','BOQ_COST_CODES','BOQ_RESOURCE_CODES');*/ 
+      Validate_resource_codes(p_header_id, p_user_name); 
+
+      Validate_cost_codes(p_header_id, p_user_name); 
+
+      Validate_boq_lines(p_header_id, p_user_name); 
+
+      IF gv_system_message IS NULL THEN 
+        p_message := 'Success'; 
+          COMMIT; 
+      ELSE 
+        p_message := gv_system_message; 
+
+        ROLLBACK; 
+      END IF; 
+  END validate_boqs; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: import_boq_headers 
+  # Author: PRADEEP .N 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Load_boq_headers(p_header_id NUMBER, 
+                             p_user_name VARCHAR2, 
+                             p_message   OUT VARCHAR2) 
+  IS 
+    l_master_boq_header_id NUMBER; 
+  BEGIN 
+      BEGIN 
+          SELECT master_validation_header_id 
+          INTO   l_master_boq_header_id 
+          FROM   xxboq_validation_header_t 
+          WHERE  validation_header_id = p_header_id; 
+      EXCEPTION 
+          WHEN OTHERS THEN 
+            p_message := 
+            'EXCEPTION RAISED WHILE RETRIVING MASTER BOQ HEADER ID.' 
+            ||SQLERRM; 
+      END; 
+
+      IF p_message IS NULL THEN 
+        dbms_output.Put_line('Loading Header Started'); 
+
+        INSERT INTO xxboq_bill_of_qty_hdr_t 
+                    (boq_header_id, 
+                     business_unit_id, 
+                     project_id, 
+                     version, 
+                     status, 
+                     budget_type, 
+                     ibc_number, 
+                     ibc_reason, 
+                     import_date, 
+                     revision_date, 
+                     approved_by, 
+                     approved_date, 
+                     creation_date, 
+                     created_by, 
+                     last_updated_date, 
+                     last_updated_by, 
+                     validation_header_id, 
+                     total_net_final_amount, 
+                     total_candy_net_final_amount, 
+                     total_candy_selling_amount,
+                     master_boq_header_id, 
+                     current_flag) 
+        SELECT validation_header_id, 
+               business_unit_id, 
+               project_id, 
+               version, 
+               'A', 
+               budget_type, 
+               ibc_number, 
+               ibc_reason, 
+               import_date, 
+               revision_date, 
+               NULL, 
+               NULL, 
+               SYSDATE, 
+               p_user_name, 
+               SYSDATE, 
+               p_user_name, 
+               validation_header_id, 
+               total_net_final_amount, 
+               total_candy_net_final_amount, 
+                total_candy_selling_amount,
+               master_validation_header_id, 
+               'Y' 
+        FROM   xxboq_validation_header_t 
+        WHERE  validation_header_id = p_header_id; 
+
+        BEGIN 
+            UPDATE xxboq_bill_of_qty_hdr_t 
+            SET    current_flag = 'N' 
+            WHERE  master_boq_header_id = l_master_boq_header_id 
+                   AND boq_header_id != p_header_id; 
+        EXCEPTION 
+            WHEN OTHERS THEN 
+              p_message := 
+              'EXCEPTION RAISED WHILE UPDATING CURRENT FLAG TO N  IS FIALED. ' 
+              ||SQLERRM; 
+        END; 
+
+        IF p_message IS NULL THEN 
+          p_message := 'Success'; 
+
+          dbms_output.Put_line('Loading Header Ended'); 
+        END IF; 
+      END IF; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error while importing boq header. ' 
+                            ||SQLERRM; 
+
+               dbms_output.Put_line(p_message); 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: import_boq_lines 
+  # Author: PRADEEP .N 
+  # Creation Date: 16-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Load_boq_lines(p_header_id NUMBER, 
+                           p_user_name VARCHAR2, 
+                           p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      dbms_output.Put_line('Loading Lines Started'); 
+
+      INSERT INTO xxboq_bill_of_qty_lines_t 
+                  (boq_line_id, 
+                   boq_header_id, 
+                   boq_level, 
+                   page_item, 
+                   item, 
+                   description, 
+                   bill_qty, 
+                   final_qty, 
+                   uom, 
+                   candy_net_rate, 
+                   net_rate, 
+                   selling_rate, 
+                   candy_net_final_amount, 
+                   net_final_rate, 
+                   selling_amount, 
+                   trade, 
+                   price_code, 
+                   activity_code, 
+                   absolute_error, 
+                   error_percentage, 
+                   error_details, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   work_done_qty, 
+                   invoiced_qty, 
+                   certified_qty, 
+                   net_final_amount, 
+                   validation_line_id, 
+                   master_boq_line_id) 
+      SELECT validation_line_id, 
+             validation_header_id, 
+             boq_level, 
+             page_item, 
+             item, 
+             bill_description, 
+             bill_quantity, 
+             final_quantity, 
+             uom, 
+             CANDY_NET_RATE_NUM, 
+             NULL net_rate, 
+             SELLING_RATE_NUM, 
+             CANDY_NET_FINAL_AMOUNT_NUM, 
+             NULL net_final_rate, 
+             SELLING_AMOUNT_NUM, 
+             trade, 
+             price_code, 
+             ''   activity_code, 
+             absolute_error, 
+             error_percentage, 
+             error_details, 
+             SYSDATE, 
+             p_user_name, 
+             SYSDATE, 
+             p_user_name, 
+             NULL work_done_qty, 
+             NULL invoiced_qty, 
+             NULL certified_qty, 
+             net_final_amount, 
+             validation_line_id, 
+             master_validation_line_id 
+      FROM   xxboq_validation_lines_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      p_message := 'Success'; 
+
+      dbms_output.Put_line('Loading Lines Ended'); 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error while importing boq lines. ' 
+                            ||SQLERRM; 
+
+               dbms_output.Put_line(p_message); 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: import_cost_codes 
+  # Author: PRADEEP.N 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Load_cost_codes(p_header_id NUMBER, 
+                            p_user_name VARCHAR2, 
+                            p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      dbms_output.Put_line('Loading CC Started'); 
+
+      INSERT INTO xxboq_cost_codes_t 
+                  (cost_code_id, 
+                   boq_line_id, 
+                   boq_header_id, 
+                   cost_code, 
+                   cost_code_desc, 
+                   uom, 
+                   cost_code_qty, 
+                   cost_code_amount, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   validation_cost_code_id) 
+      SELECT validation_cost_code_id, 
+             validation_line_id, 
+             validation_header_id, 
+             cost_code, 
+             cost_code_description, 
+             NULL uom, 
+             cost_code_quantity, 
+             cost_code_amount, 
+             SYSDATE, 
+             p_user_name, 
+             SYSDATE, 
+             p_user_name, 
+             validation_cost_code_id 
+      FROM   xxboq_validation_cost_code_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      p_message := 'Success'; 
+
+      dbms_output.Put_line('Loading CC Started'); 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error while importing cost codes. ' 
+                            ||SQLERRM; 
+
+               dbms_output.Put_line(p_message); 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: import_resource_codes 
+  # Author: PRADEEP. N 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Load_resource_codes(p_header_id NUMBER, 
+                                p_user_name VARCHAR2, 
+                                p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      dbms_output.Put_line('Loading Resources Started'); 
+
+      INSERT INTO xxboq_boq_resources_t 
+                  (resource_id, 
+                   cost_code_id, 
+                   resource_desc, 
+                   resource_uom, 
+                   net_useunit, 
+                   final_rate, 
+                   resource_value, 
+                   creation_date, 
+                   created_by, 
+                   last_updated_date, 
+                   last_updated_by, 
+                   resource_code) 
+      SELECT validation_resource_id, 
+             validation_cost_code_id, 
+             resource_description, 
+             uom, 
+             net_use_unit_num, 
+             final_rate_num, 
+             Nvl(net_use_unit_num, 0) * Nvl(final_rate_num, 0) resource_value,  
+             SYSDATE, 
+             p_user_name, 
+             SYSDATE, 
+             p_user_name, 
+             resource_code 
+      FROM   xxboq_validation_resource_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      p_message := 'Success'; 
+
+      dbms_output.Put_line('Loading Resources Ended'); 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error while importing resource codes. ' 
+                            ||SQLERRM; 
+
+               dbms_output.Put_line(p_message); 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: update_cost_code_values 
+  # Author: SRINADH.CH 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Update_cost_code_values(p_header_id NUMBER, 
+                                    p_user_name VARCHAR2, 
+                                    p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      UPDATE xxboq_cost_codes_t xcct 
+      SET    ( cost_code_qty, cost_code_amount, last_updated_date, 
+               last_updated_by 
+             ) = 
+             ( 
+                    SELECT SUM(net_useunit), 
+                    SUM(final_rate), 
+                    SYSDATE, 
+                    p_user_name 
+             FROM 
+                    xxboq_boq_resources_t xbrt 
+             WHERE 
+                    xbrt.cost_code_id = xcct.cost_code_id) 
+      WHERE  cost_code_id IN (SELECT cost_code_id 
+                              FROM   xxboq_cost_codes_t 
+                              WHERE  boq_header_id = p_header_id); 
+
+      p_message := 'Success'; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               p_message := 'Error while updating cost code values. ' 
+                            ||SQLERRM; 
+  END update_cost_code_values; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: import_boqs 
+  # Author: PRADEEP. N 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Load_boqs(p_header_id NUMBER, 
+                      p_user_name VARCHAR2, 
+                      p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      Load_boq_headers(p_header_id, p_user_name, p_message); 
+      IF( p_message = 'Success' ) THEN 
+        Load_boq_lines(p_header_id, p_user_name, p_message); 
+        IF( p_message = 'Success' ) THEN 
+          Load_cost_codes(p_header_id, p_user_name, p_message); 
+          IF( p_message = 'Success' ) THEN 
+            Load_resource_codes(p_header_id, p_user_name, p_message); 
+            --            if(p_message = 'Success') then 
+            --                  update_cost_code_values(p_header_id,p_user_name,p_message ); 
+            IF( p_message = 'Success' ) THEN 
+              --                  clear_validation_data(p_header_id,p_message); 
+              Clear_uploaded_data(p_header_id, p_message); 
+
+              UPDATE xxboq_validation_header_t 
+              SET    status = 'E' 
+              WHERE  validation_header_id = p_header_id; 
+            END IF; 
+          --            end if; 
+          END IF; 
+        END IF; 
+      END IF; --header import 
+      IF p_message != 'Success' THEN 
+        -- 
+        p_message := p_message 
+                     ||' , ' 
+                     ||gv_system_message; 
+
+        ROLLBACK; 
+      END IF; 
+  END; 
+  /********************************************************************************+/ 
+  / +-----------------------------------------------------------------------------+ / 
+  # Name: clear_validation_data 
+  # Author: SRINADH.CH 
+  # Creation Date: 17-Mar-2017 
+  # Modified By: 
+  # Reason: 
+  # Modified On: 
+  # Description: To split uploaded BOQ into BOQ lines and Cost Code and Resources 
+  / +-----------------------------------------------------------------------------+/ 
+  /********************************************************************************/ 
+  PROCEDURE Clear_validation_data(p_header_id NUMBER, 
+                                  p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      --DELETE FROM xxboq_validation_header_t where validation_header_id=p_header_id; 
+      DELETE FROM xxboq_validation_lines_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      DELETE FROM xxboq_validation_cost_code_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      DELETE FROM xxboq_validation_resource_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      --  COMMIT; 
+      p_message := 'Success'; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               ROLLBACK; 
+
+               gv_system_message := gv_system_message 
+                                    ||'Error while clearing validaion data'; 
+  END clear_validation_data; 
+  PROCEDURE Clear_uploaded_data(p_header_id NUMBER, 
+                                p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      DELETE FROM xxboq_upload_t 
+      WHERE  validation_header_id = p_header_id; 
+
+      --  COMMIT; 
+      p_message := 'Success'; 
+  EXCEPTION 
+    WHEN OTHERS THEN 
+               ROLLBACK; 
+
+               gv_system_message := gv_system_message 
+                                    ||'Error while clearing validaion data'; 
+  END clear_uploaded_data; 
+  FUNCTION Get_max_line_seq(p_header_id NUMBER) 
+  RETURN NUMBER 
+  IS 
+    lv_line_number NUMBER; 
+  BEGIN 
+      SELECT Max(line_sequence) 
+      INTO   lv_line_number 
+      FROM   (SELECT Max(line_sequence) line_sequence 
+              FROM   xxboq_validation_lines_t 
+              WHERE  validation_header_id = p_header_id 
+              UNION ALL 
+              SELECT Max(line_sequence) 
+              FROM   xxboq_validation_cost_code_t 
+              WHERE  validation_header_id = p_header_id 
+              UNION ALL 
+              SELECT Max(line_sequence) 
+              FROM   xxboq_validation_resource_t 
+              WHERE  validation_header_id = p_header_id); 
+
+      RETURN lv_line_number; 
+  END get_max_line_seq; 
+  PROCEDURE Update_line_sequence(p_header_id NUMBER) 
+  IS 
+    CURSOR upload_c IS 
+      SELECT line_sequence 
+      FROM   xxboq_upload_t 
+      WHERE  validation_header_id = p_header_id 
+      ORDER  BY line_sequence 
+      FOR UPDATE OF line_sequence; 
+    lv_sequence NUMBER := Get_max_line_seq(p_header_id); 
+  BEGIN 
+      FOR upload_r IN upload_c LOOP 
+          lv_sequence := lv_sequence + 1; 
+
+          dbms_output.Put_line('Line Sequence' 
+                               ||lv_sequence); 
+
+          UPDATE xxboq_upload_t 
+          SET    line_sequence = lv_sequence 
+          WHERE  CURRENT OF upload_c; 
+      END LOOP; 
+  --  COMMIT; 
+  END update_line_sequence; 
+  PROCEDURE Update_boqs(p_header_id NUMBER, 
+                        p_user_name VARCHAR2, 
+                        p_message   OUT VARCHAR2) 
+  IS 
+    CURSOR boq_c IS 
+      SELECT boq_level, 
+             page_item, 
+             item, 
+             bill_description, 
+             bill_quantity, 
+             final_quantity, 
+             uom, 
+             candy_net_rate, 
+             selling_rate, 
+             candy_net_final_amount, 
+             selling_amount, 
+             trade, 
+             price_code, 
+             cost_code, 
+             cost_code_description, 
+             resource_code, 
+             resource_description, 
+             resource_uom, 
+             net_use_unit, 
+             final_rate, 
+             line_sequence, 
+             line_number 
+      FROM   xxboq_upload_t 
+      WHERE  validation_header_id = p_header_id 
+             AND Upper(Nvl(boq_level, -9999)) <> 'C' 
+             AND Coalesce(boq_level, page_item, item, bill_description, 
+                 bill_quantity, 
+                     final_quantity, uom, candy_net_rate, selling_rate, 
+                 candy_net_final_amount, 
+                     selling_amount, trade, price_code, cost_code, 
+                 cost_code_description, 
+                     resource_code, resource_description, resource_uom, 
+                 net_use_unit 
+                 , 
+                 final_rate) IS NOT NULL 
+      ORDER  BY line_sequence; 
+    lv_boq_line_id  NUMBER := -9999; 
+    lv_cost_code_id NUMBER := -9999; 
+    lv_resource_id  NUMBER := -9999; 
+  BEGIN 
+      FOR boq_r IN boq_c LOOP 
+          --lv_boq_line_id    := get_boq_line_id(p_header_id,COALESCE(boq_r.boq_level,boq_r.price_code),boq_r.page_item,boq_r.item);
+          IF boq_r.page_item IS NOT NULL THEN 
+            lv_boq_line_id := Get_boq_line_id(p_header_id, boq_r.line_number); 
+          END IF; 
+
+          IF lv_boq_line_id <>- 9999 
+             AND boq_r.page_item IS NOT NULL THEN 
+            BEGIN 
+                UPDATE xxboq_validation_lines_t 
+                SET    ( boq_level, page_item, item, bill_description, 
+                         bill_quantity, final_quantity, uom, candy_net_rate, 
+                         selling_rate, candy_net_final_amount, selling_amount, 
+                         trade, 
+                         price_code, absolute_error, error_details, 
+                         last_updated_date, 
+                         last_updated_by, error_percentage ) = (SELECT 
+                       boq_r.boq_level, 
+                       boq_r.page_item, 
+                       boq_r.item, 
+            boq_r.bill_description, 
+            boq_r.bill_quantity, 
+            boq_r.final_quantity, 
+            boq_r.uom, 
+            boq_r.candy_net_rate, 
+            boq_r.selling_rate, 
+            boq_r.candy_net_final_amount, 
+            boq_r.selling_amount, 
+            boq_r.trade, 
+            boq_r.price_code, 
+            NULL, 
+            CASE 
+            WHEN 
+            Upper(boq_r.bill_quantity 
+            || boq_r.final_quantity 
+            ||boq_r.candy_net_rate 
+            || boq_r.selling_rate 
+            || boq_r.candy_net_final_amount 
+            || boq_r.selling_amount 
+            ||boq_r.net_use_unit 
+            || boq_r.final_rate) <> 
+            Lower(boq_r.bill_quantity 
+            || boq_r.final_quantity 
+            ||boq_r.candy_net_rate 
+            || boq_r.selling_rate 
+            || boq_r.candy_net_final_amount 
+            || boq_r.selling_amount 
+            ||boq_r.net_use_unit 
+            || boq_r.final_rate) THEN 
+            'Data type mismatch' 
+            END, 
+            SYSDATE, 
+            p_user_name, 
+            NULL 
+            FROM   dual) 
+            WHERE  validation_line_id = lv_boq_line_id; 
+            EXCEPTION 
+                WHEN OTHERS THEN 
+                  gv_system_message := 'Error while updating BOQ items'; 
+            END; 
+          ELSIF lv_boq_line_id = -9999 
+                AND boq_r.page_item IS NULL THEN 
+            NULL; 
+          ELSIF lv_boq_line_id = -9999 
+                AND boq_r.page_item IS NOT NULL THEN 
+                    gv_system_message := 
+'Found new BOQ items while updating. Please choose Append option to add new BOQs' 
+          ; 
+END IF; 
+
+--lv_cost_code_id    :=get_cost_code_id (lv_boq_line_id,p_header_id,boq_r.cost_code ); 
+IF boq_r.cost_code IS NOT NULL THEN 
+  BEGIN 
+      UPDATE xxboq_validation_cost_code_t 
+      SET    ( cost_code_description, error_details, last_updated_date, 
+               last_updated_by, 
+                      cost_code ) = (SELECT boq_r.cost_code_description, 
+                                            CASE 
+                                              WHEN 
+                                    Upper(boq_r.bill_quantity 
+                                          || boq_r.final_quantity 
+                                          ||boq_r.candy_net_rate 
+                                          || boq_r.selling_rate 
+                                          || boq_r.candy_net_final_amount 
+                                          || boq_r.selling_amount 
+                                          ||boq_r.net_use_unit 
+                                          || boq_r.final_rate) <> 
+                                    Lower(boq_r.bill_quantity 
+                                          || boq_r.final_quantity 
+                                          ||boq_r.candy_net_rate 
+                                          || boq_r.selling_rate 
+                                          || boq_r.candy_net_final_amount 
+                                          || boq_r.selling_amount 
+                                          ||boq_r.net_use_unit 
+                                          || boq_r.final_rate) THEN 
+                                              'Data type mismatch' 
+                                            END, 
+                                            SYSDATE, 
+                                            p_user_name, 
+                                            boq_r.cost_code 
+                                     FROM   dual) 
+      WHERE  line_sequence = boq_r.line_number 
+             AND validation_header_id = p_header_id 
+             AND validation_line_id = lv_boq_line_id; 
+  --validation_cost_code_id=lv_cost_code_id; 
+  EXCEPTION 
+      WHEN OTHERS THEN 
+        gv_system_message := 'Error while updating Cost Codes'; 
+  END; 
+END IF; 
+
+--ELSE 
+--gv_system_message:='Found new Cost Codes while updating'; 
+--END IF; 
+--IF lv_boq_line_id <> -9999 AND lv_cost_code_id <> -9999 AND boq_r.resource_code IS NOT NULL AND get_resource_code_id( lv_boq_line_id , lv_cost_code_id , boq_r.resource_code) <> -9999 THEN
+BEGIN 
+    UPDATE xxboq_validation_resource_t 
+    SET    ( resource_code, resource_description, uom, net_use_unit, 
+             final_rate, error_details, last_updated_date, last_updated_by ) = 
+                  (SELECT boq_r.resource_code, 
+                  boq_r.resource_description, 
+                  boq_r.uom, 
+                  boq_r.net_use_unit, 
+                  boq_r.final_rate, 
+                  CASE 
+                    WHEN Upper(boq_r.bill_quantity 
+                               || boq_r.final_quantity 
+                               ||boq_r.candy_net_rate 
+                               || boq_r.selling_rate 
+                               || boq_r.candy_net_final_amount 
+                               || boq_r.selling_amount 
+                               ||boq_r.net_use_unit 
+                               || boq_r.final_rate) <> 
+                         Lower(boq_r.bill_quantity 
+                               || boq_r.final_quantity 
+                               ||boq_r.candy_net_rate 
+                               || boq_r.selling_rate 
+                               || boq_r.candy_net_final_amount 
+                               || boq_r.selling_amount 
+                               ||boq_r.net_use_unit 
+                               || boq_r.final_rate) THEN 
+                    'Data type mismatch' 
+                  END, 
+                  SYSDATE, 
+                  p_user_name 
+                  FROM 
+                  dual 
+                  ) 
+    WHERE  validation_header_id = p_header_id 
+           AND validation_line_id = lv_boq_line_id 
+           AND line_sequence = boq_r.line_number; 
+--validation_resource_id=lv_resource_id; 
+EXCEPTION 
+    WHEN OTHERS THEN 
+      gv_system_message := 'Error while updating Resources'; 
+END; 
+--ELSE 
+--gv_system_message:='Found new Resource Codes while updating'; 
+--END IF; 
+END LOOP; 
+
+--  update_validation_hdr_status(p_header_id,'In Valid'); 
+IF gv_system_message IS NULL THEN 
+  p_message := 'Success'; 
+--    COMMIT; 
+ELSE 
+  p_message := gv_system_message; 
+
+  ROLLBACK; 
+END IF; 
+END update_boqs; 
+  PROCEDURE Append_boqs(p_header_id NUMBER, 
+                        p_user_name VARCHAR2, 
+                        p_message   OUT VARCHAR2) 
+  IS 
+  BEGIN 
+      Update_line_sequence(p_header_id); 
+
+      Split_boqs(p_header_id, p_user_name, p_message); 
+  END; 
+  PROCEDURE Update_boq_qty_hdr_status(p_hdr_id NUMBER, 
+                                      p_from   VARCHAR2) 
+  IS 
+    l_doc_num    VARCHAR2(30); 
+    CURSOR lines_c( 
+      hdr_id NUMBER) IS 
+      SELECT * 
+      FROM   xxboq_work_done_lines_t 
+      WHERE  wd_header_id = hdr_id; 
+    lines_r      xxboq_work_done_lines_t%ROWTYPE; 
+    CURSOR inv_lines_c( 
+      hdr_id NUMBER) IS 
+      SELECT * 
+      FROM   xxboq_invoice_lines_t 
+      WHERE  invoice_header_id = hdr_id; 
+    inv_lines_r  xxboq_invoice_lines_t%ROWTYPE; 
+    CURSOR cert_lines_c( 
+      hdr_id NUMBER) IS 
+      SELECT * 
+      FROM   xxboq_certified_lines_t 
+      WHERE  certified_header_id = hdr_id; 
+    cert_lines_r xxboq_certified_lines_t%ROWTYPE; 
+  BEGIN 
+      IF p_from = 'W' THEN 
+        SELECT wd_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_work_done_details_t 
+        WHERE  wd_header_id = p_hdr_id; 
+
+        UPDATE xxboq_work_done_details_t 
+        SET    wd_status = 'Revised' 
+        WHERE  wd_header_id <> p_hdr_id 
+               AND wd_document_num = l_doc_num; 
+
+        FOR lines_r IN lines_c ( p_hdr_id ) LOOP 
+            UPDATE xxboq_bill_of_qty_lines_t 
+            SET    work_done_qty = lines_r.wd_cummulative_qty 
+            WHERE  boq_header_id = lines_r.boq_header_id 
+                   AND boq_line_id = lines_r.boq_line_id; 
+        END LOOP; 
+      ELSIF p_from = 'I' THEN 
+        SELECT invoice_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_invoice_details_t 
+        WHERE  invoice_header_id = p_hdr_id; 
+
+        UPDATE xxboq_invoice_details_t 
+        SET    invoice_status = 'Revised' 
+        WHERE  invoice_header_id <> p_hdr_id 
+               AND invoice_document_num = l_doc_num; 
+
+        FOR inv_lines_r IN inv_lines_c ( p_hdr_id ) LOOP 
+            UPDATE xxboq_bill_of_qty_lines_t 
+            SET    invoiced_qty = inv_lines_r.invoice_cummulative_qty 
+            WHERE  boq_header_id = inv_lines_r.boq_header_id 
+                   AND boq_line_id = inv_lines_r.boq_line_id; 
+        END LOOP; 
+      ELSIF p_from = 'C' THEN 
+        SELECT certified_document_num 
+        INTO   l_doc_num 
+        FROM   xxboq_certified_details_t 
+        WHERE  certified_header_id = p_hdr_id; 
+
+        UPDATE xxboq_certified_details_t 
+        SET    certified_status = 'Revised' 
+        WHERE  certified_header_id <> p_hdr_id 
+               AND certified_document_num = l_doc_num; 
+
+        FOR cert_lines_r IN cert_lines_c ( p_hdr_id ) LOOP 
+            UPDATE xxboq_bill_of_qty_lines_t 
+            SET    certified_qty = cert_lines_r.certified_cummulative_qty 
+            WHERE  boq_header_id = cert_lines_r.boq_header_id 
+                   AND boq_line_id = cert_lines_r.boq_line_id; 
+        END LOOP; 
+      END IF; 
+  --  COMMIT; 
+  END update_boq_qty_hdr_status; 
+END xxboq_boq_candy_pkg;

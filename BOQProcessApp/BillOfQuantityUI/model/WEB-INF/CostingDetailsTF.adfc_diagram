@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<SDM>
+   <OverallProperties
+      id="OverallProperties1"/>
+   <View
+      id="View2">
+      <property
+         name="activityId">CostingDetailsSearch</property>
+      <property
+         name="page">/pagefragments/CostingDetailsSearch.jsff</property>
+      <property
+         name="start">true</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>CostingDetailsSearch&lt;/b> (Default Activity)&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">119.59766</property>
+      <property
+         name="x">196.0</property>
+      <property
+         name="pageFragment">true</property>
+   </View>
+   <View
+      id="View3">
+      <property
+         name="activityId">JobItemCostingDetails</property>
+      <property
+         name="page">/pagefragments/JobItemCostingDetails.jsff</property>
+      <property
+         name="description">&lt;html>&lt;p>&lt;b>JobItemCostingDetails&lt;/b>&lt;/p>&lt;p>Activity Type:  View&lt;/p></property>
+      <property
+         name="exceptionHandler">false</property>
+      <property
+         name="y">110.59766</property>
+      <property
+         name="pageFragment">true</property>
+      <property
+         name="x">412.0</property>
+   </View>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase4"
+      from="View2"
+      to="View3">
+      <property
+         name="fromOutcome">costingDetails</property>
+      <property
+         name="sdm:polyPoints">R46,237.0,115.74707,370.76498,106.74707,L46</property>
+   </ControlFlowCase>
+   <ControlFlowCase
+      islink="true"
+      id="ControlFlowCase5"
+      from="View3"
+      to="View2">
+      <property
+         name="fromOutcome">done</property>
+      <property
+         name="sdm:polyPoints">L54,371.0,113.74707,237.23482,122.74707,R54</property>
+   </ControlFlowCase>
+</SDM>

@@ -1,0 +1,421 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelGroupLayout layout="scroll" id="pgl2">
+    <af:panelGroupLayout layout="vertical" id="pgl1">
+      <af:panelHeader text="Create Bill of Quantities" id="ph1">
+        <af:query id="qryId1" headerText="Search" disclosed="true"
+                  value="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery1.queryDescriptor}"
+                  model="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery1.queryModel}"
+                  queryListener="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery1.processQuery}"
+                  queryOperationListener="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery1.processQueryOperation}"
+                  maxColumns="2" rows="2" labelWidth="50%" fieldWidth="50%"
+                  resultComponentId="::pc1:resId1" saveQueryMode="hidden"/>
+      </af:panelHeader>
+      <af:showDetailHeader text="Search Results" disclosed="true" id="sdh1">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+          <f:facet name="toolbar">
+            <af:toolbar id="t1" styleClass="AFStretchWidth">
+              <af:commandImageLink id="cb1" icon="/images/create_1.png"
+                                   hoverIcon="/images/create_active.png"
+                                   disabledIcon="/images/create_disable.png"
+                                   actionListener="#{backingBeanScope.BoqUploadValidationBean.createBoqUploadAL}"
+                                   shortDesc="Create"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_UPLOAD_PL_ROLE=='Y'}"/>
+              <af:commandImageLink id="cb2" icon="/images/edit.png"
+                                   partialTriggers="resId1 ::qryId1"
+                                   disabledIcon="/images/edit_disable.png"
+                                   disabled="#{backingBeanScope.BoqUploadValidationBean.BOQValidationHeaderTableBind.rowCount==0}"
+                                   actionListener="#{backingBeanScope.BoqUploadValidationBean.editBoqUploadAL}"
+                                   hoverIcon="/images/edit_active.png"
+                                   shortDesc="Edit"/>
+              <af:commandImageLink id="cb3" icon="/images/delete.png"
+                                   hoverIcon="/images/delete_active.png"
+                                   disabledIcon="/images/delete_disable.png"
+                                   disabled="#{!(bindings.Status.inputValue=='D') || backingBeanScope.BoqUploadValidationBean.BOQValidationHeaderTableBind.rowCount==0}"
+                                   partialTriggers="resId1 ::qryId1"
+                                   shortDesc="Delete"
+                                   rendered="#{sessionScope.userRoles.XXCUST_BOQ_UPLOAD_PL_ROLE=='Y'}">
+                <af:showPopupBehavior popupId="::p6"/>
+              </af:commandImageLink>
+              <af:outputText value="#{bindings.ValidationHeaderId.inputValue}"
+                             id="ot19" rendered="false">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.ValidationHeaderId.format}"/>
+              </af:outputText>
+              <af:commandButton text="Export to Excel" partialTriggers="resId1"
+                                        id="cmi10">
+                      <af:exportCollectionActionListener type="excelHTML"
+                                                         filename="Export.xlsx"
+                                                         exportedId="resId1"/>
+            </af:commandButton>
+              <af:outputText value="#{bindings.Status.inputValue}" id="ot18"
+                             rendered="false"/>
+              <af:outputText value="#{bindings.ProjectId.inputValue}" id="ot22" rendered="false">
+              </af:outputText>
+              <!--<af:commandButton text="Revise" id="cb3"
+                            actionListener="#{backingBeanScope.BoqUploadValidationBean.createBoqReviceAL}"/>-->
+            </af:toolbar>
+          </f:facet>
+          <af:table value="#{bindings.BoqValidationHeaderSearchVO1.collectionModel}"
+                    var="row" styleClass="AFStretchWidth"
+                    rows="#{bindings.BoqValidationHeaderSearchVO1.rangeSize}"
+                    emptyText="#{bindings.BoqValidationHeaderSearchVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="#{bindings.BoqValidationHeaderSearchVO1.rangeSize}"
+                    rowBandingInterval="0"
+                    filterModel="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery.queryDescriptor}"
+                    queryListener="#{bindings.BoqValidationHeaderSearchVOCriteriaQuery.processQuery}"
+                    filterVisible="false" varStatus="vs"
+                    selectedRowKeys="#{bindings.BoqValidationHeaderSearchVO1.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.BoqValidationHeaderSearchVO1.collectionModel.makeCurrent}"
+                    rowSelection="single" id="resId1"
+                    binding="#{backingBeanScope.BoqUploadValidationBean.BOQValidationHeaderTableBind}">
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.ProjectName.name}"
+                       filterable="true" sortable="true" frozen="true" rendered="false"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ProjectName.label}"
+                       id="resId1c2" width="200%">
+              <af:outputText value="#{row.ProjectName}" id="ot3"/>
+              <af:commandLink text="#{row.ProjectName}" id="cl3" rendered="false">
+                <af:showPopupBehavior popupId=":::p4"/>
+              </af:commandLink>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.ProjectNumber1.name}"
+                       filterable="true" sortable="true" frozen="true" rendered="false"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ProjectNumber1.label}"
+                       id="c7" width="100%">
+              <af:commandLink text="#{row.ProjectNumber1}" id="ot115"
+                              actionListener="#{backingBeanScope.BoqUploadValidationBean.editBoqUploadAL}"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.Cognomen.label}"
+                       id="c16" sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.Cognomen.name}"
+                       filterable="true" sortable="true" frozen="true" width="200%">
+              <af:outputText value="#{row.Cognomen}" id="ot23"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ContractNumber.label}"
+                       id="c17" sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.ContractNumber.name}"
+                       filterable="true" sortable="true" frozen="true" width="100%">
+              <af:commandLink text="#{row.ContractNumber}" id="cl4"
+                              actionListener="#{backingBeanScope.BoqUploadValidationBean.editBoqUploadAL}"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.Version.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.Version.label}"
+                       id="resId1c4">
+              <af:outputText value="#{row.Version}" id="ot1">
+                <af:convertNumber groupingUsed="false"
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.Version.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransStatus.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransStatus.label}"
+                       id="resId1c5">
+              <af:outputText value="#{row.TransStatus}" id="ot8"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransBudgetType1.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransBudgetType1.label}"
+                       id="c8">
+              <af:outputText value="#{row.TransBudgetType1}" id="ot5"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransCustomerName.label}"
+                       id="c11" width="150">
+              <af:outputText value="#{row.TransCustomerName}" id="ot16"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.BuName1.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.BuName1.label}"
+                       id="c6" width="200%">
+              <af:outputText value="#{row.BuName1}" id="ot15"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalRevenue.label}"
+                       id="c12" align="right" filterable="true" sortable="true"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalRevenue.name}">
+              <af:outputText value="#{row.TransTotalRevenue}" id="ot17">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalRevenue.format}"/>
+              </af:outputText>
+            </af:column>
+            <!--<af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransCandyNetFinalAmountTotal.label}"
+                     align="right" id="c1"
+                     sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransCandyNetFinalAmountTotal.name}"
+                     filterable="true" sortable="true">
+            <af:outputText value="#{row.TransCandyNetFinalAmountTotal}" id="ot4">
+              <af:convertNumber groupingUsed="true" type="currency"
+                                currencySymbol=" "  minFractionDigits="#{bindings.TransPrecision.inputValue}" maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                 pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransCandyNetFinalAmountTotal.format}"/>
+            </af:outputText>
+          </af:column>-->
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalCostBudget.label}"
+                       align="right" id="c2"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalCostBudget.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransTotalCostBudget}" id="ot12">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalCostBudget.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransNetFinalAmountTotal.label}"
+                       align="right" id="c14" rendered="false"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransNetFinalAmountTotal.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransNetFinalAmountTotal}" id="ot20">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransNetFinalAmountTotal.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalAbsoluteError.label}"
+                       align="right" id="c3" rendered="false"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalAbsoluteError.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransTotalAbsoluteError}" id="ot13">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  minFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  maxFractionDigits="#{bindings.TransPrecision.inputValue}"
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalAbsoluteError.format}"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalErrorPercentage.label}"
+                       align="right" id="c4" rendered="false"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalErrorPercentage.name}"
+                       filterable="true" sortable="true">
+              <af:outputText value="#{row.TransTotalErrorPercentage}" id="ot14">
+                <af:convertNumber groupingUsed="true" type="currency"
+                                  currencySymbol=" "
+                                  pattern="#{bindings.BoqValidationHeaderSearchVO1.hints.TransTotalErrorPercentage.format}"/>
+              </af:outputText>
+            </af:column>
+            <!--<af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.IbcNumber.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.IbcNumber.label}"
+                   id="resId1c7">
+          <af:outputText value="#{row.IbcNumber}" id="ot4"/>
+        </af:column>-->
+            <af:column headerText="Current Flag" id="c5"  rendered="false">
+              <af:selectBooleanCheckbox value="#{row.bindings.CurrentFlag.inputValue}"
+                                        label="#{row.bindings.CurrentFlag.label}"
+                                        readOnly="true"
+                                        shortDesc="#{bindings.BoqValidationHeaderSearchVO1.hints.CurrentFlag.tooltip}"
+                                        id="sbc1"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.BaseLine.label}" rendered="false"
+                       id="c13">
+              <af:selectBooleanCheckbox value="#{row.bindings.BaseLine.inputValue}"
+                                        label="#{row.bindings.BaseLine.label}" readOnly="true"
+                                        shortDesc="#{bindings.BoqValidationHeaderSearchVO1.hints.BaseLine.tooltip}"
+                                        id="sbc2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.CreatedBy.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.CreatedBy.label}"
+                       id="resId1c8">
+              <af:outputText value="#{row.CreatedBy}" id="ot9"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.CreationDate.label}"
+                       id="c15">
+              <af:outputText value="#{row.CreationDate}" id="ot21">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.ApprovedBy.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ApprovedBy.label}"
+                       id="resId1c9">
+              <af:outputText value="#{row.ApprovedBy}" id="ot2"/>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.RevisionDate.label}"
+                       id="c1" rendered="false">
+              <af:outputText value="#{row.RevisionDate}" id="ot4">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+            <af:column sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.ApprovedDate.name}"
+                       filterable="true" sortable="true"
+                       headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ApprovedDate.label}"
+                       id="resId1c10">
+              <f:facet name="filter">
+                <af:inputDate value="#{vs.filterCriteria.ApprovedDate}"
+                              id="id1"/>
+              </f:facet>
+              <af:outputText value="#{row.ApprovedDate}" id="ot10">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.ImportDate.label}"
+                       id="c9">
+              <af:outputText value="#{row.ImportDate}" id="ot6">
+                <af:convertDateTime pattern="dd-MMM-yyyy"/>
+              </af:outputText>
+            </af:column>
+            <af:column headerText="#{bindings.BoqValidationHeaderSearchVO1.hints.FileName.label}"
+                       id="c10" width="150" sortable="true" filterable="true"
+                       sortProperty="#{bindings.BoqValidationHeaderSearchVO1.hints.FileName.name}">
+              <af:outputText value="#{row.FileName}" id="ot7"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:showDetailHeader>
+      <af:popup id="p1" contentDelivery="lazyUncached"
+                popupCanceledListener="#{backingBeanScope.BoqUploadValidationBean.boqUploadPopupCL}"
+                binding="#{backingBeanScope.BoqUploadValidationBean.boqUploadPopupBindgs}">
+        <af:dialog id="d1" title="Create/ Revise Document" resize="off" type="none"
+                   stretchChildren="none">
+          <af:panelFormLayout id="pfl1">
+            <af:inputComboboxListOfValues id="transBuNameId"
+                                          popupTitle="Search and Select: #{bindings.TransBuName.hints.label}"
+                                          value="#{bindings.TransBuName.inputValue}"
+                                          label="#{bindings.TransBuName.hints.label}"
+                                          model="#{bindings.TransBuName.listOfValuesModel}"
+                                          required="true" showRequired="true"
+                                          columns="#{bindings.TransBuName.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransBuName.hints.tooltip}"
+                                          autoSubmit="true">
+              <f:validator binding="#{bindings.TransBuName.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transPrjNumId" rendered="false"
+                                          popupTitle="Search and Select: #{bindings.TransPrjNum.hints.label}"
+                                          value="#{bindings.TransPrjNum.inputValue}"
+                                          label="#{bindings.TransPrjNum.hints.label}"
+                                          model="#{bindings.TransPrjNum.listOfValuesModel}"
+                                          required="true" showRequired="true"
+                                          columns="#{bindings.TransPrjNum.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransPrjNum.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.BoqUploadValidationBean.ProjectNumberVL}">
+              <f:validator binding="#{bindings.TransPrjNum.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transContractNumberId" partialTriggers="transBuNameId"
+                                          popupTitle="Search and Select: #{bindings.TransContractNumber.hints.label}"
+                                          value="#{bindings.TransContractNumber.inputValue}"
+                                          label="#{bindings.TransContractNumber.hints.label}"
+                                          model="#{bindings.TransContractNumber.listOfValuesModel}"
+                                          required="true" showRequired="true" autoSubmit="true"
+                                          columns="#{bindings.TransContractNumber.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransContractNumber.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.BoqUploadValidationBean.ContractNumberVL}">
+              <f:validator binding="#{bindings.TransContractNumber.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:panelLabelAndMessage label="#{bindings.TransVersion.hints.label}"
+                                     id="plam1">
+              <af:outputText value="#{bindings.TransVersion.inputValue}" partialTriggers="transPrjNumId transContractNumberId"
+                             id="ot11"/>
+            </af:panelLabelAndMessage>
+            <!--<af:inputComboboxListOfValues id="transBudgetType1Id"
+                                        popupTitle="Search and Select: #{bindings.TransBudgetType1.hints.label}"
+                                        value="#{bindings.TransBudgetType1.inputValue}"
+                                        label="#{bindings.TransBudgetType1.hints.label}"
+                                        model="#{bindings.TransBudgetType1.listOfValuesModel}"
+                                        required="true"
+                                         autoSubmit="true"
+                                        columns="#{bindings.TransBudgetType1.hints.displayWidth}"
+                                        shortDesc="#{bindings.TransBudgetType1.hints.tooltip}">
+            <f:validator binding="#{bindings.TransBudgetType1.validator}"/>
+          </af:inputComboboxListOfValues>-->
+          </af:panelFormLayout>
+          <f:facet name="buttonBar">
+            <af:group id="g2">
+              <af:commandButton text="Create" id="cb5" partialSubmit="true"
+                                actionListener="#{backingBeanScope.BoqUploadValidationBean.creataBoqUploadAL}"/>
+              <af:spacer width="1%" id="s1"/>
+              <af:commandButton text="Cancel" id="cb4" immediate="true"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p2" contentDelivery="lazyUncached"
+                popupCanceledListener="#{backingBeanScope.BoqUploadValidationBean.boqRevicePopupCL}"
+                binding="#{backingBeanScope.BoqUploadValidationBean.boqRevicePopupBindgs}">
+        <af:dialog id="d2" title="New BOQ Revice Document" resize="off"
+                   type="none" stretchChildren="none">
+          <af:panelFormLayout id="pfl2">
+            <af:inputComboboxListOfValues id="transBuName1Id"
+                                          popupTitle="Search and Select: #{bindings.TransBuName1.hints.label}"
+                                          value="#{bindings.TransBuName1.inputValue}"
+                                          label="#{bindings.TransBuName1.hints.label}"
+                                          model="#{bindings.TransBuName1.listOfValuesModel}"
+                                          required="true"
+                                          columns="#{bindings.TransBuName1.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransBuName1.hints.tooltip}"
+                                          autoSubmit="true">
+              <f:validator binding="#{bindings.TransBuName1.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputComboboxListOfValues id="transPrjNum1Id" autoSubmit="true"
+                                          popupTitle="Search and Select: #{bindings.TransPrjNum1.hints.label}"
+                                          value="#{bindings.TransPrjNum1.inputValue}"
+                                          label="#{bindings.TransPrjNum1.hints.label}"
+                                          model="#{bindings.TransPrjNum1.listOfValuesModel}"
+                                          required="true"
+                                          columns="#{bindings.TransPrjNum1.hints.displayWidth}"
+                                          shortDesc="#{bindings.TransPrjNum1.hints.tooltip}">
+              <f:validator binding="#{bindings.TransPrjNum1.validator}"/>
+            </af:inputComboboxListOfValues>
+            <af:inputText value="#{bindings.TransBudgetType.inputValue}"
+                          readOnly="true"
+                          label="#{bindings.TransBudgetType.hints.label}"
+                          required="#{bindings.TransBudgetType.hints.mandatory}"
+                          columns="#{bindings.TransBudgetType.hints.displayWidth}"
+                          maximumLength="#{bindings.TransBudgetType.hints.precision}"
+                          shortDesc="#{bindings.TransBudgetType.hints.tooltip}"
+                          id="it2">
+              <f:validator binding="#{bindings.TransBudgetType.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.TransIbcNumber1.inputValue}"
+                          label="#{bindings.TransIbcNumber1.hints.label}"
+                          required="#{bindings.TransIbcNumber1.hints.mandatory}"
+                          columns="#{bindings.TransIbcNumber1.hints.displayWidth}"
+                          maximumLength="#{bindings.TransIbcNumber1.hints.precision}"
+                          shortDesc="#{bindings.TransIbcNumber1.hints.tooltip}"
+                          id="it3">
+              <f:validator binding="#{bindings.TransIbcNumber1.validator}"/>
+            </af:inputText>
+          </af:panelFormLayout>
+          <f:facet name="buttonBar">
+            <af:group id="g1">
+              <af:commandButton text="Create" id="cb6"
+                                actionListener="#{backingBeanScope.BoqUploadValidationBean.creataBoqReviceAL}"/>
+              <af:spacer width="1%" id="s2"/>
+              <af:commandButton text="Cancel" id="cb7" immediate="true"/>
+            </af:group>
+          </f:facet>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p3"
+                binding="#{backingBeanScope.BoqUploadValidationBean.overrideBoqExistDocPopupBindgs}">
+        <af:dialog id="d3" title="Override Existing Document" type="okCancel"
+                   dialogListener="#{backingBeanScope.BoqUploadValidationBean.overrideDocDL}">
+          <af:outputText id="ot30"
+                         value="A Revice Document is already exist. Do you want to override the existing uploaded document."/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p6"
+                binding="#{backingBeanScope.BoqUploadValidationBean.deleteBoqDocPopupBindgs}">
+        <af:dialog id="d6" title="Confirmation"
+                   type="yesNo"
+                   dialogListener="#{backingBeanScope.BoqUploadValidationBean.deleteBoqsfirstPopupAL}">
+          <af:outputText id="ot44"
+                         value="The selected document will be permanently deleted. This action cannot be undone. Do you want to continue?"/>
+        </af:dialog>
+      </af:popup>
+      <af:popup id="p4">
+        <af:noteWindow id="nw1">
+          <af:panelList id="pl1">
+          <af:commandLink text="View Project" id="cl1"
+                          actionListener="#{backingBeanScope.BoqUploadValidationBean.openProjectAL}"/>
+          <af:commandLink text="View Project Budget" id="cl2"
+                          actionListener="#{backingBeanScope.BoqUploadValidationBean.openProjectBudgetAL}"/>
+          </af:panelList>
+        </af:noteWindow>
+      </af:popup>
+    </af:panelGroupLayout>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.66.73" id="TaxSetupHeaderSearchPageDef"
+                Package="pagefragments">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ProjectTaxHeaderVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="ProjectTaxHeaderVO1Iterator"/>
+    <searchRegion Criteria="ProjectTaxHeaderVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ProjectTaxHeaderVO1Iterator"
+                  id="ProjectTaxHeaderVOCriteriaQuery"/>
+    <iterator Binds="TransTaxHdrVO1" RangeSize="25"
+              DataControl="BillofQuantityAMDataControl"
+              id="TransTaxHdrVO1Iterator"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ProjectTaxHeaderVO1Iterator" id="ProjectTaxHeaderVO1">
+      <nodeDefinition DefName="model.view.ProjectTaxHeaderVO"
+                      Name="ProjectTaxHeaderVO10">
+        <AttrNames>
+          <Item Value="HeaderId"/>
+          <Item Value="TransBuName"/>
+          <Item Value="TransProjectName"/>
+          <Item Value="TransProjectNumber"/>
+          <Item Value="TransCustomerName"/>
+          <Item Value="CreatedBy"/>
+          <Item Value="CreationDate"/>
+          <Item Value="TransPCExistsFlag"/>
+          <Item Value="TransCognomen"/>
+          <Item Value="TransContractNumber"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues StaticList="false" IterBinding="TransTaxHdrVO1Iterator"
+                  Uses="LOV_TransBuName" id="TransBuName"/>
+    <listOfValues StaticList="false" IterBinding="TransTaxHdrVO1Iterator"
+                  Uses="LOV_TransProjectName" id="TransProjectName"/>
+    <attributeValues IterBinding="TransTaxHdrVO1Iterator" id="TransBuId">
+      <AttrNames>
+        <Item Value="TransBuId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="TransTaxHdrVO1Iterator"
+                     id="TransCustomerName">
+      <AttrNames>
+        <Item Value="TransCustomerName"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="createTransTaxHeaderRow"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createTransTaxHeaderRow"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.createTransTaxHeaderRow_BillofQuantityAMDataControl_dataProvider_createTransTaxHeaderRow_result"/>
+    <methodAction id="createTaxHeaderRow"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createTaxHeaderRow" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.createTaxHeaderRow_BillofQuantityAMDataControl_dataProvider_createTaxHeaderRow_result"/>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator"
+                     id="TransPCExistsFlag">
+      <AttrNames>
+        <Item Value="TransPCExistsFlag"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ProjectTaxHeaderVO1Iterator" id="HeaderId">
+      <AttrNames>
+        <Item Value="HeaderId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="deleteTaxHeaderDoc"
+                  InstanceName="BillofQuantityAMDataControl.dataProvider"
+                  DataControl="BillofQuantityAMDataControl"
+                  RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteTaxHeaderDoc" IsViewObjectMethod="false"
+                  ReturnName="data.BillofQuantityAMDataControl.methodResults.deleteTaxHeaderDoc_BillofQuantityAMDataControl_dataProvider_deleteTaxHeaderDoc_result"/>
+    <listOfValues StaticList="false" IterBinding="TransTaxHdrVO1Iterator"
+                  Uses="LOV_TransContractNumber" id="TransContractNumber"/>
+  </bindings>
+</pageDefinition>

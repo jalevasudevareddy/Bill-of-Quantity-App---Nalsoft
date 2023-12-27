@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core">
+  <af:panelHeader text="Action History" id="ph1">
+    <f:facet name="toolbar">
+      <af:commandButton text="Done" id="cb1" action="done"/>
+    </f:facet>
+      <af:panelCollection id="pc1" styleClass="AFStretchWidth">
+        <af:table value="#{bindings.ActionHistoryVO1.collectionModel}" var="row"
+                  rows="#{bindings.ActionHistoryVO1.rangeSize}"
+                  emptyText="#{bindings.ActionHistoryVO1.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  fetchSize="#{bindings.ActionHistoryVO1.rangeSize}"
+                  rowBandingInterval="0"
+                  filterModel="#{bindings.ActionHistoryVO1Query.queryDescriptor}"
+                  queryListener="#{bindings.ActionHistoryVO1Query.processQuery}"
+                  varStatus="vs"
+                  selectedRowKeys="#{bindings.ActionHistoryVO1.collectionModel.selectedRow}"
+                  selectionListener="#{bindings.ActionHistoryVO1.collectionModel.makeCurrent}"
+                  rowSelection="single" id="t1">
+                  <af:column rowHeader="true" width="5" id="r1" headerText=" ">
+                    <af:outputText value=" " id="ol1"/>
+                 </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.DocumentType.name}"
+                     filterable="true" sortable="true"  rendered="false"
+                     headerText="Document"
+                     id="c1">
+            <af:outputText value="#{row.DocumentType}" id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.SequenceNumber.name}"
+                     filterable="true" sortable="true"
+                     headerText="Sequence Number"
+                     id="c9">
+            <af:outputText value="#{row.SequenceNumber}" id="ot8"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.ApproverLevel.name}"
+                     filterable="true" sortable="true"
+                     headerText="Approver Level"
+                     id="c6">
+            <af:outputText value="#{row.ApproverLevel}" id="ot2">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ActionHistoryVO1.hints.ApproverLevel.format}"/>
+            </af:outputText>
+          </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.PerformerName.name}"
+                     filterable="true" sortable="true"
+                     headerText="Person Name" width="200"
+                     id="c4">
+            <af:outputText value="#{row.PerformerName}" id="ot1"/>
+          </af:column>
+            <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.ActionCode.name}"
+                     filterable="true" sortable="true"
+                     headerText="Action"
+                     id="c3">
+            <af:outputText value="#{row.ActionCode}" id="ot6"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.ApproverLevel.name}"
+                     filterable="true" sortable="true" rendered="false"
+                     headerText="Party" width="200"
+                     id="c10">
+            <af:outputText value="#{row.ApproverLevel}" id="ot9">
+              <af:convertNumber groupingUsed="false"
+                                pattern="#{bindings.ActionHistoryVO1.hints.ApproverLevel.format}"/>
+            </af:outputText>
+          </af:column>
+        <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.ActionDate.name}"
+                     filterable="false" sortable="true" width="200"
+                     headerText="Action Date "
+                     id="c2">
+          <af:outputText value="#{row.ActionDate}" id="ot3"/>
+        </af:column>
+          <af:column sortProperty="#{bindings.ActionHistoryVO1.hints.Remarks.name}"
+                     filterable="true" sortable="true" width="400"
+                     headerText="Additional Information"
+                     id="c5">
+            <af:outputText value="#{row.Remarks}" id="ot7"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+  </af:panelHeader>
+</jsp:root>
